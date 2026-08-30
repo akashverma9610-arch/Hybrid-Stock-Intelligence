@@ -1,0 +1,78 @@
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Databases / SQLite runtime files
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# Logs
+*.log
+
+# Runtime/test temporary output
+reports/**/*_tmp/
+reports/**/pytest*/
+automation/**/tmp/
+
+# U17 transient runtime staging
+data/incoming/
+data/archive/
+data/quarantine/# Python build metadata
+*.egg-info/
+
+# Test / coverage artifacts
+test-results-*
+.coverage
+coverage.xml
+htmlcov/
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/# Generated operational / audit reports
+reports/# Local operational data and acquired official source artifacts
+data/reports/# Runtime/test temporary output
+reports/**/*_tmp/
+reports/**/pytest*/
+automation/**/tmp/
+
+# U17 transient runtime staging
+data/incoming/
+data/archive/
+data/quarantine/
+
+# Python build metadata
+*.egg-info/
+
+# Test / coverage artifacts
+test-results-*
+.coverage
+coverage.xml
+htmlcov/
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+
+# Generated operational / audit reports
+reports/
+
+# Local operational data and acquired official source artifacts
+data/

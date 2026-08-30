@@ -1,0 +1,6 @@
+{
+  "name": "NSE Stock Manager v2.1",
+  "description": "Institutional investment intelligence and capital-rotation dashboard frontend shell for Indian equities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

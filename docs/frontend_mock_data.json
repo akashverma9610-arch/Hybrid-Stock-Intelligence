@@ -1,0 +1,15 @@
+{
+  "mode": "MOCK",
+  "warning": "Synthetic UI-only data. Never use to calculate, approve, or activate a strategy.",
+  "market": {"regime": "SELECTIVE_BULL", "confidence": 0.78, "freshness": "EOD", "status": "PARTIAL", "warnings": ["SYNTHETIC"]},
+  "sectors": [{"name": "Technology", "phase": "LEADING", "relative_strength": "1.12", "confidence": 0.74}],
+  "portfolio": {"status": "PARTIAL", "cash": "250000", "marked_value": "725000", "portfolio_heat": "0.03", "warnings": ["SYNTHETIC"]},
+  "rotation": {"suggested_action": "WATCH", "candidate": "MOCKCO", "confidence": 0.69},
+  "stock": {"symbol": "MOCKCO", "decision_score": "7.80", "confidence": 0.72, "analysis_status": "PARTIAL"},
+  "signal": {"symbol": "MOCKCO", "action": "WATCH", "confidence": 0.70, "status": "WAITING_FOR_TRIGGER"},
+  "paper_trade": {"symbol": "MOCKCO", "status": "CREATED", "entry": "100.00", "stop": "94.00"},
+  "performance": {"sample_status": "INSUFFICIENT", "total_return": null, "warnings": ["SYNTHETIC"]},
+  "primary_market": {"issue": "Mock Industries IPO", "issue_type": "FRESH_ISSUE", "listing_premium": null},
+  "news": {"title": "Synthetic research headline", "source_quality": "MOCK", "event_category": "OTHER"},
+  "connections": [{"provider": "kotak_neo", "configured": false, "status": "NOT_CONFIGURED"}]
+}

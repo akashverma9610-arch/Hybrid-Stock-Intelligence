@@ -1,0 +1,17 @@
+from decimal import Decimal
+from statistics import median
+from .models import SampleStatus
+def analyze(trades,config):
+ def status(n):return SampleStatus.VERY_LOW_SAMPLE.value if n<config.low_sample else SampleStatus.LOW_SAMPLE.value if n<config.moderate_sample else SampleStatus.MODERATE_SAMPLE.value if n<config.adequate_sample else SampleStatus.ADEQUATE_SAMPLE.value
+ def stats(items):
+  closed=[x for x in items if x.closed and x.net_pnl is not None];rs=[x.r_multiple for x in closed if x.r_multiple is not None];mfe=[x.mfe for x in items if x.mfe is not None];mae=[x.mae for x in items if x.mae is not None];
+  return {"setup_count":len(items),"triggered_count":sum(x.triggered for x in items),"filled_count":sum(x.filled for x in items),"closed_count":len(closed),"win_rate":Decimal(sum(x.net_pnl>0 for x in closed))/len(closed) if closed else None,"expectancy":sum((x.net_pnl for x in closed),Decimal("0"))/len(closed) if closed else None,"average_r":sum(rs,Decimal("0"))/len(rs) if rs else None,"median_r":Decimal(str(median(rs))) if rs else None,"average_mfe":sum(mfe,Decimal("0"))/len(mfe) if mfe else None,"average_mae":sum(mae,Decimal("0"))/len(mae) if mae else None,"sample_status":status(len(closed))}
+ def group(key):
+  out={}
+  for x in trades:out.setdefault(key(x),[]).append(x)
+  return {k:stats(v) for k,v in out.items()}
+ filled=[x for x in trades if x.filled]; triggered=[x for x in trades if x.triggered]; generated=len(trades)
+ rate=lambda n,d:Decimal(n)/d if d else None
+ exits={"t1_hit_rate":rate(sum(x.t1_hit for x in filled),len(filled)),"t2_hit_rate":rate(sum(x.t2_hit for x in filled),len(filled)),"extended_target_hit_rate":rate(sum(x.extended_target_hit for x in filled),len(filled)),"stop_hit_rate":rate(sum(x.stop_hit for x in filled),len(filled)),"breakeven_residual_rate":rate(sum(x.breakeven_residual is True for x in filled),sum(x.breakeven_residual is not None for x in filled)),"invalidation_exit_rate":rate(sum(x.invalidation_exit for x in filled),len(filled)),"time_stop_rate":rate(sum(x.time_stop_exit for x in filled),len(filled))}
+ mf=[x.mfe for x in filled if x.mfe is not None];ma=[x.mae for x in filled if x.mae is not None];mfr=[x.mfe_r for x in filled if x.mfe_r is not None];mar=[x.mae_r for x in filled if x.mae_r is not None]
+ return {"confidence":group(lambda x:"UNAVAILABLE" if x.confidence is None else "HIGH" if x.confidence>=.8 else "LOW"),"catalyst_type":group(lambda x:x.catalyst_type or "NO_CATALYST"),"catalyst_clock":group(lambda x:x.catalyst_clock or "UNAVAILABLE"),"exit_metrics":exits,"funnel":{"generated":generated,"triggered":len(triggered),"filled":len(filled),"closed":sum(x.closed for x in trades),"unfilled":sum(x.final_state=="UNFILLED" for x in trades),"expired":sum("EXPIRY" in x.final_state for x in trades),"cancelled":sum(x.final_state=="CANCELLED" for x in trades),"insufficient_data":sum(x.final_state=="INSUFFICIENT_DATA" for x in trades),"signal_to_trigger_rate":rate(len(triggered),generated),"trigger_to_fill_rate":rate(len(filled),len(triggered)),"generated_to_fill_rate":rate(len(filled),generated),"unfilled_rate":rate(sum(x.final_state=="UNFILLED" for x in trades),generated)},"excursion":{"average_mfe":sum(mf,Decimal("0"))/len(mf) if mf else None,"median_mfe":Decimal(str(median(mf))) if mf else None,"average_mae":sum(ma,Decimal("0"))/len(ma) if ma else None,"median_mae":Decimal(str(median(ma))) if ma else None,"average_mfe_r":sum(mfr,Decimal("0"))/len(mfr) if mfr else None,"average_mae_r":sum(mar,Decimal("0"))/len(mar) if mar else None}}

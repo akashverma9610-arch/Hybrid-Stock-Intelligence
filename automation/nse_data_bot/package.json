@@ -1,0 +1,10 @@
+{
+  "name": "hsi-nse-delivery-acquirer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "acquire-delivery": "node --experimental-strip-types src/delivery_acquirer.ts",
+    "test": "node --experimental-strip-types --test tests/delivery_acquirer.test.ts"
+  }
+}

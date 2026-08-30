@@ -1,0 +1,19 @@
+from decimal import Decimal
+from statistics import median, pstdev
+from .models import *
+from .grouped import analyze
+class PerformanceEngine:
+ def __init__(self,config):self.config=config
+ def report(self,*,strategy_version,start,end,trades,generated_at):
+  items=tuple(x for x in trades if (x.exit_timestamp or x.entry_timestamp) and (x.exit_timestamp or x.entry_timestamp)<=end);closed=tuple(x for x in items if x.closed and x.net_pnl is not None);rs=[x.r_multiple for x in closed if x.r_multiple is not None]; pnls=[x.net_pnl for x in closed];wins=[x for x in pnls if x>0];losses=[x for x in pnls if x<0]; equity=self.config.starting_capital;peak=equity;curve=[]
+  for x in sorted(closed,key=lambda x:x.exit_timestamp):
+   equity+=x.net_pnl;peak=max(peak,equity);curve.append(EquityPoint(x.exit_timestamp,equity,(equity-peak)/peak,x.paper_trade_id))
+  returns=[float(x.net_pnl/self.config.starting_capital) for x in closed];vol=Decimal(str(pstdev(returns))) if len(returns)>1 else None; mean=sum(returns)/len(returns) if returns else None; downside=[min(0,x) for x in returns];dd=Decimal(str(pstdev(downside))) if len(downside)>1 else None
+  status=SampleStatus.VERY_LOW_SAMPLE if len(closed)<self.config.low_sample else SampleStatus.LOW_SAMPLE if len(closed)<self.config.moderate_sample else SampleStatus.MODERATE_SAMPLE if len(closed)<self.config.adequate_sample else SampleStatus.ADEQUATE_SAMPLE
+  grossprofit=sum(wins,Decimal("0"));grossloss=abs(sum(losses,Decimal("0"))); metrics={"total_trades":len(items),"closed_trades":len(closed),"open_trades":sum(not x.closed for x in items),"unfilled_setups":sum(x.final_state=="UNFILLED" for x in items),"win_rate":Decimal(len(wins))/len(closed) if closed else None,"loss_rate":Decimal(len(losses))/len(closed) if closed else None,"average_winner":sum(wins,Decimal("0"))/len(wins) if wins else None,"average_loser":abs(sum(losses,Decimal("0")))/len(losses) if losses else None,"expectancy":sum(pnls,Decimal("0"))/len(closed) if closed else None,"average_r":sum(rs,Decimal("0"))/len(rs) if rs else None,"median_r":Decimal(str(median(rs))) if rs else None,"gross_profit":grossprofit,"gross_loss":grossloss,"net_profit":sum(pnls,Decimal("0")),"profit_factor":grossprofit/grossloss if grossloss else None,"max_drawdown":min((x.drawdown for x in curve),default=Decimal("0")),"volatility":vol,"sharpe":Decimal(str((mean-float(self.config.risk_free_rate))/float(vol)*self.config.annualization_factor**.5)) if mean is not None and vol else None,"sortino":Decimal(str((mean-float(self.config.risk_free_rate))/float(dd)*self.config.annualization_factor**.5)) if mean is not None and dd else None,"costs":sum((x.costs for x in items),Decimal("0")),"capital_efficiency":sum(pnls,Decimal("0"))/self.config.starting_capital if closed else None,"sample_status":status.value}
+  groups={"score":self._group(closed,lambda x:str(next((b for b in self.config.score_bands if x.decision_score is not None and x.decision_score<b),"MAX"))),"sector":self._group(closed,lambda x:x.sector or "UNKNOWN"),"regime":self._group(closed,lambda x:x.regime or "UNKNOWN"),"setup":self._group(closed,lambda x:x.setup_type or "UNKNOWN")};groups.update(analyze(items,self.config));warn=("SMALL_SAMPLE",) if status in {SampleStatus.VERY_LOW_SAMPLE,SampleStatus.LOW_SAMPLE} else ();return PerformanceReport(f"performance-{strategy_version}-{end.isoformat()}",strategy_version,start,end,self.config.version,tuple(x.paper_trade_id for x in items),metrics,tuple(curve),groups,warn,generated_at)
+ def _group(self,items,key):
+  d={}
+  for x in items:d.setdefault(key(x),[]).append(x)
+  return {k:{"count":len(v),"average_r":sum((x.r_multiple or Decimal("0") for x in v),Decimal("0"))/len(v),"win_rate":Decimal(sum(x.net_pnl>0 for x in v))/len(v)} for k,v in d.items()}
+ def benchmark_return(self,values): return (values[-1]/values[0]-1) if len(values)>1 and values[0] else None

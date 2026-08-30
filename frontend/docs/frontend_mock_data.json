@@ -1,0 +1,48 @@
+{
+  "market_state": {
+    "regime": "TRENDING_BULL",
+    "regimeLabel": "Bullish Momentum Expansion",
+    "regimeConfidencePct": 84,
+    "sessionStatus": "OPEN",
+    "sessionTimeRemaining": "02h 45m",
+    "nifty50": { "spot": 24865.25, "change": 152.4, "pChange": 0.62 },
+    "bankNifty": { "spot": 51320.8, "change": 345.1, "pChange": 0.68 },
+    "vix": { "current": 12.85, "change": -0.42, "trend": "FALLING" },
+    "freshness": "LIVE",
+    "lastUpdated": "12:45:00 IST"
+  },
+  "market_extremes": {
+    "downsideState": "NORMAL",
+    "downsideScore": 16,
+    "downsideDescription": "Structural market breadth remains resilient; systemic contagion and liquidations are low.",
+    "upsideState": "CROWDING",
+    "upsideScore": 54,
+    "upsideDescription": "Selective capital crowding identified in industrial and auto leadership; broader market is not yet in speculative euphoria.",
+    "evidenceQuality": "HIGH",
+    "activeWarnings": [
+      "Top 5 index contributors account for 62% of intraday index delta",
+      "Short-term call open interest concentrated at 25,000 strike"
+    ],
+    "lastAssessed": "12:40:00 IST"
+  },
+  "market_breadth": {
+    "advances": 1465,
+    "declines": 780,
+    "unchanged": 55,
+    "advanceDeclineRatio": 1.88,
+    "above50DmaPct": 71.4,
+    "above200DmaPct": 76.8,
+    "participationScore": 78,
+    "breadthCoverageCount": 500
+  },
+  "portfolio_summary": {
+    "investedValue": 4850000,
+    "currentValue": 5642800,
+    "totalPnL": 792800,
+    "totalPnLPct": 16.35,
+    "todayPnL": 42150,
+    "todayPnLPct": 0.75,
+    "portfolioHeatScore": 32,
+    "portfolioRiskLevel": "LOW"
+  }
+}

@@ -1,0 +1,1 @@
+export { DownsideStateBadge } from './ExtremesBadge';
