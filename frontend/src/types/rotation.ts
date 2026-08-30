@@ -1,42 +1,35 @@
-import { ConfidenceLevel, SignalAction } from './api';
-
-export interface RotationExecutionGate {
-  gateNumber: number;
-  name: string;
-  passed: boolean | null;
-  statusText: string;
-  detail: string | null;
-}
-
-export interface CapitalRotationItem {
-  id: string;
-  currentHolding: {
-    symbol: string;
-    score: number | null;
-    sector: string;
-    currentValue: number | null;
-    gainPct: number | null;
-  };
-  candidate: {
-    symbol: string;
-    score: number | null;
-    sector: string;
-    expectedCatalyst: string | null;
-  };
-  scoreAdvantage: number | null; // delta e.g. +18.4
-  riskReward: number | null;
-  confidence: ConfidenceLevel;
-  sectorContext: string;
-  gateStatus: 'ALL_PASSED' | 'BLOCKED' | 'PENDING' | 'DEGRADED';
-  gates: RotationExecutionGate[];
-  action: 'RECOMMENDED' | 'EVALUATING' | 'RESTRICTED' | 'DISMISSED';
+export interface CapitalRotationOpportunity {
+  currentHoldingSymbol: string | null;
+  currentHoldingScore: string | null;
+  candidateSymbol: string;
+  candidateScore: string | null;
+  scoreAdvantage: string | null;
+  candidateConfidence: number | null;
+  holdingConfidence: number | null;
+  candidateRiskReward: string | null;
+  sectorContext: string | null;
+  catalystContext: string | null;
+  freshness: string;
+  executionEligibility: string;
+  publicGateSummary: string[];
+  recommendedAction: string;
   rationale: string;
+  invalidationSummary: string | null;
+  warnings: string[];
 }
 
+/** Read-only projection of the published capital-rotation evaluation. */
 export interface CapitalRotationData {
-  isAvailableOnBackend: boolean;
-  unavailableReason?: string;
-  rotationThresholdPct: number | null;
-  candidatePairs: CapitalRotationItem[];
-  lastCalculated: string | null;
+  overallStatus: string;
+  dataAsOf: string | null;
+  freshness: string;
+  marketRegime: string | null;
+  opportunityCoverage: string;
+  rotationComparisonStatus: string;
+  holdingCount: number | null;
+  portfolioHeat: string | null;
+  weakestHoldingSymbol: string | null;
+  opportunities: CapitalRotationOpportunity[];
+  warnings: string[];
+  message: string | null;
 }

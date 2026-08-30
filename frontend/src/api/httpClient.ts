@@ -1102,23 +1102,38 @@ export class HttpDataClient implements DataClientInterface {
     ]);
   }
 
-  // ==========================================
-  // UNMODIFIED / UNWIRED PAGES (PRESERVED AS STUBS)
-  // ==========================================
-
   async getCapitalRotation(): Promise<ApiResponse<CapitalRotationData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/capital-rotation');
+    if (!response.data) return response as ApiResponse<CapitalRotationData>;
+    const value = response.data;
+    const status: ApiStatus = value.overall_status === 'UNAVAILABLE' ? 'UNAVAILABLE'
+      : value.overall_status === 'PARTIAL' ? 'PARTIAL'
+      : value.overall_status === 'EMPTY' ? 'EMPTY'
+      : 'READY';
     return {
-      status: 'UNAVAILABLE',
-      freshness: 'UNKNOWN',
-      timestamp: new Date().toISOString(),
+      ...response, status,
+      freshness: value.freshness === 'AS_OF_SNAPSHOT' ? 'EOD' : 'UNKNOWN',
+      message: value.message ?? response.message, warnings: value.warnings ?? [],
       data: {
-        isAvailableOnBackend: false,
-        unavailableReason: 'Capital Rotation backend endpoint is not wired yet (#031C scope).',
-        rotationThresholdPct: null,
-        candidatePairs: [],
-        lastCalculated: null,
+        overallStatus: value.overall_status, dataAsOf: value.data_as_of ?? null,
+        freshness: value.freshness, marketRegime: value.market_regime ?? null,
+        opportunityCoverage: value.opportunity_coverage,
+        rotationComparisonStatus: value.rotation_comparison_status,
+        holdingCount: value.summary?.holding_count ?? null,
+        portfolioHeat: value.summary?.portfolio_heat ?? null,
+        weakestHoldingSymbol: value.summary?.weakest_holding_symbol ?? null,
+        opportunities: (value.opportunities ?? []).map((item: any) => ({
+          currentHoldingSymbol: item.current_holding_symbol ?? null, currentHoldingScore: item.current_holding_score ?? null,
+          candidateSymbol: item.candidate_symbol, candidateScore: item.candidate_score ?? null,
+          scoreAdvantage: item.score_advantage ?? null, candidateConfidence: item.candidate_confidence ?? null,
+          holdingConfidence: item.holding_confidence ?? null, candidateRiskReward: item.candidate_risk_reward ?? null,
+          sectorContext: item.sector_context ?? null, catalystContext: item.catalyst_context ?? null,
+          freshness: item.freshness, executionEligibility: item.execution_eligibility,
+          publicGateSummary: item.public_gate_summary ?? [], recommendedAction: item.recommended_action,
+          rationale: item.rationale, invalidationSummary: item.invalidation_summary ?? null, warnings: item.warnings ?? [],
+        })),
+        warnings: value.warnings ?? [], message: value.message ?? null,
       },
-      message: 'Capital Rotation module is pending backend integration.',
     };
   }
 
