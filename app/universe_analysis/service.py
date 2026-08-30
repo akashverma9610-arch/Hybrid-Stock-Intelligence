@@ -762,6 +762,8 @@ class PortfolioUniverseRotationService:
             return existing
         if portfolio.as_of_timestamp != job.as_of:
             return self._partial(portfolio, universe, job, "PORTFOLIO_UNIVERSE_AS_OF_MISMATCH", evaluated_at)
+        if portfolio.cash.amount is None:
+            return self._partial(portfolio, universe, job, "CASH_UNKNOWN", evaluated_at=evaluated_at)
         if job.stage is UniverseAnalysisStage.CANDIDATES_MATERIALIZED:
             self._store.save_job(replace(job, revision=job.revision + 1, stage=UniverseAnalysisStage.ROTATION_COMPARISON))
         candidates = tuple(item for item in self._store.candidates(job.job_id) if item.qualification_status == "QUALIFIED")

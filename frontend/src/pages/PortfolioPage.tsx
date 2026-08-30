@@ -175,7 +175,7 @@ export const PortfolioPage: React.FC = () => {
                   id="port-invested"
                   label="Invested Value"
                   value={portfolio.investedValue !== null ? formatINR(portfolio.investedValue) : '—'}
-                  subtext={portfolio.cashAvailable !== null ? `Cash Reserve: ${formatINR(portfolio.cashAvailable)}` : undefined}
+                  subtext={portfolio.cashAvailable !== null ? `Cash Reserve: ${formatINR(portfolio.cashAvailable)}` : portfolio.cashStatus === 'UNKNOWN' ? 'Cash: Unknown' : undefined}
                 />
                 <MetricCard
                   id="port-current"

@@ -26,7 +26,8 @@ class PortfolioResponse(BaseModel):
     as_of: datetime
     invested_value: Decimal
     marked_value: Decimal | None
-    cash: Decimal
+    cash: Decimal | None
+    cash_status: str
     unrealized_pnl: Decimal | None
     realized_pnl: Decimal
     total_equity: Decimal | None

@@ -24,6 +24,11 @@ class PortfolioDataStatus(str, Enum):
     INSUFFICIENT_DATA = "INSUFFICIENT_DATA"
 
 
+class CashState(str, Enum):
+    KNOWN = "KNOWN"
+    UNKNOWN = "UNKNOWN"
+
+
 class TransactionType(str, Enum):
     BUY = "BUY"
     SELL = "SELL"
@@ -59,14 +64,21 @@ class Portfolio:
 
 @dataclass(frozen=True, slots=True)
 class CashPosition:
-    amount: Decimal
+    amount: Decimal | None
     currency: str
     reserved_amount: Decimal
     as_of_timestamp: datetime
+    cash_state: CashState = CashState.KNOWN
+
+    def __post_init__(self) -> None:
+        if self.cash_state is CashState.KNOWN and self.amount is None:
+            raise ValueError("Known cash requires an amount.")
+        if self.cash_state is CashState.UNKNOWN and (self.amount is not None or self.reserved_amount != 0):
+            raise ValueError("Unknown cash must not carry an amount or reservation.")
 
     @property
-    def available_amount(self) -> Decimal:
-        return self.amount - self.reserved_amount
+    def available_amount(self) -> Decimal | None:
+        return self.amount - self.reserved_amount if self.amount is not None else None
 
 
 @dataclass(frozen=True, slots=True)

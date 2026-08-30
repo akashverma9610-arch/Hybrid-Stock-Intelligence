@@ -80,6 +80,7 @@ def portfolio_response(snapshot: PortfolioSnapshot) -> PortfolioResponse:
         invested_value=invested,
         marked_value=marked,
         cash=snapshot.cash.amount,
+        cash_status=snapshot.cash.cash_state.value,
         unrealized_pnl=snapshot.unrealized_pnl,
         realized_pnl=snapshot.realized_pnl,
         total_equity=snapshot.portfolio_equity,
@@ -123,6 +124,8 @@ def _snapshot_warnings(snapshot: PortfolioSnapshot) -> tuple[str, ...]:
         warnings.append(f"PORTFOLIO_DATA_STATUS:{snapshot.data_status.value}")
     if snapshot.risk.total_heat is None:
         warnings.append("PORTFOLIO_HEAT_UNAVAILABLE")
+    if snapshot.cash.amount is None:
+        warnings.append("CASH_UNKNOWN")
     if any(holding.market_value is None for holding in snapshot.holdings):
         warnings.append("MARK_DATA_PARTIAL")
     return tuple(warnings)

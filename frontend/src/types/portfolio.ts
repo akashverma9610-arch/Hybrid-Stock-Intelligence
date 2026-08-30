@@ -47,6 +47,7 @@ export interface PortfolioSummaryData {
   todayPnL: number | null;
   todayPnLPct: number | null;
   cashAvailable: number | null;
+  cashStatus?: 'KNOWN' | 'UNKNOWN' | null;
   capitalDeployedPct: number | null;
   portfolioHeatScore: number | null; // 0-100 portfolio risk heat
   portfolioRiskLevel: RiskLevel;

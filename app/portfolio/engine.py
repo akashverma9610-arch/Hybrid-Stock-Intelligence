@@ -33,22 +33,23 @@ class PortfolioEngine:
         for _, _, kind, event in sorted(events):
             if kind == "action": self._apply_action(state, event)
             else:
-                cash += event.net_cash_impact
+                if cash is not None:
+                    cash += event.net_cash_impact
                 if event.transaction_type in {TransactionType.BUY, TransactionType.ADD}: self._buy(state, event)
                 elif event.transaction_type in {TransactionType.SELL, TransactionType.REDUCE}: self._sell(state, event)
                 elif event.transaction_type is TransactionType.DIVIDEND: dividends += event.net_cash_impact
         holdings = tuple(self._holding(instrument, item, as_of_timestamp, prices, analytics) for instrument, item in sorted(state.items()) if item["quantity"] > 0)
         known_values = [x.market_value for x in holdings if x.market_value is not None]
-        equity = cash + sum(known_values, Decimal("0")) if len(known_values) == len(holdings) else None
+        equity = cash + sum(known_values, Decimal("0")) if cash is not None and len(known_values) == len(holdings) else None
         realized = sum((item["realized"] for item in state.values()), Decimal("0"))
         unrealized = sum((x.unrealized_pnl for x in holdings if x.unrealized_pnl is not None), Decimal("0")) if len(known_values) == len(holdings) else None
         exposure = self._exposure(holdings, cash, equity)
         risk = self._risk(holdings, equity)
         status = PortfolioDataStatus.COMPLETE if equity is not None and risk.status is PortfolioDataStatus.COMPLETE else (PortfolioDataStatus.INSUFFICIENT_DATA if not holdings and initial_cash.amount is None else PortfolioDataStatus.PARTIAL)
-        pstate = PortfolioState.ALL_CASH if not holdings else (PortfolioState.FULLY_INVESTED if cash == 0 else PortfolioState.PARTIALLY_INVESTED)
+        pstate = PortfolioState.ALL_CASH if not holdings and cash is not None else (PortfolioState.FULLY_INVESTED if holdings and cash == 0 else PortfolioState.PARTIALLY_INVESTED)
         marker = "|".join([portfolio.portfolio_id, as_of_timestamp.isoformat(), *(x.transaction_id for x in ledger), *(x.action_id for x in actions if x.effective_at <= as_of_timestamp and x.known_at <= as_of_timestamp)])
         return PortfolioSnapshot("portfolio-" + hashlib.sha256(marker.encode()).hexdigest()[:20], portfolio.portfolio_id, as_of_timestamp, as_of_timestamp,
-            holdings, CashPosition(cash, initial_cash.currency, initial_cash.reserved_amount, as_of_timestamp),
+            holdings, CashPosition(cash, initial_cash.currency, initial_cash.reserved_amount, as_of_timestamp, initial_cash.cash_state),
             tuple(x.price_observation_id for x in holdings if x.price_observation_id), equity, realized, unrealized, dividends,
             exposure, risk, pstate, status, COST_BASIS_VERSION, portfolio.strategy_version)
 

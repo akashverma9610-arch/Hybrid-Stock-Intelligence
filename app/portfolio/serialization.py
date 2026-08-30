@@ -31,7 +31,7 @@ def snapshot_from(value: dict[str, Any]) -> PortfolioSnapshot:
     risk = PortfolioRiskSummary(_decimal(value["risk"]["total_heat"]), Decimal(value["risk"]["heat_coverage"]), PortfolioDataStatus(value["risk"]["status"]), {k: _decimal(v) for k, v in value["risk"]["risk_amounts"].items()})
     cash = value["cash"]
     return PortfolioSnapshot(value["snapshot_id"], value["portfolio_id"], _time(value["as_of_timestamp"]), _time(value["source_transaction_cutoff"]), holdings,
-        CashPosition(Decimal(cash["amount"]), cash["currency"], Decimal(cash["reserved_amount"]), _time(cash["as_of_timestamp"])), tuple(value["market_price_ids"]), _decimal(value["portfolio_equity"]), Decimal(value["realized_pnl"]), _decimal(value["unrealized_pnl"]), Decimal(value["dividends"]), exposure, risk, PortfolioState(value["portfolio_state"]), PortfolioDataStatus(value["data_status"]), value["cost_basis_methodology_version"], _strategy_from(value["strategy_version"]))
+        CashPosition(_decimal(cash["amount"]), cash["currency"], Decimal(cash["reserved_amount"]), _time(cash["as_of_timestamp"]), CashState(cash.get("cash_state", "KNOWN"))), tuple(value["market_price_ids"]), _decimal(value["portfolio_equity"]), Decimal(value["realized_pnl"]), _decimal(value["unrealized_pnl"]), Decimal(value["dividends"]), exposure, risk, PortfolioState(value["portfolio_state"]), PortfolioDataStatus(value["data_status"]), value["cost_basis_methodology_version"], _strategy_from(value["strategy_version"]))
 
 
 def _holding_from(value: dict[str, Any]) -> PortfolioHolding:

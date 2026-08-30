@@ -443,6 +443,7 @@ export class HttpDataClient implements DataClientInterface {
       todayPnL: d.todayPnL ?? d.today_pnl ?? d.day_pnl ?? null,
       todayPnLPct: d.todayPnLPct ?? d.today_pnl_pct ?? d.day_pnl_pct ?? null,
       cashAvailable: d.cashAvailable ?? d.cash_available ?? d.cash ?? null,
+      cashStatus: d.cashStatus ?? d.cash_status ?? (d.cash === null ? 'UNKNOWN' : null),
       capitalDeployedPct: d.capitalDeployedPct ?? d.capital_deployed_pct ?? null,
       portfolioHeatScore: d.portfolioHeatScore ?? d.portfolio_heat_score ?? d.heat_score ?? null,
       portfolioRiskLevel: d.portfolioRiskLevel || d.portfolio_risk_level || d.risk_level || 'LOW',

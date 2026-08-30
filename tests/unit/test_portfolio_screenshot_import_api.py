@@ -9,8 +9,12 @@ from app.api.main import create_app
 from app.gates.engine import ExchangeCalendar
 from app.portfolio_import.models import ExtractedHoldingCandidate, SymbolResolutionStatus
 from app.portfolio_import.service import (
-    GovernancePortfolioImportPersister, MappingInstrumentResolver, PortfolioImportService,
+    GovernancePortfolioImportPersister, ManualConfirmedHolding, ManualPortfolioImportService,
+    MappingInstrumentResolver, PortfolioImportService,
 )
+from app.portfolio.models import CashState
+from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily
+from app.storage.sqlite_core_api_snapshot_repository import SQLiteCoreApiSnapshotRepository
 from app.storage.sqlite_governance_repository import SQLiteStrategyGovernanceRepository
 
 
@@ -118,3 +122,62 @@ def test_upload_bounds_and_default_unavailable_extractor_are_safe(tmp_path):
     with TestClient(create_app()) as client:
         unavailable = client.post("/api/v1/portfolio/import/screenshots", files={"files": ("a.png", b"x", "image/png")})
     assert unavailable.status_code == 503 and unavailable.json()["error"]["code"] == "PROVIDER_UNAVAILABLE"
+
+
+def test_manual_import_records_explicit_unknown_cash_and_is_idempotent(tmp_path):
+    database = tmp_path / "manual-import.db"
+    repository = SQLiteStrategyGovernanceRepository(database)
+    core = SQLiteCoreApiSnapshotRepository(database)
+    resolver = MappingInstrumentResolver({"NSE:INE372A01015": "NSE:INE372A01015", "NSE:INE0FHS01024": "NSE:INE0FHS01024"})
+    value = ManualPortfolioImportService(repository, core, resolver=resolver, calendar=ExchangeCalendar("test", frozenset()))
+    holdings = (
+        ManualConfirmedHolding("NSE:INE372A01015", Decimal("4"), Decimal("16821.25")),
+        ManualConfirmedHolding("NSE:INE0FHS01024", Decimal("82"), Decimal("648.45")),
+    )
+
+    first = value.import_confirmed(holdings=holdings, confirmed_at=T, cash_state=CashState.UNKNOWN)
+    repeated = value.import_confirmed(holdings=holdings, confirmed_at=T, cash_state=CashState.UNKNOWN)
+
+    assert not first.deduplicated and repeated.deduplicated
+    snapshot = repository.get_portfolio_snapshot(first.portfolio_snapshot_id)
+    assert snapshot is not None and snapshot.cash.amount is None
+    assert snapshot.cash.cash_state is CashState.UNKNOWN
+    assert snapshot.portfolio_equity is None and snapshot.data_status.value == "PARTIAL"
+    assert all(item.current_price is None and item.unrealized_pnl is None for item in snapshot.holdings)
+    transactions = repository.list_portfolio_transactions_as_of(first.portfolio_id, T)
+    assert {item.source for item in transactions} == {"USER_CONFIRMED_MANUAL"}
+    assert repository.list_portfolio_transactions_as_of(first.portfolio_id, T - timedelta(seconds=1)) == ()
+    fingerprint = repository.get_portfolio(first.portfolio_id).metadata["input_fingerprint"]
+    assert fingerprint.startswith(first.import_id.removeprefix("manual-")) and len(fingerprint) == 64
+    projection = core.get_snapshot(first.core_snapshot_id)
+    assert projection is not None and projection.family is CoreApiSnapshotFamily.PORTFOLIO
+    assert projection.payload.cash.cash_state is CashState.UNKNOWN
+
+
+def test_manual_import_rejects_unresolved_input_and_known_cash_is_a_new_lineage(tmp_path):
+    database = tmp_path / "manual-validation.db"
+    repository = SQLiteStrategyGovernanceRepository(database)
+    core = SQLiteCoreApiSnapshotRepository(database)
+    resolver = MappingInstrumentResolver({"NSE:INE372A01015": "NSE:INE372A01015"})
+    value = ManualPortfolioImportService(repository, core, resolver=resolver)
+    holding = (ManualConfirmedHolding("NSE:INE372A01015", Decimal("4"), Decimal("16821.25")),)
+
+    unknown = value.import_confirmed(holdings=holding, confirmed_at=T, cash_state=CashState.UNKNOWN)
+    known = value.import_confirmed(holdings=holding, confirmed_at=T, cash_state=CashState.KNOWN, cash_amount=Decimal("100"))
+    changed = value.import_confirmed(
+        holdings=(ManualConfirmedHolding("NSE:INE372A01015", Decimal("5"), Decimal("16821.25")),),
+        confirmed_at=T, cash_state=CashState.UNKNOWN,
+    )
+
+    assert unknown.portfolio_id != known.portfolio_id
+    assert unknown.portfolio_id != changed.portfolio_id
+    assert repository.get_portfolio_snapshot(known.portfolio_snapshot_id).cash.amount == Decimal("100")
+    try:
+        value.import_confirmed(
+            holdings=(ManualConfirmedHolding("NSE:UNRESOLVED", Decimal("1"), Decimal("1")),),
+            confirmed_at=T, cash_state=CashState.UNKNOWN,
+        )
+    except ValueError as error:
+        assert getattr(error, "code", None) == "VALIDATION_ERROR"
+    else:
+        raise AssertionError("unresolved manual instrument must be rejected")

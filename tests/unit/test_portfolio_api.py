@@ -1,4 +1,5 @@
 import inspect
+from dataclasses import replace
 from datetime import UTC, date, datetime
 from decimal import Decimal
 
@@ -17,7 +18,7 @@ from app.api.routes import portfolio as portfolio_routes
 from app.gates.engine import ExchangeCalendar
 from app.portfolio.engine import PortfolioEngine
 from app.portfolio.models import (
-    CashPosition,
+    CashPosition, CashState,
     HoldingAnalytics,
     Portfolio,
     PortfolioStatus,
@@ -96,6 +97,16 @@ def test_empty_and_partial_portfolios_are_visible_without_fabricated_marks():
     assert partial.json()["marked_value"] is None and partial.json()["total_equity"] is None
     assert "MARK_DATA_PARTIAL" in partial.json()["warnings"]
     assert partial_holdings.json()[0]["market_price"] is None
+
+
+def test_unknown_cash_is_explicit_and_never_serialized_as_zero():
+    value = snapshot(marked=False)
+    value = replace(value, cash=CashPosition(None, "INR", Decimal("0"), value.as_of_timestamp, CashState.UNKNOWN))
+    with client_for(value) as client:
+        response = client.get("/api/v1/portfolio")
+    assert response.status_code == 200
+    assert response.json()["cash"] is None and response.json()["cash_status"] == "UNKNOWN"
+    assert "CASH_UNKNOWN" in response.json()["warnings"]
 
 
 def test_portfolio_dependency_override_is_read_only_and_preserves_snapshot():
