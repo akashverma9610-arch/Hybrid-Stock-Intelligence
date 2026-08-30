@@ -12,6 +12,11 @@ from app.domain.models import (
     StrategyDefinition, StrategyLifecycleEvent, StrategyStatus, StrategyValidationStatus,
     StrategyVersionReference,
 )
+from app.domain.canonical_diagnostic_strategy import (
+    CanonicalDiagnosticDefinitionStatus, CanonicalDiagnosticGovernanceLimitation,
+    CanonicalDiagnosticStrategyDefinition, CanonicalDiagnosticStrategyDefinitionError,
+    validate_canonical_diagnostic_strategy_definition,
+)
 from app.storage.governance_repository import StrategyGovernanceRepository
 from app.storage.sqlite_repository import SQLiteMarketDataRepository, _parse_timestamp, _provenance_from_dict, _provenance_to_dict, _timestamp
 from app.scoring.engine import DecisionScorecard, ScoredComponent
@@ -102,6 +107,74 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
             (reference.strategy_id, reference.version),
         ).fetchone()
         return self._strategy_from_row(row) if row else None
+
+    def save_canonical_diagnostic_strategy_definition(
+        self, definition: CanonicalDiagnosticStrategyDefinition,
+    ) -> CanonicalDiagnosticStrategyDefinition:
+        """Append a canonical definition, returning an exact identical prior record."""
+        definition.verify_integrity()
+        existing = self.get_canonical_diagnostic_strategy_definition(definition.reference)
+        if existing is not None:
+            if _canonical_definition_semantics(existing) == _canonical_definition_semantics(definition):
+                return existing
+            raise ValueError("Canonical diagnostic strategy definitions are immutable and cannot be overwritten.")
+        try:
+            self._connection.execute(
+                """INSERT INTO canonical_diagnostic_strategy_definitions (
+                   strategy_id, strategy_version, canonical_payload_json, semantic_fingerprint,
+                   governance_limitations_json, definition_status, reviewer_id,
+                   definition_proposal_artifact, human_approval_artifact, created_at, registered_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    definition.strategy_id, definition.strategy_version, definition.canonical_payload_serialization,
+                    definition.semantic_fingerprint, _json(definition.governance_limitations),
+                    definition.definition_status.value, definition.reviewer_id,
+                    definition.definition_proposal_artifact, definition.human_approval_artifact,
+                    _timestamp(definition.created_at), _timestamp(definition.registered_at),
+                ),
+            )
+            self._connection.commit()
+        except sqlite3.IntegrityError as error:
+            raise ValueError("Canonical diagnostic strategy definitions are immutable and cannot be overwritten.") from error
+        return definition
+
+    def get_canonical_diagnostic_strategy_definition(
+        self, reference: StrategyVersionReference,
+    ) -> CanonicalDiagnosticStrategyDefinition | None:
+        row = self._connection.execute(
+            """SELECT * FROM canonical_diagnostic_strategy_definitions
+               WHERE strategy_id = ? AND strategy_version = ?""",
+            (reference.strategy_id, reference.version),
+        ).fetchone()
+        return self._canonical_diagnostic_definition_from_row(row) if row else None
+
+    def list_canonical_diagnostic_strategy_definitions(self) -> tuple[CanonicalDiagnosticStrategyDefinition, ...]:
+        rows = self._connection.execute(
+            """SELECT * FROM canonical_diagnostic_strategy_definitions
+               ORDER BY strategy_id, strategy_version"""
+        ).fetchall()
+        return tuple(self._canonical_diagnostic_definition_from_row(row) for row in rows)
+
+    def require_canonical_diagnostic_strategy_definition(
+        self,
+        *,
+        reference: StrategyVersionReference,
+        semantic_fingerprint: str,
+        canonical_payload: Mapping[str, Any],
+        governance_limitations: tuple[CanonicalDiagnosticGovernanceLimitation, ...],
+    ) -> CanonicalDiagnosticStrategyDefinition:
+        definition = self.get_canonical_diagnostic_strategy_definition(reference)
+        if definition is None:
+            raise CanonicalDiagnosticStrategyDefinitionError(
+                "Canonical diagnostic strategy registration is missing for the exact identity/version."
+            )
+        return validate_canonical_diagnostic_strategy_definition(
+            definition,
+            reference=reference,
+            semantic_fingerprint=semantic_fingerprint,
+            canonical_payload=canonical_payload,
+            governance_limitations=governance_limitations,
+        )
 
     def append_strategy_lifecycle_event(self, event: StrategyLifecycleEvent) -> None:
         if self.get_strategy_definition(event.strategy_version) is None:
@@ -998,6 +1071,14 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
     def _create_governance_schema(self) -> None:
         self._connection.executescript(
             """
+            CREATE TABLE IF NOT EXISTS canonical_diagnostic_strategy_definitions (
+                strategy_id TEXT NOT NULL, strategy_version TEXT NOT NULL,
+                canonical_payload_json TEXT NOT NULL, semantic_fingerprint TEXT NOT NULL,
+                governance_limitations_json TEXT NOT NULL, definition_status TEXT NOT NULL,
+                reviewer_id TEXT NOT NULL, definition_proposal_artifact TEXT NOT NULL,
+                human_approval_artifact TEXT NOT NULL, created_at TEXT NOT NULL,
+                registered_at TEXT NOT NULL, PRIMARY KEY (strategy_id, strategy_version)
+            );
             CREATE TABLE IF NOT EXISTS strategy_versions (
                 strategy_id TEXT NOT NULL, version TEXT NOT NULL, name TEXT NOT NULL, initial_status TEXT NOT NULL,
                 created_at TEXT NOT NULL, effective_from TEXT, effective_to TEXT, description TEXT NOT NULL,
@@ -1212,6 +1293,22 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
         )
 
     @staticmethod
+    def _canonical_diagnostic_definition_from_row(row: sqlite3.Row) -> CanonicalDiagnosticStrategyDefinition:
+        limitations = tuple(
+            CanonicalDiagnosticGovernanceLimitation(**item)
+            for item in json.loads(row["governance_limitations_json"])
+        )
+        return CanonicalDiagnosticStrategyDefinition(
+            strategy_id=row["strategy_id"], strategy_version=row["strategy_version"],
+            canonical_payload=json.loads(row["canonical_payload_json"]),
+            semantic_fingerprint=row["semantic_fingerprint"], governance_limitations=limitations,
+            definition_status=CanonicalDiagnosticDefinitionStatus(row["definition_status"]),
+            reviewer_id=row["reviewer_id"], definition_proposal_artifact=row["definition_proposal_artifact"],
+            human_approval_artifact=row["human_approval_artifact"], created_at=_parse_timestamp(row["created_at"]),
+            registered_at=_parse_timestamp(row["registered_at"]),
+        )
+
+    @staticmethod
     def _lifecycle_from_row(row: sqlite3.Row) -> StrategyLifecycleEvent:
         return StrategyLifecycleEvent(
             row["id"], StrategyVersionReference(row["strategy_id"], row["version"]), StrategyStatus(row["status"]),
@@ -1251,6 +1348,15 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
             GateOutcome(row["outcome"]), row["rationale"], tuple(json.loads(row["evidence_ids_json"])),
             json.loads(row["parameters_json"]), _parse_timestamp(row["evaluated_at"]), _parse_timestamp(row["as_of_timestamp"]),
         )
+
+
+def _canonical_definition_semantics(value: CanonicalDiagnosticStrategyDefinition) -> tuple[Any, ...]:
+    """The immutable identity excludes only recording timestamps on an idempotent retry."""
+    return (
+        value.strategy_id, value.strategy_version, value.canonical_payload_serialization,
+        value.semantic_fingerprint, value.governance_limitations, value.definition_status,
+        value.reviewer_id, value.definition_proposal_artifact, value.human_approval_artifact,
+    )
 
 
 def _json(value: Any) -> str:

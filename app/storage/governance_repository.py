@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Mapping
 
 from app.domain.models import (
     DiagnosticResult, Evidence, GateDecision, Scorecard, StrategyDefinition,
     StrategyLifecycleEvent, StrategyVersionReference,
+)
+from app.domain.canonical_diagnostic_strategy import (
+    CanonicalDiagnosticGovernanceLimitation, CanonicalDiagnosticStrategyDefinition,
 )
 from app.storage.repository import MarketDataRepository
 from app.scoring.engine import DecisionScorecard
@@ -64,6 +67,29 @@ class StrategyGovernanceRepository(MarketDataRepository, ABC):
 
     @abstractmethod
     def get_strategy_definition(self, reference: StrategyVersionReference) -> StrategyDefinition | None: ...
+
+    @abstractmethod
+    def save_canonical_diagnostic_strategy_definition(
+        self, definition: CanonicalDiagnosticStrategyDefinition,
+    ) -> CanonicalDiagnosticStrategyDefinition: ...
+
+    @abstractmethod
+    def get_canonical_diagnostic_strategy_definition(
+        self, reference: StrategyVersionReference,
+    ) -> CanonicalDiagnosticStrategyDefinition | None: ...
+
+    @abstractmethod
+    def list_canonical_diagnostic_strategy_definitions(self) -> tuple[CanonicalDiagnosticStrategyDefinition, ...]: ...
+
+    @abstractmethod
+    def require_canonical_diagnostic_strategy_definition(
+        self,
+        *,
+        reference: StrategyVersionReference,
+        semantic_fingerprint: str,
+        canonical_payload: Mapping[str, Any],
+        governance_limitations: tuple[CanonicalDiagnosticGovernanceLimitation, ...],
+    ) -> CanonicalDiagnosticStrategyDefinition: ...
 
     @abstractmethod
     def append_strategy_lifecycle_event(self, event: StrategyLifecycleEvent) -> None: ...
