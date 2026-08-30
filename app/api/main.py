@@ -88,6 +88,8 @@ from app.intelligence.shared_brain_application import (
     SharedBrainApplicationService,
     StoredSharedBrainEvidenceAssembler,
 )
+from app.forward_paper.store import ForwardPaperStore
+from app.intelligence.forward_paper_intelligence import ForwardPaperIntelligenceProjector
 from app.fundamentals.store import PostgreSQLFinancialFactStore, SQLiteFinancialFactStore
 from app.filings.store import PostgreSQLCorporateFilingsStore, SQLiteCorporateFilingsStore
 from app.historical.security_master import HistoricalSecurityMasterStore
@@ -150,6 +152,7 @@ async def _lifespan(application: FastAPI):
                 macro_evidence_source=MacroEvidenceStore(repository),
                 news=news,
             ),
+            forward_paper_intelligence=ForwardPaperIntelligenceProjector(ForwardPaperStore(repository)),
         )
     if application.state.data_operations_service is None:
         application.state.data_operations_service = DataOperationsService(DataOperationsStore(repository))

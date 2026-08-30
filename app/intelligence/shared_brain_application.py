@@ -52,6 +52,10 @@ from app.intelligence.shared_brain_production import (
     build_shared_brain_production_snapshot,
     project_shared_brain_production_snapshot,
 )
+from app.intelligence.forward_paper_intelligence import (
+    ForwardPaperIntelligenceProjector, ForwardPaperIntelligenceView,
+    no_forward_paper_intelligence,
+)
 from app.intelligence.unified_state import (
     BrainOutputContext,
     IntelligenceEvidenceAvailability,
@@ -137,6 +141,7 @@ class SharedBrainAnalysisView:
     materiality_policy_version: str
     materiality_policy_fingerprint: str
     materiality_calibration_status: str
+    forward_performance_intelligence: ForwardPaperIntelligenceView
 
 
 class CoreUniverseInstrumentResolver:
@@ -284,11 +289,13 @@ class SharedBrainApplicationService:
         *,
         resolver: CanonicalInstrumentResolver,
         evidence_assembler: SharedBrainEvidenceAssembler,
+        forward_paper_intelligence: ForwardPaperIntelligenceProjector | None = None,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
     ) -> None:
         self._resolver = resolver
         self._evidence_assembler = evidence_assembler
         self._clock = clock
+        self._forward_paper_intelligence = forward_paper_intelligence
 
     def analyze_stock(
         self,
@@ -323,7 +330,13 @@ class SharedBrainApplicationService:
                     "Stored historical OHLCV contains an unresolved conflict for this instrument.",
                 ) from error
             raise SharedBrainApplicationError("SHARED_BRAIN_SNAPSHOT_UNAVAILABLE", "Stored evidence cannot form a governed Shared Brain snapshot at this cutoff.") from error
-        return _view(instrument, snapshot, projection, context)
+        paper = (
+            self._forward_paper_intelligence.project(
+                canonical_instrument_id=instrument.instrument_id, sector=instrument.sector, as_of=cutoff,
+            ) if self._forward_paper_intelligence is not None else
+            no_forward_paper_intelligence(canonical_instrument_id=instrument.instrument_id, sector=instrument.sector, as_of=cutoff)
+        )
+        return _view(instrument, snapshot, projection, context, paper)
 
 
 def _financial_bundle(
@@ -407,7 +420,7 @@ def _materialization_failure(selection, result, instrument_id: str, as_of: datet
     )
 
 
-def _view(instrument, snapshot: SharedBrainProductionSnapshot, projection, context: BrainOutputContext) -> SharedBrainAnalysisView:
+def _view(instrument, snapshot: SharedBrainProductionSnapshot, projection, context: BrainOutputContext, paper: ForwardPaperIntelligenceView) -> SharedBrainAnalysisView:
     observations = {item.fingerprint: item for item in snapshot.financial_bundle.observations}
     directionality = {item.source_trajectory_fingerprint: item for item in snapshot.directionality_interpretations}
     semantics = tuple(_semantic_view(item, observations, directionality.get(item.fingerprint), snapshot) for item in snapshot.financial_trajectories)
@@ -420,7 +433,7 @@ def _view(instrument, snapshot: SharedBrainProductionSnapshot, projection, conte
         canonical_instrument_id=instrument.instrument_id, symbol=instrument.symbol, name=instrument.company_name,
         exchange=instrument.exchange, as_of=snapshot.as_of, requested_context=context,
         evidence_status=snapshot.unified_state.completeness.value,
-        evidence_domains=tuple((item.domain.value, item.availability.value) for item in snapshot.unified_state.evidence_references),
+        evidence_domains=tuple((item.domain.value, item.availability.value) for item in snapshot.unified_state.evidence_references) + (("FORWARD_PERFORMANCE_INTELLIGENCE", paper.instrument_history.evidence_sufficiency),),
         financial_semantics=semantics, blockers=blockers, warnings=snapshot.warnings,
         snapshot_fingerprint=snapshot.fingerprint, unified_state_fingerprint=snapshot.unified_state.fingerprint,
         brain_research_state_v2_fingerprint=snapshot.brain_research_state_v2.fingerprint,
@@ -429,6 +442,7 @@ def _view(instrument, snapshot: SharedBrainProductionSnapshot, projection, conte
         materiality_policy_id=snapshot.materiality_policy_id, materiality_policy_version=snapshot.materiality_policy_version,
         materiality_policy_fingerprint=snapshot.materiality_policy_fingerprint,
         materiality_calibration_status=snapshot.materiality_calibration_status.value,
+        forward_performance_intelligence=paper,
     )
 
 

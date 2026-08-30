@@ -4,6 +4,8 @@ from __future__ import annotations
 from app.api.schemas.shared_brain import (
     EvidenceDomainResponse,
     FinancialSemanticResponse,
+    ForwardPaperAggregateResponse,
+    ForwardPaperIntelligenceResponse,
     SharedBrainAnalysisResponse,
 )
 from app.intelligence.shared_brain_application import SharedBrainAnalysisView
@@ -33,4 +35,15 @@ def shared_brain_analysis_response(value: SharedBrainAnalysisView) -> SharedBrai
         materiality_policy_version=value.materiality_policy_version,
         materiality_policy_fingerprint=value.materiality_policy_fingerprint,
         materiality_calibration_status=value.materiality_calibration_status,
+        forward_performance_intelligence=ForwardPaperIntelligenceResponse(
+            instrument_history=ForwardPaperAggregateResponse(**{
+                field: getattr(value.forward_performance_intelligence.instrument_history, field)
+                for field in value.forward_performance_intelligence.instrument_history.__dataclass_fields__
+            }),
+            relevant_cohort_history=ForwardPaperAggregateResponse(**{
+                field: getattr(value.forward_performance_intelligence.relevant_cohort_history, field)
+                for field in value.forward_performance_intelligence.relevant_cohort_history.__dataclass_fields__
+            }),
+            warnings=value.forward_performance_intelligence.warnings,
+        ),
     )

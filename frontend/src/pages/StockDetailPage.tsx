@@ -18,6 +18,7 @@ import { ActionBadge } from '../components/common/ActionBadge';
 import { RiskBadge } from '../components/common/RiskBadge';
 import { ApiStateWrapper } from '../components/common/ApiStateWrapper';
 import { FinancialIntelligencePanel } from '../components/stocks/FinancialIntelligencePanel';
+import { ForwardPerformanceIntelligencePanel } from '../components/stocks/ForwardPerformanceIntelligencePanel';
 import {
   formatCr,
   formatINR,
@@ -317,6 +318,7 @@ export const StockDetailPage: React.FC = () => {
         )}
       </ApiStateWrapper>
       <FinancialIntelligencePanel response={sharedBrainRes} loading={sharedBrainLoading} />
+      <ForwardPerformanceIntelligencePanel response={sharedBrainRes} loading={sharedBrainLoading} />
     </div>
   );
 };

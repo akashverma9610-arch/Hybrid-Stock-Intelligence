@@ -108,6 +108,49 @@ export interface SharedBrainFinancialSemantic {
   directionalityFingerprint: string | null;
 }
 
+export interface ForwardPaperAggregate {
+  evidenceSufficiency: string;
+  scope: string;
+  cohortDefinition: string[];
+  asOf: string;
+  aggregationVersion: string;
+  sampleCount: number;
+  completedCount: number;
+  eligibleRealizedCount: number;
+  openCount: number;
+  waitingCount: number;
+  ambiguousCount: number;
+  blockedCount: number;
+  expiredUnfilledCount: number;
+  missedDoNotChaseCount: number;
+  winRate: string | null;
+  expectancyR: string | null;
+  medianR: string | null;
+  averageR: string | null;
+  averageGrossR: string | null;
+  medianGrossR: string | null;
+  profitFactor: string | null;
+  medianMfeR: string | null;
+  medianMaeR: string | null;
+  averageHoldingSessions: string | null;
+  targetHitRate: string | null;
+  stopHitRate: string | null;
+  expiredUnfilledRate: string | null;
+  missedDoNotChaseRate: string | null;
+  sourceStudyIds: string[];
+  sourceStudyFingerprints: string[];
+  policyVersions: string[];
+  executionModelVersions: string[];
+  directionValues: string[];
+  fingerprint: string;
+}
+
+export interface ForwardPaperIntelligence {
+  instrumentHistory: ForwardPaperAggregate;
+  relevantCohortHistory: ForwardPaperAggregate;
+  warnings: string[];
+}
+
 export interface SharedBrainAnalysisData {
   canonicalInstrumentId: string;
   symbol: string;
@@ -129,4 +172,5 @@ export interface SharedBrainAnalysisData {
   materialityPolicyVersion: string;
   materialityPolicyFingerprint: string;
   materialityCalibrationStatus: string;
+  forwardPerformanceIntelligence: ForwardPaperIntelligence;
 }

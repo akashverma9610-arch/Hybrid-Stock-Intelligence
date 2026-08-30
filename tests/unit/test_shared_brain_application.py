@@ -127,6 +127,7 @@ def test_public_route_returns_controlled_dto_and_never_a_raw_internal_snapshot()
     payload = response.json()
     assert payload["canonical_instrument_id"] == "NSE:ALPHA"
     assert payload["financial_semantics"] and payload["materiality_calibration_status"] == "CALIBRATION_REQUIRED"
+    assert payload["forward_performance_intelligence"]["instrument_history"]["evidence_sufficiency"] == "NO_EVIDENCE"
     assert "unified_state" not in payload and "financial_bundle" not in payload
     assert missing.status_code == 404 and missing.json()["error"]["code"] == "SHARED_BRAIN_INSTRUMENT_NOT_FOUND"
 

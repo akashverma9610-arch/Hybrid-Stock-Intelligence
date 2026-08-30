@@ -1140,6 +1140,42 @@ export class HttpDataClient implements DataClientInterface {
     const response = await this.fetchWithTimeout<any>(`/api/v1/stocks/${encodeURIComponent(symbol)}/shared-brain?context=DEEP_ANALYSIS`);
     if (!response.data) return response as ApiResponse<SharedBrainAnalysisData>;
     const value = response.data;
+    const paperAggregate = (item: any) => ({
+      evidenceSufficiency: item.evidence_sufficiency,
+      scope: item.scope,
+      cohortDefinition: item.cohort_definition ?? [],
+      asOf: item.as_of,
+      aggregationVersion: item.aggregation_version,
+      sampleCount: item.sample_count,
+      completedCount: item.completed_count,
+      eligibleRealizedCount: item.eligible_realized_count,
+      openCount: item.open_count,
+      waitingCount: item.waiting_count,
+      ambiguousCount: item.ambiguous_count,
+      blockedCount: item.blocked_count,
+      expiredUnfilledCount: item.expired_unfilled_count,
+      missedDoNotChaseCount: item.missed_do_not_chase_count,
+      winRate: item.win_rate ?? null,
+      expectancyR: item.expectancy_r ?? null,
+      medianR: item.median_r ?? null,
+      averageR: item.average_r ?? null,
+      averageGrossR: item.average_gross_r ?? null,
+      medianGrossR: item.median_gross_r ?? null,
+      profitFactor: item.profit_factor ?? null,
+      medianMfeR: item.median_mfe_r ?? null,
+      medianMaeR: item.median_mae_r ?? null,
+      averageHoldingSessions: item.average_holding_sessions ?? null,
+      targetHitRate: item.target_hit_rate ?? null,
+      stopHitRate: item.stop_hit_rate ?? null,
+      expiredUnfilledRate: item.expired_unfilled_rate ?? null,
+      missedDoNotChaseRate: item.missed_do_not_chase_rate ?? null,
+      sourceStudyIds: item.source_study_ids ?? [],
+      sourceStudyFingerprints: item.source_study_fingerprints ?? [],
+      policyVersions: item.policy_versions ?? [],
+      executionModelVersions: item.execution_model_versions ?? [],
+      directionValues: item.direction_values ?? [],
+      fingerprint: item.fingerprint,
+    });
     return {
       ...response,
       data: {
@@ -1179,6 +1215,11 @@ export class HttpDataClient implements DataClientInterface {
         materialityPolicyVersion: value.materiality_policy_version,
         materialityPolicyFingerprint: value.materiality_policy_fingerprint,
         materialityCalibrationStatus: value.materiality_calibration_status,
+        forwardPerformanceIntelligence: {
+          instrumentHistory: paperAggregate(value.forward_performance_intelligence.instrument_history),
+          relevantCohortHistory: paperAggregate(value.forward_performance_intelligence.relevant_cohort_history),
+          warnings: value.forward_performance_intelligence.warnings ?? [],
+        },
       },
     };
   }
