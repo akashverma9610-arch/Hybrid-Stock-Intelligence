@@ -45,6 +45,7 @@ from app.intelligence.brain_research_comparison_state import ResearchMetricObser
 from app.intelligence.company_evidence import CompanyEvidenceStoredSource, CompositeStoredIntelligenceSource
 from app.intelligence.macro_news_evidence import MacroNewsEvidenceStoredSource
 from app.intelligence.non_company_evidence import NonCompanyEvidenceStoredSource
+from app.intelligence.research_diagnostic_evidence import ResearchDiagnosticEvidenceStoredSource
 from app.intelligence.research_metric_directionality_policy import CURRENT_RESEARCH_METRIC_DIRECTIONALITY_POLICY
 from app.intelligence.research_semantic_materiality_policy import CURRENT_RESEARCH_SEMANTIC_MATERIALITY_POLICY
 from app.intelligence.shared_brain_production import (
@@ -240,6 +241,7 @@ class StoredSharedBrainEvidenceAssembler:
         taxonomy=None,
         macro_evidence_source=None,
         news=None,
+        diagnostics: ResearchDiagnosticEvidenceStoredSource | None = None,
     ) -> None:
         self._facts = facts
         self._historical = historical_bars
@@ -248,6 +250,7 @@ class StoredSharedBrainEvidenceAssembler:
         self._taxonomy = taxonomy
         self._macro_evidence_source = macro_evidence_source
         self._news = news
+        self._diagnostics = diagnostics
 
     def assemble(self, instrument: NseEquityInstrument, *, as_of: datetime) -> SharedBrainApplicationInputs:
         sources = [
@@ -267,6 +270,8 @@ class StoredSharedBrainEvidenceAssembler:
                 news=self._news,
             ),
         ]
+        if self._diagnostics is not None:
+            sources.append(self._diagnostics)
         if self._historical is not None:
             sources.append(_OhlcvConflictEvidenceSource(self._historical))
         source = CompositeStoredIntelligenceSource(*sources)

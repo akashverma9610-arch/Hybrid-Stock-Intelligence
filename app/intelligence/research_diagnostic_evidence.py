@@ -64,6 +64,29 @@ class StrategyGovernanceDiagnosticResultSource:
         )
 
 
+class ExactAsOfStrategyGovernanceDiagnosticResultSource:
+    """Read one registered strategy's durable diagnostic bundle at the requested cutoff.
+
+    The governance repository deliberately exposes an exact strategy/as-of
+    query only.  Retaining that restriction keeps the Shared Brain projection
+    point-in-time safe and prevents an orchestration caller from selecting a
+    convenient later diagnostic bundle.
+    """
+
+    def __init__(self, repository: StrategyGovernanceRepository, *, strategy_version: StrategyVersionReference) -> None:
+        self._repository = repository
+        self._strategy_version = strategy_version
+
+    def list_stored_diagnostic_results(
+        self, canonical_instrument_id: str, *, as_of: datetime,
+    ) -> tuple[DiagnosticResult, ...]:
+        return tuple(
+            value
+            for value in self._repository.list_diagnostic_results(self._strategy_version, as_of)
+            if value.instrument_id == canonical_instrument_id
+        )
+
+
 class ResearchDiagnosticEvidenceAdapter:
     """Project immutable diagnostic metadata; research itself remains absent."""
 
@@ -207,6 +230,7 @@ def _aware(value: datetime) -> bool:
 
 
 __all__ = (
+    "ExactAsOfStrategyGovernanceDiagnosticResultSource",
     "ResearchDiagnosticEvidenceAdapter", "ResearchDiagnosticEvidenceStoredSource",
     "StoredDiagnosticResultSource", "StrategyGovernanceDiagnosticResultSource",
 )

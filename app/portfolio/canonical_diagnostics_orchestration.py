@@ -1,0 +1,265 @@
+"""Narrow stored-evidence orchestration for canonical portfolio diagnostics.
+
+This module deliberately composes existing acquisition/read boundaries, the
+registry-wide diagnostic runner, the governance diagnostic store, Shared Brain,
+and the existing holding-intelligence/sell-side contracts.  It owns no rule,
+score, provider, or portfolio mutation semantics.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass, replace
+from datetime import datetime
+from typing import Protocol
+
+from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
+from app.data_operations.models import EvidenceRefreshOutcome, EvidenceRefreshRequest
+from app.domain.models import DiagnosticResult, StrategyVersionReference
+from app.intelligence.shared_brain_application import SharedBrainApplicationError, SharedBrainAnalysisView
+from app.intelligence.unified_state import BrainOutputContext
+from app.portfolio.holding_intelligence import HoldingIntelligenceComposition, compose_holding_intelligence
+from app.portfolio.models import PortfolioHolding, PortfolioSnapshot
+from app.portfolio.sell_side_runtime import (
+    PortfolioSellSideDecision, PortfolioSellSideDecisionAuditService,
+    PortfolioSellSideInput, evaluate_portfolio_sell_side_action,
+)
+from app.registry.canonical import DIAGNOSTIC_REGISTRY_VERSION
+from app.storage.governance_repository import StrategyGovernanceRepository
+from app.universe_analysis.models import DiagnosticCompleteness, NseEquityInstrument
+from app.universe_analysis.service import (
+    Canonical61DiagnosticRunner, CoreUniverseAnalysisStore, StockDiagnosticInputAssembler,
+)
+
+
+PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS = (
+    "NSE:INE372A01015", "NSE:INE0FHS01024", "NSE:INE955D01029",
+    "NSE:INE068V01023", "NSE:INE090A01021",
+)
+MINIMUM_COMPARABLE_THESIS_RULE_IDS = (16, 17, 18, 19, 23, 43, 45, 46)
+INVALIDATION_RULE_IDS = (46,)
+
+
+class SharedBrainReader(Protocol):
+    def analyze_stock(
+        self, identifier: str, *, context: BrainOutputContext, as_of: datetime | None = None,
+    ) -> SharedBrainAnalysisView: ...
+
+
+class TargetedOhlcvRefreshJob(Protocol):
+    """Existing provider-governed targeted refresh seam."""
+
+    def refresh_selected(
+        self, request: EvidenceRefreshRequest, *, canonical_instrument_ids: frozenset[str] | None,
+    ) -> EvidenceRefreshOutcome: ...
+
+
+@dataclass(frozen=True, slots=True)
+class CanonicalDiagnosticHoldingRun:
+    instrument_id: str
+    evaluated_rule_ids: tuple[int, ...]
+    blocked_rule_ids: tuple[int, ...]
+    persisted_diagnostic_ids: tuple[str, ...]
+    diagnostic_completeness: DiagnosticCompleteness | None
+    shared_brain_status: str | None
+    composition: HoldingIntelligenceComposition | None
+    sell_side_decision: PortfolioSellSideDecision | None
+    blockers: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class CanonicalDiagnosticsOrchestrationRun:
+    portfolio_snapshot_id: str
+    as_of: datetime
+    canonical_instrument_ids: tuple[str, ...]
+    strategy_version: StrategyVersionReference
+    holdings: tuple[CanonicalDiagnosticHoldingRun, ...]
+    blockers: tuple[str, ...]
+
+
+class CanonicalPortfolioDiagnosticsOrchestrator:
+    """Run one exact holding set using stored evidence and append-only diagnostics.
+
+    A registered strategy version is deliberately mandatory: the governance
+    repository rejects otherwise-unanchored diagnostic records.  This is a
+    policy boundary, not something an orchestration command can create.
+    """
+
+    def __init__(
+        self,
+        *,
+        universe: CoreUniverseAnalysisStore,
+        assembler: StockDiagnosticInputAssembler,
+        runner: Canonical61DiagnosticRunner,
+        governance: StrategyGovernanceRepository,
+        shared_brain: SharedBrainReader,
+        sell_side_audits: PortfolioSellSideDecisionAuditService | None = None,
+    ) -> None:
+        self._universe = universe
+        self._assembler = assembler
+        self._runner = runner
+        self._governance = governance
+        self._shared_brain = shared_brain
+        self._sell_side_audits = sell_side_audits
+
+    def run(
+        self,
+        *,
+        portfolio_snapshot: PortfolioSnapshot,
+        canonical_instrument_ids: tuple[str, ...],
+        strategy_version: StrategyVersionReference,
+    ) -> CanonicalDiagnosticsOrchestrationRun:
+        targets = _validated_targets(portfolio_snapshot, canonical_instrument_ids)
+        as_of = portfolio_snapshot.as_of_timestamp
+        if self._governance.get_strategy_definition(strategy_version) is None:
+            blocker = "CANONICAL_DIAGNOSTIC_STRATEGY_NOT_REGISTERED"
+            return CanonicalDiagnosticsOrchestrationRun(
+                portfolio_snapshot.snapshot_id, as_of, targets, strategy_version,
+                tuple(_blocked_holding(item.instrument_id, blocker) for item in _target_holdings(portfolio_snapshot, targets)),
+                (blocker,),
+            )
+
+        known_instruments = {item.instrument_id: item for item in self._universe.instruments_as_of(as_of)}
+        results: list[CanonicalDiagnosticHoldingRun] = []
+        for holding in _target_holdings(portfolio_snapshot, targets):
+            instrument = known_instruments.get(holding.instrument_id)
+            if instrument is None:
+                results.append(_blocked_holding(holding.instrument_id, "CANONICAL_INSTRUMENT_NOT_AVAILABLE_AT_AS_OF"))
+                continue
+            results.append(self._run_holding(holding, instrument, portfolio_snapshot, strategy_version))
+        blockers = tuple(sorted({code for item in results for code in item.blockers}))
+        return CanonicalDiagnosticsOrchestrationRun(
+            portfolio_snapshot.snapshot_id, as_of, targets, strategy_version, tuple(results), blockers,
+        )
+
+    def _run_holding(
+        self,
+        holding: PortfolioHolding,
+        instrument: NseEquityInstrument,
+        portfolio_snapshot: PortfolioSnapshot,
+        strategy_version: StrategyVersionReference,
+    ) -> CanonicalDiagnosticHoldingRun:
+        evidence = self._assembler.assemble(instrument, portfolio_snapshot.as_of_timestamp)
+        run = self._runner.run(evidence)
+        records = tuple(item.record for item in run.evaluations)
+        if any(item.strategy_version != strategy_version for item in records):
+            return _blocked_holding(holding.instrument_id, "CANONICAL_DIAGNOSTIC_STRATEGY_MISMATCH")
+        persisted = _persist_idempotently(self._governance, strategy_version, portfolio_snapshot.as_of_timestamp, records)
+        diagnostics = rehydrate_persisted_canonical_diagnostics(
+            persisted, instrument_id=holding.instrument_id, as_of=portfolio_snapshot.as_of_timestamp,
+        )
+        evaluated = tuple(item.canonical_rule_id for item in diagnostics if item.eligibility is EvaluationEligibility.ELIGIBLE)
+        blocked = tuple(item.canonical_rule_id for item in diagnostics if item.eligibility is not EvaluationEligibility.ELIGIBLE)
+        try:
+            brain = self._shared_brain.analyze_stock(
+                holding.instrument_id, context=BrainOutputContext.SELL_TRIM_REVIEW,
+                as_of=portfolio_snapshot.as_of_timestamp,
+            )
+        except SharedBrainApplicationError as error:
+            return CanonicalDiagnosticHoldingRun(
+                holding.instrument_id, evaluated, blocked, tuple(item.id for item in persisted), run.completeness,
+                None, None, None, (error.code,),
+            )
+        composition = compose_holding_intelligence(
+            holding=holding, portfolio_snapshot=portfolio_snapshot, shared_brain=brain, diagnostics=diagnostics,
+        )
+        decision = evaluate_portfolio_sell_side_action(PortfolioSellSideInput(
+            portfolio_snapshot, replace(holding, analytics=composition.analytics),
+            None, composition.shared_brain_fingerprint, composition.evidence_conflicted, composition.evidence_comparable,
+        ))
+        if self._sell_side_audits is not None:
+            decision = self._sell_side_audits.persist(decision)
+        return CanonicalDiagnosticHoldingRun(
+            holding.instrument_id, evaluated, blocked, tuple(item.id for item in persisted), run.completeness,
+            brain.evidence_status, composition, decision, composition.blockers,
+        )
+
+
+def rehydrate_persisted_canonical_diagnostics(
+    records: tuple[DiagnosticResult, ...], *, instrument_id: str, as_of: datetime,
+) -> tuple[EvaluatedDiagnostic, ...]:
+    """Recover the runner's durable eligible/missing distinction without new semantics.
+
+    The existing immutable ``DiagnosticResult`` schema stores the canonical
+    output, but not the transient wrapper enum.  The canonical runner emits
+    ``INSUFFICIENT_DATA`` exclusively through its missing-input path; preserve
+    that existing vocabulary as ineligible and retain all other stored outputs
+    as eligible.  Future records are excluded before any synthesis consumer.
+    """
+    values = []
+    for record in records:
+        if record.instrument_id != instrument_id or record.as_of_timestamp > as_of or record.evaluated_at > as_of:
+            continue
+        try:
+            rule_id = int(record.rule_id)
+        except ValueError:
+            continue
+        eligibility = (
+            EvaluationEligibility.INELIGIBLE_MISSING_DATA
+            if record.result == "INSUFFICIENT_DATA" else EvaluationEligibility.ELIGIBLE
+        )
+        values.append(EvaluatedDiagnostic(record, rule_id, DIAGNOSTIC_REGISTRY_VERSION, eligibility, (), ()))
+    return tuple(sorted(values, key=lambda item: (item.canonical_rule_id, item.record.id)))
+
+
+def refresh_targeted_holding_ohlcv(
+    *,
+    job: TargetedOhlcvRefreshJob,
+    request: EvidenceRefreshRequest,
+    portfolio_snapshot: PortfolioSnapshot,
+    canonical_instrument_ids: tuple[str, ...],
+) -> EvidenceRefreshOutcome:
+    """Delegate exact holding IDs to the existing provider/version/conflict job.
+
+    Instrument resolution, provider mapping capture, provider-versioned bar
+    writes, and immutable conflict handling remain exclusively inside
+    ``UpstoxOhlcvRefreshJob.refresh_selected``.
+    """
+    targets = _validated_targets(portfolio_snapshot, canonical_instrument_ids)
+    return job.refresh_selected(request, canonical_instrument_ids=frozenset(targets))
+
+
+def _persist_idempotently(
+    governance: StrategyGovernanceRepository,
+    strategy_version: StrategyVersionReference,
+    as_of: datetime,
+    records: tuple[DiagnosticResult, ...],
+) -> tuple[DiagnosticResult, ...]:
+    existing = {item.id: item for item in governance.list_diagnostic_results(strategy_version, as_of)}
+    for record in records:
+        if record.as_of_timestamp > as_of or record.evaluated_at > as_of:
+            raise ValueError("CANONICAL_DIAGNOSTIC_FUTURE_RECORD_REJECTED")
+        prior = existing.get(record.id)
+        if prior is None:
+            governance.save_diagnostic_result(record)
+        elif prior != record:
+            raise ValueError("CANONICAL_DIAGNOSTIC_IMMUTABILITY_CONFLICT")
+    return tuple(
+        item for item in governance.list_diagnostic_results(strategy_version, as_of)
+        if item.id in {record.id for record in records}
+    )
+
+
+def _validated_targets(snapshot: PortfolioSnapshot, values: tuple[str, ...]) -> tuple[str, ...]:
+    if not values or len(values) != len(set(values)):
+        raise ValueError("CANONICAL_DIAGNOSTIC_TARGETS_INVALID")
+    targets = tuple(values)
+    holdings = {item.instrument_id for item in snapshot.holdings}
+    if not set(targets) <= holdings:
+        raise ValueError("CANONICAL_DIAGNOSTIC_TARGET_NOT_IN_PORTFOLIO")
+    return targets
+
+
+def _target_holdings(snapshot: PortfolioSnapshot, targets: tuple[str, ...]) -> tuple[PortfolioHolding, ...]:
+    by_id = {item.instrument_id: item for item in snapshot.holdings}
+    return tuple(by_id[item] for item in targets)
+
+
+def _blocked_holding(instrument_id: str, blocker: str) -> CanonicalDiagnosticHoldingRun:
+    return CanonicalDiagnosticHoldingRun(instrument_id, (), (), (), None, None, None, None, (blocker,))
+
+
+__all__ = (
+    "CanonicalDiagnosticHoldingRun", "CanonicalDiagnosticsOrchestrationRun",
+    "CanonicalPortfolioDiagnosticsOrchestrator", "INVALIDATION_RULE_IDS",
+    "MINIMUM_COMPARABLE_THESIS_RULE_IDS", "PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS",
+    "refresh_targeted_holding_ohlcv", "rehydrate_persisted_canonical_diagnostics",
+)
