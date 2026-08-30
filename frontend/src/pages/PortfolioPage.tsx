@@ -4,6 +4,7 @@ import { useDataClient } from '../api/context';
 import { useNavigation } from '../context/NavigationContext';
 import { ApiResponse } from '../types/api';
 import { HoldingItem, PortfolioSummaryData } from '../types/portfolio';
+import { SellSideData } from '../types/sellSide';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { MetricCard } from '../components/common/MetricCard';
 import { ScoreBadge } from '../components/common/ScoreBadge';
@@ -18,6 +19,7 @@ export const PortfolioPage: React.FC = () => {
   const { navigateToStock } = useNavigation();
 
   const [portfolioRes, setPortfolioRes] = useState<ApiResponse<PortfolioSummaryData> | null>(null);
+  const [sellSideRes, setSellSideRes] = useState<ApiResponse<SellSideData> | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sectorFilter, setSectorFilter] = useState('ALL');
@@ -27,8 +29,8 @@ export const PortfolioPage: React.FC = () => {
     const fetchPortfolio = async () => {
       setLoading(true);
       try {
-        const res = await client.getPortfolioSummary();
-        if (isMounted) setPortfolioRes(res);
+        const [res, sellSide] = await Promise.all([client.getPortfolioSummary(), client.getPortfolioSellSide()]);
+        if (isMounted) { setPortfolioRes(res); setSellSideRes(sellSide); }
       } catch (err) {
         console.error('Failed to load portfolio:', err);
       } finally {
@@ -140,6 +142,14 @@ export const PortfolioPage: React.FC = () => {
         freshness={portfolioRes?.freshness}
         timestamp={portfolioRes?.timestamp}
       />
+
+      <div className="rounded-lg border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center justify-between gap-3">
+          <div><div className="text-sm font-semibold text-slate-900 dark:text-slate-100">Sell-side intelligence</div><div className="text-xs text-slate-500">Read-only policy output. TRIM: NOT AUTHORIZED IN V1.</div></div>
+          <span className="font-mono text-xs text-slate-500">{sellSideRes?.data?.status ?? 'UNAVAILABLE'}</span>
+        </div>
+        {sellSideRes?.data?.decisions?.map((item) => <div key={item.holdingId} className="mt-3 text-xs text-slate-600 dark:text-slate-300">{item.holdingId}: <span className="font-semibold">{item.action}</span> · thesis {item.thesisState} · {item.evidenceFreshness}</div>)}
+      </div>
 
       <ApiStateWrapper<PortfolioSummaryData>
         response={portfolioRes}

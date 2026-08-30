@@ -3,6 +3,7 @@ import { MarketBreadthData, MarketExtremesData, MarketStateData, SectorLeadershi
 import { PortfolioSummaryData } from '../types/portfolio';
 import { SignalsData } from '../types/signals';
 import { CapitalRotationData } from '../types/rotation';
+import { SellSideData } from '../types/sellSide';
 import { SharedBrainAnalysisData, StockDetailData, StockListItem } from '../types/stock';
 import { PaperTradingData } from '../types/paperTrading';
 import { PerformanceData } from '../types/performance';
@@ -25,6 +26,7 @@ export interface DataClientInterface {
   getPortfolioSummary(): Promise<ApiResponse<PortfolioSummaryData>>;
   getSignals(): Promise<ApiResponse<SignalsData>>;
   getCapitalRotation(): Promise<ApiResponse<CapitalRotationData>>;
+  getPortfolioSellSide(): Promise<ApiResponse<SellSideData>>;
   getStocksList(): Promise<ApiResponse<StockListItem[]>>;
   getStockDetail(symbol: string): Promise<ApiResponse<StockDetailData>>;
   getSharedBrainAnalysis(symbol: string): Promise<ApiResponse<SharedBrainAnalysisData>>;

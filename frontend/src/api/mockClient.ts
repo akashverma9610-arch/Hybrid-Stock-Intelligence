@@ -3,6 +3,7 @@ import { MarketBreadthData, MarketExtremesData, MarketStateData, SectorLeadershi
 import { PortfolioSummaryData } from '../types/portfolio';
 import { SignalsData } from '../types/signals';
 import { CapitalRotationData } from '../types/rotation';
+import { SellSideData } from '../types/sellSide';
 import { SharedBrainAnalysisData, StockDetailData, StockListItem } from '../types/stock';
 import { PaperTradingData } from '../types/paperTrading';
 import { PerformanceData } from '../types/performance';
@@ -69,6 +70,13 @@ export class MockDataClient implements DataClientInterface {
 
   async getCapitalRotation(): Promise<ApiResponse<CapitalRotationData>> {
     return delayed(mockCapitalRotation);
+  }
+
+  async getPortfolioSellSide(): Promise<ApiResponse<SellSideData>> {
+    return delayed({ status: 'EMPTY', freshness: 'UNKNOWN', timestamp: new Date().toISOString(), data: {
+      status: 'NO_CURRENT_CANONICAL_PORTFOLIO', portfolioSnapshotId: null,
+      policyFingerprint: '78bef6fc3a5a3373d6ae27f48010ee431b16cf77bcab6a57da56413af579927f', decisions: [], warnings: ['NO_CURRENT_CANONICAL_PORTFOLIO'],
+    }});
   }
 
   async getStocksList(): Promise<ApiResponse<StockListItem[]>> {

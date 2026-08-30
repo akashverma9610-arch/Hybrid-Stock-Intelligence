@@ -3,6 +3,7 @@ import { MarketBreadthData, MarketExtremesData, MarketStateData, SectorItem, Sec
 import { PortfolioSummaryData, HoldingItem } from '../types/portfolio';
 import { SignalsData, SignalItem } from '../types/signals';
 import { CapitalRotationData } from '../types/rotation';
+import { SellSideData } from '../types/sellSide';
 import { SharedBrainAnalysisData, StockDetailData, StockListItem } from '../types/stock';
 import { PaperTradingData } from '../types/paperTrading';
 import { PerformanceData } from '../types/performance';
@@ -1133,6 +1134,26 @@ export class HttpDataClient implements DataClientInterface {
           rationale: item.rationale, invalidationSummary: item.invalidation_summary ?? null, warnings: item.warnings ?? [],
         })),
         warnings: value.warnings ?? [], message: value.message ?? null,
+      },
+    };
+  }
+
+  async getPortfolioSellSide(): Promise<ApiResponse<SellSideData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/portfolio/sell-side');
+    if (!response.data) return response as ApiResponse<SellSideData>;
+    const value = response.data;
+    return {
+      ...response,
+      status: value.status === 'NO_CURRENT_CANONICAL_PORTFOLIO' ? 'EMPTY' : value.status === 'READY' ? 'READY' : 'PARTIAL',
+      data: {
+        status: value.status, portfolioSnapshotId: value.portfolio_snapshot_id ?? null,
+        policyFingerprint: value.policy_fingerprint, warnings: value.warnings ?? [],
+        decisions: (value.decisions ?? []).map((item: any) => ({
+          holdingId: item.holding_id, action: item.action, thesisState: item.thesis_state,
+          capitalEfficiencyState: item.capital_efficiency_state ?? null, rotationState: item.rotation_state ?? null,
+          reasons: item.reasons ?? [], blockers: item.blockers ?? [], evidenceFreshness: item.evidence_freshness,
+          policyFingerprint: item.policy_fingerprint,
+        })),
       },
     };
   }

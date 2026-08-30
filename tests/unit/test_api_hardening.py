@@ -20,7 +20,7 @@ EXPECTED_PATHS = {
     "/api/v1/news", "/api/v1/news/{article_id}",
     "/api/v1/primary-market/issues", "/api/v1/primary-market/issues/{issue_id}", "/api/v1/primary-market/summary",
     "/api/v1/fundamentals/{symbol}", "/api/v1/fundamentals/{symbol}/series",
-    "/api/v1/portfolio", "/api/v1/portfolio/holdings", "/api/v1/portfolio/summary",
+    "/api/v1/portfolio", "/api/v1/portfolio/holdings", "/api/v1/portfolio/summary", "/api/v1/portfolio/sell-side",
     "/api/v1/portfolio/import/screenshots", "/api/v1/portfolio/import/{import_id}/confirm", "/api/v1/portfolio/import/{import_id}/cancel",
     "/api/v1/portfolio/analysis-jobs", "/api/v1/portfolio/analysis-jobs/{job_id}",
     "/api/v1/capital-rotation",
