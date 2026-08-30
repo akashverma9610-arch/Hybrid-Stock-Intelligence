@@ -5,7 +5,7 @@ from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from decimal import Decimal
 from hashlib import sha256
-from typing import Callable, Protocol
+from typing import TYPE_CHECKING, Callable, Protocol
 from uuid import uuid4
 
 from app.analysis.fundamentals import FundamentalRules
@@ -17,6 +17,9 @@ from app.crowd.engine import CrowdRules
 from app.diagnostics.evaluators import DeterministicDiagnosticEvaluators, WeinsteinRules
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
 from app.diagnostics.synthesis import HigherOrderDiagnosticContext, SynthesisRules
+from app.domain.canonical_diagnostic_strategy import (
+    CanonicalDiagnosticStrategyDefinition, require_canonical_61_runner_authorization,
+)
 from app.domain.models import AsOfSnapshot, MarketObservation, ObservationKind, StrategyVersionReference, ValidationStatus
 from app.market_data.models import InstrumentIdentity, ProviderInstrumentMapping
 from app.gates.engine import ActionContext, ExchangeCalendar, ExecutionGateConfig, ExecutionGateEngine, GateInput
@@ -38,6 +41,9 @@ from .models import (
     ProviderInstrumentMappingRecord, ProviderMappingStatus,
 )
 from .requirements import DIAGNOSTIC_INPUT_REQUIREMENTS
+
+if TYPE_CHECKING:
+    from app.storage.governance_repository import StrategyGovernanceRepository
 
 
 class UniverseAnalysisError(ValueError):
@@ -131,7 +137,18 @@ class Canonical61DiagnosticRunner:
         if actual != expected:
             raise UniverseAnalysisError("Diagnostic requirements map does not match canonical registry.")
 
-    def run(self, evidence: AssembledStockEvidence) -> DiagnosticRun:
+    def authorize(self, governance: StrategyGovernanceRepository) -> CanonicalDiagnosticStrategyDefinition:
+        """Resolve the typed approved definition before a governed execution."""
+        return require_canonical_61_runner_authorization(governance, self._strategy)
+
+    def run(
+        self,
+        evidence: AssembledStockEvidence,
+        *,
+        governance: StrategyGovernanceRepository | None = None,
+    ) -> DiagnosticRun:
+        if governance is not None:
+            self.authorize(governance)
         results: dict[int, EvaluatedDiagnostic] = {}
         # Rule 32 consumes the canonical trade-structure outputs 43/45/46 and
         # rule 34 consumes rule 32.  Evaluate that dependency tail first while

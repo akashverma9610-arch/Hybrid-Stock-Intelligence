@@ -9,7 +9,7 @@ from enum import StrEnum
 from hashlib import sha256
 import json
 from types import MappingProxyType
-from typing import Any
+from typing import Any, Protocol
 
 from app.domain.models import StrategyVersionReference
 
@@ -20,6 +20,24 @@ class CanonicalDiagnosticDefinitionStatus(StrEnum):
 
 class CanonicalDiagnosticStrategyDefinitionError(ValueError):
     """Raised when a canonical diagnostic definition is incomplete or mismatched."""
+
+
+CANONICAL_61_STRATEGY_REFERENCE = StrategyVersionReference("canonical-universe-analysis", "v1")
+CANONICAL_61_SEMANTIC_FINGERPRINT = "sha256:3144ec1e9452f24a1e9f3776c77e33cbd59f31459c3e2f7d734c4924bb2b9ee3"
+CANONICAL_61_GOVERNANCE_LIMITATIONS = (
+    ("StockDiagnosticInputAssembler", "UNVERSIONED_DEPENDENCY"),
+    ("BacktestLookaheadGuard", "UNVERSIONED_DEPENDENCY"),
+    ("DeterministicDiagnosticEvaluators", "UNVERSIONED_DEPENDENCY"),
+    ("NIFTY_50 default benchmark / explicit constructor override", "UNVERSIONED_DEPENDENCY"),
+    ("DiagnosticResult / SQLiteStrategyGovernanceRepository", "UNVERSIONED_DEPENDENCY"),
+    ("Inline technical, fundamental, valuation, trade, liquidity, crowd, and freshness policy implementations", "UNVERSIONED_DEPENDENCY"),
+)
+
+
+class CanonicalDiagnosticDefinitionReader(Protocol):
+    def get_canonical_diagnostic_strategy_definition(
+        self, reference: StrategyVersionReference,
+    ) -> "CanonicalDiagnosticStrategyDefinition | None": ...
 
 
 @dataclass(frozen=True, slots=True, order=True)
@@ -96,6 +114,46 @@ def governance_limitations_fingerprint(
     ]
     serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
     return f"sha256:{sha256(serialized).hexdigest()}"
+
+
+def require_canonical_61_runner_authorization(
+    reader: CanonicalDiagnosticDefinitionReader,
+    reference: StrategyVersionReference,
+) -> CanonicalDiagnosticStrategyDefinition:
+    """Resolve the exact human-approved Canonical 61 definition or fail closed.
+
+    The constants are approval requirements, not an authorization bypass: the
+    typed definition must be present in the supplied governance repository,
+    approved, self-integral, and exact on identity, semantic fingerprint, and
+    all six declared unversioned dependencies.
+    """
+    if reference != CANONICAL_61_STRATEGY_REFERENCE:
+        raise CanonicalDiagnosticStrategyDefinitionError(
+            "Canonical 61 runner requires canonical-universe-analysis / v1."
+        )
+    definition = reader.get_canonical_diagnostic_strategy_definition(reference)
+    if definition is None:
+        raise CanonicalDiagnosticStrategyDefinitionError(
+            "Canonical 61 runner requires the exact registered canonical definition."
+        )
+    definition.verify_integrity()
+    if definition.definition_status is not CanonicalDiagnosticDefinitionStatus.APPROVED:
+        raise CanonicalDiagnosticStrategyDefinitionError(
+            "Canonical 61 runner requires an approved canonical definition."
+        )
+    if definition.semantic_fingerprint != CANONICAL_61_SEMANTIC_FINGERPRINT:
+        raise CanonicalDiagnosticStrategyDefinitionError(
+            "Canonical 61 runner semantic fingerprint mismatch."
+        )
+    expected_limitations = tuple(
+        CanonicalDiagnosticGovernanceLimitation(dependency, classification)
+        for dependency, classification in CANONICAL_61_GOVERNANCE_LIMITATIONS
+    )
+    if definition.governance_limitations != tuple(sorted(expected_limitations)):
+        raise CanonicalDiagnosticStrategyDefinitionError(
+            "Canonical 61 runner governance limitations mismatch."
+        )
+    return definition
 
 
 def validate_canonical_diagnostic_strategy_definition(

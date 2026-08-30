@@ -2,13 +2,21 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
+import json
+from pathlib import Path
+import re
 from types import SimpleNamespace
 
 import pytest
 
 from app.diagnostics.models import EvaluationEligibility
 from app.data_operations.models import EvidenceDataFamily, EvidenceRefreshMode, EvidenceRefreshOutcome, EvidenceRefreshRequest, EvidenceRefreshStatus
-from app.domain.models import DiagnosticResult
+from app.domain.canonical_diagnostic_strategy import (
+    CanonicalDiagnosticDefinitionStatus, CanonicalDiagnosticGovernanceLimitation,
+    CanonicalDiagnosticStrategyDefinition, governance_limitations_fingerprint,
+    semantic_fingerprint_for_payload,
+)
+from app.domain.models import DiagnosticResult, canonical_diagnostic_result
 from app.intelligence.research_diagnostic_evidence import (
     ExactAsOfStrategyGovernanceDiagnosticResultSource,
     ResearchDiagnosticEvidenceStoredSource,
@@ -32,7 +40,6 @@ from app.universe_analysis.service import (
     Canonical61DiagnosticRunner, CoreUniverseAnalysisStore, StockDiagnosticInputAssembler,
 )
 from tests.fixtures.analytical_observations import ANALYSIS_TIME, bars
-from tests.fixtures.governance_records import strategy_definition
 
 
 class StoredFacts:
@@ -57,6 +64,23 @@ class TargetedRefreshJob:
         return EvidenceRefreshOutcome(EvidenceRefreshStatus.NO_CHANGE, "existing-provider")
 
 
+def _canonical_definition() -> CanonicalDiagnosticStrategyDefinition:
+    root = Path(__file__).parents[2]
+    parse = lambda path: json.loads(re.search(r"```json\r?\n(\{.*?\})\r?\n```", path.read_text(encoding="utf-8"), re.S).group(1))
+    payload = parse(root / "docs" / "architecture" / "CANONICAL_UNIVERSE_ANALYSIS_V1_DEFINITION_PROPOSAL.md")
+    approval = parse(root / "docs" / "architecture" / "CANONICAL_UNIVERSE_ANALYSIS_V1_APPROVAL.md")
+    limitations = tuple(CanonicalDiagnosticGovernanceLimitation(**item) for item in approval["governance_limitations"])
+    return CanonicalDiagnosticStrategyDefinition(
+        strategy_id=payload["strategy"]["id"], strategy_version=payload["strategy"]["version"],
+        canonical_payload=payload, semantic_fingerprint=semantic_fingerprint_for_payload(payload),
+        governance_limitations=limitations, definition_status=CanonicalDiagnosticDefinitionStatus.APPROVED,
+        reviewer_id=approval["reviewer"],
+        definition_proposal_artifact="docs/architecture/CANONICAL_UNIVERSE_ANALYSIS_V1_DEFINITION_PROPOSAL.md",
+        human_approval_artifact="docs/architecture/CANONICAL_UNIVERSE_ANALYSIS_V1_APPROVAL.md",
+        created_at=ANALYSIS_TIME, registered_at=ANALYSIS_TIME,
+    )
+
+
 def _holding(identifier: str) -> PortfolioHolding:
     return PortfolioHolding(identifier, identifier, Decimal("1"), Decimal("100"), Decimal("100"), ANALYSIS_TIME,
                             Decimal("0"), "Industrials", None, None, True, Decimal("100"), "mark", Decimal("100"),
@@ -79,9 +103,9 @@ def _instrument(identifier: str) -> NseEquityInstrument:
 
 def _service(tmp_path, *, registered: bool):
     governance = SQLiteStrategyGovernanceRepository(tmp_path / "governance.db")
-    definition = strategy_definition("canonical-v1")
+    definition = _canonical_definition()
     if registered:
-        governance.save_strategy_definition(definition)
+        governance.save_canonical_diagnostic_strategy_definition(definition)
     core = SQLiteCoreApiSnapshotRepository(tmp_path / "core.db")
     universe = CoreUniverseAnalysisStore(core)
     for identifier in PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS:
@@ -111,6 +135,8 @@ def test_exact_five_holding_orchestration_reuses_runner_persists_and_is_idempote
     assert all(item.sell_side_decision.action.value == "REVIEW_REQUIRED" for item in first.holdings)
     stored = governance.list_diagnostic_results(definition.reference, ANALYSIS_TIME)
     assert len(stored) == 5 * 61
+    assert all(item.strategy_lineage_type.value == "CANONICAL_DIAGNOSTIC_STRATEGY" for item in stored)
+    assert governance.get_strategy_definition(definition.reference) is None
     assert tuple(item.persisted_diagnostic_ids for item in first.holdings) == tuple(item.persisted_diagnostic_ids for item in second.holdings)
 
 
@@ -118,7 +144,7 @@ def test_unregistered_strategy_is_a_policy_blocker_without_diagnostic_write(tmp_
     service, governance, definition = _service(tmp_path, registered=False)
     result = service.run(portfolio_snapshot=_snapshot(), canonical_instrument_ids=PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS,
                          strategy_version=definition.reference)
-    assert result.blockers == ("CANONICAL_DIAGNOSTIC_STRATEGY_NOT_REGISTERED",)
+    assert result.blockers == ("CANONICAL_DIAGNOSTIC_RUNNER_UNAUTHORIZED",)
     assert all(not item.persisted_diagnostic_ids for item in result.holdings)
 
 
@@ -147,8 +173,13 @@ def test_persisted_diagnostic_source_is_exact_asof_and_future_records_do_not_reh
     future = DiagnosticResult("future", PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS[0], "46", definition.reference,
                               "TRIGGERED", None, None, (), (), ANALYSIS_TIME + timedelta(days=1), ANALYSIS_TIME + timedelta(days=1))
     assert rehydrate_persisted_canonical_diagnostics((future,), instrument_id=future.instrument_id, as_of=ANALYSIS_TIME) == ()
-    current = DiagnosticResult("current", future.instrument_id, "46", definition.reference, "INSUFFICIENT_DATA", None,
-                               None, (), (), ANALYSIS_TIME, ANALYSIS_TIME)
+    current = canonical_diagnostic_result(
+        id="current", instrument_id=future.instrument_id, rule_id="46", strategy_version=definition.reference,
+        canonical_strategy_fingerprint=definition.semantic_fingerprint,
+        canonical_limitations_fingerprint=governance_limitations_fingerprint(definition.governance_limitations),
+        result="INSUFFICIENT_DATA", score=None, confidence=None, evidence_ids=(), input_observation_ids=(),
+        evaluated_at=ANALYSIS_TIME, as_of_timestamp=ANALYSIS_TIME,
+    )
     governance.save_diagnostic_result(current)
     source = ResearchDiagnosticEvidenceStoredSource(ExactAsOfStrategyGovernanceDiagnosticResultSource(
         governance, strategy_version=definition.reference,

@@ -13,7 +13,10 @@ from typing import Protocol
 
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
 from app.data_operations.models import EvidenceRefreshOutcome, EvidenceRefreshRequest
-from app.domain.models import DiagnosticResult, StrategyVersionReference
+from app.domain.canonical_diagnostic_strategy import (
+    CanonicalDiagnosticStrategyDefinition, governance_limitations_fingerprint,
+)
+from app.domain.models import DiagnosticResult, StrategyVersionReference, canonical_diagnostic_result
 from app.intelligence.shared_brain_application import SharedBrainApplicationError, SharedBrainAnalysisView
 from app.intelligence.unified_state import BrainOutputContext
 from app.portfolio.holding_intelligence import HoldingIntelligenceComposition, compose_holding_intelligence
@@ -109,8 +112,17 @@ class CanonicalPortfolioDiagnosticsOrchestrator:
     ) -> CanonicalDiagnosticsOrchestrationRun:
         targets = _validated_targets(portfolio_snapshot, canonical_instrument_ids)
         as_of = portfolio_snapshot.as_of_timestamp
-        if self._governance.get_strategy_definition(strategy_version) is None:
-            blocker = "CANONICAL_DIAGNOSTIC_STRATEGY_NOT_REGISTERED"
+        try:
+            definition = self._runner.authorize(self._governance)
+        except ValueError:
+            blocker = "CANONICAL_DIAGNOSTIC_RUNNER_UNAUTHORIZED"
+            return CanonicalDiagnosticsOrchestrationRun(
+                portfolio_snapshot.snapshot_id, as_of, targets, strategy_version,
+                tuple(_blocked_holding(item.instrument_id, blocker) for item in _target_holdings(portfolio_snapshot, targets)),
+                (blocker,),
+            )
+        if strategy_version != definition.reference:
+            blocker = "CANONICAL_DIAGNOSTIC_STRATEGY_MISMATCH"
             return CanonicalDiagnosticsOrchestrationRun(
                 portfolio_snapshot.snapshot_id, as_of, targets, strategy_version,
                 tuple(_blocked_holding(item.instrument_id, blocker) for item in _target_holdings(portfolio_snapshot, targets)),
@@ -124,7 +136,7 @@ class CanonicalPortfolioDiagnosticsOrchestrator:
             if instrument is None:
                 results.append(_blocked_holding(holding.instrument_id, "CANONICAL_INSTRUMENT_NOT_AVAILABLE_AT_AS_OF"))
                 continue
-            results.append(self._run_holding(holding, instrument, portfolio_snapshot, strategy_version))
+            results.append(self._run_holding(holding, instrument, portfolio_snapshot, strategy_version, definition))
         blockers = tuple(sorted({code for item in results for code in item.blockers}))
         return CanonicalDiagnosticsOrchestrationRun(
             portfolio_snapshot.snapshot_id, as_of, targets, strategy_version, tuple(results), blockers,
@@ -136,10 +148,11 @@ class CanonicalPortfolioDiagnosticsOrchestrator:
         instrument: NseEquityInstrument,
         portfolio_snapshot: PortfolioSnapshot,
         strategy_version: StrategyVersionReference,
+        definition: CanonicalDiagnosticStrategyDefinition,
     ) -> CanonicalDiagnosticHoldingRun:
         evidence = self._assembler.assemble(instrument, portfolio_snapshot.as_of_timestamp)
-        run = self._runner.run(evidence)
-        records = tuple(item.record for item in run.evaluations)
+        run = self._runner.run(evidence, governance=self._governance)
+        records = _canonical_result_records(tuple(item.record for item in run.evaluations), definition)
         if any(item.strategy_version != strategy_version for item in records):
             return _blocked_holding(holding.instrument_id, "CANONICAL_DIAGNOSTIC_STRATEGY_MISMATCH")
         persisted = _persist_idempotently(self._governance, strategy_version, portfolio_snapshot.as_of_timestamp, records)
@@ -236,6 +249,28 @@ def _persist_idempotently(
         item for item in governance.list_diagnostic_results(strategy_version, as_of)
         if item.id in {record.id for record in records}
     )
+
+
+def _canonical_result_records(
+    records: tuple[DiagnosticResult, ...],
+    definition: CanonicalDiagnosticStrategyDefinition,
+) -> tuple[DiagnosticResult, ...]:
+    """Attach the exact approved definition lineage without changing rule output."""
+    limitations_fingerprint = governance_limitations_fingerprint(definition.governance_limitations)
+    values = []
+    for record in records:
+        if record.strategy_version != definition.reference:
+            raise ValueError("CANONICAL_DIAGNOSTIC_STRATEGY_MISMATCH")
+        values.append(canonical_diagnostic_result(
+            id=record.id, instrument_id=record.instrument_id, rule_id=record.rule_id,
+            strategy_version=record.strategy_version,
+            canonical_strategy_fingerprint=definition.semantic_fingerprint,
+            canonical_limitations_fingerprint=limitations_fingerprint,
+            result=record.result, score=record.score, confidence=record.confidence,
+            evidence_ids=record.evidence_ids, input_observation_ids=record.input_observation_ids,
+            evaluated_at=record.evaluated_at, as_of_timestamp=record.as_of_timestamp,
+        ))
+    return tuple(values)
 
 
 def _validated_targets(snapshot: PortfolioSnapshot, values: tuple[str, ...]) -> tuple[str, ...]:
