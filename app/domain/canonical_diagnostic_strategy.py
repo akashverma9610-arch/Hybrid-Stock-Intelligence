@@ -87,6 +87,17 @@ def semantic_fingerprint_for_payload(payload: Mapping[str, Any]) -> str:
     return f"sha256:{sha256(serialized).hexdigest()}"
 
 
+def governance_limitations_fingerprint(
+    limitations: tuple[CanonicalDiagnosticGovernanceLimitation, ...],
+) -> str:
+    payload = [
+        {"classification": item.classification, "dependency": item.dependency}
+        for item in sorted(set(limitations))
+    ]
+    serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    return f"sha256:{sha256(serialized).hexdigest()}"
+
+
 def validate_canonical_diagnostic_strategy_definition(
     definition: CanonicalDiagnosticStrategyDefinition,
     *,

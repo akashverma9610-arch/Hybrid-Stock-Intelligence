@@ -7,7 +7,8 @@ from typing import Any, Mapping
 
 from app.domain.models import (
     AnalyticalDecisionReconstruction, ApprovalStatus, AuthorReviewerMetadata,
-    ConfigurationValueStatus, DataQuality, DiagnosticResult, Evidence, EvidenceType,
+    ConfigurationValueStatus, DataQuality, DiagnosticResult, DiagnosticStrategyLineageType,
+    Evidence, EvidenceType, canonical_diagnostic_result_fingerprint,
     GateDecision, GateOutcome, Scorecard, ScorecardComponent, StrategyConfiguration,
     StrategyDefinition, StrategyLifecycleEvent, StrategyStatus, StrategyValidationStatus,
     StrategyVersionReference,
@@ -15,7 +16,7 @@ from app.domain.models import (
 from app.domain.canonical_diagnostic_strategy import (
     CanonicalDiagnosticDefinitionStatus, CanonicalDiagnosticGovernanceLimitation,
     CanonicalDiagnosticStrategyDefinition, CanonicalDiagnosticStrategyDefinitionError,
-    validate_canonical_diagnostic_strategy_definition,
+    governance_limitations_fingerprint, validate_canonical_diagnostic_strategy_definition,
 )
 from app.storage.governance_repository import StrategyGovernanceRepository
 from app.storage.sqlite_repository import SQLiteMarketDataRepository, _parse_timestamp, _provenance_from_dict, _provenance_to_dict, _timestamp
@@ -225,7 +226,14 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
         return tuple(self._evidence_from_row(row) for row in rows)
 
     def save_diagnostic_result(self, result: DiagnosticResult) -> None:
+        if result.strategy_lineage_type is DiagnosticStrategyLineageType.CANONICAL_DIAGNOSTIC_STRATEGY:
+            self._save_canonical_diagnostic_result(result)
+            return
+        if any((result.canonical_strategy_fingerprint, result.canonical_limitations_fingerprint, result.diagnostic_fingerprint)):
+            raise ValueError("Generic diagnostic results cannot carry canonical diagnostic strategy lineage.")
         self._require_historical_context(result.strategy_version, result.as_of_timestamp)
+        if self._connection.execute("SELECT 1 FROM canonical_diagnostic_results WHERE id = ?", (result.id,)).fetchone():
+            raise ValueError("Diagnostic result identity already belongs to canonical diagnostic strategy lineage.")
         self._insert_immutable(
             """INSERT INTO diagnostic_results
                (id, instrument_id, rule_id, strategy_id, version, result, score, confidence,
@@ -239,12 +247,64 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
         )
 
     def list_diagnostic_results(self, reference: StrategyVersionReference, as_of_timestamp: datetime) -> tuple[DiagnosticResult, ...]:
-        rows = self._connection.execute(
+        generic_rows = self._connection.execute(
             """SELECT * FROM diagnostic_results WHERE strategy_id = ? AND version = ? AND as_of_timestamp = ?
                ORDER BY id""",
             (reference.strategy_id, reference.version, _timestamp(as_of_timestamp)),
         ).fetchall()
-        return tuple(self._diagnostic_from_row(row) for row in rows)
+        canonical_rows = self._connection.execute(
+            """SELECT * FROM canonical_diagnostic_results
+               WHERE strategy_id = ? AND strategy_version = ? AND as_of_timestamp = ? ORDER BY id""",
+            (reference.strategy_id, reference.version, _timestamp(as_of_timestamp)),
+        ).fetchall()
+        values = tuple(self._diagnostic_from_row(row) for row in generic_rows) + tuple(
+            self._canonical_diagnostic_from_row(row) for row in canonical_rows
+        )
+        if len({item.id for item in values}) != len(values):
+            raise ValueError("Diagnostic result identity has ambiguous strategy lineage.")
+        return tuple(sorted(values, key=lambda item: item.id))
+
+    def _save_canonical_diagnostic_result(self, result: DiagnosticResult) -> None:
+        if not result.canonical_strategy_fingerprint or not result.canonical_limitations_fingerprint:
+            raise ValueError("Canonical diagnostic result requires canonical strategy and limitations fingerprints.")
+        definition = self.get_canonical_diagnostic_strategy_definition(result.strategy_version)
+        if definition is None:
+            raise ValueError("Canonical diagnostic result requires an exact registered canonical strategy definition.")
+        definition.verify_integrity()
+        if definition.semantic_fingerprint != result.canonical_strategy_fingerprint:
+            raise ValueError("Canonical diagnostic result semantic fingerprint does not match its registered definition.")
+        if governance_limitations_fingerprint(definition.governance_limitations) != result.canonical_limitations_fingerprint:
+            raise ValueError("Canonical diagnostic result limitations do not match its registered definition.")
+        expected_fingerprint = canonical_diagnostic_result_fingerprint(result)
+        if result.diagnostic_fingerprint != expected_fingerprint:
+            raise ValueError("Canonical diagnostic result fingerprint does not match its governed lineage.")
+        if self._connection.execute("SELECT 1 FROM diagnostic_results WHERE id = ?", (result.id,)).fetchone():
+            raise ValueError("Diagnostic result identity already belongs to generic strategy lineage.")
+        row = self._connection.execute(
+            "SELECT * FROM canonical_diagnostic_results WHERE id = ?", (result.id,)
+        ).fetchone()
+        if row is not None:
+            existing = self._canonical_diagnostic_from_row(row)
+            if existing == result:
+                return
+            raise ValueError("Canonical diagnostic results are immutable and cannot be overwritten.")
+        self._insert_immutable(
+            """INSERT INTO canonical_diagnostic_results
+               (id, instrument_id, rule_id, strategy_id, strategy_version, strategy_lineage_type,
+                canonical_semantic_fingerprint, canonical_limitations_fingerprint, diagnostic_fingerprint, result, score, confidence,
+                evidence_ids_json, input_observation_ids_json, evaluated_at, as_of_timestamp)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                result.id, result.instrument_id, result.rule_id, result.strategy_version.strategy_id,
+                result.strategy_version.version, result.strategy_lineage_type.value,
+                result.canonical_strategy_fingerprint, result.canonical_limitations_fingerprint,
+                result.diagnostic_fingerprint, result.result,
+                result.score, result.confidence, _json(list(result.evidence_ids)),
+                _json(list(result.input_observation_ids)), _timestamp(result.evaluated_at),
+                _timestamp(result.as_of_timestamp),
+            ),
+            "Canonical diagnostic results are immutable and cannot be overwritten.",
+        )
 
     def save_scorecard(self, scorecard: Scorecard) -> None:
         self._require_historical_context(scorecard.strategy_version, scorecard.as_of_timestamp)
@@ -1079,6 +1139,17 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
                 human_approval_artifact TEXT NOT NULL, created_at TEXT NOT NULL,
                 registered_at TEXT NOT NULL, PRIMARY KEY (strategy_id, strategy_version)
             );
+            CREATE TABLE IF NOT EXISTS canonical_diagnostic_results (
+                id TEXT PRIMARY KEY, instrument_id TEXT NOT NULL, rule_id TEXT NOT NULL,
+                strategy_id TEXT NOT NULL, strategy_version TEXT NOT NULL,
+                strategy_lineage_type TEXT NOT NULL CHECK (strategy_lineage_type = 'CANONICAL_DIAGNOSTIC_STRATEGY'),
+                canonical_semantic_fingerprint TEXT NOT NULL, canonical_limitations_fingerprint TEXT NOT NULL,
+                diagnostic_fingerprint TEXT NOT NULL UNIQUE,
+                result TEXT NOT NULL, score REAL, confidence REAL, evidence_ids_json TEXT NOT NULL,
+                input_observation_ids_json TEXT NOT NULL, evaluated_at TEXT NOT NULL, as_of_timestamp TEXT NOT NULL,
+                FOREIGN KEY (strategy_id, strategy_version)
+                    REFERENCES canonical_diagnostic_strategy_definitions(strategy_id, strategy_version)
+            );
             CREATE TABLE IF NOT EXISTS strategy_versions (
                 strategy_id TEXT NOT NULL, version TEXT NOT NULL, name TEXT NOT NULL, initial_status TEXT NOT NULL,
                 created_at TEXT NOT NULL, effective_from TEXT, effective_to TEXT, description TEXT NOT NULL,
@@ -1333,6 +1404,25 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
             _parse_timestamp(row["as_of_timestamp"]),
         )
 
+    def _canonical_diagnostic_from_row(self, row: sqlite3.Row) -> DiagnosticResult:
+        result = DiagnosticResult(
+            row["id"], row["instrument_id"], row["rule_id"],
+            StrategyVersionReference(row["strategy_id"], row["strategy_version"]), row["result"],
+            row["score"], row["confidence"], tuple(json.loads(row["evidence_ids_json"])),
+            tuple(json.loads(row["input_observation_ids_json"])), _parse_timestamp(row["evaluated_at"]),
+            _parse_timestamp(row["as_of_timestamp"]),
+            DiagnosticStrategyLineageType(row["strategy_lineage_type"]), row["canonical_semantic_fingerprint"],
+            row["canonical_limitations_fingerprint"], row["diagnostic_fingerprint"],
+        )
+        if canonical_diagnostic_result_fingerprint(result) != result.diagnostic_fingerprint:
+            raise ValueError("Stored canonical diagnostic result fingerprint does not match its governed lineage.")
+        definition = self.get_canonical_diagnostic_strategy_definition(result.strategy_version)
+        if definition is None or definition.semantic_fingerprint != result.canonical_strategy_fingerprint:
+            raise ValueError("Stored canonical diagnostic result has invalid canonical strategy lineage.")
+        if governance_limitations_fingerprint(definition.governance_limitations) != result.canonical_limitations_fingerprint:
+            raise ValueError("Stored canonical diagnostic result has invalid canonical strategy limitations lineage.")
+        return result
+
     @staticmethod
     def _scorecard_from_row(row: sqlite3.Row) -> Scorecard:
         return Scorecard(
@@ -1366,7 +1456,7 @@ def _json(value: Any) -> str:
 def _plain(value: Any) -> Any:
     if isinstance(value, datetime):
         return _timestamp(value)
-    if isinstance(value, (StrategyStatus, ApprovalStatus, StrategyValidationStatus, ConfigurationValueStatus, EvidenceType, GateOutcome, DataQuality)):
+    if isinstance(value, (StrategyStatus, ApprovalStatus, StrategyValidationStatus, ConfigurationValueStatus, EvidenceType, GateOutcome, DataQuality, DiagnosticStrategyLineageType)):
         return value.value
     if hasattr(value, "__dataclass_fields__"):
         return {name: _plain(getattr(value, name)) for name in value.__dataclass_fields__}

@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 from enum import StrEnum
+from hashlib import sha256
+import json
 from types import MappingProxyType
 from typing import Any, Mapping
 
@@ -211,6 +213,11 @@ class StrategyVersionReference:
     version: str
 
 
+class DiagnosticStrategyLineageType(StrEnum):
+    GENERIC_STRATEGY_VERSION = "GENERIC_STRATEGY_VERSION"
+    CANONICAL_DIAGNOSTIC_STRATEGY = "CANONICAL_DIAGNOSTIC_STRATEGY"
+
+
 @dataclass(frozen=True, slots=True)
 class AuthorReviewerMetadata:
     author_id: str
@@ -309,6 +316,55 @@ class DiagnosticResult:
     input_observation_ids: tuple[str, ...]
     evaluated_at: datetime
     as_of_timestamp: datetime
+    strategy_lineage_type: DiagnosticStrategyLineageType = DiagnosticStrategyLineageType.GENERIC_STRATEGY_VERSION
+    canonical_strategy_fingerprint: str | None = None
+    canonical_limitations_fingerprint: str | None = None
+    diagnostic_fingerprint: str | None = None
+
+
+def canonical_diagnostic_result_fingerprint(result: DiagnosticResult) -> str:
+    """Fingerprint the canonical output and its exact typed governance lineage."""
+    if result.strategy_lineage_type is not DiagnosticStrategyLineageType.CANONICAL_DIAGNOSTIC_STRATEGY:
+        raise ValueError("Only canonical diagnostic strategy results have a canonical diagnostic fingerprint.")
+    if not result.canonical_strategy_fingerprint:
+        raise ValueError("Canonical diagnostic strategy fingerprint is required.")
+    if not result.canonical_limitations_fingerprint:
+        raise ValueError("Canonical diagnostic strategy limitations fingerprint is required.")
+    payload = {
+        "as_of_timestamp": result.as_of_timestamp.isoformat(),
+        "canonical_strategy_fingerprint": result.canonical_strategy_fingerprint,
+        "canonical_limitations_fingerprint": result.canonical_limitations_fingerprint,
+        "confidence": result.confidence,
+        "evaluated_at": result.evaluated_at.isoformat(),
+        "evidence_ids": list(result.evidence_ids),
+        "id": result.id,
+        "input_observation_ids": list(result.input_observation_ids),
+        "instrument_id": result.instrument_id,
+        "result": result.result,
+        "rule_id": result.rule_id,
+        "score": result.score,
+        "strategy_id": result.strategy_version.strategy_id,
+        "strategy_lineage_type": result.strategy_lineage_type.value,
+        "strategy_version": result.strategy_version.version,
+    }
+    return "sha256:" + sha256(json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")).hexdigest()
+
+
+def canonical_diagnostic_result(
+    *, id: str, instrument_id: str, rule_id: str, strategy_version: StrategyVersionReference,
+    canonical_strategy_fingerprint: str, canonical_limitations_fingerprint: str, result: str,
+    score: float | None, confidence: float | None,
+    evidence_ids: tuple[str, ...], input_observation_ids: tuple[str, ...], evaluated_at: datetime,
+    as_of_timestamp: datetime,
+) -> DiagnosticResult:
+    """Construct a typed canonical result without a generic strategy-version anchor."""
+    value = DiagnosticResult(
+        id, instrument_id, rule_id, strategy_version, result, score, confidence, evidence_ids,
+        input_observation_ids, evaluated_at, as_of_timestamp,
+        DiagnosticStrategyLineageType.CANONICAL_DIAGNOSTIC_STRATEGY, canonical_strategy_fingerprint,
+        canonical_limitations_fingerprint,
+    )
+    return replace(value, diagnostic_fingerprint=canonical_diagnostic_result_fingerprint(value))
 
 
 @dataclass(frozen=True, slots=True)
