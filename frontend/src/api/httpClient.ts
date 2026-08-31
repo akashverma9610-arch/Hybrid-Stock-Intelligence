@@ -48,14 +48,16 @@ const upstoxPipelineStage = (value: unknown): UpstoxPipelineStage => {
 
 const normalizeUpstoxValidationFlow = (value: any, errorCode?: string | null): UpstoxValidationFlow | undefined => {
   if (!value || typeof value !== 'object') return undefined;
-  const message = value.errorMessage ?? value.error_message ?? null;
+  // The published FastAPI test response is snake_case.  This is the one
+  // boundary that converts it into the frontend's camelCase view model.
+  const message = value.error_message ?? null;
   return {
     credentials: upstoxStage(value.credentials),
-    instrumentResolution: upstoxPipelineStage(value.instrumentResolution ?? value.instrument_resolution),
-    historicalAccess: upstoxPipelineStage(value.historicalAccess ?? value.historical_access),
+    instrumentResolution: upstoxPipelineStage(value.instrument_resolution),
+    historicalAccess: upstoxPipelineStage(value.historical_access),
     normalization: upstoxPipelineStage(value.normalization),
     persistence: upstoxPipelineStage(value.persistence),
-    lastTestedTimestamp: value.lastTestedTimestamp ?? value.last_tested_timestamp ?? null,
+    lastTestedTimestamp: value.last_tested_timestamp ?? null,
     errorMessage: errorCode ? `${errorCode}${message ? `: ${message}` : ''}` : message,
   };
 };
@@ -811,25 +813,13 @@ export class HttpDataClient implements DataClientInterface {
           unavailabilityMessage: 'Available after backend data ingestion',
         };
 
-    const upstoxValData = upstoxRes.data?.validationFlow || upstoxRes.data?.validation_flow;
-    const upstoxValidation: UpstoxValidationFlow = upstoxValData
-      ? {
-          credentials: upstoxValData.credentials || 'NOT_TESTED',
-          instrumentResolution: upstoxValData.instrumentResolution || upstoxValData.instrument_resolution || 'NOT_TESTED',
-          historicalAccess: upstoxValData.historicalAccess || upstoxValData.historical_access || 'NOT_TESTED',
-          normalization: upstoxValData.normalization || 'NOT_TESTED',
-          persistence: upstoxValData.persistence || 'NOT_TESTED',
-          lastTestedTimestamp: upstoxValData.lastTestedTimestamp || upstoxValData.last_tested_timestamp || null,
-          errorMessage: upstoxValData.errorMessage || upstoxValData.error_message || null,
-        }
-      : {
-          credentials: 'NOT_TESTED',
-          instrumentResolution: 'NOT_TESTED',
-          historicalAccess: 'NOT_TESTED',
-          normalization: 'NOT_TESTED',
-          persistence: 'NOT_TESTED',
-          lastTestedTimestamp: null,
-        };
+    // The profile endpoint does not persist or return a validation-flow
+    // payload.  Do not fabricate NOT_TESTED stages here: doing so overwrites
+    // the truthful flow returned by the immediately preceding test request.
+    const upstoxValidation = normalizeUpstoxValidationFlow(
+      upstoxRes.data?.validation_flow,
+      upstoxRes.data?.error_code,
+    );
 
     return {
       status: 'READY',
@@ -970,7 +960,7 @@ export class HttpDataClient implements DataClientInterface {
     if (providerId === 'upstox') {
       const res = await this.fetchWithTimeout<any>(CONNECTION_ROUTES.upstox.test, { method: 'POST' });
       const flow = normalizeUpstoxValidationFlow(
-        res.data?.validation_flow || res.data?.validationFlow,
+        res.data?.validation_flow,
         res.data?.error_code,
       );
       const safeMessage = res.data?.error_code

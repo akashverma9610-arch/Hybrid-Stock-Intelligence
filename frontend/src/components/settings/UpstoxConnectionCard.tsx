@@ -68,6 +68,16 @@ export const UpstoxConnectionCard: React.FC<UpstoxConnectionCardProps> = ({
   // local backend credential was stored.
   const backendConfigured = !isMockMode && provider?.configured === true;
   const hasToken = !isMockMode && provider?.hasSavedToken === true;
+  const historicalValidationSucceeded = Boolean(
+    validationFlow
+    && validationFlow.credentials === 'VALIDATED'
+    && validationFlow.instrumentResolution === 'VALIDATED'
+    && validationFlow.historicalAccess === 'VALIDATED'
+    && validationFlow.normalization === 'VALIDATED'
+    && validationFlow.persistence === 'VALIDATED'
+    && !validationFlow.errorMessage
+  );
+  const isValidated = historicalValidationSucceeded || provider?.validated === true;
 
   return (
     <div
@@ -107,8 +117,8 @@ export const UpstoxConnectionCard: React.FC<UpstoxConnectionCardProps> = ({
           <span className="text-gray-600">•</span>
           <div className="flex items-center gap-1.5">
             <span className="text-gray-400">Validated:</span>
-            <span className={provider?.validated ? 'text-blue-400 font-bold' : 'text-gray-500'}>
-              {provider?.validated ? 'YES' : 'NOT VALIDATED'}
+            <span className={isValidated ? 'text-blue-400 font-bold' : 'text-gray-500'}>
+              {isValidated ? 'YES' : 'NOT VALIDATED'}
             </span>
           </div>
           {provider?.latencyMs !== null && provider?.latencyMs !== undefined && (
