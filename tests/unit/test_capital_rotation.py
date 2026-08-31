@@ -7,7 +7,7 @@ import pytest
 from app.rotation.engine import CapitalRotationEngine
 from app.rotation.models import (
     RotationCandidate, RotationConfig, RotationDecisionState, RotationEvaluationContext,
-    RotationHoldingState, RotationStance,
+    RotationHoldingState, RotationStance, RotationComparisonStatus, RotationExecutionEligibility,
 )
 
 
@@ -25,9 +25,9 @@ def candidate(score=Decimal("8.9"), *, instrument="candidate", gate="EXECUTABLE"
         "HEALTH", sector_ok, "LOW", "VALID", "VALID", rr, True, True, True, "near-term", (), False, "clear", sector_ok, False, None, None, confirmation, (f"evidence-{instrument}",))
 
 
-def context(holdings=(holding(),), candidates=(candidate(),), *, cash=Decimal("1000"), last=None):
+def context(holdings=(holding(),), candidates=(candidate(),), *, cash=Decimal("1000"), cash_state="KNOWN", last=None):
     return RotationEvaluationContext("portfolio-snapshot-1", "strategy/0.1", "registry-v1", "score-v1", "gates-v1", ASOF,
-        tuple(holdings), cash, tuple(candidates), "friction-v1", last)
+        tuple(holdings), cash, tuple(candidates), "friction-v1", last, cash_state)
 
 
 def evaluate(ctx=None, config=CONFIG): return CapitalRotationEngine(config).evaluate(ctx or context(), ASOF)
@@ -90,6 +90,26 @@ def test_cash_only_context_keeps_cash_or_reports_deployment_opportunity_without_
     result = evaluate(context(holdings=(), candidates=(candidate(),), cash=Decimal("20000")))
     assert result.stance in {RotationStance.NO_ROTATION, RotationStance.ROTATION_OPPORTUNITY}
     assert result.decision is not RotationDecisionState.ROTATE_CANDIDATE_PREFERRED or result.preferred_candidate_id == "candidate"
+
+
+def test_cash_unknown_preserves_read_only_superiority_but_blocks_execution_without_coercion():
+    result = evaluate(context(cash=None, cash_state="UNKNOWN"))
+    assert result.comparison_status is RotationComparisonStatus.COMPARISON_AVAILABLE
+    assert result.execution_eligibility is RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN
+    assert result.context.cash_amount is None and result.context.cash_state == "UNKNOWN"
+    assert result.comparisons[0].result is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED
+    assert result.decision is RotationDecisionState.COMPARISON_AVAILABLE_EXECUTION_BLOCKED
+    assert result.preferred_candidate_id == "candidate"
+    assert "CASH_UNKNOWN_EXECUTION_BLOCKED" in result.warnings
+    assert evaluate(context(cash=None, cash_state="UNKNOWN")) == result
+
+
+def test_cash_unknown_without_candidate_has_no_comparison_and_invalidated_exit_remains_analytically_available():
+    no_candidate = evaluate(context(candidates=(), cash=None, cash_state="UNKNOWN"))
+    invalidated = evaluate(context(holdings=(holding(invalidation="TRIGGERED"),), candidates=(), cash=None, cash_state="UNKNOWN"))
+    assert no_candidate.comparison_status is RotationComparisonStatus.NO_ELIGIBLE_REPLACEMENT
+    assert not no_candidate.comparisons
+    assert invalidated.decision is RotationDecisionState.CASH_PREFERRED
 
 
 def test_future_candidate_holding_score_gate_sector_thesis_and_friction_are_excluded():

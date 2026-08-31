@@ -773,14 +773,12 @@ class PortfolioUniverseRotationService:
                  evaluated_at: datetime) -> PortfolioUniverseRotationSnapshot:
         if job.universe_snapshot_id != universe.snapshot_id:
             raise UniverseAnalysisError("Universe job is not bound to the supplied immutable universe snapshot.")
-        snapshot_id = f"portfolio-universe:{portfolio.snapshot_id}:{universe.snapshot_id}:{job.as_of.isoformat()}"
+        snapshot_id = f"portfolio-universe:{portfolio.snapshot_id}:{universe.snapshot_id}:{job.as_of.isoformat()}:cash-unknown-boundary-v1"
         existing = self._store.get_rotation_snapshot(snapshot_id)
         if existing is not None:
             return existing
         if portfolio.as_of_timestamp != job.as_of:
             return self._partial(portfolio, universe, job, "PORTFOLIO_UNIVERSE_AS_OF_MISMATCH", evaluated_at)
-        if portfolio.cash.amount is None:
-            return self._partial(portfolio, universe, job, "CASH_UNKNOWN", evaluated_at=evaluated_at)
         if job.stage is UniverseAnalysisStage.CANDIDATES_MATERIALIZED:
             self._store.save_job(replace(job, revision=job.revision + 1, stage=UniverseAnalysisStage.ROTATION_COMPARISON))
         candidates = tuple(item for item in self._store.candidates(job.job_id) if item.qualification_status == "QUALIFIED")
@@ -793,6 +791,7 @@ class PortfolioUniverseRotationService:
             portfolio.snapshot_id, portfolio.strategy_version or "UNVERSIONED", DIAGNOSTIC_REGISTRY_VERSION,
             "decision-score-v1", "universe-analysis-gates-v1", job.as_of, holdings, portfolio.cash.amount,
             tuple(_rotation_candidate(item) for item in candidates), self._engine.config.friction_model_version,
+            cash_state=portfolio.cash.cash_state.value,
         )
         evaluation = self._engine.evaluate(context, evaluated_at)
         self._store._save(CoreApiSnapshotFamily.CAPITAL_ROTATION, f"universe-rotation:{evaluation.evaluation_id}", evaluation, evaluated_at)
@@ -811,7 +810,7 @@ class PortfolioUniverseRotationService:
 
     def _partial(self, portfolio, universe, job, *warnings, evaluated_at):
         value = PortfolioUniverseRotationSnapshot(
-            f"portfolio-universe:{portfolio.snapshot_id}:{universe.snapshot_id}:{job.as_of.isoformat()}", evaluated_at, job.as_of,
+            f"portfolio-universe:{portfolio.snapshot_id}:{universe.snapshot_id}:{job.as_of.isoformat()}:cash-unknown-boundary-v1", evaluated_at, job.as_of,
             portfolio.snapshot_id, universe.snapshot_id, OpportunityCoverageStatus.PARTIAL, universe.total_records,
             job.eligible_total, job.complete_count, job.partial_count, 0, 0, None, tuple(sorted(set(job.warnings + tuple(warnings)))),
         )

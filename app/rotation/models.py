@@ -13,6 +13,7 @@ class RotationDecisionState(str, Enum):
     CASH_PREFERRED = "CASH_PREFERRED"
     NO_ACTION = "NO_ACTION"
     INSUFFICIENT_DATA = "INSUFFICIENT_DATA"
+    COMPARISON_AVAILABLE_EXECUTION_BLOCKED = "COMPARISON_AVAILABLE_EXECUTION_BLOCKED"
 
 
 class RotationStance(str, Enum):
@@ -20,6 +21,17 @@ class RotationStance(str, Enum):
     ROTATION_OPPORTUNITY = "ROTATION_OPPORTUNITY"
     DEFENSIVE_CASH = "DEFENSIVE_CASH"
     INSUFFICIENT_DATA = "INSUFFICIENT_DATA"
+
+
+class RotationComparisonStatus(str, Enum):
+    NO_ELIGIBLE_REPLACEMENT = "NO_ELIGIBLE_REPLACEMENT"
+    COMPARISON_AVAILABLE = "COMPARISON_AVAILABLE"
+    REVIEW_REQUIRED = "REVIEW_REQUIRED"
+
+
+class RotationExecutionEligibility(str, Enum):
+    EXECUTION_ELIGIBLE = "EXECUTION_ELIGIBLE"
+    EXECUTION_BLOCKED_CASH_UNKNOWN = "EXECUTION_BLOCKED_CASH_UNKNOWN"
 
 
 @dataclass(frozen=True, slots=True)
@@ -152,10 +164,11 @@ class RotationEvaluationContext:
     gate_configuration_version: str
     as_of_timestamp: datetime
     holdings: tuple[RotationHoldingState, ...]
-    cash_amount: Decimal
+    cash_amount: Decimal | None
     candidates: tuple[RotationCandidate, ...]
     transaction_friction_model_version: str | None
     last_rotation_at: datetime | None = None
+    cash_state: str = "KNOWN"
 
 
 @dataclass(frozen=True, slots=True)
@@ -173,3 +186,5 @@ class PortfolioRotationEvaluation:
     preferred_candidate_id: str | None
     decision: RotationDecisionState
     warnings: tuple[str, ...]
+    comparison_status: RotationComparisonStatus = RotationComparisonStatus.NO_ELIGIBLE_REPLACEMENT
+    execution_eligibility: RotationExecutionEligibility = RotationExecutionEligibility.EXECUTION_ELIGIBLE

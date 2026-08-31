@@ -51,7 +51,7 @@ class SnapshotCapitalRotationQueryService:
         if limit is not None:
             comparisons = comparisons[:limit]
         candidates = {item.candidate.instrument_id: item.candidate for item in evaluation.ranked_candidates}
-        opportunities = tuple(_opportunity(item, candidates.get(item.candidate_instrument_id)) for item in comparisons)
+        opportunities = tuple(_opportunity(item, candidates.get(item.candidate_instrument_id), evaluation.execution_eligibility) for item in comparisons)
         status = _status(evaluation)
         if not evaluation.context.holdings and not evaluation.context.candidates:
             status = "EMPTY"
@@ -75,7 +75,7 @@ class SnapshotCapitalRotationQueryService:
             analyzed_complete=(self._coverage.analyzed_complete if self._coverage is not None else None),
             analyzed_partial=(self._coverage.analyzed_partial if self._coverage is not None else None),
             qualified_candidate_count=(self._coverage.qualified_candidates if self._coverage is not None else None),
-            rotation_comparison_status=status,
+            rotation_comparison_status=evaluation.comparison_status.value,
             summary=CapitalRotationSummaryResponse(
                 holding_count=len(evaluation.context.holdings),
                 portfolio_heat=_portfolio_heat(evaluation),
@@ -92,9 +92,9 @@ class UnavailableCapitalRotationQueryService(SnapshotCapitalRotationQueryService
         super().__init__(None)
 
 
-def _opportunity(value, candidate) -> CapitalRotationOpportunityResponse:
-    action = _action(value.result)
-    eligibility, gate_summary = _eligibility(value)
+def _opportunity(value, candidate, execution) -> CapitalRotationOpportunityResponse:
+    action = _action(value.result, execution)
+    eligibility, gate_summary = _eligibility(value, execution)
     return CapitalRotationOpportunityResponse(
         current_holding_symbol=value.holding_instrument_id,
         current_holding_score=value.holding_comparison_score,
@@ -122,17 +122,22 @@ def _status(value: PortfolioRotationEvaluation) -> str:
     return "READY"
 
 
-def _action(value: RotationDecisionState) -> str:
+def _action(value: RotationDecisionState, execution) -> str:
+    if execution.value == "EXECUTION_BLOCKED_CASH_UNKNOWN" and value is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED:
+        return "NO_ACTION"
     return {
         RotationDecisionState.ROTATE_CANDIDATE_PREFERRED: "ROTATE",
         RotationDecisionState.KEEP_EXISTING: "HOLD",
         RotationDecisionState.CASH_PREFERRED: "WATCH",
         RotationDecisionState.NO_ACTION: "NO_ACTION",
         RotationDecisionState.INSUFFICIENT_DATA: "WATCH",
+        RotationDecisionState.COMPARISON_AVAILABLE_EXECUTION_BLOCKED: "NO_ACTION",
     }[value]
 
 
-def _eligibility(value) -> tuple[str, tuple[str, ...]]:
+def _eligibility(value, execution) -> tuple[str, tuple[str, ...]]:
+    if execution.value == "EXECUTION_BLOCKED_CASH_UNKNOWN" and value.result is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED:
+        return "BLOCKED", ("Candidate comparison is available; execution sizing is blocked because cash is unknown.",)
     if value.result is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED:
         return "ELIGIBLE", ("Published analytical conditions are satisfied.",)
     if value.result is RotationDecisionState.INSUFFICIENT_DATA:

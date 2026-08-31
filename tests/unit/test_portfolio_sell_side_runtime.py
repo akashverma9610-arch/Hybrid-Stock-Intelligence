@@ -14,7 +14,7 @@ from app.portfolio.sell_side_runtime import (
     CapitalEfficiencyState, EvidenceFreshness, PortfolioSellSideDecisionAuditService,
     PortfolioSellSideInput, evaluate_portfolio_sell_side_action,
 )
-from app.rotation.models import RotationDecisionState
+from app.rotation.models import RotationDecisionState, RotationExecutionEligibility
 from app.storage.sqlite_core_api_snapshot_repository import SQLiteCoreApiSnapshotRepository
 from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily
 
@@ -45,6 +45,16 @@ def test_hold_for_intact_profitable_or_losing_holding_without_rotation() -> None
 def test_invalidated_rotation_and_cash_priority() -> None:
     assert evaluate_portfolio_sell_side_action(_input(trading="INVALIDATED", invalidation="TRIGGERED", rotation=RotationDecisionState.ROTATE_CANDIDATE_PREFERRED)).action.value == "ROTATE"
     assert evaluate_portfolio_sell_side_action(_input(trading="INVALIDATED", invalidation="TRIGGERED")).action.value == "EXIT_TO_CASH"
+
+
+def test_cash_unknown_comparison_never_authorizes_rotate_and_does_not_block_exit_to_cash() -> None:
+    value = _input(trading="INVALIDATED", invalidation="TRIGGERED", rotation=RotationDecisionState.COMPARISON_AVAILABLE_EXECUTION_BLOCKED)
+    value.rotation_evaluation.execution_eligibility = RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN
+    decision = evaluate_portfolio_sell_side_action(value)
+    assert decision.action.value == "REVIEW_REQUIRED" and "CASH_UNKNOWN_EXECUTION_BLOCKED" in decision.blockers
+    exit_value = _input(trading="INVALIDATED", invalidation="TRIGGERED", rotation=RotationDecisionState.CASH_PREFERRED)
+    exit_value.rotation_evaluation.execution_eligibility = RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN
+    assert evaluate_portfolio_sell_side_action(exit_value).action.value == "EXIT_TO_CASH"
 
 
 def test_fail_closed_stale_conflicted_missing_or_unresolved_replacement() -> None:

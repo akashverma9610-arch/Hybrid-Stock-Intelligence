@@ -7,6 +7,7 @@ from datetime import datetime
 from .models import (
     PortfolioRotationEvaluation, RankedCandidate, RotationCandidate, RotationComparison,
     RotationConfig, RotationDecisionState, RotationEvaluationContext, RotationHoldingState, RotationStance,
+    RotationComparisonStatus, RotationExecutionEligibility,
 )
 
 
@@ -30,18 +31,34 @@ class CapitalRotationEngine:
         selected = next((x for x in comparisons if best and x.candidate_instrument_id == best.instrument_id and x.holding_instrument_id == (weakest.instrument_id if weakest else None)), None)
         cooldown = context.last_rotation_at is not None and (context.as_of_timestamp - context.last_rotation_at).days < self.config.cooldown_days
         warnings = [f"UNRESOLVED_CONFIG:{x}" for x in unresolved] + (["ANTI_CHURN_COOLDOWN_ACTIVE"] if cooldown else [])
-        if unresolved or (context.holdings and weakest is None): stance, decision = RotationStance.INSUFFICIENT_DATA, RotationDecisionState.INSUFFICIENT_DATA
+        execution = (
+            RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN
+            if context.cash_state == "UNKNOWN" or context.cash_amount is None
+            else RotationExecutionEligibility.EXECUTION_ELIGIBLE
+        )
+        comparison = (
+            RotationComparisonStatus.COMPARISON_AVAILABLE if comparisons
+            else RotationComparisonStatus.NO_ELIGIBLE_REPLACEMENT
+        )
+        if unresolved or (context.holdings and weakest is None):
+            stance, decision, comparison = RotationStance.INSUFFICIENT_DATA, RotationDecisionState.INSUFFICIENT_DATA, RotationComparisonStatus.REVIEW_REQUIRED
         elif not best:
             invalidated = any(x.invalidated for x in context.holdings)
             stance, decision = (RotationStance.DEFENSIVE_CASH, RotationDecisionState.CASH_PREFERRED) if invalidated else (RotationStance.NO_ROTATION, RotationDecisionState.NO_ACTION)
         elif selected and selected.result is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED and not cooldown:
-            stance, decision = RotationStance.ROTATION_OPPORTUNITY, RotationDecisionState.ROTATE_CANDIDATE_PREFERRED
+            if execution is RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN:
+                stance, decision = RotationStance.NO_ROTATION, RotationDecisionState.COMPARISON_AVAILABLE_EXECUTION_BLOCKED
+            else:
+                stance, decision = RotationStance.ROTATION_OPPORTUNITY, RotationDecisionState.ROTATE_CANDIDATE_PREFERRED
         else: stance, decision = RotationStance.NO_ROTATION, RotationDecisionState.NO_ACTION
+        if execution is RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN:
+            warnings.append("CASH_UNKNOWN_EXECUTION_BLOCKED")
         marker = f"{context.portfolio_snapshot_id}|{context.as_of_timestamp.isoformat()}|{self.config.version}"
         return PortfolioRotationEvaluation("rotation-" + hashlib.sha256(marker.encode()).hexdigest()[:20], context, self.config.version,
             ranked_holdings, ranked_candidates, tuple(sorted(blocked)), weakest.instrument_id if weakest else None,
-            strongest.instrument_id if strongest else None, comparisons, stance, best.instrument_id if stance is RotationStance.ROTATION_OPPORTUNITY else None,
-            decision, tuple(sorted(set(warnings + ["NO_ORDER_OR_CAPITAL_MOVEMENT_CREATED"]))))
+            strongest.instrument_id if strongest else None, comparisons, stance,
+            best.instrument_id if decision in {RotationDecisionState.ROTATE_CANDIDATE_PREFERRED, RotationDecisionState.COMPARISON_AVAILABLE_EXECUTION_BLOCKED} else None,
+            decision, tuple(sorted(set(warnings + ["NO_ORDER_OR_CAPITAL_MOVEMENT_CREATED"]))), comparison, execution)
 
     def _eligible_candidates(self, context, unresolved):
         eligible, blocked = [], []

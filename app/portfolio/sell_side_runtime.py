@@ -12,7 +12,7 @@ from app.portfolio.sell_side_policy import (
     CURRENT_FROZEN_PORTFOLIO_SELL_SIDE_DECISION_POLICY, CapitalEfficiencyState,
     FrozenPortfolioSellSideDecisionPolicy, SellSideDecision, SellSideThesisState,
 )
-from app.rotation.models import PortfolioRotationEvaluation, RotationDecisionState
+from app.rotation.models import PortfolioRotationEvaluation, RotationDecisionState, RotationExecutionEligibility
 from app.storage.core_api_snapshot_repository import CoreApiSnapshot, CoreApiSnapshotFamily, CoreApiSnapshotRepository
 
 
@@ -86,6 +86,15 @@ def _rotation(value: PortfolioSellSideInput) -> tuple[RotationDecisionState | No
     matches = tuple(item for item in evaluation.comparisons if item.holding_instrument_id == value.holding.instrument_id)
     if evaluation.decision is RotationDecisionState.INSUFFICIENT_DATA:
         return evaluation.decision, evaluation.evaluation_id, ("INSUFFICIENT_ROTATION_EVIDENCE",)
+    execution_eligibility = getattr(
+        evaluation, "execution_eligibility", RotationExecutionEligibility.EXECUTION_ELIGIBLE,
+    )
+    if (
+        evaluation.decision is RotationDecisionState.COMPARISON_AVAILABLE_EXECUTION_BLOCKED
+        or execution_eligibility is RotationExecutionEligibility.EXECUTION_BLOCKED_CASH_UNKNOWN
+        and evaluation.decision is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED
+    ):
+        return evaluation.decision, evaluation.evaluation_id, ("CASH_UNKNOWN_EXECUTION_BLOCKED",)
     if evaluation.decision is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED and not any(item.result is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED for item in matches):
         return evaluation.decision, evaluation.evaluation_id, ("UNRESOLVED_REPLACEMENT_EVIDENCE",)
     return evaluation.decision, evaluation.evaluation_id, ()

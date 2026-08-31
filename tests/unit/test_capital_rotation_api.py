@@ -86,3 +86,14 @@ def test_canonical_engine_output_is_unchanged_by_public_projection():
     assert response.opportunities[0].recommended_action == "ROTATE"
     assert result.decision is RotationDecisionState.ROTATE_CANDIDATE_PREFERRED
     assert result.stance is RotationStance.ROTATION_OPPORTUNITY
+
+
+def test_cash_unknown_distills_comparison_without_an_executable_rotate_action():
+    result = evaluate(context(cash=None, cash_state="UNKNOWN"))
+    with _client(result) as client:
+        response = client.get("/api/v1/capital-rotation")
+    body = response.json()
+    assert body["rotation_comparison_status"] == "COMPARISON_AVAILABLE"
+    assert body["opportunities"][0]["recommended_action"] == "NO_ACTION"
+    assert body["opportunities"][0]["execution_eligibility"] == "BLOCKED"
+    assert "cash is unknown" in body["opportunities"][0]["public_gate_summary"][0].lower()

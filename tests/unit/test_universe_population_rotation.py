@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 from decimal import Decimal
 
 from app.portfolio.models import (
-    CashPosition, HoldingAnalytics, PortfolioDataStatus, PortfolioExposureSummary, PortfolioHolding,
+    CashPosition, CashState, HoldingAnalytics, PortfolioDataStatus, PortfolioExposureSummary, PortfolioHolding,
     PortfolioRiskSummary, PortfolioSnapshot, PortfolioState,
 )
 from app.rotation.models import RotationConfig
@@ -34,10 +34,13 @@ def _instrument(identifier: str) -> NseEquityInstrument:
     return NseEquityInstrument(identifier, identifier, None, "TECH", None, "ACTIVE", None, True, T, "OFFICIAL", security_type="EQUITY", main_board=True)
 
 
-def _portfolio() -> PortfolioSnapshot:
+def _portfolio(*, cash_state: CashState = CashState.KNOWN) -> PortfolioSnapshot:
     analytics = HoldingAnalytics("HOLD", T, T, "score-h", Decimal("7.5"), "COMPLETE", .8, "gate-h", "EXECUTABLE", (), None, "VALID", "VALID", None, "INTACT", Decimal("90"), Decimal("120"), None, None, "TECH")
     holding = PortfolioHolding("h", "HOLD", Decimal("10"), Decimal("100"), Decimal("1000"), T, Decimal("0"), "TECH", None, None, True, Decimal("100"), "mark-h", Decimal("1000"), Decimal("0"), Decimal("0"), analytics, 1, 1, Decimal("30"))
-    return PortfolioSnapshot("portfolio-v1", "portfolio", T, T, (holding,), CashPosition(Decimal("100"), "INR", Decimal("0"), T), ("mark-h",), Decimal("1100"), Decimal("0"), Decimal("0"), Decimal("0"), PortfolioExposureSummary({"HOLD": Decimal(".9")}, Decimal(".1"), {"TECH": Decimal(".9")}, 1, Decimal(".9")), PortfolioRiskSummary(Decimal("30"), Decimal("1"), PortfolioDataStatus.COMPLETE, {"HOLD": Decimal("30")}), PortfolioState.FULLY_INVESTED, PortfolioDataStatus.COMPLETE, "weighted-average-v1", "strategy:v1")
+    cash = CashPosition(
+        None if cash_state is CashState.UNKNOWN else Decimal("100"), "INR", Decimal("0"), T, cash_state,
+    )
+    return PortfolioSnapshot("portfolio-v1", "portfolio", T, T, (holding,), cash, ("mark-h",), Decimal("1100"), Decimal("0"), Decimal("0"), Decimal("0"), PortfolioExposureSummary({"HOLD": Decimal(".9")}, Decimal(".1"), {"TECH": Decimal(".9")}, 1, Decimal(".9")), PortfolioRiskSummary(Decimal("30"), Decimal("1"), PortfolioDataStatus.COMPLETE, {"HOLD": Decimal("30")}), PortfolioState.FULLY_INVESTED, PortfolioDataStatus.COMPLETE, "weighted-average-v1", "strategy:v1")
 
 
 def test_portfolio_universe_bridge_uses_existing_rotation_engine_and_excludes_self_candidates(tmp_path) -> None:
@@ -64,3 +67,20 @@ def test_stale_holding_analysis_fails_closed_to_partial_rotation_snapshot(tmp_pa
     config = RotationConfig("rotation-v1", Decimal(".8"), .7, Decimal("2"), True, True, False, "friction-v1", 1, 0)
     result = PortfolioUniverseRotationService(store=store, rotation_config=config).evaluate(portfolio=stale, universe=universe, job=job, evaluated_at=T)
     assert result.rotation_evaluation_id is None and "STALE_OR_MISSING_HOLDING_ANALYSIS:HOLD" in result.warnings
+
+
+def test_unknown_cash_does_not_short_circuit_governed_holding_candidate_comparison(tmp_path) -> None:
+    store = CoreUniverseAnalysisStore(SQLiteCoreApiSnapshotRepository(tmp_path / "unknown-cash.sqlite"))
+    universe = build_universe_snapshot(snapshot_id="universe-v1", as_of=T, source="OFFICIAL", instruments=(_instrument("HOLD"), _instrument("CAND")))
+    store.save_universe_snapshot(universe)
+    job = UniverseAnalysisJob("job", 1, UniverseAnalysisJobStatus.COMPLETED, T, T, T, "NSE", T, T, 2, 10, 2, 2, 2, 0, 0, 0, (), "universe-v1")
+    store.save_candidate(AnalyzedUniverseCandidate("cand", "job", "universe-v1", "CAND", "CAND", "analysis-c", "score-c", Decimal("8.9"), .8, Decimal("2.4"), "EXECUTABLE", "HEALTH", None, "FRESH", "QUALIFIED", T, (), True, True, True, True, True, 1))
+    config = RotationConfig("rotation-v1", Decimal(".8"), .7, Decimal("2"), True, True, False, "friction-v1", 1, 0)
+    result = PortfolioUniverseRotationService(store=store, rotation_config=config).evaluate(
+        portfolio=_portfolio(cash_state=CashState.UNKNOWN), universe=universe, job=job, evaluated_at=T,
+    )
+    evaluation = store._repository.get_snapshot(f"universe-rotation:{result.rotation_evaluation_id}").payload
+    assert result.rotation_evaluation_id is not None and result.qualified_candidates == 1
+    assert evaluation.context.cash_amount is None and evaluation.context.cash_state == "UNKNOWN"
+    assert evaluation.decision.value == "COMPARISON_AVAILABLE_EXECUTION_BLOCKED"
+    assert evaluation.comparisons[0].result.value == "ROTATE_CANDIDATE_PREFERRED"
