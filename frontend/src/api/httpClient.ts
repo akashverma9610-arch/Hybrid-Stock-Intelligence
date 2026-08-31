@@ -21,6 +21,7 @@ import {
 import { DataClientInterface } from './clientInterface';
 
 const DEFAULT_TIMEOUT_MS = 6000;
+const UPSTOX_HISTORICAL_TEST_TIMEOUT_MS = 30000;
 
 // Published FastAPI contract.  Connection credentials never use route
 // guessing: a 404/transport failure is displayed as unavailable instead.
@@ -71,10 +72,11 @@ export class HttpDataClient implements DataClientInterface {
 
   private async fetchWithTimeout<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    timeoutMs = DEFAULT_TIMEOUT_MS,
   ): Promise<ApiResponse<T>> {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
     const url = `${this.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 
@@ -158,7 +160,7 @@ export class HttpDataClient implements DataClientInterface {
         timestamp: new Date().toISOString(),
         data: null,
         message: isTimeout
-          ? `Request to backend timed out after ${DEFAULT_TIMEOUT_MS / 1000}s.`
+          ? `Request to backend timed out after ${timeoutMs / 1000}s.`
           : `Unable to connect to backend at ${this.baseUrl}. Please check server connectivity.`,
       };
     }
@@ -958,7 +960,11 @@ export class HttpDataClient implements DataClientInterface {
     providerId: string
   ): Promise<ApiResponse<{ success: boolean; message: string; flow?: UpstoxValidationFlow }>> {
     if (providerId === 'upstox') {
-      const res = await this.fetchWithTimeout<any>(CONNECTION_ROUTES.upstox.test, { method: 'POST' });
+      const res = await this.fetchWithTimeout<any>(
+        CONNECTION_ROUTES.upstox.test,
+        { method: 'POST' },
+        UPSTOX_HISTORICAL_TEST_TIMEOUT_MS,
+      );
       const flow = normalizeUpstoxValidationFlow(
         res.data?.validation_flow,
         res.data?.error_code,
