@@ -105,3 +105,22 @@ def test_index_job_uses_existing_official_mapping_and_the_same_versioned_bar_sto
     result = job.refresh(_request())
     assert result.status is EvidenceRefreshStatus.COMPLETE and result.accepted_count == 2 * MINIMUM_REQUIRED_DAILY_SESSIONS
     assert {item.instrument.instrument_id for item in provider.requests} == {"NIFTY_500", "NSE_SECTOR_INDEX:REALTY"}
+
+
+def test_index_job_can_refresh_only_the_canonical_nifty50_and_nifty500_targets(tmp_path):
+    repository = SQLiteCoreApiSnapshotRepository(tmp_path / "index-snapshots.sqlite")
+    universe = CoreUniverseAnalysisStore(repository)
+    history = SQLiteHistoricalBarStore(tmp_path / "index-bars.sqlite")
+    provider = Provider()
+    master = UpstoxInstrumentMaster("https://official.example/NSE.json.gz", "index-checksum", (
+        UpstoxInstrumentRecord("NSE_INDEX|NIFTY50", "NSE_INDEX", "NSE", "INDEX", None, "NIFTY 50", "Nifty 50"),
+        UpstoxInstrumentRecord("NSE_INDEX|NIFTY500", "NSE_INDEX", "NSE", "INDEX", None, "NIFTY 500", "Nifty 500"),
+        UpstoxInstrumentRecord("NSE_INDEX|NIFTYREALTY", "NSE_INDEX", "NSE", "INDEX", None, "NIFTY REALTY", "Nifty Realty"),
+    ))
+    sector = NseSectorIndexMapping("realty", "Realty", "Nifty Realty", None, SectorIndexMappingStatus.EXACT_OFFICIAL, (), "official", T)
+    job = UpstoxIndexBarsRefreshJob(sector_mappings_loader=lambda: (sector,), universe_store=universe,
+        historical_store=history, token_reader=lambda: "synthetic", master_loader=lambda: master,
+        provider_factory=lambda _: provider, clock=lambda: T, pause_seconds=0)
+    result = job.refresh_selected(_request(), canonical_instrument_ids=frozenset({"NIFTY_50", "NIFTY_500"}))
+    assert result.status is EvidenceRefreshStatus.COMPLETE and result.discovered_count == 2
+    assert {item.instrument.instrument_id for item in provider.requests} == {"NIFTY_50", "NIFTY_500"}

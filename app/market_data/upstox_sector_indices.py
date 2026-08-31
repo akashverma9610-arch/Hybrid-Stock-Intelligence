@@ -28,6 +28,8 @@ from app.universe_analysis.service import CoreUniverseAnalysisStore
 
 NIFTY_500_INDEX_ID = "NIFTY_500"
 NIFTY_500_INDEX_NAME = "NIFTY 500"
+NIFTY_50_INDEX_ID = "NIFTY_50"
+NIFTY_50_INDEX_NAME = "NIFTY 50"
 
 # These aliases were individually reviewed against the official NSE index
 # registry and the Upstox NSE_INDEX BOD master.  They are provider-instrument
@@ -85,7 +87,7 @@ def nse_index_records(records: Iterable[UpstoxInstrumentRecord]) -> tuple[Upstox
 
 
 def resolve_official_nse_index_mappings(
-    sector_mappings: Iterable[NseSectorIndexMapping], records: Iterable[UpstoxInstrumentRecord],
+    sector_mappings: Iterable[NseSectorIndexMapping], records: Iterable[UpstoxInstrumentRecord], *, include_nifty50: bool = False,
 ) -> tuple[UpstoxNseIndexMapping, ...]:
     """Resolve NIFTY 500 and Task 38's deterministic official sector identities.
 
@@ -96,6 +98,8 @@ def resolve_official_nse_index_mappings(
     requests: list[tuple[str | None, str, str, InstrumentType]] = [
         (None, NIFTY_500_INDEX_NAME, NIFTY_500_INDEX_ID, InstrumentType.BROAD_INDEX),
     ]
+    if include_nifty50:
+        requests.append((None, NIFTY_50_INDEX_NAME, NIFTY_50_INDEX_ID, InstrumentType.BROAD_INDEX))
     for mapping in sector_mappings:
         if mapping.status not in {
             SectorIndexMappingStatus.EXACT_OFFICIAL,
@@ -283,7 +287,7 @@ def _normalised(value: object) -> str:
 
 
 __all__ = (
-    "NIFTY_500_INDEX_ID", "NIFTY_500_INDEX_NAME", "UpstoxNseIndexMapping",
+    "NIFTY_50_INDEX_ID", "NIFTY_50_INDEX_NAME", "NIFTY_500_INDEX_ID", "NIFTY_500_INDEX_NAME", "UpstoxNseIndexMapping",
     "UpstoxNseIndexPopulationReport", "UpstoxNseIndexPopulationService", "UpstoxNseIndexHistoryStatus",
     "nse_index_records", "resolve_official_nse_index_mappings", "write_upstox_nse_index_mapping_reports",
     "RESOLVED_INDEX_MAPPING_STATUSES",

@@ -24,7 +24,9 @@ from app.market_data.upstox import (
     UPSTOX_PROVIDER, UpstoxHistoricalProvider, UpstoxInstrumentMaster,
     UpstoxInstrumentRecord, exact_upstox_mapping,
 )
-from app.market_data.upstox_sector_indices import RESOLVED_INDEX_MAPPING_STATUSES, resolve_official_nse_index_mappings
+from app.market_data.upstox_sector_indices import (
+    NIFTY_50_INDEX_ID, RESOLVED_INDEX_MAPPING_STATUSES, resolve_official_nse_index_mappings,
+)
 from app.taxonomy.nse_sector_indices import NseSectorIndexMapping
 from app.universe_analysis.models import NseEquityInstrument
 from app.universe_analysis.service import CoreUniverseAnalysisStore
@@ -147,6 +149,15 @@ class UpstoxIndexBarsRefreshJob:
         self._clock, self._pause, self._required, self._years, self._sleep = clock, pause_seconds, required_sessions, backfill_years, sleep_fn
 
     def refresh(self, request: EvidenceRefreshRequest) -> EvidenceRefreshOutcome:
+        return self.refresh_selected(request, canonical_instrument_ids=None)
+
+    def refresh_selected(
+        self,
+        request: EvidenceRefreshRequest,
+        *,
+        canonical_instrument_ids: frozenset[str] | None,
+    ) -> EvidenceRefreshOutcome:
+        """Refresh only explicit canonical index IDs through the approved mapping path."""
         token = self._token_reader()
         if not token:
             return _unavailable("UPSTOX_ACCESS_TOKEN_REQUIRED")
@@ -160,11 +171,21 @@ class UpstoxIndexBarsRefreshJob:
         except MarketDataError:
             return _unavailable("UPSTOX_INSTRUMENT_MASTER_UNAVAILABLE", transient=True)
         at = min(request.requested_as_of, self._clock()).astimezone(UTC)
-        mappings = resolve_official_nse_index_mappings(sectors, master.records)
-        targets = tuple(item for item in mappings if item.resolution_status in RESOLVED_INDEX_MAPPING_STATUSES)
-        totals = _Totals(discovered=len(mappings)); provider = self._provider_factory(token)
+        mappings = resolve_official_nse_index_mappings(
+            sectors, master.records,
+            include_nifty50=canonical_instrument_ids is not None and NIFTY_50_INDEX_ID in canonical_instrument_ids,
+        )
+        selected = tuple(
+            item for item in mappings
+            if canonical_instrument_ids is None or item.canonical_instrument_id in canonical_instrument_ids
+        )
+        targets = tuple(item for item in selected if item.resolution_status in RESOLVED_INDEX_MAPPING_STATUSES)
+        if canonical_instrument_ids is not None and len({item.canonical_instrument_id for item in selected}) != len(canonical_instrument_ids):
+            missing = sorted(canonical_instrument_ids - {item.canonical_instrument_id for item in selected})
+            raise ValueError(f"UPSTOX_SELECTED_INDEX_TARGETS_UNKNOWN:{','.join(missing)}")
+        totals = _Totals(discovered=len(selected)); provider = self._provider_factory(token)
         references: set[str] = {master.source_url}; latest: datetime | None = None
-        for index, item in enumerate(mappings):
+        for index, item in enumerate(selected):
             if item not in targets:
                 totals.unresolved += 1
                 totals.findings.append((ReconciliationStatus.GAP_FOUND, item.canonical_instrument_id, "UPSTOX_EXACT_INDEX_MAPPING_UNAVAILABLE"))
