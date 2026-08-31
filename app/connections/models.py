@@ -101,7 +101,7 @@ class ConnectionTestResult:
     session_totp_login: str = "NOT_TESTED"
     session_mpin_validation: str = "NOT_TESTED"
     ip_configuration: str = "NOT_TESTED"
-    validation_flow: Mapping[str, str] | None = None
+    validation_flow: Mapping[str, str | None] | None = None
 
 
 KOTAK_NEO_CREDENTIAL_DEFINITIONS: tuple[CredentialDefinition, ...] = (

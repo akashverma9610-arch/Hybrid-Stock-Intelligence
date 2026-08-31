@@ -37,6 +37,28 @@ class UpstoxTester:
         return ConnectionTestResult("upstox", profile.connection_id, ConnectionStatus.CONNECTED, AccessState.AVAILABLE, AccessState.NOT_TESTED, "PASS", T, canonical_normalization="PASS")
 
 
+class UpstoxValidationFlowTester:
+    def __init__(self, *, error_message: str | None = None) -> None:
+        self._error_message = error_message
+
+    def test(self, profile, credentials):
+        assert credentials == {"access_token": "upstox-secret"}
+        return ConnectionTestResult(
+            "upstox", profile.connection_id, ConnectionStatus.CONNECTED,
+            AccessState.AVAILABLE, AccessState.NOT_TESTED, "VALIDATED", T,
+            canonical_normalization="VALIDATED",
+            validation_flow={
+                "credentials": "VALIDATED",
+                "instrument_resolution": "VALIDATED",
+                "historical_access": "VALIDATED",
+                "normalization": "VALIDATED",
+                "persistence": "VALIDATED",
+                "last_tested_timestamp": T.isoformat(),
+                "error_message": self._error_message,
+            },
+        )
+
+
 def test_upstox_local_connection_route_redacts_token_tests_and_clears() -> None:
     store = InMemoryCredentialStore()
     service = ProviderConnectionService(SQLiteConnectionProfileRepository(), store, {"upstox": UpstoxTester()}, clock=lambda: T)
@@ -51,6 +73,36 @@ def test_upstox_local_connection_route_redacts_token_tests_and_clears() -> None:
     assert tested.json()["status"] == "CONNECTED" and tested.json()["canonical_normalization"] == "PASS"
     assert "upstox-secret" not in saved.text + tested.text + cleared.text
     assert cleared.json()["credential_fields_configured"] == {"access_token": False} and store.load("upstox") == {}
+
+
+def test_upstox_successful_validation_flow_serializes_nullable_absent_error_without_exposing_token() -> None:
+    store = InMemoryCredentialStore()
+    service = ProviderConnectionService(
+        SQLiteConnectionProfileRepository(), store,
+        {"upstox": UpstoxValidationFlowTester()}, clock=lambda: T,
+    )
+    secret = "upstox-secret"
+    with TestClient(create_app(connection_service=service)) as client:
+        client.put("/api/v1/connections/upstox", json={"access_token": secret})
+        response = client.post("/api/v1/connections/upstox/test")
+    assert response.status_code == 200
+    assert response.json()["validation_flow"]["error_message"] is None
+    assert response.json()["status"] == "CONNECTED"
+    assert secret not in response.text
+
+
+def test_upstox_validation_flow_preserves_safe_provider_error_message() -> None:
+    store = InMemoryCredentialStore()
+    service = ProviderConnectionService(
+        SQLiteConnectionProfileRepository(), store,
+        {"upstox": UpstoxValidationFlowTester(error_message="Upstox historical access is not authorized.")},
+        clock=lambda: T,
+    )
+    with TestClient(create_app(connection_service=service)) as client:
+        client.put("/api/v1/connections/upstox", json={"access_token": "upstox-secret"})
+        response = client.post("/api/v1/connections/upstox/test")
+    assert response.status_code == 200
+    assert response.json()["validation_flow"]["error_message"] == "Upstox historical access is not authorized."
 
 
 def test_upstox_rejects_noncanonical_token_field_without_reporting_saved() -> None:

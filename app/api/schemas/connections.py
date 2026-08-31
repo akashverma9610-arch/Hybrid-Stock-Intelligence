@@ -96,7 +96,9 @@ class ConnectionTestResponse(BaseModel):
     session_totp_login: str = "NOT_TESTED"
     session_mpin_validation: str = "NOT_TESTED"
     ip_configuration: str = "NOT_TESTED"
-    validation_flow: dict[str, str] | None = None
+    # A completed validation flow truthfully has no error message.  Keep the
+    # existing object shape while allowing that one absent-error value.
+    validation_flow: dict[str, str | None] | None = None
 
 
 class UpstoxAnalyticsEndpointResponse(BaseModel):
