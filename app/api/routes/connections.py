@@ -104,6 +104,7 @@ def refresh_real_portfolio_upstox_ohlcv(
     result = service.run_twice()
     return BackendLocalOhlcvActivationResponse(
         requested_at=result.requested_at,
+        completed_at=result.completed_at,
         first_run=tuple(BackendLocalOhlcvTargetResponse(**asdict(item)) for item in result.first_run),
         second_run=tuple(BackendLocalOhlcvTargetResponse(**asdict(item)) for item in result.second_run),
     )

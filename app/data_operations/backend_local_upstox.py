@@ -38,6 +38,7 @@ class BackendLocalOhlcvTargetRun:
 @dataclass(frozen=True, slots=True)
 class BackendLocalOhlcvActivationResult:
     requested_at: datetime
+    completed_at: datetime
     first_run: tuple[BackendLocalOhlcvTargetRun, ...]
     second_run: tuple[BackendLocalOhlcvTargetRun, ...]
 
@@ -66,26 +67,30 @@ class BackendLocalRealPortfolioOhlcvActivation:
         at = self._clock().astimezone(UTC)
         first = self._run("first", at)
         second = self._run("second", at)
-        return BackendLocalOhlcvActivationResult(at, first, second)
+        return BackendLocalOhlcvActivationResult(at, self._clock().astimezone(UTC), first, second)
 
     def _run(self, ordinal: str, at: datetime) -> tuple[BackendLocalOhlcvTargetRun, ...]:
         results = []
         for instrument_id in REAL_PORTFOLIO_OHLCV_TARGETS:
             family = EvidenceDataFamily.OHLCV if instrument_id in PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS else EvidenceDataFamily.INDEX_BARS
-            before = self._historical.count(instrument_id, Timeframe.DAILY)
+            before = self._canonical_session_count(instrument_id)
             outcome = self._refresh(instrument_id, family, ordinal, at)
+            # ``requested_at`` remains immutable request lineage.  Evidence
+            # written by this operation was not known at that earlier instant,
+            # so readiness must use a distinct cutoff captured after writes.
+            visibility_cutoff = self._clock().astimezone(UTC)
             mapping = self._universe.provider_mapping(
-                canonical_instrument_id=instrument_id, provider=UPSTOX_PROVIDER, as_of=at,
+                canonical_instrument_id=instrument_id, provider=UPSTOX_PROVIDER, as_of=visibility_cutoff,
             )
             readiness = OhlcvReadinessService(self._historical).assess(
-                instrument_id, as_of=at, mapping_available=mapping is not None,
+                instrument_id, as_of=visibility_cutoff, mapping_available=mapping is not None,
                 required_latest_at=outcome.accepted_through,
             )
             results.append(BackendLocalOhlcvTargetRun(
                 instrument_id,
                 "EXACT_MAPPING_AVAILABLE" if mapping is not None else "EXACT_MAPPING_UNAVAILABLE",
                 before,
-                self._historical.count(instrument_id, Timeframe.DAILY),
+                self._canonical_session_count(instrument_id, as_of=visibility_cutoff),
                 readiness.latest_bar_at,
                 outcome.accepted_count,
                 outcome.duplicate_count,
@@ -94,6 +99,12 @@ class BackendLocalRealPortfolioOhlcvActivation:
                 outcome.error_summary or (None if readiness.ready else readiness.reason),
             ))
         return tuple(results)
+
+    def _canonical_session_count(self, instrument_id: str, *, as_of: datetime | None = None) -> int:
+        return len(self._historical.range(
+            instrument_id, Timeframe.DAILY,
+            datetime.min.replace(tzinfo=UTC), datetime.max.replace(tzinfo=UTC), as_of=as_of,
+        ))
 
     def _refresh(self, instrument_id: str, family: EvidenceDataFamily, ordinal: str, at: datetime) -> EvidenceRefreshOutcome:
         request = EvidenceRefreshRequest(

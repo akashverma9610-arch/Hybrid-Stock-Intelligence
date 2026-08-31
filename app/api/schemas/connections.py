@@ -116,6 +116,7 @@ class BackendLocalOhlcvTargetResponse(BaseModel):
 
 class BackendLocalOhlcvActivationResponse(BaseModel):
     requested_at: datetime
+    completed_at: datetime
     first_run: tuple[BackendLocalOhlcvTargetResponse, ...]
     second_run: tuple[BackendLocalOhlcvTargetResponse, ...]
 

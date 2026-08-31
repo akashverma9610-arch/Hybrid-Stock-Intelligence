@@ -69,7 +69,7 @@ class BackendLocalActivation:
             BackendLocalOhlcvTargetRun(identifier, "EXACT_MAPPING_AVAILABLE", 252, 252, T, 0, 2, 0, "OHLCV_READY", None)
             for identifier in REAL_PORTFOLIO_OHLCV_TARGETS
         )
-        return BackendLocalOhlcvActivationResult(T, runs, runs)
+        return BackendLocalOhlcvActivationResult(T, T, runs, runs)
 
 
 def test_hidden_backend_local_upstox_activation_has_fixed_targets_and_no_secret_input_or_output() -> None:
