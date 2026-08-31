@@ -86,6 +86,20 @@ def get_connection_service(request: Request) -> ProviderConnectionService:
     return request.app.state.connection_service
 
 
+def get_backend_local_real_portfolio_ohlcv_activation(request: Request):
+    """Lazily compose the hidden local operation in the serving backend process."""
+    from app.data_operations.backend_local_upstox import build_backend_local_real_portfolio_ohlcv_activation
+    from app.storage.database import DatabaseSettings
+
+    database = request.app.state.database_settings
+    if database.storage_mode.value == "IN_MEMORY_SQLITE":
+        database = DatabaseSettings.local_runtime()
+    return build_backend_local_real_portfolio_ohlcv_activation(
+        database_settings=database,
+        credential_store=request.app.state.connection_credential_store,
+    )
+
+
 def get_runtime_health_service(request: Request) -> RuntimeHealthService:
     return request.app.state.runtime_health_service
 

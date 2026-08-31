@@ -1,11 +1,13 @@
 """Isolated local/private configuration routes; no analytical or trading actions."""
 
+from dataclasses import asdict
+
 from fastapi import APIRouter, Depends
 
-from app.api.dependencies import get_api_settings, get_connection_service
+from app.api.dependencies import get_api_settings, get_backend_local_real_portfolio_ohlcv_activation, get_connection_service
 from app.api.errors import APIRequestError
 from app.api.schemas.connections import (
-    ConnectionListResponse, ConnectionProfileResponse, ConnectionTestResponse,
+    BackendLocalOhlcvActivationResponse, BackendLocalOhlcvTargetResponse, ConnectionListResponse, ConnectionProfileResponse, ConnectionTestResponse,
     CredentialDefinitionResponse, KotakConnectionUpdateRequest, KotakMarketDataTestRequest, KotakSessionTestRequest, GlobalDatafeedsConnectionUpdateRequest, UpstoxConnectionUpdateRequest, GNewsConnectionUpdateRequest, UpstoxAnalyticsEndpointResponse, UpstoxAnalyticsFeasibilityResponse, UpstoxAnalyticsAnchorsResponse, UpstoxRequestForensicsResponse, UpstoxPreparedRequestResponse, UpstoxRequestCallResponse,
 )
 from app.api.settings import APISettings
@@ -90,6 +92,21 @@ def update_upstox_connection(request:UpstoxConnectionUpdateRequest,settings:APIS
 @router.post("/connections/upstox/test",response_model=ConnectionTestResponse)
 def test_upstox_connection(settings:APISettings=Depends(get_api_settings),service:ProviderConnectionService=Depends(get_connection_service)):
     _require_local(settings);return _result(service.test_upstox())
+
+
+@router.post("/connections/upstox/real-portfolio-ohlcv/refresh", response_model=BackendLocalOhlcvActivationResponse, include_in_schema=False)
+def refresh_real_portfolio_upstox_ohlcv(
+    settings: APISettings = Depends(get_api_settings),
+    service = Depends(get_backend_local_real_portfolio_ohlcv_activation),
+) -> BackendLocalOhlcvActivationResponse:
+    """Local-only, fixed-target evidence activation; it accepts no request body."""
+    _require_local(settings)
+    result = service.run_twice()
+    return BackendLocalOhlcvActivationResponse(
+        requested_at=result.requested_at,
+        first_run=tuple(BackendLocalOhlcvTargetResponse(**asdict(item)) for item in result.first_run),
+        second_run=tuple(BackendLocalOhlcvTargetResponse(**asdict(item)) for item in result.second_run),
+    )
 
 
 @router.post("/connections/upstox/analytics-feasibility/apollohosp", response_model=UpstoxAnalyticsFeasibilityResponse, include_in_schema=False)

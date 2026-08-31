@@ -251,9 +251,11 @@ def create_app(
             return SQLiteHistoricalBarStore(database.url.removeprefix("sqlite:///"))
         return PostgreSQLHistoricalBarStore(DatabaseConnectionFactory(database))
 
+    credential_store = create_credential_store()
+    application.state.connection_credential_store = credential_store
     application.state.connection_service = connection_service or ProviderConnectionService(
         SQLiteConnectionProfileRepository(),
-        create_credential_store(),
+        credential_store,
         universe_symbols_provider=current_universe_symbols,
         upstox_universe_store_provider=upstox_universe_store,
         upstox_historical_store_provider=upstox_historical_store,

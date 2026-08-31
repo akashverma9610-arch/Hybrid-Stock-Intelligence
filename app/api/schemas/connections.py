@@ -101,6 +101,25 @@ class ConnectionTestResponse(BaseModel):
     validation_flow: dict[str, str | None] | None = None
 
 
+class BackendLocalOhlcvTargetResponse(BaseModel):
+    canonical_instrument_id: str
+    mapping_status: str
+    session_count_before: int
+    session_count_after: int
+    latest_session: datetime | None
+    accepted_count: int
+    duplicate_count: int
+    conflict_count: int
+    readiness: str
+    blocker: str | None
+
+
+class BackendLocalOhlcvActivationResponse(BaseModel):
+    requested_at: datetime
+    first_run: tuple[BackendLocalOhlcvTargetResponse, ...]
+    second_run: tuple[BackendLocalOhlcvTargetResponse, ...]
+
+
 class UpstoxAnalyticsEndpointResponse(BaseModel):
     endpoint: str
     method: str = "GET"

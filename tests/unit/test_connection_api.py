@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from fastapi.testclient import TestClient
 
 from app.api.main import create_app
+from app.api.dependencies import get_backend_local_real_portfolio_ohlcv_activation
 from app.connections.credentials import (
     CredentialStoreBackendStatus,
     CredentialStoreUnavailableError,
@@ -16,6 +17,9 @@ from app.connections.models import AccessState, ConnectionStatus, ConnectionTest
 from app.market_data.kotak_neo import KOTAK_NEO_PROVIDER
 from app.market_data.upstox_forensics import CallResult, execute_forensics
 from app.market_data.upstox_analytics import UpstoxAnalyticsFeasibilityTester
+from app.data_operations.backend_local_upstox import (
+    BackendLocalOhlcvActivationResult, BackendLocalOhlcvTargetRun, REAL_PORTFOLIO_OHLCV_TARGETS,
+)
 
 
 T = datetime(2026, 8, 29, 10, tzinfo=UTC)
@@ -57,6 +61,28 @@ class UpstoxValidationFlowTester:
                 "error_message": self._error_message,
             },
         )
+
+
+class BackendLocalActivation:
+    def run_twice(self):
+        runs = tuple(
+            BackendLocalOhlcvTargetRun(identifier, "EXACT_MAPPING_AVAILABLE", 252, 252, T, 0, 2, 0, "OHLCV_READY", None)
+            for identifier in REAL_PORTFOLIO_OHLCV_TARGETS
+        )
+        return BackendLocalOhlcvActivationResult(T, runs, runs)
+
+
+def test_hidden_backend_local_upstox_activation_has_fixed_targets_and_no_secret_input_or_output() -> None:
+    application = create_app()
+    application.dependency_overrides[get_backend_local_real_portfolio_ohlcv_activation] = BackendLocalActivation
+    secret = "upstox-secret"
+    with TestClient(application) as client:
+        response = client.post("/api/v1/connections/upstox/real-portfolio-ohlcv/refresh")
+    assert response.status_code == 200
+    body = response.json()
+    assert [item["canonical_instrument_id"] for item in body["first_run"]] == list(REAL_PORTFOLIO_OHLCV_TARGETS)
+    assert body["first_run"] == body["second_run"]
+    assert secret not in response.text and "access_token" not in response.text
 
 
 def test_upstox_local_connection_route_redacts_token_tests_and_clears() -> None:

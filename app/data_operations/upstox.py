@@ -162,7 +162,8 @@ class UpstoxIndexBarsRefreshJob:
         if not token:
             return _unavailable("UPSTOX_ACCESS_TOKEN_REQUIRED")
         sectors = tuple(self._sector_mappings_loader())
-        if not sectors:
+        benchmark_only = canonical_instrument_ids is not None and canonical_instrument_ids <= {"NIFTY_50", "NIFTY_500"}
+        if not sectors and not benchmark_only:
             return EvidenceRefreshOutcome(EvidenceRefreshStatus.SOURCE_UNAVAILABLE, "UPSTOX_HISTORICAL_V3",
                 failure_kind=EvidenceRefreshFailureKind.AUTHENTICATION_OR_CONFIGURATION,
                 error_summary="NSE_SECTOR_INDEX_MAPPING_REQUIRED", warnings=("NSE_SECTOR_INDEX_MAPPING_REQUIRED",))
