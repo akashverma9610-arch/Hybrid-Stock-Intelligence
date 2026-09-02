@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from app.api.dependencies import get_runtime_health_service
-from app.api.schemas.runtime import RuntimeStatusResponse
+from app.api.dependencies import get_local_runtime_readiness_service, get_runtime_health_service
+from app.api.local_runtime_readiness import LocalRuntimeReadinessService
+from app.api.schemas.runtime import LocalRuntimeReadinessResponse, RuntimeStatusResponse
 from app.runtime.scheduler import RuntimeHealthService
 
 
@@ -26,3 +27,11 @@ def runtime_status(service: RuntimeHealthService = Depends(get_runtime_health_se
         consecutive_failures=value.consecutive_failures,
         warnings=value.warnings,
     )
+
+
+@router.get("/runtime/local-readiness", response_model=LocalRuntimeReadinessResponse)
+def local_runtime_readiness(
+    service: LocalRuntimeReadinessService = Depends(get_local_runtime_readiness_service),
+) -> LocalRuntimeReadinessResponse:
+    """Read local operational state without starting jobs or exposing secrets."""
+    return LocalRuntimeReadinessResponse.model_validate(service.status(), from_attributes=True)

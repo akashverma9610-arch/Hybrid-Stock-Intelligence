@@ -28,9 +28,12 @@ dist/
 *.log
 
 # Runtime/test temporary output
+.tmp/
 reports/**/*_tmp/
 reports/**/pytest*/
 automation/**/tmp/
+frontend/reports-runtime-*.out
+frontend/reports-runtime-*.err
 
 # U17 transient runtime staging
 data/incoming/

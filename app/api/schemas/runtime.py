@@ -17,3 +17,19 @@ class RuntimeStatusResponse(BaseModel):
     last_data_as_of: datetime | None
     consecutive_failures: int
     warnings: tuple[str, ...]
+
+
+class LocalRuntimeReadinessResponse(BaseModel):
+    database_backend: str
+    storage_mode: str
+    database_path: str | None
+    sqlite_integrity: str | None
+    foreign_key_violations: int | None
+    financial_facts: int | None
+    corporate_filings: int | None
+    portfolio_snapshots: int | None
+    bse_receipts: int | None
+    bse_plan_id: str | None
+    bse_status: str
+    market_wide_watch_status: str
+    warnings: tuple[str, ...]
