@@ -22,6 +22,11 @@ Where this document conflicts with an implemented Core V1 contract, Core V1
 and its tested source prevail until a separately governed implementation slice
 is approved.
 
+The first proposed implementation boundary is documented separately in the
+[P1 Watch-only `HSISignal` Foundation proposal]
+(POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md).  It is non-active and does not
+alter this architecture or Core V1.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same
