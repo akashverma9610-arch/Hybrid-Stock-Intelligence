@@ -39,6 +39,11 @@ are documentation-only. Their retained-data [historical calibration research
 receipt](POST_V1_BATCH_1_HISTORICAL_CALIBRATION_RESEARCH.md) found no
 defensible operational parameters, so neither strategy can activate.
 
+The Long-Term Thesis Family has a single [policy approval
+pack](POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md). It identifies the
+reusable Core V1 inputs and all unresolved normative definitions; it does not
+implement or activate a long-term product strategy.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same
