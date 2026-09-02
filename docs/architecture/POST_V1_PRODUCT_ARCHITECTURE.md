@@ -55,6 +55,11 @@ records candidate grids and data-contract gaps for the remaining families; it
 does not activate any of them.
 It is documentation-only and cannot alter portfolio state or execution.
 
+The [Fast-Rotation Comparison Foundation](POST_V1_FAST_ROTATION_FOUNDATION.md)
+defines a separate, injected, lineage-checked research observation over an
+already completed Core comparison.  It neither changes frozen Core capital
+rotation nor promotes its labels into product actions.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same

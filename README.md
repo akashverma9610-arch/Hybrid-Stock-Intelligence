@@ -52,6 +52,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Long-Term Evidence Dossier reuse and policy-readiness receipt](docs/architecture/POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md)
 - [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Post-V1 primary-source policy research pack](docs/architecture/POST_V1_POLICY_RESEARCH_PACK.md)
+- [Post-V1 Fast-Rotation comparison foundation](docs/architecture/POST_V1_FAST_ROTATION_FOUNDATION.md)
 - [Live-readiness hardening candidate (not approved)](docs/architecture/live_readiness_candidate.md)
 - [Economic and news intelligence](docs/architecture/economic_news_intelligence.md)
 - [Controlled real-Brain trial](docs/architecture/real_brain_trial.md)
