@@ -105,6 +105,32 @@ That prerequisite is now specified, but not activated, in
 [`POST_V1_MARKET_EXTREMES_ASSURANCE_PROJECTION.md`](POST_V1_MARKET_EXTREMES_ASSURANCE_PROJECTION.md).
 It intentionally remains separate from every Profit-Harvesting evaluator.
 
+## Approved first evaluator: assurance euphoria mapping
+
+**Status:** `APPROVED_FOR_IMPLEMENTATION / EUPHORIA_MAPPING_ONLY / WATCH_ONLY /
+NON_EXECUTABLE / NOT_ACTIVE`.
+
+`profit-harvesting-review-policy / market-extremes-euphoria-shadow-v1` may
+consume only a verified Market-Extremes Assurance Projection. The exact,
+read-only mapping is:
+
+| Assurance state | Core regime | Profit Review status |
+| --- | --- | --- |
+| `READY` | `EUPHORIA` | `MONITOR_PROFIT` |
+| `READY` | any other valid regime | `NO_PROFIT_REVIEW_EVIDENCE` |
+| `CONFLICTED` | any or none | `CONFLICTED_PROFIT_REVIEW` |
+| `UNAVAILABLE`, `STALE`, `TEMPORALLY_INVALID`, `UNVERIFIABLE` | any or none | `PROFIT_REVIEW_UNAVAILABLE` |
+
+`EUPHORIA` is evidence for this descriptive review only. It is not “confirmed
+euphoria,” a top, an exit, a target, or an instruction to book profit.
+`top_confirmed`, warnings, and factors are not interpreted. Assurance lineage
+and blocker codes are preserved unchanged.
+
+Valuation, return/percentile, volume, milestone, catalyst, reward/risk,
+fundamental-priced-in, realization, purchase-price, concentration, sizing,
+quantity, tax, slippage, friction, replacement, and rotation domains remain
+explicitly unavailable or not evaluated.
+
 ## Exact resume statement
 
 > Approve one named Profit-Harvesting implementation path in

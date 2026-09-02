@@ -153,6 +153,13 @@ BUY/SELL/ADD/TRIM/EXIT/ROTATE action, or performance claim.
 
 ## B. Profit-Harvesting approval decisions
 
+The first approved implementation is limited to the immutable
+Market-Extremes Assurance mapping in
+`POST_V1_PROFIT_HARVESTING_IMPLEMENTABILITY_CORRECTION.md`. It is
+`WATCH_ONLY / NON_EXECUTABLE`; euphoria is review evidence, never a sell,
+trim, exit, target, or portfolio instruction. All other rows below remain
+separately governed and unavailable.
+
 | Decision | Required evidence | Prohibited inference | Exact approval needed |
 | --- | --- | --- | --- |
 | Valuation excess | Comparable valuation method, price basis and denominator | Price rise equals overvaluation | Method, scope, boundary/band, freshness and exceptions. |
