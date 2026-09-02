@@ -45,6 +45,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Versioning and change control](docs/architecture/versioning_and_change_control.md)
 - [Post-V1 Product Architecture — One Brain, Multiple Signal Windows](docs/architecture/POST_V1_PRODUCT_ARCHITECTURE.md)
 - [P1 Watch-only HSISignal Foundation proposal](docs/architecture/POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md)
+- [Post-V1 Strategy and Signal-Window Catalogue](docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md)
 - [Live-readiness hardening candidate (not approved)](docs/architecture/live_readiness_candidate.md)
 - [Economic and news intelligence](docs/architecture/economic_news_intelligence.md)
 - [Controlled real-Brain trial](docs/architecture/real_brain_trial.md)

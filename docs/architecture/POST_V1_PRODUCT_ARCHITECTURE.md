@@ -27,6 +27,11 @@ The first proposed implementation boundary is documented separately in the
 (POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md).  It is non-active and does not
 alter this architecture or Core V1.
 
+The approved product scope, window vocabulary, and required fail-closed
+strategy statuses are catalogued in the [Post-V1 Strategy and Signal-Window
+Catalogue](POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md). It does not
+activate a strategy or alter this architecture's status.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same
