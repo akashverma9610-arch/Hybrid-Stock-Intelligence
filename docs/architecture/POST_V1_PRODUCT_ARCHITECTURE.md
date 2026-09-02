@@ -50,6 +50,9 @@ keeps every long-term family unavailable pending exact policy definitions.
 
 The next normative boundary is the [Sell/Risk, Profit-Harvesting and
 Fast-Rotation policy approval pack](POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md).
+The [primary-source policy research pack](POST_V1_POLICY_RESEARCH_PACK.md)
+records candidate grids and data-contract gaps for the remaining families; it
+does not activate any of them.
 It is documentation-only and cannot alter portfolio state or execution.
 
 ## One Brain, multiple signal windows

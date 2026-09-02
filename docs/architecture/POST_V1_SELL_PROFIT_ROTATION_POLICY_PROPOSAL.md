@@ -1,6 +1,6 @@
 # Post-V1 Sell/Risk, Profit-Harvesting, and Fast-Rotation Policy Approval Pack
 
-**Status: `SELL_RISK_REVIEW_POLICY_V1_RESEARCH_SHADOW_APPROVED / DOCUMENTATION_ONLY / IMPLEMENTATION_PENDING / NOT_ACTIVE`.**
+**Status: `RESEARCH_SHADOW_POLICY_IMPLEMENTED / REVIEW_ONLY / WATCH_ONLY / NON_EXECUTABLE / NOT_CONSUMER_ACTIVE`.**
 
 Profit-Harvesting and Fast-Rotation remain
 `POLICY_UNAPPROVED / STRATEGY_UNAVAILABLE / NOT_ACTIVE`.
@@ -40,6 +40,11 @@ review state with lineage and blockers. It cannot select EXIT, SELL or TRIM.
 This approval replaces the evidence-dossier-only recommendation for this
 narrow policy only.  It does not approve a complete Sell/Risk evaluator,
 Profit-Harvesting, or Fast-Rotation.
+
+**Implementation status:** `SELL_RISK_REVIEW_POLICY / v1-research-shadow` is
+implemented as a pure deterministic, PIT-bound internal policy. It has no
+persistence, API/UI, portfolio, broker, order, setup, Six-Gates, or capital
+authorization integration; its statuses remain descriptive only.
 
 #### Scope and required inputs
 
