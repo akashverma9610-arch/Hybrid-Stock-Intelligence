@@ -22,10 +22,11 @@ Where this document conflicts with an implemented Core V1 contract, Core V1
 and its tested source prevail until a separately governed implementation slice
 is approved.
 
-The first proposed implementation boundary is documented separately in the
-[P1 Watch-only `HSISignal` Foundation proposal]
-(POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md).  It is non-active and does not
-alter this architecture or Core V1.
+The first approved implementation boundary is recorded in the
+[P1 Watch-only `HSISignal` Foundation acceptance]
+(POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md). It is implemented only as an
+internal on-demand projection; it is Watch-only, non-executable, and does not
+alter this architecture, its consumer-product status, or frozen Core V1.
 
 The approved product scope, window vocabulary, and required fail-closed
 strategy statuses are catalogued in the [Post-V1 Strategy and Signal-Window
@@ -77,7 +78,7 @@ a read/query projection of the one canonical Brain:
 | Home / Intelligence Command Centre | Cross-window overview, freshness, blockers, and signal summaries | `PROPOSED` |
 | Deep Analysis | Instrument, evidence, thesis, diagnostic, and lineage exploration | `PARTIAL` — internal/read-model surfaces exist, consumer information architecture does not |
 | Portfolio Analysis | Portfolio relevance, risk, invalidation, and governed review context | `PARTIAL` — Core analysis exists; consumer product is not implemented |
-| Strategies | Registry-visible strategy availability and policy provenance | `PROPOSED` |
+| Strategies | Registry-visible strategy availability and policy provenance | `PARTIAL` — internal P1 registry resolves only governed Pre-Breakout provenance; no consumer surface |
 | Trades | Read-only analytical/paper lifecycle and controlled future review | `PARTIAL` — no consumer product or execution authority |
 | Settings | Consumer-facing configuration and connection explanations | `PARTIAL` — internal settings/connections exist |
 | Stocks discovery | Promotional/discovery entry point for equity intelligence | `PROPOSED` |
@@ -90,14 +91,23 @@ related internal/read-model capability exists but not the consumer product;
 `PROPOSED` means documented only; `UNAVAILABLE` means no supported capability;
 and `NOT_ACTIVE` means intentionally outside the active product surface.
 
-## Proposed future canonical `HSISignal` projection
+## Canonical `HSISignal`: implemented internal P1 boundary and future extensions
 
-`HSISignal` is a proposed immutable, query-oriented projection.  It is **not
-implemented** and must not be confused with the existing analytical signal
-lifecycle.  A future implementation may introduce it only with a separately
-approved contract, tests, migration/persistence decision, and API decision.
+`HSISignal` is now implemented only as an immutable, internal P1 on-demand
+projection over one verified Market-Wide Watch and read-only strategy
+provenance. It must not be confused with the existing analytical signal
+lifecycle or represented as a consumer product. It has no persistence, API,
+UI, runtime activation, portfolio access, or execution authority. Future
+consumer use still requires separately approved query/API, UI, lifecycle, and
+activation decisions.
 
-Minimum proposed fields:
+P1 implements the immutable fields and fixed unavailable states defined in its
+[acceptance record](POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md). The broader
+future-capable field surface below is not implemented beyond that bounded P1
+subset; it must not be used to infer a future actionability state, consumer
+API, or product activation.
+
+Future-capable fields:
 
 | Field | Meaning |
 | --- | --- |
@@ -119,9 +129,9 @@ strength, readiness, or actionability.
 
 ## Strategy Registry architecture
 
-The future Strategy Registry is a versioned, read-only policy lookup between a
-product signal type/horizon and an approved strategy contract.  It does not
-create strategies, activate policies, or authorize execution.
+The P1 internal Strategy Registry is a versioned, read-only policy-provenance
+lookup. It does not create strategies, activate policies, construct signals,
+or authorize execution. Consumer registry visibility remains future work.
 
 The existing approved Pre-Breakout policy may be referenced where its exact
 governed identity and suitability apply.  Every unimplemented strategy or
@@ -147,20 +157,20 @@ products.
 - No additional Brain, provider truth, or duplicated source of truth.
 - No policy-threshold loosening, implied actionability, or latest-record
   fallback.
-- No product implementation in this documentation-only slice.
+- No consumer product implementation, activation, or execution authority.
 
 ## Future implementation sequence
 
 Future work is deliberately staged and requires separate approval at each
 boundary:
 
-1. Signal projection foundation with immutable/PIT lineage and contract tests.
-2. Read-only Strategy Registry with fail-closed unavailable entries.
-3. Horizon-specific policy contracts.
-4. Product API/query layer.
-5. Consumer UI sections over those read models.
-6. Shadow and paper-trading evaluation where separately approved.
-7. Controlled product activation with explicit governance and no execution
+1. Completed internal signal projection foundation and fail-closed Strategy
+   Registry, retained as Watch-only/non-executable.
+2. Horizon-specific policy contracts.
+3. Product API/query layer.
+4. Consumer UI sections over those read models.
+5. Shadow and paper-trading evaluation where separately approved.
+6. Controlled product activation with explicit governance and no execution
    authority unless independently approved.
 
 No stage authorizes a later stage by implication.

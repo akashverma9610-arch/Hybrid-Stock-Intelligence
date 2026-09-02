@@ -271,7 +271,7 @@ are not made unavailable by this product catalogue.
 | Strategy / window | Reusable Core V1 capability / input | Underlying policy status | Post-V1 product-strategy status | Activation status |
 | --- | --- | --- | --- | --- |
 | `EVENT_CATALYST_INTELLIGENCE` | Operational external-evidence infrastructure; Watch/archetype routing; catalyst evidence | Core evidence governance implemented; no product strategy policy | `STRATEGY_UNAVAILABLE` | `NOT_ACTIVE` |
-| `PRE_BREAKOUT_COMPRESSION` | Governed Pre-Breakout setup, Watch/archetype routing, OHLCV/delivery lineage | Existing governed Pre-Breakout policy `POLICY_AVAILABLE` | Product Registry/projection unavailable; only this future route may reference that policy | `NOT_ACTIVE` |
+| `PRE_BREAKOUT_COMPRESSION` | Governed Pre-Breakout setup, Watch/archetype routing, OHLCV/delivery lineage | Existing governed Pre-Breakout policy `POLICY_AVAILABLE` | Internal P1 registry/projection implemented only as `WATCH_ONLY / NON_EXECUTABLE`; no consumer strategy | `NOT_CONSUMER_ACTIVE` |
 | `BREAKOUT_RETEST_SUPPLY_EXHAUSTION` | Technical/volume inputs and Watch routing, partial | No approved strategy policy | `STRATEGY_UNAVAILABLE` | `NOT_ACTIVE` |
 | `CAPITULATION_REVERSAL` | Market Extremes evidence, dislocation evidence, and Watch routing | No approved strategy policy | `STRATEGY_UNAVAILABLE` | `NOT_ACTIVE` |
 | `TACTICAL_BREAKOUT_PULLBACK` | Technical and relative-strength inputs; Watch routing | No approved strategy policy | `STRATEGY_UNAVAILABLE` | `NOT_ACTIVE` |
@@ -313,7 +313,7 @@ The following are future approval decisions, not gaps this document fills:
 - a formal bucket taxonomy and exact higher cross-bucket rotation hurdle;
 - IPO official-source coverage and permitted reliability-scored treatment of secondary sentiment;
 - product-specific valuation, compounder, inflection, policy-transmission, profit-harvesting, and risk calculation contracts;
-- a future read-only Strategy Registry and product API/UI decisions.
+- consumer-facing Strategy Registry and product API/UI decisions.
 
 Until those approvals and independently tested implementations exist, new strategies resolve fail-closed to `STRATEGY_UNAVAILABLE / NOT_ACTIVE`.
 

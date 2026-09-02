@@ -1,22 +1,44 @@
 # Post-V1 Product Phase P1 — Watch-only `HSISignal` Foundation
 
-**Status: `APPROVED_FOR_IMPLEMENTATION / DOCUMENTATION_ONLY / NOT_ACTIVE`.**
+**Status: `IMPLEMENTED / INTERNAL_ON_DEMAND_PROJECTION / WATCH_ONLY / NON_EXECUTABLE / NOT_CONSUMER_ACTIVE`.**
 
 ## 1. Authority, purpose, and boundary
 
-This is the canonical activation proposal for the first implementation slice of
-the [Post-V1 Product Architecture](POST_V1_PRODUCT_ARCHITECTURE.md).  It does
-not activate P1 or change frozen HSI Core V1.  No source, schema, API, UI,
-runtime, provider, credential, portfolio, order, or broker behavior is changed
-by this document.
+This document remains the canonical approval and acceptance record for the
+first implementation slice of the [Post-V1 Product
+Architecture](POST_V1_PRODUCT_ARCHITECTURE.md). P1 is now implemented only as
+an internal, pure, on-demand projection. It does not activate a consumer
+product or change frozen HSI Core V1. No schema, API, UI, runtime, provider,
+credential, portfolio, order, or broker behavior is changed.
 
-P1 proposes a pure projection of one existing immutable
+P1 implements a pure projection of one existing immutable
 `MarketWideWatchRecord` into a normalized `HSISignal`.  It is not a new
 detection, ranking, scoring, setup, gate, or execution engine.  Every P1
 output is fixed to:
 
 `actionability = WATCH_ONLY`
 `execution_status = NON_EXECUTABLE`
+
+## P1 implementation and acceptance record
+
+The completed P1 boundary consists solely of three internal modules:
+
+| Slice | Implemented artifact | Commit | Acceptance boundary |
+| --- | --- | --- | --- |
+| P1A | immutable `HSISignal` value contract | `9d2c46c` | deterministic, immutable, Watch-only/non-executable contract |
+| P1B | read-only fail-closed strategy provenance registry | `24dbda2` | exact PIT-valid Pre-Breakout provenance or `STRATEGY_UNAVAILABLE` |
+| P1C | pure Watch-to-signal projector | `1cf3b95` | one verified Watch × routed archetype to one deterministic signal |
+
+P1 does not persist a signal, expose an API/UI, calculate a strategy, create a
+setup/gate/score, access portfolio state, or enable execution. The source
+Watch remains the single discovery artifact and `app.signals` remains
+unchanged.
+
+P1D closure validation at `1cf3b95` recorded `53 passed` for P1A/P1B/P1C
+focused tests, `92 passed / 1 warning` for the relevant Watch and Pre-Breakout
+governance tests, and `2152 passed / 0 failed / 6 skipped / 1 warning` for the
+complete backend suite. These software results prove contract behavior only;
+they do not establish strategy performance or activation.
 
 The existing `app.signals` `SignalRecord` is not equivalent to P1.  It models
 analytical setup/trade-plan lifecycle concepts, including entry, stop, target,
@@ -41,11 +63,12 @@ runs.  The Watch materialization path already reads canonical diagnostics and
 external evidence at the Watch `as_of` time.  P1 must consume those retained
 references, not query a newer "latest" diagnostic/evidence value.
 
-## 3. Exact proposed `HSISignal` contract
+## 3. Exact implemented `HSISignal` contract
 
-The following contract is proposed only; no runtime model exists today.
+The following contract is implemented only for internal P1 on-demand
+projection; it is not a consumer-product runtime model or API contract.
 
-| Field | P1 proposed source / rule |
+| Field | P1 source / rule |
 | --- | --- |
 | `signal_id` | Deterministic identity described in section 5. |
 | `canonical_instrument_id` | Exact `MarketWideWatchRecord.canonical_instrument_id`. |
@@ -71,7 +94,7 @@ Watch classifications without a routed archetype into synthetic signals.
 
 ## 4. Read-only versioned Strategy Registry
 
-P1 proposes a pure resolver, not a new generic strategy store.  Its results
+P1 implements a pure resolver, not a new generic strategy store. Its results
 are either an exact policy reference or `STRATEGY_UNAVAILABLE`.
 
 `PRE_BREAKOUT` may resolve only when all of the following hold at
@@ -94,7 +117,7 @@ result, capital authorization, trade plan, or order authority.
 
 ## 5. Deterministic identity, PIT, and lineage rules
 
-Proposed `signal_id` inputs, serialized canonically and hashed with the P1
+Implemented `signal_id` inputs, serialized canonically and hashed with the P1
 projection contract version, are:
 
 1. `canonical_instrument_id`;
@@ -151,18 +174,20 @@ is authorized. A future product phase may separately propose immutable storage
 only if it needs independent signal lifecycle, cross-Watch retention/query, or
 an append-only product audit; that future work is outside P1.
 
-## 8. Minimal future code-change map
+## 8. Implemented code-change map
 
-| Area | Future P1 role | P1 proposal status |
+| Area | P1 role | Status |
 | --- | --- | --- |
 | `app/intelligence/market_wide_watch.py` | Read verified Watch record only | Reuse unchanged. |
 | `app/intelligence/opportunity_archetypes.py` | Read existing archetype / policy route only | Reuse unchanged. |
 | `app/historical/guard.py` | Canonical fingerprint helper/conventions | Reuse unchanged. |
 | `app/strategies/pre_breakout/governance.py` | Read approved selected-policy view | Reuse unchanged. |
-| `app/intelligence/hsi_signal_projection.py` | Proposed pure `HSISignal` contract and projector | New future module; not created. |
-| `app/intelligence/hsi_signal_strategy_registry.py` | Proposed pure fail-closed resolver | New future module; not created. |
-| `tests/unit/test_hsi_signal_projection.py` | Proposed projector tests | New future test; not created. |
-| `tests/unit/test_hsi_signal_strategy_registry.py` | Proposed registry tests | New future test; not created. |
+| `app/intelligence/hsi_signal.py` | Immutable P1A contract | Implemented; no projection/persistence behavior. |
+| `app/intelligence/hsi_signal_projection.py` | Pure Watch-to-`HSISignal` projector | Implemented; on-demand only. |
+| `app/intelligence/hsi_signal_strategy_registry.py` | Pure fail-closed resolver | Implemented; read-only provenance only. |
+| `tests/unit/test_hsi_signal.py` | P1A contract tests | Implemented. |
+| `tests/unit/test_hsi_signal_projection.py` | P1C projector tests | Implemented. |
+| `tests/unit/test_hsi_signal_strategy_registry.py` | P1B registry tests | Implemented. |
 | persistence, repositories, migrations, `app/api/**`, `frontend/**`, `app/signals/**` | No P1 change | Explicitly untouched; `app.signals` is not imported as the P1 contract. |
 
 Dependency direction is one-way:
@@ -172,7 +197,7 @@ Dependency direction is one-way:
 P1 never writes to, alters, or calls back into Core V1.  It therefore preserves
 Core V1 as the frozen implementation baseline and avoids parallel truth.
 
-## 9. Focused future acceptance tests
+## 9. Focused acceptance tests
 
 1. Identical verified Watch/registry inputs yield an identical signal ID and
    canonical serialization.
@@ -227,13 +252,13 @@ contracts; and any separately approved persistence phase. P1 must not silently
 choose any of them: the approved unavailable/not-evaluated values above are its
 fail-closed behavior.
 
-## 11. Proposed independently testable implementation slices
+## 11. Completed independently testable implementation slices
 
 | Slice | Scope | Acceptance criteria | Rollback boundary |
 | --- | --- | --- | --- |
-| P1.1 | Pure contract, deterministic serialization, and fingerprint | Tests 1–4 and 8–9 pass; no repository/API dependency | Remove the isolated module/tests; Core V1 untouched. |
-| P1.2 | Pure fail-closed Strategy Registry resolver | Tests 5–7 pass using existing governance readers only | Remove resolver/module/tests; no policy records changed. |
-| P1.3 | Pure Watch-to-`HSISignal` projector | P1.1/P1.2 compose; repeated calls make no writes | Remove projector/module/tests; Watch remains authoritative. |
+| P1.1 | Pure contract, deterministic serialization, and fingerprint | Accepted P1A tests pass; no repository/API dependency | Remove the isolated module/tests; Core V1 untouched. |
+| P1.2 | Pure fail-closed Strategy Registry resolver | Accepted P1B tests pass using existing governance readers only | Remove resolver/module/tests; no policy records changed. |
+| P1.3 | Pure Watch-to-`HSISignal` projector | Accepted P1C tests pass; repeated calls make no writes | Remove projector/module/tests; Watch remains authoritative. |
 
 Product API/query, consumer UI, persistence, paper/shadow evaluation, and
 controlled activation are outside P1 and require future approvals.
