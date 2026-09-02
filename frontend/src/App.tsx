@@ -3,56 +3,65 @@ import { ThemeProvider } from './context/ThemeContext';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
 import { DataClientProvider } from './api/context';
 import { AppShell } from './components/layout/AppShell';
+import { ProductionShell } from './components/production/ProductionShell';
 
 // Routed Pages
-import { DashboardPage } from './pages/DashboardPage';
-import { PortfolioPage } from './pages/PortfolioPage';
-import { CapitalRotationPage } from './pages/CapitalRotationPage';
-import { StocksPage } from './pages/StocksPage';
-import { StockDetailPage } from './pages/StockDetailPage';
-import { SignalsPage } from './pages/SignalsPage';
-import { PaperTradingPage } from './pages/PaperTradingPage';
-import { PerformancePage } from './pages/PerformancePage';
-import { PrimaryMarketPage } from './pages/PrimaryMarketPage';
-import { NewsPage } from './pages/NewsPage';
-import { SettingsPage } from './pages/SettingsPage';
-import { SystemHealthPage } from './pages/SystemHealthPage';
+import { DevHealthDashboardPage } from './pages/DevHealthDashboardPage';
+import {
+  ProductionHomePage,
+  ProductionIntelligencePage,
+  ProductionLivePage,
+  ProductionMarketWideWatchPage,
+  ProductionOpportunitiesPage,
+  ProductionPortfolioPage,
+  ProductionRotationPage,
+  ProductionStockDetailPage,
+  ProductionStocksPage,
+} from './pages/ProductionPages';
 
 const AppContent: React.FC = () => {
-  const { route } = useNavigation();
+  const { route, params } = useNavigation();
 
-  const renderActivePage = () => {
+  const renderDevPage = () => {
     switch (route) {
-      case 'dashboard':
-        return <DashboardPage />;
-      case 'portfolio':
-        return <PortfolioPage />;
-      case 'rotation':
-        return <CapitalRotationPage />;
-      case 'stocks':
-        return <StocksPage />;
-      case 'stock-detail':
-        return <StockDetailPage />;
-      case 'signals':
-        return <SignalsPage />;
-      case 'paper-trading':
-        return <PaperTradingPage />;
-      case 'performance':
-        return <PerformancePage />;
-      case 'primary-market':
-        return <PrimaryMarketPage />;
-      case 'news':
-        return <NewsPage />;
-      case 'settings':
-        return <SettingsPage />;
-      case 'system-health':
-        return <SystemHealthPage />;
+      case 'dev-data-providers':
+        return <DevHealthDashboardPage focus="data-providers" />;
+      case 'dev-external-intelligence':
+        return <DevHealthDashboardPage focus="external-intelligence" />;
+      case 'dev-brain-inspector':
+        return <DevHealthDashboardPage focus="brain-inspector" />;
+      case 'dev-opportunity-setup':
+        return <DevHealthDashboardPage focus="opportunity-setup" />;
+      case 'dev-portfolio-runtime':
+        return <DevHealthDashboardPage focus="portfolio-runtime" />;
+      case 'dev-policies-audit':
+        return <DevHealthDashboardPage focus="policies-audit" />;
+      case 'dev-system-health':
+        return <DevHealthDashboardPage focus="system-health" />;
       default:
-        return <DashboardPage />;
+        return <DevHealthDashboardPage />;
     }
   };
 
-  return <AppShell>{renderActivePage()}</AppShell>;
+  const isDev = route.startsWith('dev-');
+  if (isDev) return <AppShell>{renderDevPage()}</AppShell>;
+
+  const renderProductionPage = () => {
+    switch (route) {
+      case 'opportunities': return <ProductionOpportunitiesPage />;
+      case 'market-wide-watch': return <ProductionMarketWideWatchPage />;
+      case 'stocks': return <ProductionStocksPage />;
+      case 'stock-detail': return <ProductionStockDetailPage canonicalInstrumentId={params.canonicalInstrumentId || ''} />;
+      case 'portfolio': return <ProductionPortfolioPage />;
+      case 'rotation': return <ProductionRotationPage />;
+      case 'live': return <ProductionLivePage />;
+      case 'intelligence': return <ProductionIntelligencePage />;
+      case 'home':
+      default: return <ProductionHomePage />;
+    }
+  };
+
+  return <ProductionShell>{renderProductionPage()}</ProductionShell>;
 };
 
 export default function App() {

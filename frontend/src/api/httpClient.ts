@@ -10,6 +10,7 @@ import { PerformanceData } from '../types/performance';
 import { PrimaryMarketData } from '../types/primaryMarket';
 import { NewsData } from '../types/news';
 import { SystemHealthData, SourceHealth } from '../types/systemHealth';
+import { DataOperationsHealthData, DecisionTrustEnvelopeData, LocalRuntimeReadinessData, MarketWideWatchData, OpportunitySnapshotData, PortfolioRuntimeHolding, RuntimeStatusData } from '../types/devConsole';
 import {
   ConnectionsState,
   ConnectionProviderStatus,
@@ -19,6 +20,7 @@ import {
   UpstoxValidationFlow,
 } from '../types/connections';
 import { DataClientInterface } from './clientInterface';
+import { LiveMarketHealthData, LiveMarketOverviewData, LiveMarketTargetData, LivePortfolioData, StockLiveMarketData } from '../types/liveMarket';
 
 const DEFAULT_TIMEOUT_MS = 6000;
 const UPSTOX_HISTORICAL_TEST_TIMEOUT_MS = 30000;
@@ -62,6 +64,25 @@ const normalizeUpstoxValidationFlow = (value: any, errorCode?: string | null): U
     errorMessage: errorCode ? `${errorCode}${message ? `: ${message}` : ''}` : message,
   };
 };
+
+const decimalText = (value: unknown): string | null => (
+  value === null || value === undefined ? null : String(value)
+);
+
+const liveHealth = (value: any): LiveMarketHealthData => ({
+  enabled: value.enabled === true, state: value.state, health: value.health,
+  requestedTargets: Number(value.requested_targets ?? 0), subscribedTargets: Number(value.subscribed_targets ?? 0),
+  mappedPackets: Number(value.mapped_packets ?? 0), rejectedPackets: Number(value.rejected_packets ?? 0),
+  lastPacketAt: value.last_packet_at ?? null, tokenState: value.token_state,
+  reconnectCount: Number(value.reconnect_count ?? 0),
+});
+
+const liveTarget = (value: any): LiveMarketTargetData => ({
+  canonicalInstrumentId: value.canonical_instrument_id,
+  symbol: value.symbol ?? value.canonical_instrument_id,
+  ltp: decimalText(value.ltp), freshness: value.freshness,
+  receivedAt: value.received_at ?? null, providerTradeTimestamp: value.provider_trade_timestamp ?? null,
+});
 
 export class HttpDataClient implements DataClientInterface {
   private baseUrl: string;
@@ -473,6 +494,325 @@ export class HttpDataClient implements DataClientInterface {
       data: normalized,
       message: raw.message,
       warnings: raw.warnings,
+    };
+  }
+
+  // ==========================================
+  // DEV HEALTH DASHBOARD READ MODELS
+  // ==========================================
+
+  async getRuntimeStatus(): Promise<ApiResponse<RuntimeStatusData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/runtime/status');
+    if (!response.data) return response as ApiResponse<RuntimeStatusData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        schedulerEnabled: value.scheduler_enabled,
+        schedulerRunning: value.scheduler_running,
+        runtimeMode: value.runtime_mode,
+        universeId: value.universe_id ?? null,
+        lastCycleId: value.last_cycle_id ?? null,
+        lastCycleStatus: value.last_cycle_status ?? null,
+        lastStartedAt: value.last_started_at ?? null,
+        lastCompletedAt: value.last_completed_at ?? null,
+        lastSuccessAt: value.last_success_at ?? null,
+        lastFailureAt: value.last_failure_at ?? null,
+        lastDataAsOf: value.last_data_as_of ?? null,
+        consecutiveFailures: value.consecutive_failures ?? 0,
+        warnings: value.warnings ?? [],
+      },
+    };
+  }
+
+  async getLocalRuntimeReadiness(): Promise<ApiResponse<LocalRuntimeReadinessData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/runtime/local-readiness');
+    if (!response.data) return response as ApiResponse<LocalRuntimeReadinessData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        databaseBackend: value.database_backend,
+        storageMode: value.storage_mode,
+        databasePath: value.database_path ?? null,
+        sqliteIntegrity: value.sqlite_integrity ?? null,
+        foreignKeyViolations: value.foreign_key_violations ?? null,
+        financialFacts: value.financial_facts ?? null,
+        corporateFilings: value.corporate_filings ?? null,
+        portfolioSnapshots: value.portfolio_snapshots ?? null,
+        bseReceipts: value.bse_receipts ?? null,
+        bsePlanId: value.bse_plan_id ?? null,
+        bseStatus: value.bse_status,
+        marketWideWatchStatus: value.market_wide_watch_status,
+        warnings: value.warnings ?? [],
+      },
+    };
+  }
+
+  async getDataOperationsHealth(): Promise<ApiResponse<DataOperationsHealthData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/data-operations/health');
+    if (!response.data) return response as ApiResponse<DataOperationsHealthData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        generatedAt: value.generated_at,
+        families: (value.families ?? []).map((item: any) => ({
+          family: item.family,
+          status: item.status,
+          lastRun: item.last_run ? {
+            runId: item.last_run.run_id,
+            family: item.last_run.family,
+            mode: item.last_run.mode,
+            status: item.last_run.status,
+            completedAt: item.last_run.completed_at,
+            acceptedCount: item.last_run.accepted_count,
+            duplicateCount: item.last_run.duplicate_count,
+            conflictCount: item.last_run.conflict_count,
+            rejectedCount: item.last_run.rejected_count,
+            gapCount: item.last_run.gap_count,
+            warnings: item.last_run.warnings ?? [],
+          } : null,
+          nextDueAt: item.next_due_at ?? null,
+          reasons: item.reasons ?? [],
+        })),
+      },
+    };
+  }
+
+  async getPortfolioRuntimeHoldings(): Promise<ApiResponse<PortfolioRuntimeHolding[]>> {
+    const response = await this.fetchWithTimeout<any[]>('/api/v1/portfolio/holdings');
+    if (!response.data) return response as ApiResponse<PortfolioRuntimeHolding[]>;
+    return {
+      ...response,
+      data: response.data.map((item: any) => ({
+        instrumentId: item.instrument_id,
+        symbol: item.symbol ?? null,
+        quantity: String(item.quantity),
+        averagePrice: String(item.average_price),
+        marketPrice: item.market_price === null || item.market_price === undefined ? null : String(item.market_price),
+        currentValue: item.current_value === null || item.current_value === undefined ? null : String(item.current_value),
+        unrealizedPnl: item.unrealized_pnl === null || item.unrealized_pnl === undefined ? null : String(item.unrealized_pnl),
+        sector: item.sector ?? null,
+        dataAsOf: item.data_as_of,
+        warnings: item.warnings ?? [],
+      })),
+    };
+  }
+
+  async getLiveMarketOverview(): Promise<ApiResponse<LiveMarketOverviewData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/live-market');
+    if (!response.data) return response as ApiResponse<LiveMarketOverviewData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        health: liveHealth(value.health),
+        targets: (value.targets ?? []).map(liveTarget),
+        setupMonitoring: (value.setup_monitoring ?? []).map((item: any) => ({
+          canonicalInstrumentId: item.canonical_instrument_id, symbol: item.symbol,
+          entry: decimalText(item.entry), stop: decimalText(item.stop), target: decimalText(item.target),
+          maximumEntry: decimalText(item.maximum_entry), state: item.state,
+        })),
+        setupState: value.setup_state,
+      },
+    };
+  }
+
+  async getLivePortfolioValuation(): Promise<ApiResponse<LivePortfolioData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/portfolio/live-valuation');
+    if (!response.data) return response as ApiResponse<LivePortfolioData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        health: liveHealth(value.health),
+        holdings: (value.holdings ?? []).map((item: any) => ({
+          canonicalInstrumentId: item.canonical_instrument_id, symbol: item.symbol,
+          quantity: String(item.quantity), averagePrice: String(item.average_price), ltp: decimalText(item.ltp),
+          marketValue: decimalText(item.market_value), unrealizedPnl: decimalText(item.unrealized_pnl),
+          providerTimestamp: item.provider_timestamp ?? null, receivedAt: item.received_at ?? null,
+          state: item.state, blocker: item.blocker ?? null,
+        })),
+      },
+    };
+  }
+
+  async getStockLiveMarket(canonicalInstrumentId: string): Promise<ApiResponse<StockLiveMarketData>> {
+    const response = await this.fetchWithTimeout<any>(`/api/v1/stocks/${encodeURIComponent(canonicalInstrumentId)}/live-market`);
+    if (!response.data) return response as ApiResponse<StockLiveMarketData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        canonicalInstrumentId: value.canonical_instrument_id,
+        health: liveHealth(value.health), quote: value.quote ? liveTarget(value.quote) : null,
+      },
+    };
+  }
+
+  async getOpportunitySnapshot(): Promise<ApiResponse<OpportunitySnapshotData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/opportunities');
+    if (!response.data) return response as ApiResponse<OpportunitySnapshotData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        asOf: value.as_of,
+        universeCount: value.universe_count,
+        eligibleCount: value.eligible_count,
+        analyzedCount: value.analyzed_count,
+        completeCount: value.complete_count,
+        partialCount: value.partial_count,
+        unavailableCount: value.unavailable_count,
+        qualifiedCandidateCount: value.qualified_candidate_count,
+        freshness: value.freshness,
+        coverageStatus: value.coverage_status,
+        warnings: value.warnings ?? [],
+        opportunities: (value.opportunities ?? []).map((item: any) => ({
+          symbol: item.symbol,
+          sector: item.sector ?? null,
+          executionStatus: item.execution_status,
+          candidateStatus: item.candidate_status,
+          warnings: item.warnings ?? [],
+        })),
+      },
+    };
+  }
+
+  async getDecisionTrustEnvelope(canonicalInstrumentId: string): Promise<ApiResponse<DecisionTrustEnvelopeData>> {
+    const response = await this.fetchWithTimeout<any>(
+      `/api/v1/stocks/${encodeURIComponent(canonicalInstrumentId)}/decision-trust-envelope`,
+    );
+    if (!response.data) return response as ApiResponse<DecisionTrustEnvelopeData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        version: value.version,
+        canonicalInstrumentId: value.canonical_instrument_id,
+        symbol: value.symbol,
+        intelligenceAsOf: value.intelligence_as_of,
+        latestCompletedMarketSession: value.latest_completed_market_session ?? null,
+        sharedBrainState: value.shared_brain_state,
+        domains: (value.domains ?? []).map((item: any) => ({
+          domain: item.domain,
+          availability: item.availability,
+          freshness: item.freshness,
+          evidenceAsOf: item.evidence_as_of ?? null,
+          observedAt: item.observed_at ?? null,
+          artifactIds: item.artifact_ids ?? [],
+          artifactFingerprints: item.artifact_fingerprints ?? [],
+          blockers: item.blockers ?? [],
+        })),
+        coverageCount: value.coverage_count,
+        coverageTotal: value.coverage_total,
+        coveragePct: String(value.coverage_pct),
+        missingDomains: value.missing_domains ?? [],
+        blockers: value.blockers ?? [],
+        decisionReadiness: value.decision_readiness,
+        decisionScore: {
+          state: value.decision_score.state,
+          value: value.decision_score.value === null || value.decision_score.value === undefined ? null : String(value.decision_score.value),
+          artifactId: value.decision_score.artifact_id ?? null,
+          policyVersion: value.decision_score.policy_version ?? null,
+          policyFingerprint: value.decision_score.policy_fingerprint ?? null,
+          scoreAsOf: value.decision_score.score_as_of ?? null,
+          blockers: value.decision_score.blockers ?? [],
+        },
+        setup: {
+          state: value.setup.state,
+          setupId: value.setup.setup_id ?? null,
+          setupAsOf: value.setup.setup_as_of ?? null,
+          setupType: value.setup.setup_type ?? null,
+          entry: value.setup.entry === null || value.setup.entry === undefined ? null : String(value.setup.entry),
+          structuralInvalidation: value.setup.structural_invalidation === null || value.setup.structural_invalidation === undefined ? null : String(value.setup.structural_invalidation),
+          target1: value.setup.target_1 === null || value.setup.target_1 === undefined ? null : String(value.setup.target_1),
+          target2: value.setup.target_2 === null || value.setup.target_2 === undefined ? null : String(value.setup.target_2),
+          extendedTarget: value.setup.extended_target === null || value.setup.extended_target === undefined ? null : String(value.setup.extended_target),
+          riskReward: value.setup.risk_reward === null || value.setup.risk_reward === undefined ? null : String(value.setup.risk_reward),
+          maximumExecutableEntry: value.setup.maximum_executable_entry === null || value.setup.maximum_executable_entry === undefined ? null : String(value.setup.maximum_executable_entry),
+          blockers: value.setup.blockers ?? [],
+        },
+        sixGates: {
+          state: value.six_gates.state,
+          evaluationId: value.six_gates.evaluation_id ?? null,
+          policyId: value.six_gates.policy_id ?? null,
+          policyVersion: value.six_gates.policy_version ?? null,
+          policyFingerprint: value.six_gates.policy_fingerprint ?? null,
+          evaluationAsOf: value.six_gates.evaluation_as_of ?? null,
+          aggregateState: value.six_gates.aggregate_state ?? null,
+          gateResults: value.six_gates.gate_results ?? [],
+          blockers: value.six_gates.blockers ?? [],
+        },
+        thesis: {
+          tradingThesis: value.thesis.trading_thesis ?? null,
+          investmentThesis: value.thesis.investment_thesis ?? null,
+          invalidationStatus: value.thesis.invalidation_status ?? null,
+          structuralInvalidation: value.thesis.structural_invalidation === null || value.thesis.structural_invalidation === undefined ? null : String(value.thesis.structural_invalidation),
+          sourceAsOf: value.thesis.source_as_of ?? null,
+          blockers: value.thesis.blockers ?? [],
+        },
+        liveMarket: {
+          ltp: value.live_market.ltp === null || value.live_market.ltp === undefined ? null : String(value.live_market.ltp),
+          receivedAt: value.live_market.received_at ?? null,
+          freshness: value.live_market.freshness ?? null,
+        },
+        fingerprint: value.fingerprint,
+      },
+    };
+  }
+
+  async getMarketWideWatch(): Promise<ApiResponse<MarketWideWatchData>> {
+    const response = await this.fetchWithTimeout<any>('/api/v1/market-wide-watch');
+    if (!response.data) return response as ApiResponse<MarketWideWatchData>;
+    const value = response.data;
+    return {
+      ...response,
+      data: {
+        runId: value.run_id, watchAsOf: value.watch_as_of, universeId: value.universe_id,
+        universeCount: value.universe_count, eligibleCount: value.eligible_count, excludedCount: value.excluded_count,
+        exclusionCounts: value.exclusion_counts ?? [], evidenceReadyCount: value.evidence_ready_count,
+        watchCandidateCount: value.watch_candidate_count, classificationCounts: value.classification_counts ?? [],
+        top3EligibleCount: value.top3_eligible_count, setupCandidateCount: value.setup_candidate_count,
+        validSetupCount: value.valid_setup_count, decisionScoreReadyCount: value.decision_score_ready_count,
+        sixGatesEvaluatedCount: value.six_gates_evaluated_count, sixGatesPassCount: value.six_gates_pass_count,
+        filterAttribution: value.filter_attribution ?? [], unsupportedClassifications: value.unsupported_classifications ?? [],
+        records: (value.records ?? []).map((item: any) => ({
+          watchId: item.watch_id, canonicalInstrumentId: item.canonical_instrument_id, symbol: item.symbol,
+          companyName: item.company_name ?? null, watchAsOf: item.watch_as_of,
+          classifications: item.classifications ?? [], status: item.status, evidenceSufficiency: item.evidence_sufficiency,
+          evidenceReferences: (item.evidence_references ?? []).map((reference: any) => ({ ruleId: reference.rule_id, diagnosticResult: reference.diagnostic_result, artifactId: reference.artifact_id, artifactFingerprint: reference.artifact_fingerprint })),
+          sector: item.sector ?? null, sectorRank: item.sector_rank ?? null, top3Eligible: Boolean(item.top3_eligible),
+          decisionScoreId: item.decision_score_id ?? null, decisionScoreStatus: item.decision_score_status,
+          decisionScoreValue: item.decision_score_value === null || item.decision_score_value === undefined ? null : String(item.decision_score_value),
+          setupState: item.setup_state, sixGatesState: item.six_gates_state, reliabilityState: item.reliability_state,
+          blockerCodes: item.blocker_codes ?? [], lastEvidenceAsOf: item.last_evidence_as_of ?? null,
+          policyIdentity: item.policy_identity, fingerprint: item.fingerprint,
+          archetypes: item.archetypes ?? [], externalEvidenceReferences: (item.external_evidence_references ?? []).map((reference: any) => ({ canonicalEventId: reference.canonical_event_id, evidenceVersionId: reference.evidence_version_id, eventType: reference.event_type, materiality: reference.materiality, policyStage: reference.policy_stage ?? null, primarySourceType: reference.primary_source_type, exposureType: reference.exposure_type, exposureVerificationStatus: reference.exposure_verification_status, evidenceFingerprint: reference.evidence_fingerprint })),
+          policyMaturity: item.policy_maturity ?? null, historicalQualityState: item.historical_quality_state ?? 'UNAVAILABLE', currentInflectionState: item.current_inflection_state ?? 'UNRESOLVED',
+          setupPolicyRoutes: item.setup_policy_routes ?? [], lifecycleFlags: item.lifecycle_flags ?? [], evidenceDomainCoverage: item.evidence_domain_coverage ?? [], rotationChallengerState: item.rotation_challenger_state ?? 'NOT_A_CHALLENGER', comparisonReadiness: item.comparison_readiness ?? 'COMPARISON_NOT_AVAILABLE',
+        })),
+        portfolioRecords: (value.portfolio_records ?? []).map((item: any) => ({
+          watchId: item.watch_id, canonicalInstrumentId: item.canonical_instrument_id, symbol: item.symbol,
+          companyName: item.company_name ?? null, watchAsOf: item.watch_as_of,
+          classifications: item.classifications ?? [], status: item.status, evidenceSufficiency: item.evidence_sufficiency,
+          evidenceReferences: (item.evidence_references ?? []).map((reference: any) => ({ ruleId: reference.rule_id, diagnosticResult: reference.diagnostic_result, artifactId: reference.artifact_id, artifactFingerprint: reference.artifact_fingerprint })),
+          sector: item.sector ?? null, sectorRank: item.sector_rank ?? null, top3Eligible: Boolean(item.top3_eligible),
+          decisionScoreId: item.decision_score_id ?? null, decisionScoreStatus: item.decision_score_status,
+          decisionScoreValue: item.decision_score_value === null || item.decision_score_value === undefined ? null : String(item.decision_score_value),
+          setupState: item.setup_state, sixGatesState: item.six_gates_state, reliabilityState: item.reliability_state,
+          blockerCodes: item.blocker_codes ?? [], lastEvidenceAsOf: item.last_evidence_as_of ?? null,
+          policyIdentity: item.policy_identity, fingerprint: item.fingerprint,
+          archetypes: item.archetypes ?? [], externalEvidenceReferences: (item.external_evidence_references ?? []).map((reference: any) => ({ canonicalEventId: reference.canonical_event_id, evidenceVersionId: reference.evidence_version_id, eventType: reference.event_type, materiality: reference.materiality, policyStage: reference.policy_stage ?? null, primarySourceType: reference.primary_source_type, exposureType: reference.exposure_type, exposureVerificationStatus: reference.exposure_verification_status, evidenceFingerprint: reference.evidence_fingerprint })),
+          policyMaturity: item.policy_maturity ?? null, historicalQualityState: item.historical_quality_state ?? 'UNAVAILABLE', currentInflectionState: item.current_inflection_state ?? 'UNRESOLVED',
+          setupPolicyRoutes: item.setup_policy_routes ?? [], lifecycleFlags: item.lifecycle_flags ?? [], evidenceDomainCoverage: item.evidence_domain_coverage ?? [], rotationChallengerState: item.rotation_challenger_state ?? 'NOT_A_CHALLENGER', comparisonReadiness: item.comparison_readiness ?? 'COMPARISON_NOT_AVAILABLE',
+        })),
+        policyIdentity: value.policy_identity, fingerprint: value.fingerprint,
+        archetypeCounts: value.archetype_counts ?? [], rotationFunnel: value.rotation_funnel ?? [],
+        rotationChallengerCount: value.rotation_challenger_count ?? 0, actualRotationCandidateCount: value.actual_rotation_candidate_count ?? 0,
+        evidenceReadinessCounts: value.evidence_readiness_counts ?? [], evidenceDomainCounts: value.evidence_domain_counts ?? [], evidenceBlockerAttribution: value.evidence_blocker_attribution ?? [],
+      },
     };
   }
 
@@ -1156,10 +1496,27 @@ export class HttpDataClient implements DataClientInterface {
   }
 
   async getStocksList(): Promise<ApiResponse<StockListItem[]>> {
-    return this.fetchWithFallback<StockListItem[]>([
+    const response = await this.fetchWithFallback<any>([
       '/api/v1/stocks',
       '/api/v2/stocks',
     ]);
+    if (!response.data) return response as ApiResponse<StockListItem[]>;
+    const values = Array.isArray(response.data) ? response.data : response.data.items ?? [];
+    return {
+      ...response,
+      data: values.map((item: any) => ({
+        symbol: item.symbol,
+        companyName: item.company_name ?? item.companyName ?? item.symbol,
+        sector: item.sector ?? 'UNAVAILABLE',
+        marketCapCr: item.market_cap_cr ?? null,
+        price: item.price ?? null,
+        changePct: item.change_pct ?? null,
+        decisionScore: item.latest_score === null || item.latest_score === undefined ? null : Number(item.latest_score),
+        confidence: item.confidence ?? 'INSUFFICIENT_DATA',
+        action: item.action ?? 'WATCH',
+        riskRating: item.risk_rating ?? 'UNAVAILABLE',
+      })),
+    };
   }
 
   async getStockDetail(symbol: string): Promise<ApiResponse<StockDetailData>> {
@@ -1279,9 +1636,31 @@ export class HttpDataClient implements DataClientInterface {
   }
 
   async getNews(): Promise<ApiResponse<NewsData>> {
-    return this.fetchWithFallback<NewsData>([
+    const response = await this.fetchWithFallback<any>([
       '/api/v1/news',
       '/api/v2/news',
     ]);
+    if (!response.data) return response as ApiResponse<NewsData>;
+    const values = Array.isArray(response.data) ? response.data : response.data.items ?? [];
+    return {
+      ...response,
+      data: {
+        items: values.map((item: any) => ({
+          id: item.article_id ?? item.id,
+          timestamp: item.published_at ?? null,
+          timeAgo: null,
+          symbols: item.instrument_ids ?? item.symbols ?? [],
+          sectors: item.sectors ?? [],
+          title: item.title,
+          publisher: item.publisher ?? item.source_provider ?? 'HSI source',
+          sourceQuality: item.source_quality ?? 'AGGREGATOR',
+          eventCategory: item.event_category ?? 'MACRO',
+          catalystContext: item.description ?? '',
+          sentimentImpact: 'NEUTRAL',
+        })),
+        totalCount: values.length,
+        filterCategories: [],
+      },
+    };
   }
 }

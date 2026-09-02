@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Activity,
-  ChevronRight,
   Menu,
   Moon,
   RefreshCw,
-  Server,
   Sun,
-  Wifi,
-  WifiOff,
 } from 'lucide-react';
 import { useNavigation } from '../../context/NavigationContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -19,63 +14,31 @@ interface TopBarProps {
 }
 
 export const TopBar: React.FC<TopBarProps> = ({ onOpenSidebar }) => {
-  const { route, params, navigate } = useNavigation();
+  const { route } = useNavigation();
   const { theme, toggleTheme } = useTheme();
-  const { client, isMockMode, setMockMode, apiBaseUrl, triggerRefresh, refreshTrigger } = useDataClient();
+  const { isMockMode, setMockMode, triggerRefresh } = useDataClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [liveNifty, setLiveNifty] = useState<{ spot: number | null; pChange: number | null } | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const fetchNifty = async () => {
-      try {
-        const res = await client.getMarketState();
-        if (isMounted && res.data?.nifty50) {
-          setLiveNifty({
-            spot: res.data.nifty50.spot,
-            pChange: res.data.nifty50.pChange,
-          });
-        } else if (isMounted && !isMockMode) {
-          setLiveNifty(null);
-        }
-      } catch {
-        if (isMounted && !isMockMode) setLiveNifty(null);
-      }
-    };
-    fetchNifty();
-    return () => {
-      isMounted = false;
-    };
-  }, [client, refreshTrigger, isMockMode]);
 
   const getPageTitle = () => {
     switch (route) {
       case 'dashboard':
-        return 'Market Dashboard';
-      case 'portfolio':
-        return 'Portfolio Health & Holdings';
-      case 'rotation':
-        return 'Capital Rotation Engine';
-      case 'stocks':
-        return 'NSE Equity Universe';
-      case 'stock-detail':
-        return `Equity Intelligence — ${params.symbol || 'STOCK'}`;
-      case 'signals':
-        return 'Proprietary Action Signals';
-      case 'paper-trading':
-        return 'Paper Trading & Thesis';
-      case 'performance':
-        return 'Performance & Alpha Attribution';
-      case 'primary-market':
-        return 'Primary Market & IPO Pipeline';
-      case 'news':
-        return 'Market News & Catalysts';
-      case 'settings':
-        return 'Settings & Provider Connections';
+        return 'HSI Development Console';
       case 'system-health':
-        return 'System & Feed Health';
+        return 'System Health';
+      case 'data-providers':
+        return 'Data & Providers';
+      case 'external-intelligence':
+        return 'External Intelligence';
+      case 'brain-inspector':
+        return 'Shared Brain Inspector';
+      case 'opportunity-setup':
+        return 'Opportunity / Setup Inspector';
+      case 'portfolio-runtime':
+        return 'Portfolio Runtime';
+      case 'policies-audit':
+        return 'Policies & Audit';
       default:
-        return 'Market Dashboard';
+        return 'HSI Development Console';
     }
   };
 
@@ -105,38 +68,12 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenSidebar }) => {
           <h2 className="text-base sm:text-xl font-semibold tracking-tight text-white truncate">
             {getPageTitle()}
           </h2>
-          <div className="hidden sm:block h-4 w-[1px] bg-gray-700 shrink-0" />
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider font-mono">
-              Live Market
-            </span>
-            <span className="text-xs text-gray-400 font-mono">
-              IST Live
-            </span>
-          </div>
+          <span className="hidden sm:inline text-[10px] font-mono text-gray-500 uppercase">Read-only operator view</span>
         </div>
       </div>
 
       {/* Right section: Nifty Ticker + Indicators & Profile ID */}
       <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-        {/* NIFTY 50 Header Ticker Widget */}
-        <div className="hidden md:block text-right pr-2">
-          <div className="text-xs font-semibold text-gray-300">NIFTY 50</div>
-          {liveNifty && liveNifty.spot !== null ? (
-            <div className={`text-[10px] font-mono font-medium ${(liveNifty.pChange ?? 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {liveNifty.spot.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({((liveNifty.pChange ?? 0) >= 0 ? '+' : '') + (liveNifty.pChange ?? 0).toFixed(2)}%)
-            </div>
-          ) : isMockMode ? (
-            <div className="text-[10px] text-emerald-400 font-mono font-medium">
-              24,865.25 (+0.62%)
-            </div>
-          ) : (
-            <div className="text-[10px] text-gray-500 font-mono font-medium">
-              Live API
-            </div>
-          )}
-        </div>
-
         {/* Mock/Live API Switch Button */}
         <button
           id="topbar-mock-toggle-btn"
@@ -146,7 +83,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenSidebar }) => {
               ? 'bg-amber-500/15 border-amber-500/40 text-amber-400'
               : 'bg-blue-600/15 border-blue-500/40 text-blue-400'
           }`}
-          title="Toggle between Mock Data and Live API Mode"
+          title="Toggle between mock and backend API mode"
         >
           {isMockMode ? 'MOCK' : 'LIVE API'}
         </button>
@@ -156,7 +93,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenSidebar }) => {
           id="topbar-refresh-btn"
           onClick={handleRefresh}
           className="p-1.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-md transition-colors border border-[#222]"
-          title="Refresh All Feeds"
+          title="Refresh displayed backend read models"
           aria-label="Refresh data"
         >
           <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-blue-400' : ''}`} />
@@ -173,16 +110,14 @@ export const TopBar: React.FC<TopBarProps> = ({ onOpenSidebar }) => {
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-gray-300" />}
         </button>
 
-        {/* User Identity badge as in design HTML */}
         <div
           id="user-avatar-pill"
           className="w-8 h-8 rounded-full bg-[#1e1e1e] flex items-center justify-center text-xs border border-gray-700 text-gray-300 font-mono font-semibold"
-          title="User: ADM_CHINMAY"
+          title="Development console"
         >
-          ID
+          DEV
         </div>
       </div>
     </header>
   );
 };
-

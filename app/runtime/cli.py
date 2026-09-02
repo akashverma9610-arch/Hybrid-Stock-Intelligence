@@ -9,6 +9,7 @@ from pathlib import Path
 import sys
 from typing import Callable, Sequence
 from uuid import uuid4
+from zoneinfo import ZoneInfo
 
 from app.runtime.cycle import RuntimeCycleResult, RuntimeCycleStatus, RuntimeMode
 from app.runtime.scheduler import RuntimeHealthService, RuntimeScheduler, RuntimeSchedulerSettings, RuntimeWorker
@@ -16,6 +17,8 @@ from app.data_operations.files import FileStagingLayout, NodeDeliveryAcquirer, N
 from app.data_operations.models import EvidenceDataFamily, EvidenceRefreshMode, EvidenceRefreshStatus
 from app.data_operations.service import DataOperationsScheduler, DataOperationsService, DataOperationsSettings, DataOperationsWorker
 from app.data_operations.store import DataOperationsStore
+from app.connections.credentials import create_credential_store
+from app.market_data.dhan import DhanAuthError
 
 
 class RuntimeCompositionError(RuntimeError):
@@ -30,6 +33,9 @@ def build_nse_import_service():
     """
     from app.filings.store import SQLiteCorporateFilingsStore
     from app.fundamentals.store import SQLiteFinancialFactStore
+    from app.historical.security_master import HistoricalSecurityMasterStore
+    from app.fundamentals.adapter import FundamentalsEngineAdapter
+    from app.fundamentals.adapter import FundamentalsEngineAdapter
     from app.market_data.models import Exchange, InstrumentIdentity, InstrumentType
     from app.nse_import.service import (
         FrozenCohortInstrumentResolver, ImportRunStore, NSEOfficialExportProvider,
@@ -109,6 +115,170 @@ def build_bse_financial_feasibility_import_service():
         ),
         tuple(targets),
     )
+
+
+def build_real_portfolio_bse_official_financial_collector():
+    """Compose the fixed five-holding official-BSE collector.
+
+    There are deliberately no target, URL, credential, or provider arguments:
+    the collector discovers only its approved exact-ISIN BSE mappings and its
+    public BSE result/XBRL links.
+    """
+    from app.filings.store import SQLiteCorporateFilingsStore
+    from app.fundamentals.bse_collector import (
+        BseOfficialFinancialCollector, BseOfficialHttpTransport,
+        BseOfficialSecurityMaster, BseOfficialXbrlStaging,
+    )
+    from app.fundamentals.bse_official import BSEOfficialFinancialResultsArchiveProvider
+    from app.fundamentals.store import SQLiteFinancialFactStore
+    from app.historical.security_master import HistoricalSecurityMasterStore
+    from app.storage.database import DatabaseBackend, DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.universe_analysis.service import CoreUniverseAnalysisStore
+
+    settings = DatabaseSettings.local_runtime()
+    if settings.backend is not DatabaseBackend.SQLITE or settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("BSE_REAL_PORTFOLIO_COLLECTOR_REQUIRES_PERSISTENT_SQLITE")
+    path = settings.url.removeprefix("sqlite:///")
+    universe = CoreUniverseAnalysisStore(create_core_api_snapshot_repository(settings))
+    transport = BseOfficialHttpTransport()
+    workspace_root = Path(__file__).resolve().parents[2]
+    return BseOfficialFinancialCollector(
+        universe=universe,
+        filings=SQLiteCorporateFilingsStore(path),
+        facts=SQLiteFinancialFactStore(path),
+        security_master=BseOfficialSecurityMaster(transport),
+        provider=BSEOfficialFinancialResultsArchiveProvider(fetch_csv=transport.fetch_results_archive),
+        transport=transport,
+        staging=BseOfficialXbrlStaging(
+            workspace_root / "data" / "official_sources" / "bse_financial_results" / "collector",
+        ),
+    )
+
+
+def build_nifty500_bse_financial_acquisition_orchestrator():
+    """Compose the explicit, bounded official-BSE NIFTY 500 coordinator.
+
+    No caller can supply a URL, security code, token, or alternate provider.
+    The coordinator derives every target from the current governed NIFTY 500
+    universe and accepts only an exact ISIN mapping from BSE.
+    """
+    from app.filings.store import SQLiteCorporateFilingsStore
+    from app.fundamentals.bse_collector import (
+        BseOfficialHttpTransport, BseOfficialSecurityMaster, BseOfficialXbrlStaging,
+    )
+    from app.fundamentals.bse_nifty500_acquisition import (
+        BseFinancialAcquisitionStore, BseNifty500FinancialAcquisitionOrchestrator,
+    )
+    from app.fundamentals.bse_official import BSEOfficialFinancialResultsArchiveProvider
+    from app.fundamentals.store import SQLiteFinancialFactStore
+    from app.historical.security_master import HistoricalSecurityMasterStore
+    from app.storage.database import DatabaseBackend, DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.universe_analysis.service import CoreUniverseAnalysisStore
+
+    settings = DatabaseSettings.local_runtime()
+    if settings.backend is not DatabaseBackend.SQLITE or settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("BSE_NIFTY500_ACQUISITION_REQUIRES_PERSISTENT_SQLITE")
+    path = settings.url.removeprefix("sqlite:///")
+    repository = create_core_api_snapshot_repository(settings)
+    universe = CoreUniverseAnalysisStore(repository)
+    if universe.latest_universe_snapshot() is None:
+        raise RuntimeCompositionError("BSE_NIFTY500_UNIVERSE_SNAPSHOT_REQUIRED")
+    transport = BseOfficialHttpTransport()
+    root = Path(__file__).resolve().parents[2]
+    return BseNifty500FinancialAcquisitionOrchestrator(
+        repository=BseFinancialAcquisitionStore(repository), universe=universe,
+        memberships=HistoricalSecurityMasterStore(repository),
+        filings=SQLiteCorporateFilingsStore(path), facts=SQLiteFinancialFactStore(path),
+        security_master=BseOfficialSecurityMaster(transport),
+        provider=BSEOfficialFinancialResultsArchiveProvider(fetch_csv=transport.fetch_results_archive),
+        transport=transport,
+        staging=BseOfficialXbrlStaging(root / "data" / "official_sources" / "bse_financial_results" / "nifty500"),
+    )
+
+
+def build_real_portfolio_intelligence_refresh_service():
+    """Compose the existing five-holding diagnostics/Brain chain, stored-only."""
+    from app.api.repository_query_services import RepositoryPortfolioQueryService
+    from app.filings.store import SQLiteCorporateFilingsStore
+    from app.fundamentals.store import SQLiteFinancialFactStore
+    from app.fundamentals.adapter import FundamentalsEngineAdapter
+    from app.historical.security_master import HistoricalSecurityMasterStore
+    from app.intelligence.macro.store import MacroEvidenceStore
+    from app.intelligence.market_technical_artifact import SharedBrainMarketTechnicalArtifactEvidenceSource, SharedBrainMarketTechnicalArtifactStore
+    from app.intelligence.shared_brain_application import CoreUniverseInstrumentResolver, SharedBrainApplicationService, StoredSharedBrainEvidenceAssembler
+    from app.ownership.store import OwnershipObservationStore
+    from app.production_v1.canonical_setup import CanonicalSetupOpportunityStore
+    from app.reliability.integrity import ReliabilityIntegrityObservationStore
+    from app.market_data.historical import SQLiteHistoricalBarStore
+    from app.market_data.current_sector_rotation import CurrentSectorRankingStore
+    from app.news.store import SQLiteNewsEvidenceStore
+    from app.portfolio.canonical_diagnostics_orchestration import CanonicalPortfolioDiagnosticsOrchestrator
+    from app.real_brain.local import StoredTrialObservationSource
+    from app.storage.database import DatabaseBackend, DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.storage.sqlite_governance_repository import SQLiteStrategyGovernanceRepository
+    from app.taxonomy.service import TaxonomySnapshotStore
+    from app.universe_analysis.service import Canonical61DiagnosticRunner, CoreUniverseAnalysisStore, StockDiagnosticInputAssembler
+    settings = DatabaseSettings.local_runtime()
+    if settings.backend is not DatabaseBackend.SQLITE or settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("REAL_PORTFOLIO_INTELLIGENCE_REQUIRES_PERSISTENT_SQLITE")
+    path = settings.url.removeprefix("sqlite:///"); repository = create_core_api_snapshot_repository(settings)
+    universe = CoreUniverseAnalysisStore(repository); historical = SQLiteHistoricalBarStore(path)
+    governance = SQLiteStrategyGovernanceRepository(path)
+    brain = SharedBrainApplicationService(
+        resolver=CoreUniverseInstrumentResolver(universe),
+        evidence_assembler=StoredSharedBrainEvidenceAssembler(SQLiteFinancialFactStore(path), historical, filings=SQLiteCorporateFilingsStore(path), ownership_observations=OwnershipObservationStore(repository), historical_security_master=HistoricalSecurityMasterStore(repository), taxonomy=TaxonomySnapshotStore(repository), sector_rankings=CurrentSectorRankingStore(repository), macro_evidence_source=MacroEvidenceStore(repository), news=SQLiteNewsEvidenceStore(path), market_technical_artifacts=SharedBrainMarketTechnicalArtifactEvidenceSource(SharedBrainMarketTechnicalArtifactStore(repository)), reliability_integrity_observations=ReliabilityIntegrityObservationStore(repository), decision_scores=governance, setup_assessments=governance, setup_opportunities=CanonicalSetupOpportunityStore(repository)),
+    )
+    snapshot = RepositoryPortfolioQueryService(repository).get_snapshot()
+    source = StoredTrialObservationSource(historical=historical, instrument_ids=("NSE:INE372A01015", "NSE:INE0FHS01024", "NSE:INE955D01029", "NSE:INE068V01023", "NSE:INE090A01021"), as_of=datetime.now(UTC), fundamentals=FundamentalsEngineAdapter(SQLiteFinancialFactStore(path), SQLiteCorporateFilingsStore(path)))
+    service = CanonicalPortfolioDiagnosticsOrchestrator(universe=universe, assembler=StockDiagnosticInputAssembler(source), runner=Canonical61DiagnosticRunner(), governance=governance, shared_brain=brain)
+    return service, snapshot, repository, historical, governance
+
+
+def build_real_portfolio_reliability_integrity_context():
+    """Compose the fixed five-holding, stored-only reliability projection.
+
+    The assembler intentionally excludes stored Reliability / Integrity
+    observations while constructing the input state, preventing the new
+    artifact from referring to itself on a later idempotency pass.
+    """
+    from app.filings.store import SQLiteCorporateFilingsStore
+    from app.fundamentals.store import SQLiteFinancialFactStore
+    from app.historical.security_master import HistoricalSecurityMasterStore
+    from app.intelligence.macro.store import MacroEvidenceStore
+    from app.intelligence.market_technical_artifact import SharedBrainMarketTechnicalArtifactEvidenceSource, SharedBrainMarketTechnicalArtifactStore
+    from app.intelligence.shared_brain_application import CoreUniverseInstrumentResolver, StoredSharedBrainEvidenceAssembler
+    from app.market_data.historical import SQLiteHistoricalBarStore
+    from app.news.store import SQLiteNewsEvidenceStore
+    from app.ownership.store import OwnershipObservationStore
+    from app.reliability.integrity import ReliabilityIntegrityObservationStore
+    from app.storage.database import DatabaseBackend, DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.taxonomy.service import TaxonomySnapshotStore
+    from app.universe_analysis.service import CoreUniverseAnalysisStore
+
+    settings = DatabaseSettings.local_runtime()
+    if settings.backend is not DatabaseBackend.SQLITE or settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("REAL_PORTFOLIO_RELIABILITY_INTEGRITY_REQUIRES_PERSISTENT_SQLITE")
+    path = settings.url.removeprefix("sqlite:///")
+    repository = create_core_api_snapshot_repository(settings)
+    historical = SQLiteHistoricalBarStore(path)
+    universe = CoreUniverseAnalysisStore(repository)
+    assembler = StoredSharedBrainEvidenceAssembler(
+        SQLiteFinancialFactStore(path), historical,
+        filings=SQLiteCorporateFilingsStore(path),
+        ownership_observations=OwnershipObservationStore(repository),
+        historical_security_master=HistoricalSecurityMasterStore(repository),
+        taxonomy=TaxonomySnapshotStore(repository),
+        macro_evidence_source=MacroEvidenceStore(repository),
+        news=SQLiteNewsEvidenceStore(path),
+        market_technical_artifacts=SharedBrainMarketTechnicalArtifactEvidenceSource(
+            SharedBrainMarketTechnicalArtifactStore(repository),
+        ),
+    )
+    return CoreUniverseInstrumentResolver(universe), assembler, ReliabilityIntegrityObservationStore(repository), repository, historical
 
 
 def build_nse_universe_importer():
@@ -276,8 +446,9 @@ def build_governed_executable_setup_source_service(*, time_stop_sessions: int | 
     a future candidate fails closed until that input is explicitly governed.
     """
     from app.forward_paper.composition import StoredExecutableSetupStore
-    from app.market_data.current_sector_rotation import CurrentSectorRotationService
+    from app.market_data.current_sector_rotation import CurrentSectorRankingStore, CurrentSectorRotationService
     from app.market_data.historical import PostgreSQLHistoricalBarStore, SQLiteHistoricalBarStore
+    from app.market_data.index_close_series import CoreSnapshotIndexCloseStore
     from app.market_data.nse_delivery import NseDeliveryStore
     from app.market_data.reference_data.resolver import TickSizeReferenceResolver
     from app.market_data.reference_data.sqlite_repository import SQLiteTickSizeObservationRepository
@@ -302,7 +473,10 @@ def build_governed_executable_setup_source_service(*, time_stop_sessions: int | 
     historical = SQLiteHistoricalBarStore(path) if settings.backend is DatabaseBackend.SQLITE else PostgreSQLHistoricalBarStore(DatabaseConnectionFactory(settings))
     tick_repository = SQLiteTickSizeObservationRepository(path)
     universe = CoreUniverseAnalysisStore(repository)
-    rotation = CurrentSectorRotationService(repository=repository, universe=universe, historical_store=historical)
+    rotation = CurrentSectorRotationService(
+        repository=repository, universe=universe, historical_store=historical,
+        index_close_store=CoreSnapshotIndexCloseStore(repository), ranking_store=CurrentSectorRankingStore(repository),
+    )
     governance = PreBreakoutPolicyGovernanceService(governance_repository)
     materializer = GovernedPreBreakoutTechnicalMaterializer(
         governance=governance, historical_store=historical, delivery_store=NseDeliveryStore(repository),
@@ -524,8 +698,9 @@ def build_upstox_sector_index_status_service():
 
 def build_current_sector_rotation_service():
     """Compose U07's current/forward stored-data sector route only."""
-    from app.market_data.current_sector_rotation import CurrentSectorRotationService
+    from app.market_data.current_sector_rotation import CurrentSectorRankingStore, CurrentSectorRotationService
     from app.market_data.historical import PostgreSQLHistoricalBarStore, SQLiteHistoricalBarStore
+    from app.market_data.index_close_series import CoreSnapshotIndexCloseStore
     from app.storage.database import DatabaseBackend, DatabaseConnectionFactory, DatabaseSettings
     from app.storage.repository_factory import create_core_api_snapshot_repository
     from app.universe_analysis.service import CoreUniverseAnalysisStore
@@ -535,7 +710,51 @@ def build_current_sector_rotation_service():
         raise RuntimeCompositionError("CURRENT_SECTOR_ROTATION_REQUIRES_PERSISTENT_STORE")
     repository = create_core_api_snapshot_repository(settings)
     historical = SQLiteHistoricalBarStore(settings.url.removeprefix("sqlite:///")) if settings.backend is DatabaseBackend.SQLITE else PostgreSQLHistoricalBarStore(DatabaseConnectionFactory(settings))
-    return CurrentSectorRotationService(repository=repository, universe=CoreUniverseAnalysisStore(repository), historical_store=historical), historical
+    return CurrentSectorRotationService(
+        repository=repository, universe=CoreUniverseAnalysisStore(repository), historical_store=historical,
+        index_close_store=CoreSnapshotIndexCloseStore(repository), ranking_store=CurrentSectorRankingStore(repository),
+    ), historical
+
+
+def build_official_nse_index_close_series_refresh():
+    """Compose the fixed four-index official close-only acquisition boundary."""
+    from app.market_data.index_close_series import CoreSnapshotIndexCloseStore, OfficialNseIndexCloseSeriesRefresh
+    from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily
+    from app.storage.database import DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.taxonomy.nse_sector_indices import NseSectorIndexMapping, SectorIndexMappingStatus
+
+    settings = DatabaseSettings.local_runtime()
+    if settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("OFFICIAL_NSE_INDEX_CLOSE_SERIES_REQUIRES_PERSISTENT_STORE")
+    repository = create_core_api_snapshot_repository(settings)
+    mappings = []
+    offset = 0
+    while True:
+        page = repository.list_snapshots(CoreApiSnapshotFamily.NSE_SECTOR_INDEX_MAPPING, limit=100, offset=offset)
+        mappings.extend(item.payload for item in page if isinstance(item.payload, NseSectorIndexMapping))
+        if len(page) < 100:
+            break
+        offset += len(page)
+    expected = {
+        "Capital Goods": ("NSE_SECTOR_INDEX:CAPITAL_GOODS", "Nifty Capital Goods"),
+        "Construction": ("NSE_SECTOR_INDEX:CONSTRUCTION", "Nifty Construction"),
+        "Consumer Services": ("NSE_SECTOR_INDEX:CONSUMER_SERVICES", "Nifty Consumer Services"),
+        "Power": ("NSE_SECTOR_INDEX:POWER", "Nifty Power"),
+    }
+    found = {item.canonical_sector: item for item in mappings if item.canonical_sector in expected}
+    if set(found) != set(expected):
+        raise RuntimeCompositionError("OFFICIAL_NSE_SECTOR_INDEX_REGISTRY_TARGETS_REQUIRED")
+    targets = []
+    for sector, (canonical_id, official_name) in expected.items():
+        mapping = found[sector]
+        if mapping.status is not SectorIndexMappingStatus.EXACT_OFFICIAL or mapping.official_index_name != official_name:
+            raise RuntimeCompositionError("OFFICIAL_NSE_SECTOR_INDEX_EXACT_IDENTITY_REQUIRED")
+        targets.append((canonical_id, official_name))
+    root = Path(__file__).resolve().parents[2] / "data" / "official_sources" / "nse_index_close_series"
+    return OfficialNseIndexCloseSeriesRefresh(
+        store=CoreSnapshotIndexCloseStore(repository), targets=tuple(sorted(targets)), artifact_directory=root,
+    ), repository
 
 
 def build_current_sector_constituent_backfill_service():
@@ -828,6 +1047,22 @@ def parser() -> argparse.ArgumentParser:
     run_once.add_argument("--universe")
     run_once.add_argument("--dry-run", action="store_true", help="Run without snapshot publication")
     commands.add_parser("status", help="Read runtime status without running a cycle")
+    commands.add_parser("dhan-auth-status", help="Read secret-free Dhan market-data authentication status")
+    commands.add_parser("dhan-auth-configure", help="Store Dhan Client ID, API Key, and API Secret through hidden local prompts")
+    commands.add_parser("dhan-auth-diagnose", help="Perform only one bounded Dhan Generate Consent diagnostic; never opens a browser")
+    commands.add_parser("dhan-materialize-mappings", help="Materialize the current immutable Dhan provider mappings from the official master")
+    dhan_ltp_canary = commands.add_parser("dhan-ltp-canary", help="One bounded host-only Dhan LTP batch; defaults to the five portfolio holdings")
+    dhan_ltp_canary.add_argument("--scope", choices=("portfolio", "all-current-targets"), default="portfolio", help="Use all stored current targets only when explicitly requested")
+    commands.add_parser("dhan-live-feed-status", help="Read the safe in-process Dhan live-feed status")
+    dhan_live_canary = commands.add_parser("dhan-live-feed-canary", help="Connect once to Dhan ticker feed using persisted current mappings")
+    dhan_live_canary.add_argument("--seconds", type=int, default=30, help="Bound the host live-feed receive timeout")
+    commands.add_parser("dhan-live-feed", help="Run the bounded Dhan live feed until Ctrl+C")
+    commands.add_parser("dhan-live-feed-diagnose", help="Perform one safe bounded Dhan live-feed handshake diagnostic")
+    dhan_auth_start = commands.add_parser("dhan-auth-start", help="Start bounded Dhan browser consent; market-data only")
+    dhan_auth_start.add_argument("--open-browser", action="store_true", help="Open the official Dhan consent URL locally after it is generated")
+    dhan_auth_start.add_argument("--manual-token-id", action="store_true", help="Read tokenId from a no-echo terminal prompt after the official browser redirect")
+    dhan_auth_start.add_argument("--loopback-port", type=int, help="Wait on a pre-registered http://127.0.0.1 callback port for tokenId")
+    dhan_auth_start.add_argument("--wait-seconds", type=float, default=180.0, help="Bounded loopback wait; defaults to 180 seconds")
     commands.add_parser("validate-config", help="Validate safe runtime settings")
     commands.add_parser("worker", help="Run the opt-in local interval worker")
     commands.add_parser("data-operations-status", help="Read immutable U17 refresh health without starting jobs")
@@ -862,6 +1097,48 @@ def parser() -> argparse.ArgumentParser:
     imported.add_argument("--dry-run", action="store_true")
     bse_import = commands.add_parser("import-bse-financial-feasibility", help="Import BSE official XBRL for only APOLLOHOSP, SAFARI, and ORIENTTECH")
     bse_import.add_argument("--limit-per-instrument", type=int, default=12)
+    commands.add_parser(
+        "collect-real-portfolio-bse-financials",
+        help="Fetch, verify, stage, and import BSE XBRL for exactly the five approved real-portfolio ISINs",
+    )
+    bse_nifty500 = commands.add_parser(
+        "bse-nifty500-financials",
+        help="Run explicit bounded official-BSE NIFTY 500 financial mapping, planning, and acquisition operations",
+    )
+    bse_nifty500.add_argument("operation", choices=("mapping-audit", "archive-discovery", "plan", "dry-run", "canary", "run", "resume", "status", "failures"))
+    bse_nifty500.add_argument("--as-of", help="Timezone-aware ISO8601 cutoff; defaults to current UTC time")
+    bse_nifty500.add_argument("--plan-id", help="Existing immutable plan ID for resume/status/failures")
+    bse_nifty500.add_argument("--inventory-id", help="Existing immutable mapping inventory ID for deterministic plan construction")
+    bse_nifty500.add_argument("--max-instruments", type=int, help="Bound mapping audit/dry-run; omit only for the full governed universe")
+    bse_nifty500.add_argument("--max-units", type=int, help="Bound canary/run/resume work; omit only for a persisted full plan")
+    bse_nifty500.add_argument("--batch-size", type=int, default=5, help="Conservative sequential batch boundary (1-25)")
+    commands.add_parser(
+        "acquire-real-portfolio-nse-shareholding",
+        help="Fetch and stage official current NSE Regulation 31 XBRL for exactly the approved five holdings",
+    )
+    commands.add_parser(
+        "correct-real-portfolio-nse-reg31-pit-timestamps",
+        help="Append-only correction for only the five pre-fix NSE Reg31 XBRL publication timestamps",
+    )
+    commands.add_parser(
+        "materialize-real-portfolio-nse-reg31-ownership",
+        help="Materialize direct ownership observations from only the five corrected official NSE Reg31 XBRLs",
+    )
+    commands.add_parser(
+        "materialize-real-portfolio-reliability-integrity",
+        help="Materialize immutable, stored-only Reliability / Integrity observations for exactly the five approved holdings",
+    )
+    commands.add_parser("refresh-real-portfolio-intelligence", help="Run the existing stored-only five-holding intelligence chain")
+    market_wide_watch = commands.add_parser(
+        "materialize-market-wide-watch",
+        help="Materialize the stored-only NIFTY 500 Quality & Inflection Watch twice for idempotency",
+    )
+    market_wide_watch.add_argument("--as-of", help="Timezone-aware ISO8601 cutoff; defaults to current UTC time")
+    bridge_inbox = commands.add_parser(
+        "bridge-external-intelligence-inbox",
+        help="Claim and deliver a bounded Supabase intelligence inbox batch to loopback HSI",
+    )
+    bridge_inbox.add_argument("--once", action="store_true", help="Run one explicit bounded bridge cycle; otherwise run only when the bridge is enabled.")
     universe_import = commands.add_parser("import-nse-universe", help="Import one explicit local NSE equity-universe CSV")
     universe_import.add_argument("file")
     universe_import.add_argument("--dry-run", action="store_true", help="Validate without persisting a universe snapshot")
@@ -903,6 +1180,11 @@ def parser() -> argparse.ArgumentParser:
     constituent_plan.add_argument("--rs-ready-only", action="store_true", help="Plan only sectors whose existing stored production RS is ready")
     current_sector = commands.add_parser("current-sector-rotation-status", help="Stored-only current sector RS, breadth, ranking, and readiness status")
     current_sector.add_argument("--report-dir", default="reports")
+    commands.add_parser("materialize-current-sector-ranking", help="Persist one immutable stored-only current sector-ranking snapshot")
+    commands.add_parser(
+        "ingest-official-nse-index-close-series",
+        help="Acquire the fixed four exact official NSE Indices close-only series; never creates OHLC bars",
+    )
     current_prebreakout = commands.add_parser("current-prebreakout-status", help="Stored-only current Top-3 official NSE delivery gate and Pre-Breakout readiness")
     current_prebreakout.add_argument("--report-dir", default="reports")
     governed_setup_source = commands.add_parser("run-governed-executable-setup-source", help="Explicit stored-only governed Pre-Breakout assessment and executable-setup persistence; never starts paper trading")
@@ -947,6 +1229,8 @@ def main(
     scheduler_factory: Callable[[RuntimeSchedulerSettings], RuntimeScheduler] = build_runtime_scheduler,
     import_service_factory: Callable[[], object] = build_nse_import_service,
     bse_financial_import_factory: Callable[[], object] = build_bse_financial_feasibility_import_service,
+    bse_real_portfolio_collector_factory: Callable[[], object] = build_real_portfolio_bse_official_financial_collector,
+    bse_nifty500_acquisition_factory: Callable[[], object] = build_nifty500_bse_financial_acquisition_orchestrator,
     universe_importer_factory: Callable[[], object] = build_nse_universe_importer,
     nse_tick_master_importer_factory: Callable[[], object] = build_nse_tick_master_importer,
     data_readiness_factory: Callable[[], object] = build_data_readiness_service,
@@ -959,6 +1243,7 @@ def main(
     upstox_sector_index_population_factory: Callable[[], object] = build_upstox_sector_index_population_service,
     upstox_sector_index_status_factory: Callable[[], object] = build_upstox_sector_index_status_service,
     current_sector_rotation_factory: Callable[[], object] = build_current_sector_rotation_service,
+    official_index_close_refresh_factory: Callable[[], object] = build_official_nse_index_close_series_refresh,
     current_prebreakout_factory: Callable[[], object] = build_current_prebreakout_service,
     governed_executable_setup_source_factory: Callable[..., object] = build_governed_executable_setup_source_service,
     current_sector_constituent_backfill_factory: Callable[[], object] = build_current_sector_constituent_backfill_service,
@@ -973,11 +1258,315 @@ def main(
     production_v1_readiness_factory: Callable[[], object] = build_production_v1_readiness_service,
     production_v1_cycle_factory: Callable[[], object] = build_controlled_production_v1_cycle_service,
     historical_conflict_store_factory: Callable[[], object] = build_historical_conflict_store,
+    credential_store_factory: Callable[[], object] = create_credential_store,
     output: Callable[[str], None] = print,
 ) -> int:
     arguments = parser().parse_args(argv)
     try:
         settings = RuntimeSchedulerSettings.from_environment()
+        if arguments.command == "materialize-market-wide-watch":
+            from app.intelligence.market_wide_watch import build_local_market_wide_watch_service
+            as_of = _prebreakout_timestamp(arguments.as_of) if arguments.as_of else datetime.now(UTC)
+            service, resources = build_local_market_wide_watch_service()
+            try:
+                first = service.run(as_of=as_of)
+                second = service.run(as_of=as_of)
+                output(" ".join((
+                    f"run_id={first.run_id}", f"universe={first.universe_count}",
+                    f"eligible={first.eligible_count}", f"evidence_ready={first.evidence_ready_count}",
+                    f"watch_candidates={first.watch_candidate_count}",
+                    f"first_fingerprint={first.fingerprint}", f"second_fingerprint={second.fingerprint}",
+                    f"idempotent={'yes' if first == second else 'no'}",
+                )))
+                return 0 if first == second else 2
+            finally:
+                for resource in resources:
+                    if hasattr(resource, "close"):
+                        resource.close()
+        if arguments.command in {"dhan-auth-status", "dhan-auth-configure", "dhan-auth-diagnose", "dhan-auth-start", "dhan-materialize-mappings", "dhan-ltp-canary", "dhan-live-feed-status", "dhan-live-feed-canary", "dhan-live-feed", "dhan-live-feed-diagnose"}:
+            from app.market_data.dhan import DhanAuthClient, DhanCredentialService, DhanLoopbackTokenReceiver, DhanMarketDataClient, load_dhan_instrument_master
+            if arguments.command in {"dhan-materialize-mappings", "dhan-ltp-canary", "dhan-live-feed-canary", "dhan-live-feed", "dhan-live-feed-diagnose"}:
+                from app.market_data.dhan_mapping import DhanCurrentTargetSet, DhanProviderMappingService, current_dhan_targets
+                from app.api.repository_query_services import RepositoryPortfolioQueryService
+                from app.production_v1.top3_opportunity_finder import Top3OpportunityFinderRunStore
+                from app.storage.database import DatabaseSettings
+                from app.storage.repository_factory import create_core_api_snapshot_repository
+                from app.universe_analysis.service import CoreUniverseAnalysisStore
+                repository = create_core_api_snapshot_repository(DatabaseSettings.local_runtime())
+                universe = CoreUniverseAnalysisStore(repository)
+                target_set = current_dhan_targets(
+                    portfolio=RepositoryPortfolioQueryService(repository), top3_runs=Top3OpportunityFinderRunStore(repository),
+                )
+                mapping_service = DhanProviderMappingService(universe)
+            if arguments.command == "dhan-materialize-mappings":
+                master = load_dhan_instrument_master()
+                first = mapping_service.materialize(targets=target_set, master=master, as_of=master.retrieved_at)
+                second = mapping_service.materialize(targets=target_set, master=master, as_of=master.retrieved_at)
+                output(" ".join((
+                    f"portfolio_targets={len(target_set.portfolio_ids)}", f"top3_targets={len(target_set.top3_ids)}",
+                    f"union_targets={target_set.count}", f"master_sha256={master.fingerprint}",
+                    f"first_created={first.created_count}", f"first_blocked={first.blocked_count}",
+                    f"second_created={second.created_count}", f"second_identical={second.identical_count}", f"second_blocked={second.blocked_count}",
+                )))
+                for item in first.outcomes:
+                    mapping = item.mapping
+                    output(" ".join((
+                        f"canonical_instrument_id={item.canonical_instrument_id}", f"symbol={item.symbol}", f"status={item.status.value}",
+                        f"mapping_id={mapping.mapping_id if mapping else 'NONE'}", f"fingerprint={mapping.mapping_id.rsplit(':', 1)[-1] if mapping else 'NONE'}",
+                    )))
+                return 0 if first.blocked_count == 0 and second.created_count == second.blocked_count == 0 else 2
+            if arguments.command == "dhan-live-feed-status":
+                output("health=DISCONNECTED requested_targets=0 subscribed_targets=0 mapped_packets=0 rejected_packets=0")
+                return 0
+            credentials = DhanCredentialService(credential_store_factory())
+            if arguments.command == "dhan-auth-status":
+                status = credentials.status()
+                output(" ".join((
+                    f"configured={'yes' if status.configured else 'no'}",
+                    f"api_key_present={'yes' if status.api_key_present else 'no'}",
+                    f"api_secret_present={'yes' if status.api_secret_present else 'no'}",
+                    f"access_token_present={'yes' if status.access_token_present else 'no'}",
+                    f"token_state={status.token_state.value}",
+                    f"expiry_time={status.expiry_time.isoformat() if status.expiry_time else 'NONE'}",
+                    f"client_id_present={'yes' if status.client_id_present else 'no'}",
+                )))
+                return 0
+            if arguments.command == "dhan-auth-configure":
+                import getpass
+                credentials.configure_base_credentials(
+                    dhan_client_id=getpass.getpass("Dhan Client ID (input hidden): "),
+                    api_key=getpass.getpass("Dhan API Key (input hidden): "),
+                    api_secret=getpass.getpass("Dhan API Secret (input hidden): "),
+                )
+                output("DHAN_CREDENTIALS_STORED")
+                return 0
+            if arguments.command == "dhan-auth-diagnose":
+                DhanAuthClient(credentials).generate_consent()
+                output("DHAN_GENERATE_CONSENT_OK")
+                return 0
+            if arguments.command == "dhan-ltp-canary":
+                profile = DhanAuthClient(credentials).profile_canary()
+                plan = profile.get("dataPlan") if isinstance(profile.get("dataPlan"), str) else "UNKNOWN"
+                validity = profile.get("dataValidity") if isinstance(profile.get("dataValidity"), str) else "UNKNOWN"
+                if plan.upper() != "ACTIVE":
+                    output(f"data_plan={plan} data_validity={validity} DHAN_DATA_PLAN_INACTIVE")
+                    return 2
+                selected = target_set if arguments.scope == "all-current-targets" else DhanCurrentTargetSet(
+                    target_set.portfolio_ids, (), (), target_set.portfolio_ids,
+                )
+                targets = mapping_service.ltp_targets(targets=selected, as_of=datetime.now(UTC))
+                observations = DhanMarketDataClient(credentials).ltp_batch(targets)
+                output(f"data_plan={plan} data_validity={validity} scope={arguments.scope} targets_requested={selected.count} targets_resolved={len(targets)} targets_returned={len(observations)}")
+                by_id = {item.canonical_instrument_id: item for item in observations}
+                identities = {item.instrument_id: item for item in universe.instruments_as_of(datetime.now(UTC))}
+                for identifier in selected.canonical_instrument_ids:
+                    identity = identities.get(identifier)
+                    if identity is None:
+                        raise ValueError("DHAN_CURRENT_TARGET_IDENTITY_MISSING")
+                    observation = by_id[identity.instrument_id]
+                    output(f"symbol={identity.symbol} dhan_security_id={observation.provider_instrument_id} ltp={observation.ltp} received_at={observation.received_at.isoformat()}")
+                return 0 if selected.count == len(targets) == len(observations) else 2
+            if arguments.command == "dhan-live-feed-canary":
+                if arguments.seconds <= 0 or arguments.seconds > 300:
+                    raise ValueError("DHAN_LIVE_FEED_SECONDS_INVALID")
+                from app.market_data.dhan_live import DhanLiveFeedService, open_dhan_live_transport
+                targets = mapping_service.ltp_targets(targets=target_set, as_of=datetime.now(UTC))
+                service = DhanLiveFeedService(credentials)
+                status = service.canary(
+                    targets=targets,
+                    transport_factory=lambda url: open_dhan_live_transport(url, timeout_seconds=arguments.seconds),
+                )
+                output(" ".join((
+                    f"health={status.health.value}", f"requested_targets={status.requested_targets}",
+                    f"subscribed_targets={status.subscribed_targets}", f"mapped_packets={status.mapped_packets}",
+                    f"rejected_packets={status.rejected_packets}",
+                    f"oldest_received_at={status.oldest_received_at.isoformat() if status.oldest_received_at else 'NONE'}",
+                    f"newest_received_at={status.newest_received_at.isoformat() if status.newest_received_at else 'NONE'}",
+                )))
+                return 0 if status.mapped_packets else 2
+            if arguments.command == "dhan-live-feed":
+                from app.market_data.dhan_live import DhanLiveFeedService, open_dhan_live_transport
+                targets = mapping_service.ltp_targets(targets=target_set, as_of=datetime.now(UTC))
+                service = DhanLiveFeedService(credentials)
+                try:
+                    service.run_forever(targets=targets, transport_factory=lambda url: open_dhan_live_transport(url, timeout_seconds=30), stop_requested=lambda: False)
+                except KeyboardInterrupt:
+                    output("health=DISCONNECTED shutdown=REQUESTED")
+                    return 0
+            if arguments.command == "dhan-live-feed-diagnose":
+                from app.market_data.dhan_live import DhanLiveFeedService, open_dhan_live_transport
+                targets = mapping_service.ltp_targets(targets=target_set, as_of=datetime.now(UTC))
+                result = DhanLiveFeedService(credentials).diagnose(targets=targets, transport_factory=lambda url: open_dhan_live_transport(url, timeout_seconds=5))
+                fields=["DHAN_LIVE_FEED_DIAGNOSTIC",f"stage={result.stage}",f"classification={result.classification}"]
+                if result.exception_class: fields.append(f"exception_class={result.exception_class}")
+                if result.http_status is not None: fields.append(f"http_status={result.http_status}")
+                if result.provider_disconnect_code is not None: fields.append(f"provider_disconnect_code={result.provider_disconnect_code}")
+                output(" ".join(fields))
+                return 0 if result.ok else 2
+            receiver = None
+            if arguments.loopback_port is not None:
+                if arguments.loopback_port < 1 or arguments.loopback_port > 65535 or arguments.wait_seconds <= 0:
+                    raise ValueError("DHAN_LOOPBACK_ARGUMENT_INVALID")
+                receiver = DhanLoopbackTokenReceiver(port=arguments.loopback_port)
+                output(f"loopback_redirect_url={receiver.redirect_url}")
+            auth = DhanAuthClient(credentials)
+            consent = auth.generate_consent()
+            output(f"official_browser_url={consent.browser_url}")
+            if arguments.open_browser:
+                import webbrowser
+                webbrowser.open(consent.browser_url, new=1)
+            token_id = None
+            if receiver is not None:
+                token_id = receiver.receive(timeout_seconds=arguments.wait_seconds)
+                if token_id is None:
+                    output("DHAN_AUTH_CALLBACK_TIMEOUT")
+                    return 2
+            elif arguments.manual_token_id:
+                import getpass
+                token_id = getpass.getpass("Paste Dhan tokenId from the official redirect (input hidden): ")
+            else:
+                output("DHAN_AUTH_AWAITING_TOKEN_ID")
+                return 2
+            grant = auth.consume_consent(token_id)
+            auth.profile_canary()
+            output(" ".join((
+                "auth=VALIDATED", "profile_canary=VALIDATED",
+                f"token_state={credentials.status().token_state.value}", f"expiry_time={grant.expiry_time.isoformat()}",
+            )))
+            return 0
+        if arguments.command == "acquire-real-portfolio-nse-shareholding":
+            from app.data_operations.nse_shareholding_acquisition import NseOfficialShareholdingAcquirer
+            from app.data_operations.nse_reg31_identity import NseReg31IdentityReconciliationStore
+            from app.storage.database import DatabaseSettings
+            from app.storage.repository_factory import create_core_api_snapshot_repository
+            source_directory = Path(__file__).resolve().parents[2] / "data" / "official_sources" / "nse_shareholding"
+            reconciliations = NseReg31IdentityReconciliationStore(
+                create_core_api_snapshot_repository(DatabaseSettings.local_runtime())
+            )
+            staged = NseOfficialShareholdingAcquirer(
+                source_directory, identity_reconciliation_store=reconciliations,
+            ).acquire_current_xbrl()
+            for item in staged:
+                output(" ".join((
+                    f"symbol={item.target.symbol}", f"isin={item.target.isin}",
+                    f"status={item.status}", f"file={item.path.name}", f"sha256={item.sha256}",
+                )))
+            return 0
+        if arguments.command == "correct-real-portfolio-nse-reg31-pit-timestamps":
+            from app.data_operations.nse_reg31_pit_correction import (
+                NseReg31PitTimestampCorrectionService, NseReg31PitTimestampCorrectionStore,
+            )
+            from app.filings.store import SQLiteCorporateFilingsStore
+            from app.storage.database import DatabaseBackend, DatabaseSettings
+            from app.storage.repository_factory import create_core_api_snapshot_repository
+            database = DatabaseSettings.local_runtime()
+            if database.backend is not DatabaseBackend.SQLITE or database.url.endswith(":memory:"):
+                raise RuntimeCompositionError("NSE_REG31_PIT_CORRECTION_REQUIRES_PERSISTENT_SQLITE")
+            path = database.url.removeprefix("sqlite:///")
+            repository = create_core_api_snapshot_repository(database)
+            try:
+                service = NseReg31PitTimestampCorrectionService(
+                    filings=SQLiteCorporateFilingsStore(path),
+                    corrections=NseReg31PitTimestampCorrectionStore(repository),
+                    source_directory=Path(__file__).resolve().parents[2] / "data" / "official_sources" / "nse_shareholding",
+                )
+                for item in service.apply():
+                    output(f"instrument={item.canonical_instrument_id} correction_id={item.correction_id} corrected_filing_id={item.corrected_filing_id} status={item.status}")
+                return 0
+            finally:
+                if hasattr(repository, "close"):
+                    repository.close()
+        if arguments.command == "materialize-real-portfolio-nse-reg31-ownership":
+            from app.ownership.nse_reg31_projection import NseReg31OwnershipProjectionService
+            from app.ownership.store import OwnershipObservationStore
+            from app.filings.store import SQLiteCorporateFilingsStore
+            from app.storage.database import DatabaseBackend, DatabaseSettings
+            from app.storage.repository_factory import create_core_api_snapshot_repository
+            database = DatabaseSettings.local_runtime()
+            if database.backend is not DatabaseBackend.SQLITE or database.url.endswith(":memory:"):
+                raise RuntimeCompositionError("NSE_REG31_OWNERSHIP_REQUIRES_PERSISTENT_SQLITE")
+            path = database.url.removeprefix("sqlite:///")
+            repository = create_core_api_snapshot_repository(database)
+            try:
+                service = NseReg31OwnershipProjectionService(
+                    filings=SQLiteCorporateFilingsStore(path), observations=OwnershipObservationStore(repository),
+                    source_directory=Path(__file__).resolve().parents[2] / "data" / "official_sources" / "nse_shareholding",
+                )
+                for item in service.materialize():
+                    output(" ".join((
+                        f"instrument={item.canonical_instrument_id}", f"filing_id={item.filing_id}",
+                        f"period={item.reporting_period.astimezone(ZoneInfo('Asia/Kolkata')).date().isoformat()}", f"published_at={item.published_at.isoformat()}",
+                        f"raw_inserted={item.raw_fact_inserted}", f"raw_identical={item.raw_fact_identical}",
+                        f"observations_inserted={item.observation_inserted}",
+                        f"observations_identical={item.observation_identical}",
+                        f"normalized_percentage={item.normalized_percentage_count}",
+                        f"unsupported={len(item.unsupported_concepts)}", f"conflicts={item.conflict_count}",
+                    )))
+                return 0
+            finally:
+                if hasattr(repository, "close"):
+                    repository.close()
+        if arguments.command == "materialize-real-portfolio-reliability-integrity":
+            from app.portfolio.canonical_diagnostics_orchestration import PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS
+            from app.reliability.integrity import build_reliability_integrity_observation
+            resolver, assembler, observations, repository, historical = build_real_portfolio_reliability_integrity_context()
+            try:
+                cutoff = datetime.now(UTC)
+                for pass_number in (1, 2):
+                    for instrument_id in PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS:
+                        instrument = resolver.resolve(instrument_id, as_of=cutoff)
+                        value = build_reliability_integrity_observation(
+                            assembler.assemble(instrument, as_of=cutoff).unified_state,
+                        )
+                        inserted = repository.get_snapshot(value.artifact_id) is None
+                        observations.save(value)
+                        output(" ".join((
+                            f"pass={pass_number}", f"instrument={instrument_id}",
+                            f"status={'INSERTED' if inserted else 'IDENTICAL'}",
+                            f"evidence_state={value.evidence_state.value}",
+                            f"freshness={value.freshness_state.value}",
+                            f"conflict={value.conflict_detected}",
+                            f"fallback={value.fallback_state.value}",
+                            f"dimensions={len(value.dimensions)}", f"blockers={len(value.blockers)}",
+                            f"artifact_id={value.artifact_id}",
+                        )))
+                return 0
+            finally:
+                for value in (historical, repository):
+                    if hasattr(value, "close"):
+                        value.close()
+        if arguments.command == "bridge-external-intelligence-inbox":
+            from app.intelligence.supabase_inbox_bridge import (
+                SupabaseBridgeConfigurationError,
+                build_supabase_external_intelligence_bridge,
+            )
+            bridge = build_supabase_external_intelligence_bridge()
+            if arguments.once:
+                receipt = bridge.run_once()
+            else:
+                cycles = bridge.run_forever()
+                if cycles == 0:
+                    raise SupabaseBridgeConfigurationError("SUPABASE_EXTERNAL_INTELLIGENCE_BRIDGE_DISABLED")
+                return 0
+            output(" ".join(
+                f"{field}={getattr(receipt, field)}" for field in receipt.__dataclass_fields__
+            ))
+            return 0 if receipt.supabase_failure == 0 else 2
+        if arguments.command == "refresh-real-portfolio-intelligence":
+            from app.portfolio.canonical_diagnostics_orchestration import PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS
+            from app.domain.canonical_diagnostic_strategy import CANONICAL_61_STRATEGY_REFERENCE
+            service, snapshot, repository, historical, governance = build_real_portfolio_intelligence_refresh_service()
+            try:
+                now = datetime.now(UTC)
+                run = service.run(portfolio_snapshot=snapshot, canonical_instrument_ids=PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS, strategy_version=CANONICAL_61_STRATEGY_REFERENCE, intelligence_as_of=now)
+                output(f"portfolio_snapshot_id={run.portfolio_snapshot_id} portfolio_snapshot_as_of={run.portfolio_snapshot_as_of.isoformat()} intelligence_as_of={run.intelligence_as_of.isoformat()} latest_completed_market_session={run.latest_completed_market_session.isoformat() if run.latest_completed_market_session else 'NONE'}")
+                for item in run.holdings:
+                    output(f"holding={item.instrument_id} evaluated={len(item.evaluated_rule_ids)} missing={len(item.blocked_rule_ids)} brain={item.shared_brain_status or 'BLOCKED'} sell_side={item.sell_side_decision.action.value if item.sell_side_decision else 'NONE'} blockers={'|'.join(item.blockers) or 'NONE'}")
+                output(f"stage={'SUCCESS' if not run.blockers else 'BLOCKED'} blockers={'|'.join(run.blockers) or 'NONE'}")
+                return 0 if not run.blockers else 2
+            finally:
+                for value in (governance, historical, repository):
+                    if hasattr(value, 'close'): value.close()
         if arguments.command == "production-v1-status":
             report = production_v1_readiness_factory().report()
             output(f"final_status={report.final_status.value} p0_count={len(report.p0_blockers)}")
@@ -1227,6 +1816,35 @@ def main(
             if report.error:
                 output(f"error={report.error}")
             return 0 if report.migration_status.value in {"MIGRATED", "ALREADY_CURRENT"} else 2
+        if arguments.command == "ingest-official-nse-index-close-series":
+            service, repository = official_index_close_refresh_factory()
+            try:
+                result = service.run_twice()
+            finally:
+                if hasattr(repository, "close"):
+                    repository.close()
+            output(f"requested_at={result.requested_at.isoformat()} completed_at={result.completed_at.isoformat()}")
+            for label, values in (("first", result.first_run), ("second", result.second_run)):
+                for item in values:
+                    output(" ".join((
+                        f"run={label}", f"canonical_index_id={item.canonical_index_id}",
+                        f"official_index_name={item.official_index_name}",
+                        f"before={item.sessions_before}", f"after={item.sessions_after}",
+                        f"inserted={item.inserted_count}", f"duplicates={item.duplicate_count}",
+                        f"conflicts={item.conflict_count}",
+                        f"latest={item.latest_session.isoformat() if item.latest_session else 'NONE'}",
+                        f"artifact_sha256={item.raw_artifact_sha256}", f"blocker={item.blocker or 'NONE'}",
+                    )))
+            return 0 if not any(item.conflict_count for item in (*result.first_run, *result.second_run)) else 2
+        if arguments.command == "materialize-current-sector-ranking":
+            service, historical = current_sector_rotation_factory()
+            try:
+                ranking = service.materialize()
+            finally:
+                if hasattr(historical, "close"):
+                    historical.close()
+            output(f"ranking_id={ranking.ranking_id} ranking_as_of={ranking.ranking_as_of.isoformat()} benchmark={ranking.benchmark_identity} policy={ranking.ranking_policy_version}")
+            return 0
         if arguments.command in {"plan-upstox-sector-constituent-backfill", "current-sector-rotation-status"}:
             service, historical = current_sector_rotation_factory()
             try:
@@ -1322,6 +1940,101 @@ def main(
                     f"rejected={item.rejected}",
                 )))
             return 0 if all(item.rejected == 0 for item in result) else 2
+        if arguments.command == "bse-nifty500-financials":
+            from app.fundamentals.bse_nifty500_acquisition import (
+                BseAcquisitionUnitState, BseArchiveDiscoveryIncompleteError, BseFinancialAcquisitionSettings,
+            )
+            service = bse_nifty500_acquisition_factory()
+            as_of = _prebreakout_timestamp(arguments.as_of) if arguments.as_of else datetime.now(UTC)
+            settings = BseFinancialAcquisitionSettings(batch_size=arguments.batch_size)
+            if arguments.operation == "mapping-audit":
+                inventory = service.mapping_audit(as_of=as_of, max_instruments=arguments.max_instruments, settings=settings)
+                counts = {state.value: sum(item.state is state for item in inventory.mappings) for state in type(inventory.mappings[0].state)} if inventory.mappings else {}
+                output(" ".join((
+                    f"inventory_id={inventory.inventory_id}", f"universe_count={len(inventory.mappings)}",
+                    f"exact_verified={counts.get('EXACT_VERIFIED', 0)}", f"unmapped={counts.get('UNMAPPED', 0)}",
+                    f"conflict={counts.get('CONFLICT', 0)}", f"unsupported={counts.get('UNSUPPORTED', 0)}",
+                    f"fingerprint={inventory.fingerprint}",
+                )))
+                return 0
+            if arguments.operation == "dry-run":
+                inventory, plan = service.dry_run(as_of=as_of, max_instruments=arguments.max_instruments, settings=settings)
+                counts = {state.value: sum(item.state is state for item in inventory.mappings) for state in type(inventory.mappings[0].state)} if inventory.mappings else {}
+                output(" ".join((
+                    f"inventory_id={inventory.inventory_id}", f"universe_count={len(inventory.mappings)}",
+                    f"exact_verified={counts.get('EXACT_VERIFIED', 0)}", f"unmapped={counts.get('UNMAPPED', 0)}",
+                    f"conflict={counts.get('CONFLICT', 0)}", f"unsupported={counts.get('UNSUPPORTED', 0)}",
+                    f"plan_id={plan.plan_id}", f"planned_units={len(plan.units)}",
+                    f"already_satisfied={len(plan.already_satisfied_unit_ids)}", f"plan_fingerprint={plan.fingerprint}",
+                )))
+                return 0
+            if arguments.operation == "plan":
+                if not arguments.inventory_id:
+                    raise RuntimeCompositionError("BSE_FINANCIAL_ACQUISITION_INVENTORY_REQUIRED")
+                inventory = service.inventory(arguments.inventory_id)
+                if inventory is None:
+                    raise RuntimeCompositionError("BSE_FINANCIAL_ACQUISITION_INVENTORY_NOT_FOUND")
+                try:
+                    plan = service.build_plan(inventory, max_instruments=arguments.max_instruments, settings=settings)
+                except BseArchiveDiscoveryIncompleteError as error:
+                    output(_bse_nifty500_discovery_line(error.report))
+                    return 2
+                output(" ".join((
+                    f"inventory_id={inventory.inventory_id}", f"plan_id={plan.plan_id}",
+                    f"planned_units={len(plan.units)}", f"already_satisfied={len(plan.already_satisfied_unit_ids)}",
+                    f"plan_fingerprint={plan.fingerprint}",
+                )))
+                return 0
+            if arguments.operation == "archive-discovery":
+                if not arguments.inventory_id:
+                    raise RuntimeCompositionError("BSE_FINANCIAL_ACQUISITION_INVENTORY_REQUIRED")
+                inventory = service.inventory(arguments.inventory_id)
+                if inventory is None:
+                    raise RuntimeCompositionError("BSE_FINANCIAL_ACQUISITION_INVENTORY_NOT_FOUND")
+                report = service.discover_archives(inventory, max_instruments=arguments.max_instruments, settings=settings)
+                output(_bse_nifty500_discovery_line(report))
+                return 0 if not report.provider_halted and report.remaining_unresolved == 0 else 2
+            plan = service.plan(arguments.plan_id)
+            if plan is None:
+                if arguments.operation in {"status", "failures"}:
+                    output("status=NO_PERSISTED_BSE_FINANCIAL_ACQUISITION_PLAN")
+                    return 0
+                raise RuntimeCompositionError("BSE_FINANCIAL_ACQUISITION_PLAN_REQUIRED")
+            if arguments.operation in {"status", "failures"}:
+                report = service.status(plan.plan_id)
+                assert report is not None
+                output(_bse_nifty500_run_line(report))
+                if arguments.operation == "failures":
+                    for item in report.receipts:
+                        if item.state not in {BseAcquisitionUnitState.ACCEPTED, BseAcquisitionUnitState.ALREADY_PRESENT}:
+                            output(f"unit_id={item.unit_id} state={item.state.value} detail={item.detail or 'NONE'}")
+                return 0 if not report.provider_halted else 2
+            if arguments.operation == "canary":
+                report = service.canary(plan, max_units=arguments.max_units or 3, settings=settings)
+            elif arguments.operation == "resume":
+                report = service.resume(plan.plan_id, max_units=arguments.max_units, settings=settings)
+            else:
+                report = service.execute(plan, max_units=arguments.max_units, settings=settings)
+            output(_bse_nifty500_run_line(report))
+            for item in report.receipts:
+                output(f"unit_id={item.unit_id} state={item.state.value} attempt={item.attempt} facts_inserted={item.facts_inserted} facts_duplicate={item.facts_duplicate} conflicts={item.facts_conflicted} detail={item.detail or 'NONE'}")
+            return 0 if not report.provider_halted and report.terminal_failure == 0 else 2
+        if arguments.command == "collect-real-portfolio-bse-financials":
+            report = bse_real_portfolio_collector_factory().run()
+            for item in report.receipts:
+                output(" ".join((
+                    f"instrument_id={item.canonical_instrument_id}", f"isin={item.isin or 'UNKNOWN'}",
+                    f"mapping={item.mapping.status.value}", f"bse_code={item.mapping.security_code or 'NONE'}",
+                    f"bse_security_id={item.mapping.security_id or 'NONE'}",
+                    f"bse_name={item.mapping.security_name or 'NONE'}",
+                    f"mapping_source={item.mapping.source_type}",
+                    f"source_master_date={item.mapping.source_master_date.isoformat() if item.mapping.source_master_date else 'NONE'}",
+                    f"filings_discovered={item.filings_discovered}", f"new_filings={item.new_filings}",
+                    f"unchanged_filings={item.unchanged_filings}", f"facts_accepted={item.canonical_facts_accepted}",
+                    f"facts_unchanged={item.canonical_facts_unchanged}", f"conflicts={item.financial_conflicts}",
+                    f"blockers={','.join(item.blockers) if item.blockers else 'NONE'}",
+                )))
+            return 0 if all(not item.blockers and item.financial_conflicts == 0 for item in report.receipts) else 2
         if arguments.command == "import-nse-universe":
             importer = universe_importer_factory()
             now = datetime.now(UTC)
@@ -1609,11 +2322,14 @@ def main(
         result = scheduler.run_once(dry_run=arguments.dry_run)
         _write_cycle(result, scheduler.status(), output)
         return _cycle_exit_code(result, scheduler.status().last_cycle_status)
+    except DhanAuthError as error:
+        output(str(error))
+        return 1
     except (ValueError, RuntimeCompositionError) as error:
         # An explicit bounded ingestion command needs an actionable local
         # blocker, while the generic scheduler commands retain their safe
         # configuration-error behaviour.
-        if arguments.command in {"ingest-upstox-frozen-cohort", "ingest-yfinance-frozen-cohort", "validate-yfinance-frozen-stock", "import-bse-financial-feasibility", "import-nse-delivery", "import-nse-tick-master", "approve-prebreakout-policy", "select-prebreakout-policy", "data-operations-run", "reconcile-upstox-historical-conflicts", "data-operations-schedule-once", "data-operations-worker", "historical-bar-conflicts", "ohlcv-readiness"}:
+        if arguments.command in {"ingest-upstox-frozen-cohort", "ingest-yfinance-frozen-cohort", "validate-yfinance-frozen-stock", "import-bse-financial-feasibility", "collect-real-portfolio-bse-financials", "import-nse-delivery", "import-nse-tick-master", "approve-prebreakout-policy", "select-prebreakout-policy", "data-operations-run", "reconcile-upstox-historical-conflicts", "data-operations-schedule-once", "data-operations-worker", "historical-bar-conflicts", "ohlcv-readiness", "materialize-real-portfolio-nse-reg31-ownership", "materialize-real-portfolio-reliability-integrity", "dhan-ltp-canary", "dhan-materialize-mappings"}:
             output(str(error) or "UPSTOX_INGESTION_CONFIGURATION_ERROR")
         else:
             output("RUNTIME CONFIGURATION ERROR")
@@ -1646,6 +2362,28 @@ def _nse_tick_observed_at(value: str | None) -> datetime:
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         raise ValueError("NSE_TICK_OBSERVED_AT_NAIVE")
     return parsed
+
+
+def _bse_nifty500_run_line(report) -> str:
+    return " ".join((
+        f"run_id={report.run_id}", f"plan_id={report.plan_id}", f"attempted={report.attempted}",
+        f"accepted={report.accepted}", f"already_present={report.already_present}",
+        f"quarantined={report.quarantined}", f"unavailable={report.unavailable}",
+        f"retryable_failure={report.retryable_failure}", f"terminal_failure={report.terminal_failure}",
+        f"provider_halted={'yes' if report.provider_halted else 'no'}",
+    ))
+
+
+def _bse_nifty500_discovery_line(report) -> str:
+    halt = report.latest_halt_receipt
+    return " ".join((
+        f"discovery_run_id={report.run_id}", f"securities_examined={report.securities_examined}",
+        f"discovered={report.discovered}", f"no_archive_available={report.no_archive_available}",
+        f"retryable_failure={report.retryable_failures}", f"terminal_failure={report.terminal_failures}",
+        f"remaining_unresolved={report.remaining_unresolved}",
+        f"provider_halted={'yes' if report.provider_halted else 'no'}",
+        f"halt_reason={halt.halt_reason if halt else 'NONE'}",
+    ))
 
 
 def _write_cycle(result: RuntimeCycleResult | None, health, output: Callable[[str], None]) -> None:

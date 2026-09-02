@@ -10,7 +10,7 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { isMockMode, apiBaseUrl } = useDataClient();
+  const { isMockMode } = useDataClient();
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-100 flex font-sans antialiased selection:bg-blue-500/30">
@@ -43,26 +43,22 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
           {children}
         </main>
 
-        {/* Elegant Dark Status Footer */}
+        {/* Product context only.  Runtime status is rendered from backend read models. */}
         <footer
           id="app-status-footer"
           className="h-8 bg-[#111] border-t border-[#222] flex items-center px-4 sm:px-6 justify-between text-[10px] font-mono text-gray-500 uppercase shrink-0"
         >
           <div className="flex items-center gap-4">
-            <span className="text-gray-400">System v2.1.8-alpha</span>
+            <span className="text-gray-400">HSI Development Console</span>
             <span className="hidden sm:inline text-gray-500">•</span>
-            <span className="hidden sm:inline text-gray-400">User: ADM_CHINMAY</span>
+            <span className="hidden sm:inline text-gray-400">Read-only observability</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-gray-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>FastAPI Connectivity</span>
-            </span>
-            <span className="text-gray-400 font-semibold">Latency: 42ms</span>
+            <span className="text-gray-400">Backend state is rendered where exposed</span>
+            <span className="text-gray-500">NOT_EXPOSED otherwise</span>
           </div>
         </footer>
       </div>
     </div>
   );
 };
-

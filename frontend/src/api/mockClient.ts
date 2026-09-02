@@ -10,8 +10,10 @@ import { PerformanceData } from '../types/performance';
 import { PrimaryMarketData } from '../types/primaryMarket';
 import { NewsData } from '../types/news';
 import { SystemHealthData } from '../types/systemHealth';
+import { DataOperationsHealthData, DecisionTrustEnvelopeData, LocalRuntimeReadinessData, MarketWideWatchData, OpportunitySnapshotData, PortfolioRuntimeHolding, RuntimeStatusData } from '../types/devConsole';
 import { ConnectionsState } from '../types/connections';
 import { DataClientInterface } from './clientInterface';
+import { LiveMarketOverviewData, LivePortfolioData, StockLiveMarketData } from '../types/liveMarket';
 import {
   mockCapitalRotation,
   mockConnectionsState,
@@ -44,6 +46,10 @@ function delayed<T>(data: ApiResponse<T>): Promise<ApiResponse<T>> {
 }
 
 export class MockDataClient implements DataClientInterface {
+  private notExposed<T>(message: string): Promise<ApiResponse<T>> {
+    return delayed({ status: 'UNAVAILABLE', freshness: 'UNKNOWN', timestamp: new Date().toISOString(), data: null, message });
+  }
+
   async getMarketState(): Promise<ApiResponse<MarketStateData>> {
     return delayed(mockMarketState);
   }
@@ -127,6 +133,46 @@ export class MockDataClient implements DataClientInterface {
 
   async getSystemHealth(): Promise<ApiResponse<SystemHealthData>> {
     return delayed(mockSystemHealth);
+  }
+
+  async getRuntimeStatus(): Promise<ApiResponse<RuntimeStatusData>> {
+    return this.notExposed('Runtime health is NOT_EXPOSED in mock mode.');
+  }
+
+  async getLocalRuntimeReadiness(): Promise<ApiResponse<LocalRuntimeReadinessData>> {
+    return this.notExposed('Local runtime readiness is NOT_EXPOSED in mock mode.');
+  }
+
+  async getDataOperationsHealth(): Promise<ApiResponse<DataOperationsHealthData>> {
+    return this.notExposed('Data-operations health is NOT_EXPOSED in mock mode.');
+  }
+
+  async getPortfolioRuntimeHoldings(): Promise<ApiResponse<PortfolioRuntimeHolding[]>> {
+    return this.notExposed('Canonical portfolio runtime holdings are NOT_EXPOSED in mock mode.');
+  }
+
+  async getOpportunitySnapshot(): Promise<ApiResponse<OpportunitySnapshotData>> {
+    return this.notExposed('Opportunity Finder is NOT_EXPOSED in mock mode.');
+  }
+
+  async getDecisionTrustEnvelope(): Promise<ApiResponse<DecisionTrustEnvelopeData>> {
+    return this.notExposed('Decision Trust Envelope is NOT_EXPOSED in mock mode.');
+  }
+
+  async getMarketWideWatch(): Promise<ApiResponse<MarketWideWatchData>> {
+    return this.notExposed('Market-Wide Watch is NOT_EXPOSED in mock mode.');
+  }
+
+  async getLiveMarketOverview(): Promise<ApiResponse<LiveMarketOverviewData>> {
+    return this.notExposed('Live market observations are not exposed in mock mode.');
+  }
+
+  async getLivePortfolioValuation(): Promise<ApiResponse<LivePortfolioData>> {
+    return this.notExposed('Live portfolio valuation is not exposed in mock mode.');
+  }
+
+  async getStockLiveMarket(): Promise<ApiResponse<StockLiveMarketData>> {
+    return this.notExposed('Live stock observations are not exposed in mock mode.');
   }
 
   async getConnectionsState(): Promise<ApiResponse<ConnectionsState>> {

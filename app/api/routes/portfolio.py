@@ -6,7 +6,7 @@ from app.portfolio.sell_side_policy import CURRENT_FROZEN_PORTFOLIO_SELL_SIDE_DE
 from app.portfolio.sell_side_runtime import PortfolioSellSideDecision
 from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily
 
-from app.api.dependencies import get_portfolio_query_service
+from app.api.dependencies import get_dhan_live_market_runtime, get_portfolio_query_service
 from app.api.portfolio_query import (
     PortfolioQueryService,
     holding_response,
@@ -17,6 +17,9 @@ from app.api.schemas.portfolio import (
     PortfolioHoldingResponse,
     PortfolioResponse,
     PortfolioSummaryResponse,
+)
+from app.api.schemas.dhan_live import (
+    DhanLiveHealthResponse, DhanLivePortfolioResponse, DhanLivePortfolioValuationResponse,
 )
 
 
@@ -37,6 +40,18 @@ def holdings(service: PortfolioQueryService = Depends(get_portfolio_query_servic
 @router.get("/summary", response_model=PortfolioSummaryResponse)
 def summary(service: PortfolioQueryService = Depends(get_portfolio_query_service)) -> PortfolioSummaryResponse:
     return portfolio_summary_response(service.get_snapshot())
+
+
+@router.get("/live-valuation", response_model=DhanLivePortfolioResponse)
+def live_valuation(runtime=Depends(get_dhan_live_market_runtime)) -> DhanLivePortfolioResponse:
+    """Read the canonical snapshot against in-memory live observations only."""
+    return DhanLivePortfolioResponse(
+        health=DhanLiveHealthResponse.model_validate(runtime.health(), from_attributes=True),
+        holdings=tuple(
+            DhanLivePortfolioValuationResponse.model_validate(item, from_attributes=True)
+            for item in runtime.portfolio_valuations()
+        ),
+    )
 
 
 @router.get("/sell-side", response_model=SellSidePortfolioResponse)
@@ -62,7 +77,11 @@ def sell_side(service: PortfolioQueryService = Depends(get_portfolio_query_servi
         portfolio_snapshot_id=snapshot.snapshot_id,
         policy_fingerprint=CURRENT_FROZEN_PORTFOLIO_SELL_SIDE_DECISION_POLICY.fingerprint,
         decisions=tuple(SellSideHoldingDecisionResponse(
-            holding_id=item.canonical_holding_id, as_of=item.as_of, action=item.action.value,
+            holding_id=item.canonical_holding_id,
+            portfolio_snapshot_as_of=item.portfolio_snapshot_as_of or item.as_of,
+            intelligence_as_of=item.intelligence_as_of or item.as_of,
+            latest_completed_market_session=item.latest_completed_market_session,
+            as_of=item.intelligence_as_of or item.as_of, action=item.action.value,
             thesis_state=item.thesis_state.value,
             capital_efficiency_state=None if item.capital_efficiency_state is None else item.capital_efficiency_state.value,
             rotation_state=None if item.rotation_state is None else item.rotation_state.value,

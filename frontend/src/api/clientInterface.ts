@@ -10,6 +10,8 @@ import { PerformanceData } from '../types/performance';
 import { PrimaryMarketData } from '../types/primaryMarket';
 import { NewsData } from '../types/news';
 import { SystemHealthData } from '../types/systemHealth';
+import { DataOperationsHealthData, DecisionTrustEnvelopeData, LocalRuntimeReadinessData, MarketWideWatchData, OpportunitySnapshotData, PortfolioRuntimeHolding, RuntimeStatusData } from '../types/devConsole';
+import { LiveMarketOverviewData, LivePortfolioData, StockLiveMarketData } from '../types/liveMarket';
 import {
   ConnectionsState,
   DataCoverageData,
@@ -35,6 +37,16 @@ export interface DataClientInterface {
   getPrimaryMarket(): Promise<ApiResponse<PrimaryMarketData>>;
   getNews(): Promise<ApiResponse<NewsData>>;
   getSystemHealth(): Promise<ApiResponse<SystemHealthData>>;
+  getRuntimeStatus(): Promise<ApiResponse<RuntimeStatusData>>;
+  getLocalRuntimeReadiness(): Promise<ApiResponse<LocalRuntimeReadinessData>>;
+  getDataOperationsHealth(): Promise<ApiResponse<DataOperationsHealthData>>;
+  getPortfolioRuntimeHoldings(): Promise<ApiResponse<PortfolioRuntimeHolding[]>>;
+  getOpportunitySnapshot(): Promise<ApiResponse<OpportunitySnapshotData>>;
+  getDecisionTrustEnvelope(canonicalInstrumentId: string): Promise<ApiResponse<DecisionTrustEnvelopeData>>;
+  getMarketWideWatch(): Promise<ApiResponse<MarketWideWatchData>>;
+  getLiveMarketOverview(): Promise<ApiResponse<LiveMarketOverviewData>>;
+  getLivePortfolioValuation(): Promise<ApiResponse<LivePortfolioData>>;
+  getStockLiveMarket(canonicalInstrumentId: string): Promise<ApiResponse<StockLiveMarketData>>;
   getConnectionsState(): Promise<ApiResponse<ConnectionsState>>;
   validateConnection(
     providerId: string,

@@ -11,15 +11,11 @@ export interface NavItemConfig {
 }
 
 export const NAVIGATION_ITEMS: NavItemConfig[] = [
-  { id: 'nav-dashboard', label: 'Dashboard', route: 'dashboard', path: '/dashboard', iconName: 'LayoutDashboard', category: 'MAIN' },
-  { id: 'nav-portfolio', label: 'Portfolio', route: 'portfolio', path: '/portfolio', iconName: 'Briefcase', category: 'MAIN' },
-  { id: 'nav-rotation', label: 'Capital Rotation', route: 'rotation', path: '/rotation', iconName: 'ArrowLeftRight', badge: 'v2.1', category: 'MAIN' },
-  { id: 'nav-stocks', label: 'Stocks Intelligence', route: 'stocks', path: '/stocks', iconName: 'Layers', category: 'MAIN' },
-  { id: 'nav-signals', label: 'Signals & Rationale', route: 'signals', path: '/signals', iconName: 'Radio', category: 'MAIN' },
-  { id: 'nav-paper-trading', label: 'Paper Trading', route: 'paper-trading', path: '/paper-trading', iconName: 'Target', category: 'MAIN' },
-  { id: 'nav-performance', label: 'Performance & Alpha', route: 'performance', path: '/performance', iconName: 'LineChart', category: 'MAIN' },
-  { id: 'nav-primary-market', label: 'Primary Market (IPO)', route: 'primary-market', path: '/primary-market', iconName: 'Sparkles', category: 'MAIN' },
-  { id: 'nav-news', label: 'News & Catalysts', route: 'news', path: '/news', iconName: 'Newspaper', category: 'MAIN' },
-  { id: 'nav-settings', label: 'Settings & Feeds', route: 'settings', path: '/settings', iconName: 'Sliders', category: 'SYSTEM' },
-  { id: 'nav-system-health', label: 'System Health', route: 'system-health', path: '/system-health', iconName: 'Activity', category: 'SYSTEM' },
+  { id: 'nav-system-health', label: 'System Health', route: 'dev-system-health', path: '/dev/system-health', iconName: 'Activity', category: 'MAIN' },
+  { id: 'nav-data-providers', label: 'Data & Providers', route: 'dev-data-providers', path: '/dev/data-providers', iconName: 'Database', category: 'MAIN' },
+  { id: 'nav-external-intelligence', label: 'External Intelligence', route: 'dev-external-intelligence', path: '/dev/external-intelligence', iconName: 'Radio', category: 'MAIN' },
+  { id: 'nav-brain-inspector', label: 'Shared Brain Inspector', route: 'dev-brain-inspector', path: '/dev/brain-inspector', iconName: 'Brain', category: 'MAIN' },
+  { id: 'nav-opportunity-setup', label: 'Opportunity / Setup', route: 'dev-opportunity-setup', path: '/dev/opportunity-setup', iconName: 'Target', category: 'MAIN' },
+  { id: 'nav-portfolio-runtime', label: 'Portfolio Runtime', route: 'dev-portfolio-runtime', path: '/dev/portfolio-runtime', iconName: 'Briefcase', category: 'MAIN' },
+  { id: 'nav-policies-audit', label: 'Policies & Audit', route: 'dev-policies-audit', path: '/dev/policies-audit', iconName: 'Shield', category: 'SYSTEM' },
 ];

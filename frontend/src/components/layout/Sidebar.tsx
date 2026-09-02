@@ -1,16 +1,13 @@
 import React from 'react';
 import {
   Activity,
-  ArrowLeftRight,
+  Brain,
   Briefcase,
+  Database,
   Layers,
   LayoutDashboard,
-  LineChart,
-  Newspaper,
   Radio,
   Shield,
-  Sliders,
-  Sparkles,
   Target,
   X,
 } from 'lucide-react';
@@ -31,22 +28,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         return <LayoutDashboard className="w-4 h-4" />;
       case 'Briefcase':
         return <Briefcase className="w-4 h-4" />;
-      case 'ArrowLeftRight':
-        return <ArrowLeftRight className="w-4 h-4" />;
+      case 'Database':
+        return <Database className="w-4 h-4" />;
+      case 'Brain':
+        return <Brain className="w-4 h-4" />;
       case 'Layers':
         return <Layers className="w-4 h-4" />;
       case 'Radio':
         return <Radio className="w-4 h-4" />;
       case 'Target':
         return <Target className="w-4 h-4" />;
-      case 'LineChart':
-        return <LineChart className="w-4 h-4" />;
-      case 'Sparkles':
-        return <Sparkles className="w-4 h-4" />;
-      case 'Newspaper':
-        return <Newspaper className="w-4 h-4" />;
-      case 'Sliders':
-        return <Sliders className="w-4 h-4" />;
       case 'Activity':
         return <Activity className="w-4 h-4" />;
       default:
@@ -79,13 +70,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="p-6 border-b border-[#222] shrink-0 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-6 h-6 bg-blue-600 rounded-xs flex items-center justify-center font-bold text-white text-[11px] shadow-xs">
-              N
+              H
             </div>
             <div>
-              <h1 className="font-bold text-base sm:text-lg tracking-tight text-white flex items-center gap-1.5">
-                <span>NSE MANAGER</span>
-                <span className="text-blue-500 font-mono text-xs">v2.1</span>
+              <h1 className="font-bold text-base sm:text-lg tracking-tight text-white">
+                HSI
               </h1>
+              <p className="text-[9px] leading-3 text-gray-500">Hybrid Stock Intelligence<br />Development Console</p>
             </div>
           </div>
 
@@ -103,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <nav className="flex-1 py-4 overflow-y-auto space-y-5">
           <div>
             <div className="px-5 mb-2 text-[10px] uppercase tracking-widest text-gray-500 font-semibold">
-              Main Menu
+              Console Views
             </div>
             <div className="space-y-0.5">
               {mainItems.map((item) => {
@@ -141,7 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           <div>
             <div className="px-5 mb-2 text-[10px] uppercase tracking-widest text-gray-500 font-semibold">
-              System & Config
+              Audit
             </div>
             <div className="space-y-0.5">
               {systemItems.map((item) => {
@@ -173,25 +164,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </div>
         </nav>
 
-        {/* System Health Section from Design HTML */}
+        {/* Static product context; live health belongs to the System Health view. */}
         <div className="p-4 bg-[#0d0d0d] border-t border-[#222] shrink-0">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-              System Health
+              Read-only Console
             </span>
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[9px] text-gray-500 font-mono">BACKEND-OWNED</span>
           </div>
-          <div className="grid grid-cols-2 gap-2 text-[10px] font-mono">
-            <div className="text-gray-400">
-              KOTAK: <span className="text-emerald-400 font-semibold">OK</span>
-            </div>
-            <div className="text-gray-400">
-              FEED: <span className="text-emerald-400 font-semibold">LIVE</span>
-            </div>
-          </div>
+          <div className="text-[10px] font-mono text-gray-500">States are read from HSI; unavailable data is labeled NOT_EXPOSED.</div>
         </div>
       </aside>
     </>
   );
 };
-
