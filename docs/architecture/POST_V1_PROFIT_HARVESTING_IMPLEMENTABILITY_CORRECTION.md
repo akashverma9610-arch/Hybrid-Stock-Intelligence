@@ -70,6 +70,37 @@ reward/risk, fundamental-improvement-priced-in, partial/complete realization,
 concentration, friction/tax/liquidity, and every portfolio-dependent concept
 unavailable until their separately governed contracts are approved.
 
+## Selected Market-Extremes mapping — canonical-contract audit
+
+The selected product-policy intent is
+`MARKET_EXTREMES_EUPHORIA_MAPPING_APPROVED / RESEARCH_SHADOW_V1 / WATCH_ONLY /
+NON_EXECUTABLE`. It is approved only as a proposed mapping, not as an
+implementation authorization, because the currently implemented Market
+Extremes contract cannot faithfully represent all required input states.
+
+| Requested Profit-Harvesting mapping | Actual Core V1 enum / field | Exact finding | Implementation disposition |
+| --- | --- | --- | --- |
+| Confirmed upside-euphoria → `MONITOR_PROFIT` | `UpsideExcessState.EUPHORIA` | The state exists. However, `top_confirmed` is not an euphoria-confirmation flag: it is true only when structural breakdown forces `UpsideExcessState.BREAKDOWN`. Euphoria assessments explicitly carry `EUPHORIA_IS_NOT_TOP_CONFIRMATION`. | Cannot use `top_confirmed` to create the requested mapping; no replacement interpretation is authorized. |
+| Neutral / downside / no upside euphoria → `NO_PROFIT_REVIEW_EVIDENCE` | `NORMAL`, `OPTIMISM`, `CROWDING`, `SPECULATION`, `DISTRIBUTION`, `BREAKDOWN` | These exact `UpsideExcessState` values exist. They do not encode freshness, conflict, verification, or an instrument-specific Profit-Harvesting domain. | A future wrapper may map them only after the same typed input envelope exists. |
+| Conflicted / ambiguous extremes → `CONFLICTED_PROFIT_REVIEW` | No `UpsideExcessState` or assessment field | `UpsideExcessAssessment` has supporting, contradicting, unavailable factors and warnings, but no typed conflict status, conflict lineage, or deterministic conflict semantics. | Fail closed; do not infer conflict from a warning or factor list. |
+| Unavailable / stale / temporally invalid / unverifiable → `PROFIT_REVIEW_UNAVAILABLE` | Query-level `MARKET_EXTREMES_UNAVAILABLE` only | The raw assessment has `assessed_at`, `data_as_of`, `evidence_ids`, and `provenance_ids`, but no source availability, staleness, verification, or tamper-validation state. | Fail closed; query absence is not a typed evidence contract. |
+| PIT-valid immutable lineage | `CoreApiSnapshotFamily.UPSIDE_EXCESS_ASSESSMENT` and generic `CoreApiSnapshot` | The family exists, but its generic wrapper does not validate its fingerprint against the payload. `RepositoryMarketExtremesQueryService` selects the final listed payload rather than performing canonical as-of selection. | Not a stable, tamper-evident PIT source for this evaluator. |
+
+The required mapping cannot be implemented by adding a local interpretation of
+warnings, assessment order, snapshot creation time, or factor lists. That
+would create a duplicate Market-Extremes availability/conflict policy and
+would violate the selected no-invention boundary.
+
+### Required canonical-contract prerequisite
+
+Before the mapping can resume, a separate approved Core-adjacent contract must
+provide an immutable, fingerprint-verified, as-of-selected Market-Extremes
+projection with exact canonical states for `READY`, `CONFLICTED`,
+`UNAVAILABLE`, `STALE`, `TEMPORALLY_INVALID`, and `UNVERIFIABLE`; preserved
+evidence/provenance lineage; and a defined relation between the existing
+`EUPHORIA` state and any confirmation vocabulary. This is not authorized in
+the Profit-Harvesting slice.
+
 ## Exact resume statement
 
 > Approve one named Profit-Harvesting implementation path in
