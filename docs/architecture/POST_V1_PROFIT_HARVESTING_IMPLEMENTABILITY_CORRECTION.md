@@ -101,6 +101,10 @@ evidence/provenance lineage; and a defined relation between the existing
 `EUPHORIA` state and any confirmation vocabulary. This is not authorized in
 the Profit-Harvesting slice.
 
+That prerequisite is now specified, but not activated, in
+[`POST_V1_MARKET_EXTREMES_ASSURANCE_PROJECTION.md`](POST_V1_MARKET_EXTREMES_ASSURANCE_PROJECTION.md).
+It intentionally remains separate from every Profit-Harvesting evaluator.
+
 ## Exact resume statement
 
 > Approve one named Profit-Harvesting implementation path in
