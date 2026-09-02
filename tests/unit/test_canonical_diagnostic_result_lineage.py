@@ -151,6 +151,28 @@ def test_canonical_fingerprint_is_deterministic_and_save_is_idempotent(tmp_path)
     repository.close()
 
 
+def test_integral_canonical_numeric_lineage_reopens_and_tampering_remains_rejected(tmp_path) -> None:
+    repository = _repository_with_canonical(tmp_path)
+    definition, limitations = _approved()
+    # This models a legacy runner that supplied integer confidence before the
+    # SQLite REAL column rewrote its in-memory representation to ``1.0``.
+    legacy = DiagnosticResult(
+        "legacy-integral", "NSE:TEST", "46", definition.reference, "VALID", 1, 1,
+        (), (), T, T, DiagnosticStrategyLineageType.CANONICAL_DIAGNOSTIC_STRATEGY,
+        definition.semantic_fingerprint, governance_limitations_fingerprint(limitations), None,
+    )
+    legacy = replace(legacy, diagnostic_fingerprint=canonical_diagnostic_result_fingerprint(legacy))
+    repository.save_diagnostic_result(legacy)
+    reopened = SQLiteStrategyGovernanceRepository(tmp_path / "lineage.db")
+    stored = reopened.list_diagnostic_results(legacy.strategy_version, T)
+    assert stored[0].score == stored[0].confidence == 1.0
+    reopened._connection.execute("UPDATE canonical_diagnostic_results SET confidence = 2 WHERE id = ?", (legacy.id,))
+    reopened._connection.commit()
+    with pytest.raises(ValueError, match="fingerprint"):
+        reopened.list_diagnostic_results(legacy.strategy_version, T)
+    reopened.close()
+
+
 def test_reopen_and_additive_migration_preserve_historical_and_typed_rows(tmp_path) -> None:
     database = tmp_path / "reopen.db"
     connection = sqlite3.connect(database)

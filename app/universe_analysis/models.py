@@ -186,6 +186,17 @@ class ProviderInstrumentMappingRecord:
     source_reference: str | None = None
     source_checksum: str | None = None
     mapping_version: str = "v1"
+    # Optional provider-master metadata is evidence accompanying the exact
+    # routing token.  Keeping it on the immutable mapping means a later
+    # provider-master download cannot silently alter the historical record.
+    provider_instrument_type: str | None = None
+    provider_name: str | None = None
+    raw_provider_exchange: str | None = None
+    raw_provider_segment: str | None = None
+    raw_provider_instrument: str | None = None
+    raw_provider_instrument_type: str | None = None
+    raw_provider_series: str | None = None
+    normalized_instrument: str | None = None
 
     def __post_init__(self) -> None:
         if not all((self.mapping_id, self.canonical_instrument_id, self.provider,

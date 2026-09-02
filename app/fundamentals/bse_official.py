@@ -8,6 +8,7 @@ It never reads PDFs, derives EBITDA/cash-flow, or invokes diagnostics.
 from __future__ import annotations
 
 import hashlib
+import csv
 import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -15,6 +16,7 @@ from datetime import UTC, date, datetime
 from decimal import Decimal, InvalidOperation
 from enum import StrEnum
 from html.parser import HTMLParser
+from io import StringIO
 from pathlib import Path
 from typing import Callable, Iterable, Protocol
 from urllib.parse import urljoin, urlparse
@@ -39,6 +41,7 @@ from app.market_data.models import Exchange, InstrumentIdentity, MarketDataProve
 
 BSE_OFFICIAL_PROVIDER = "BSE_OFFICIAL"
 BSE_RESULT_PAGE = "https://www.bseindia.com/corporates/Comp_Results.aspx?Code={security_code}"
+BSE_RESULT_ARCHIVE = "https://api.bseindia.com/BseIndiaAPI/api/Result_Arch_Download/w?scrip_cd={security_code}"
 _BSE_ORIGIN = "https://www.bseindia.com/"
 _IST = ZoneInfo("Asia/Kolkata")
 
@@ -102,6 +105,20 @@ class BseResultMetadata:
 
 
 @dataclass(frozen=True, slots=True)
+class BseResultMetadataAliases:
+    """Every archive-row identity referring to one official XBRL URL.
+
+    ``preferred`` is retained solely for legacy discovery ordering.  Context
+    facts are never derived from it; all aliases remain available for audit
+    lineage.
+    """
+
+    document_url: str
+    aliases: tuple[BseResultMetadata, ...]
+    preferred: BseResultMetadata
+
+
+@dataclass(frozen=True, slots=True)
 class BseXbrlDocument:
     security_code: str
     isin: str
@@ -116,6 +133,30 @@ class BseXbrlDocument:
     checksum: str
     raw_concepts: tuple[str, ...]
     warnings: tuple[str, ...] = ()
+    contexts: tuple["BseXbrlContext", ...] = ()
+    context_facts: tuple["BseXbrlContextFact", ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class BseXbrlContext:
+    """One declared XBRL accounting context, separate from archive metadata."""
+
+    context_id: str
+    period_start: datetime | None
+    period_end: datetime
+    instant: bool
+
+
+@dataclass(frozen=True, slots=True)
+class BseXbrlContextFact:
+    """A canonical metric candidate paired with its actual XBRL context."""
+
+    metric: FinancialMetric
+    value: Decimal
+    concept: str
+    context: BseXbrlContext
+    period_type: FinancialPeriodType
+    value_basis: FinancialValueBasis
 
 
 @dataclass(frozen=True, slots=True)
@@ -225,6 +266,60 @@ class BSEOfficialFinancialResultsProvider:
             instrument.instrument_id, document.isin.upper(), security_code, document.security_name,
             document.source_url, "EXACT_ISIN_BSE_XBRL", self._clock(),
         )
+
+
+class BSEOfficialFinancialResultsArchiveProvider:
+    """Read BSE's structured Financial Results archive for its linked XBRLs.
+
+    The BSE client downloads this public CSV archive for a single BSE security
+    code. It is a discovery boundary only: the canonical importer still
+    verifies the ISIN and security code inside every XBRL before persistence.
+    """
+
+    def __init__(
+        self, *, fetch_csv: Callable[[str], str],
+        timestamp_status: BseTimestampStatus = BseTimestampStatus.EXCHANGE_LOCAL_ASSUMPTION,
+    ) -> None:
+        self._fetch_csv = fetch_csv
+        self._timestamp_status = timestamp_status
+
+    def result_metadata(self, security_code: str) -> tuple[BseResultMetadata, ...]:
+        return tuple(group.preferred for group in self.result_metadata_aliases(security_code))
+
+    def result_metadata_aliases(self, security_code: str) -> tuple[BseResultMetadataAliases, ...]:
+        if not re.fullmatch(r"\d{6}", security_code):
+            raise BseOfficialError("BSE security code must be a six-digit BSE code.")
+        archive = BSE_RESULT_ARCHIVE.format(security_code=security_code)
+        rows = _parse_result_archive(self._fetch_csv(archive))
+        aliases: dict[str, list[BseResultMetadata]] = {}
+        for row in rows:
+            for scope, href in ((StatementScope.STANDALONE, row.standalone_xbrl), (StatementScope.CONSOLIDATED, row.consolidated_xbrl)):
+                if not href:
+                    continue
+                try:
+                    candidate = _metadata_from_row(
+                        row, security_code, scope, _official_xbrl_url(href, _BSE_ORIGIN), archive, self._timestamp_status,
+                        archive_timestamp=True,
+                    )
+                except BseOfficialError:
+                    # An unsupported archival period or malformed row is not
+                    # canonical evidence. Other complete rows remain usable,
+                    # and each XBRL is independently identity-verified later.
+                    continue
+                values = aliases.setdefault(candidate.xbrl_url, [])
+                if candidate not in values:
+                    values.append(candidate)
+        groups: list[BseResultMetadataAliases] = []
+        for document_url, values in aliases.items():
+            ordered = tuple(sorted(values, key=lambda item: (
+                item.filing_at, item.period_type.value, item.scope.value, item.quarter_label,
+                item.filing_type, item.status, item.xbrl_url,
+            )))
+            # Preserve the old Annual-first display convention as a deterministic
+            # compatibility view only. It has no authority over fact periods.
+            preferred = next((item for item in ordered if item.period_type is FinancialPeriodType.ANNUAL), ordered[-1])
+            groups.append(BseResultMetadataAliases(document_url, ordered, preferred))
+        return tuple(sorted(groups, key=lambda item: (item.preferred.filing_at, item.document_url)))
 
 
 class BSEOfficialFinancialResultsIngestionService:
@@ -350,12 +445,12 @@ class BSEOfficialLocalXbrlIngestionService:
         self._filings, self._facts, self._mapping_store = filings, facts, mapping_store
         self._normalizer, self._clock = normalizer or FinancialFactNormalizationService(), clock
 
-    def inspect(self, path: str | Path) -> BseLocalXbrlInspection:
+    def inspect(self, path: str | Path, *, maximum_bytes: int = 5 * 1024 * 1024) -> BseLocalXbrlInspection:
         target = Path(path)
         if not target.is_file() or target.suffix.lower() not in {".xml", ".xbrl"}:
             raise BseOfficialError("BSE local XBRL file is unavailable.")
         raw = target.read_bytes()
-        if len(raw) > 5 * 1024 * 1024:
+        if maximum_bytes < 1 or len(raw) > maximum_bytes:
             raise BseOfficialError("BSE local XBRL exceeds the bounded adapter limit.")
         try:
             text = raw.decode("utf-8-sig")
@@ -454,6 +549,107 @@ class BSEOfficialLocalXbrlIngestionService:
             ("SOURCE_PUBLICATION_TIMESTAMP_UNKNOWN", "PIT_AVAILABLE_FROM_SYSTEM_FIRST_OBSERVED"),
         )
 
+    def ingest_official_staged(
+        self,
+        instrument: InstrumentIdentity,
+        security_code: str,
+        path: str | Path,
+        *,
+        metadata: BseResultMetadata,
+    ) -> BseLocalIngestionReport:
+        """Import a collector-staged BSE XBRL with verified official metadata.
+
+        The collector has already restricted and downloaded the official URL;
+        this method remains the one canonical local XBRL parser/normalizer and
+        fact writer.  Unlike a manually supplied local file, it may retain the
+        BSE publication timestamp because it is supplied from the official
+        result metadata rather than inferred from the accounting period.
+        """
+        if metadata.security_code != security_code:
+            raise BseOfficialError("BSE staged metadata security code does not match the requested identity.")
+        # Only this collector-staged BSE path may use the separately governed
+        # 8 MiB acquisition bound. Generic/manual local inspection stays 5 MiB.
+        inspection = self.inspect(path, maximum_bytes=8 * 1024 * 1024)
+        if inspection.document.scope is not None and inspection.document.scope is not metadata.scope:
+            raise BseOfficialError("BSE staged XBRL statement scope conflicts with official metadata.")
+        if inspection.period_end != metadata.period_end:
+            raise BseOfficialError("BSE staged XBRL period conflicts with official metadata.")
+        context_facts = _selected_context_facts(inspection.document, metadata.period_end)
+        if not context_facts:
+            raise BseOfficialError("BSE staged XBRL has no eligible current-period fact contexts.")
+        observed = self._clock()
+        identity = _identity_from_document(instrument, security_code, inspection.document, observed)
+        source_reference = metadata.xbrl_url
+        filing_id = _filing_id(instrument, metadata)
+        filing = self._filings.get(filing_id)
+        outcome: FilingWriteOutcome
+        if filing is None:
+            if self._mapping_store is not None:
+                mapped = InstrumentIdentity(
+                    instrument.instrument_id, instrument.exchange, instrument.symbol, instrument.trading_symbol,
+                    instrument.isin, instrument.series, instrument.instrument_type, instrument.name, instrument.currency,
+                    instrument.provider_mappings + (identity.provider_mapping(),),
+                )
+                self._mapping_store.capture_provider_mapping(
+                    instrument, provider=BSE_OFFICIAL_PROVIDER, effective_as_of=observed,
+                    resolved_instrument=mapped, source_reference=source_reference,
+                    source_checksum=inspection.checksum,
+                )
+            provenance = MarketDataProvenance(
+                BSE_OFFICIAL_PROVIDER, security_code, metadata.filing_at, metadata.filing_at, observed,
+                "bse-official-staged-xbrl-v1", filing_id, source_reference,
+                inspection.document.schema_version or "bse-xbrl-unknown",
+            )
+            attachment = FilingAttachment(
+                "bse-staged-xbrl:" + inspection.checksum[:24], "XBRL", "BSE Financial Results XBRL",
+                inspection.path.name, source_reference, "text/xml", metadata.filing_at, inspection.checksum,
+                AttachmentParseStatus.PARSED, True,
+            )
+            warnings = ["BSE_OFFICIAL_XBRL", "BSE_OFFICIAL_STAGED_XBRL", "TIMESTAMP_" + metadata.timestamp_status.value]
+            if metadata.revision_reason:
+                warnings.append("BSE_REVISION_REASON_PRESENT")
+            filing = CorporateFiling(
+                filing_id, instrument, Exchange.BSE, BSE_OFFICIAL_PROVIDER, PrimarySourceQuality.PRIMARY_EXCHANGE,
+                FilingType.FINANCIAL_RESULTS, metadata.filing_type, "BSE Financial Results " + metadata.quarter_label,
+                metadata.filing_at, observed, source_reference, source_reference, provenance,
+                period_end=metadata.period_end, text_availability=FilingTextAvailability.SOURCE_TEXT,
+                attachments=(attachment,), revision_of_filing_id=_prior_filing(self._filings, instrument.instrument_id, metadata),
+                financial_result=FinancialResultMetadata(
+                    metadata.period_end, metadata.scope.value, metadata.period_type.value, metadata.is_revised,
+                ), normalization_version="bse-official-staged-xbrl-v1", warnings=tuple(warnings),
+            )
+            outcome = self._filings.save(filing)
+        else:
+            outcome = FilingWriteOutcome.IDENTICAL
+        inserted = duplicate = conflicts = 0
+        for context_fact in context_facts:
+            if inspection.document.scale is None or inspection.document.currency is None:
+                raise BseOfficialError("BSE staged XBRL unit/scale is not explicit.")
+            context = context_fact.context
+            record = StructuredFinancialRecord(
+                instrument, context_fact.metric, context_fact.value, inspection.document.currency, inspection.document.currency,
+                _raw_xbrl_value_scale(context_fact.metric, inspection.document.scale), context_fact.period_type,
+                context_fact.value_basis, context.period_start, context.period_end, _fiscal_year(context.period_end),
+                _fiscal_quarter(context.period_end), metadata.scope,
+                BSE_OFFICIAL_PROVIDER, filing.filing_id, metadata.filing_at, filing.received_at,
+                source_reference, source_reference, "bse-official-staged-xbrl-v1",
+                _prior_context_fact(self._facts, instrument.instrument_id, context_fact.metric, metadata, context_fact),
+                ("BSE_OFFICIAL_XBRL", "BSE_OFFICIAL_STAGED_XBRL", "BSE_XBRL_CONTEXT_" + context.context_id,
+                 "SOURCE_LEVEL_OF_ROUNDING_" + inspection.document.scale.value, "RAW_XBRL_UNIT_VALUE"),
+            )
+            result = self._facts.save(self._normalizer.normalize(record, filing))
+            if result is FinancialFactWriteOutcome.INSERTED:
+                inserted += 1
+            elif result is FinancialFactWriteOutcome.IDENTICAL:
+                duplicate += 1
+            else:
+                conflicts += 1
+        return BseLocalIngestionReport(
+            instrument.instrument_id, security_code, inspection.path.name, True, outcome, inserted, duplicate,
+            conflicts, metadata.filing_at, BsePublicationAvailability.SOURCE_PUBLICATION_KNOWN,
+            ("BSE_OFFICIAL_STAGED_XBRL", "TIMESTAMP_" + metadata.timestamp_status.value),
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class _ResultRow:
@@ -515,13 +711,41 @@ def _parse_result_page(payload: str, page: str) -> tuple[_ResultRow, ...]:
     return parser.rows()
 
 
+def _parse_result_archive(payload: str) -> tuple[_ResultRow, ...]:
+    """Parse the BSE Results.csv shape without scraping client-rendered text."""
+    try:
+        reader = csv.DictReader(StringIO(payload))
+        if reader.fieldnames is None:
+            raise BseOfficialError("BSE results archive has no header.")
+        headers = {_header(field) for field in reader.fieldnames if field}
+        required = {"financial_year", "quarter", "type", "status", "filing_date_time"}
+        if not required <= headers or not {"standalone_xbrl", "consolidate_xbrl"} & headers:
+            raise BseOfficialError("BSE results archive has an unrecognised schema.")
+        values: list[_ResultRow] = []
+        for source in reader:
+            row = {_header(key): (value or "").strip() for key, value in source.items() if key}
+            label = row.get("quarter", "").split(";", 1)[0].strip()
+            if not row.get("financial_year") or not label:
+                continue
+            values.append(_ResultRow(
+                row["financial_year"], label, row.get("type", ""), row.get("status", ""),
+                row.get("filing_date_time", ""), row.get("revised_date_time", ""), row.get("revision_reason", ""),
+                _blank(row.get("standalone_xbrl")), _blank(row.get("consolidate_xbrl")),
+            ))
+        return tuple(values)
+    except (csv.Error, UnicodeError) as error:
+        raise BseOfficialError("BSE results archive is malformed.") from error
+
+
 def _metadata_from_row(row: _ResultRow, security_code: str, scope: StatementScope, url: str, page: str,
-                       status: BseTimestampStatus) -> BseResultMetadata:
+                       status: BseTimestampStatus, *, archive_timestamp: bool = False) -> BseResultMetadata:
     period_end, period_type, basis = _period(row.quarter, row.filing_type)
-    revised = _bse_timestamp(row.revised_time, status, optional=True)
-    filing = revised if row.status.upper() == "REVISED" else _bse_timestamp(row.filing_time, status)
+    revised = _bse_timestamp(row.revised_time, status, optional=True, archive_timestamp=archive_timestamp)
+    filing = revised if row.status.upper() == "REVISED" else _bse_timestamp(
+        row.filing_time, status, archive_timestamp=archive_timestamp,
+    )
     if filing is None and row.status.upper() == "REVISED":
-        filing = _bse_timestamp(row.filing_time, status)
+        filing = _bse_timestamp(row.filing_time, status, archive_timestamp=archive_timestamp)
     if filing is None:
         raise BseOfficialError("BSE filing timestamp is unavailable or timezone-unknown.")
     return BseResultMetadata(
@@ -536,17 +760,14 @@ def parse_bse_xbrl(payload: str, source_url: str, *, period_end: datetime | None
     except ET.ParseError as error:
         raise BseOfficialError("BSE XBRL is malformed.") from error
     values: dict[str, list[tuple[str, dict[str, str]]]] = {}
-    contexts: dict[str, date] = {}
+    contexts: dict[str, BseXbrlContext] = {}
     concepts: list[str] = []
     for element in root.iter():
         local = _local(element.tag); concepts.append(local)
         if local == "context" and element.attrib.get("id"):
-            end = next((node.text for node in element.iter() if _local(node.tag) in {"endDate", "instant"} and node.text), None)
-            if end:
-                try:
-                    contexts[element.attrib["id"]] = datetime.fromisoformat(end.replace("Z", "+00:00")).date()
-                except ValueError:
-                    pass
+            context = _context_from_element(element)
+            if context is not None:
+                contexts[context.context_id] = context
         text = (element.text or "").strip()
         if text:
             values.setdefault(local, []).append((text, dict(element.attrib)))
@@ -560,8 +781,9 @@ def parse_bse_xbrl(payload: str, source_url: str, *, period_end: datetime | None
     scale = _scale(_first(values, "LevelOfRounding"))
     if currency is None or scale is None:
         raise BseOfficialError("BSE XBRL omits an explicit recognised currency or scale.")
-    fact_values = values if period_end is None else {
-        name: tuple((text, attrs) for text, attrs in entries if contexts.get(attrs.get("contextRef", "")) == period_end.date())
+    selected_end = period_end.date() if period_end is not None else None
+    fact_values = values if selected_end is None else {
+        name: tuple((text, attrs) for text, attrs in entries if contexts.get(attrs.get("contextRef", "")) and contexts[attrs["contextRef"]].period_end.date() == selected_end)
         for name, entries in values.items()
     }
     facts: list[tuple[FinancialMetric, Decimal]] = []
@@ -569,10 +791,88 @@ def parse_bse_xbrl(payload: str, source_url: str, *, period_end: datetime | None
         item = _first_decimal(fact_values, concept)
         if item is not None:
             facts.append((metric, item))
+    context_facts: list[BseXbrlContextFact] = []
+    seen_context_metrics: set[tuple[FinancialMetric, str]] = set()
+    for concept, metric in _CONCEPTS:
+        for text, attrs in values.get(concept, ()):
+            context = contexts.get(attrs.get("contextRef", ""))
+            if context is None:
+                continue
+            semantics = _context_semantics(context)
+            if semantics is None:
+                continue
+            try:
+                number = Decimal(text.replace(",", ""))
+            except __import__("decimal").InvalidOperation:
+                continue
+            key = metric, context.context_id
+            # Concept order is an existing deterministic mapping priority. Do
+            # not turn synonymous XBRL tags into duplicate canonical facts.
+            if key in seen_context_metrics:
+                continue
+            seen_context_metrics.add(key)
+            context_facts.append(BseXbrlContextFact(metric, number, concept, context, *semantics))
     return BseXbrlDocument(
-        security_code, isin.upper(), name, schema_version, audit_status, scope, currency, scale,
-        tuple(facts), source_url, hashlib.sha256(payload.encode("utf-8")).hexdigest(),
-        tuple(sorted(set(concepts))), (),
+        security_code=security_code, isin=isin.upper(), security_name=name,
+        schema_version=schema_version, audit_status=audit_status, scope=scope,
+        currency=currency, scale=scale, facts=tuple(facts), source_url=source_url,
+        checksum=hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+        raw_concepts=tuple(sorted(set(concepts))),
+        contexts=tuple(sorted(contexts.values(), key=lambda item: item.context_id)),
+        context_facts=tuple(sorted(
+            context_facts,
+            key=lambda item: (
+                item.metric.value, item.context.period_end,
+                item.context.period_start or item.context.period_end,
+                item.context.context_id, item.concept,
+            ),
+        )),
+    )
+
+
+def _context_from_element(element: ET.Element) -> BseXbrlContext | None:
+    identifier = element.attrib.get("id")
+    instant = next((node.text for node in element.iter() if _local(node.tag) == "instant" and node.text), None)
+    end = next((node.text for node in element.iter() if _local(node.tag) == "endDate" and node.text), None)
+    start = next((node.text for node in element.iter() if _local(node.tag) == "startDate" and node.text), None)
+    try:
+        if instant:
+            return BseXbrlContext(identifier, None, datetime.combine(date.fromisoformat(instant.strip()), datetime.min.time(), UTC), True)
+        if end and start:
+            return BseXbrlContext(identifier, datetime.combine(date.fromisoformat(start.strip()), datetime.min.time(), UTC), datetime.combine(date.fromisoformat(end.strip()), datetime.min.time(), UTC), False)
+    except ValueError:
+        return None
+    return None
+
+
+def _context_semantics(context: BseXbrlContext) -> tuple[FinancialPeriodType, FinancialValueBasis] | None:
+    if context.instant:
+        return FinancialPeriodType.POINT_IN_TIME, FinancialValueBasis.UNKNOWN
+    if context.period_start is None:
+        return None
+    days = (context.period_end.date() - context.period_start.date()).days + 1
+    if 80 <= days <= 100:
+        return FinancialPeriodType.QUARTERLY, FinancialValueBasis.QUARTER_ONLY
+    if context.period_start.month == 4 and context.period_start.day == 1 and context.period_end.month == 3 and context.period_end.day == 31 and 360 <= days <= 367:
+        return FinancialPeriodType.ANNUAL, FinancialValueBasis.FULL_YEAR
+    if context.period_start.month == 4 and context.period_start.day == 1 and 150 <= days <= 300:
+        return FinancialPeriodType.QUARTERLY, FinancialValueBasis.YEAR_TO_DATE
+    return None
+
+
+def _selected_context_facts(document: BseXbrlDocument, period_end: datetime) -> tuple[BseXbrlContextFact, ...]:
+    """Return only current-period, canonically comparable XBRL fact contexts.
+
+    Contexts for prior periods are retained in the immutable source document but
+    are deliberately not backfilled by this archive-row importer.  That keeps
+    a selected filing from silently becoming evidence for a different filing
+    period.  Balance-sheet metrics are the only mapped instant facts.
+    """
+    instant_metrics = {FinancialMetric.TOTAL_ASSETS, FinancialMetric.TOTAL_LIABILITIES}
+    return tuple(
+        item for item in document.context_facts
+        if item.context.period_end == period_end
+        and (not item.context.instant or item.metric in instant_metrics)
     )
 
 
@@ -621,6 +921,25 @@ def _prior_fact(store: FinancialFactStore, instrument_id: str, metric: Financial
     return max(candidates, key=lambda item: (item.published_at, item.fact_id)).fact_id if candidates and metadata.is_revised else None
 
 
+def _prior_context_fact(
+    store: FinancialFactStore,
+    instrument_id: str,
+    metric: FinancialMetric,
+    metadata: BseResultMetadata,
+    candidate: BseXbrlContextFact,
+) -> str | None:
+    values = store.series(instrument_id, metric, period_type=candidate.period_type, scope=metadata.scope, limit=500)
+    matches = tuple(
+        item for item in values
+        if item.source == BSE_OFFICIAL_PROVIDER
+        and item.period_end == candidate.context.period_end
+        and item.period_start == candidate.context.period_start
+        and item.value_basis is candidate.value_basis
+        and item.published_at < metadata.filing_at
+    )
+    return max(matches, key=lambda item: (item.published_at, item.fact_id)).fact_id if matches and metadata.is_revised else None
+
+
 def _filing_id(instrument: InstrumentIdentity, metadata: BseResultMetadata) -> str:
     digest = hashlib.sha256("|".join((instrument.instrument_id, metadata.security_code, metadata.xbrl_url, metadata.filing_at.isoformat())).encode()).hexdigest()[:24]
     return "bse-official:" + digest
@@ -652,17 +971,40 @@ def _fetch_bse_text(url: str) -> str:
         raise BseOfficialError("BSE response is not UTF-8 XML/HTML.") from error
 
 
-def _bse_timestamp(value: str, status: BseTimestampStatus, *, optional: bool = False) -> datetime | None:
+def _bse_timestamp(
+    value: str,
+    status: BseTimestampStatus,
+    *,
+    optional: bool = False,
+    archive_timestamp: bool = False,
+) -> datetime | None:
     text = _blank(value)
     if text is None:
         return None if optional else _raise("BSE filing timestamp is absent.")
     if status is BseTimestampStatus.UNKNOWN:
         return _raise("BSE filing timestamp timezone is unknown.")
-    try:
-        parsed = datetime.strptime(text, "%d-%m-%Y %H:%M:%S")
-    except ValueError as error:
-        raise BseOfficialError("BSE filing timestamp is malformed.") from error
+    patterns = ["%d-%m-%Y %H:%M:%S", "%m/%d/%Y %I:%M:%S %p"]
+    # The immutable GENUSPOWER Result_Arch_Download snapshot proves this exact
+    # 24-hour month/day form. Keep it at the structured-archive boundary;
+    # legacy result-page parsing remains unchanged and does not locale-guess.
+    if archive_timestamp:
+        patterns.append("%m/%d/%Y %H:%M:%S")
+    parsed = next((
+        datetime.strptime(text, pattern)
+        for pattern in patterns
+        if _matches_timestamp(text, pattern)
+    ), None)
+    if parsed is None:
+        raise BseOfficialError("BSE filing timestamp is malformed.")
     return parsed.replace(tzinfo=_IST).astimezone(UTC)
+
+
+def _matches_timestamp(value: str, pattern: str) -> bool:
+    try:
+        datetime.strptime(value, pattern)
+        return True
+    except ValueError:
+        return False
 
 
 def _period(label: str, filing_type: str) -> tuple[datetime, FinancialPeriodType, FinancialValueBasis]:
@@ -685,9 +1027,13 @@ def _period(label: str, filing_type: str) -> tuple[datetime, FinancialPeriodType
 
 def _fiscal_year(end: datetime) -> int: return end.year if end.month == 3 else end.year + 1
 def _fiscal_quarter(end: datetime) -> int | None: return {6: 1, 9: 2, 12: 3, 3: 4}.get(end.month)
-def _blank(value: str | None) -> str | None: return value.strip() if value and value.strip() and value.strip() != "--" else None
+def _blank(value: str | None) -> str | None:
+    text = value.strip() if value else ""
+    return text if text and text not in {"-", "--"} else None
 def _local(tag: str) -> str: return tag.rsplit("}", 1)[-1].split(":")[-1]
-def _first(values: dict[str, list[tuple[str, dict[str, str]]]], name: str) -> str | None: return values.get(name, [(None, {})])[0][0]
+def _first(values: dict[str, list[tuple[str, dict[str, str]]]], name: str) -> str | None:
+    items = values.get(name, ())
+    return items[0][0] if items else None
 def _required_single(values: dict[str, list[tuple[str, dict[str, str]]]], name: str) -> str:
     value = _first(values, name)
     if not value: raise BseOfficialError("BSE XBRL identity is incomplete.")

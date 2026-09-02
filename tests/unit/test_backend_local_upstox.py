@@ -4,7 +4,8 @@ from decimal import Decimal
 from app.connections.credentials import InMemoryCredentialStore
 from app.domain.models import DataQuality
 from app.data_operations.backend_local_upstox import (
-    BackendLocalRealPortfolioOhlcvActivation, REAL_PORTFOLIO_OHLCV_TARGETS,
+    BackendLocalRealPortfolioOhlcvActivation, BackendLocalSectorRotationIndexCoverageActivation,
+    REAL_PORTFOLIO_OHLCV_TARGETS, SECTOR_ROTATION_INDEX_TARGETS,
 )
 from app.data_operations.models import EvidenceRefreshOutcome, EvidenceRefreshStatus
 from app.market_data.historical import SQLiteHistoricalBarStore
@@ -81,3 +82,18 @@ def test_post_ingestion_readiness_uses_visibility_cutoff_without_weakening_histo
     assert nifty_second.accepted_count == 0 and nifty_second.duplicate_count == 252
     assert all(item.readiness == "OHLCV_READY" for item in result.first_run)
     assert tuple(item.canonical_instrument_id for item in result.first_run) == REAL_PORTFOLIO_OHLCV_TARGETS
+
+
+def test_sector_index_coverage_activation_is_fixed_to_official_gap_and_idempotent(tmp_path):
+    historical = SQLiteHistoricalBarStore(tmp_path / "history.sqlite")
+    job = _Job(historical)
+    calls = iter((REQUESTED_AT, *([VISIBLE_AT] * 20)))
+    service = BackendLocalSectorRotationIndexCoverageActivation(
+        universe=_Universe(), historical=historical, index_job=job, clock=lambda: next(calls),
+    )
+
+    result = service.run_twice()
+
+    assert tuple(item.canonical_instrument_id for item in result.first_run) == SECTOR_ROTATION_INDEX_TARGETS
+    assert all(item.session_count_before == 0 and item.session_count_after == 252 for item in result.first_run)
+    assert all(item.accepted_count == 0 and item.duplicate_count == 252 for item in result.second_run)

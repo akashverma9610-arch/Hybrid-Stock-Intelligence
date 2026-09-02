@@ -73,6 +73,22 @@ class StrategyGovernanceSixGatesEvaluationSource:
         return (value,)
 
 
+class CanonicalSixGatesEvaluationSource:
+    """Read canonical gate artifacts without creating generic score anchors."""
+
+    def __init__(self, repository: StrategyGovernanceRepository) -> None:
+        self._repository = repository
+
+    def list_stored_six_gates_evaluations(
+        self, canonical_instrument_id: str, *, as_of: datetime,
+    ) -> tuple[StoredSixGatesEvaluation, ...]:
+        return tuple(
+            value
+            for value in self._repository.list_canonical_execution_gate_evaluations(canonical_instrument_id)
+            if value.as_of_timestamp <= as_of and value.evaluated_at <= as_of
+        )
+
+
 class SixGatesEvidenceAdapter:
     """Project stored Six Gates lineage without making an execution conclusion."""
 
@@ -223,4 +239,5 @@ __all__ = (
     "SixGatesEvidenceAdapter", "SixGatesEvidenceStoredSource", "StoredGateDecision",
     "StoredSixGatesEvaluation", "StoredSixGatesEvaluationSource",
     "StrategyGovernanceSixGatesEvaluationSource", "six_gates_evaluation_artifact_fingerprint",
+    "CanonicalSixGatesEvaluationSource",
 )

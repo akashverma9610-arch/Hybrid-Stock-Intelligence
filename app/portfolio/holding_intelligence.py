@@ -33,6 +33,8 @@ class HoldingIntelligenceComposition:
 
     analytics: HoldingAnalytics
     portfolio_snapshot_id: str
+    portfolio_snapshot_as_of: datetime
+    intelligence_as_of: datetime
     shared_brain_fingerprint: str
     shared_brain_context_fingerprint: str
     composition_policy_id: str
@@ -54,6 +56,7 @@ def compose_holding_intelligence(
     portfolio_snapshot: PortfolioSnapshot,
     shared_brain: SharedBrainAnalysisView,
     diagnostics: tuple[EvaluatedDiagnostic, ...] = (),
+    intelligence_as_of: datetime | None = None,
 ) -> HoldingIntelligenceComposition:
     """Compose existing thesis semantics without inferring any new thesis state.
 
@@ -67,7 +70,11 @@ def compose_holding_intelligence(
     if shared_brain.canonical_instrument_id != holding.instrument_id:
         raise ValueError("HOLDING_INTELLIGENCE_INSTRUMENT_MISMATCH")
 
-    as_of = portfolio_snapshot.as_of_timestamp
+    as_of = intelligence_as_of or portfolio_snapshot.as_of_timestamp
+    if as_of.tzinfo is None or as_of.utcoffset() is None:
+        raise ValueError("HOLDING_INTELLIGENCE_AS_OF_TIMEZONE_REQUIRED")
+    if as_of < portfolio_snapshot.as_of_timestamp:
+        raise ValueError("HOLDING_INTELLIGENCE_AS_OF_BEFORE_PORTFOLIO_SNAPSHOT")
     blockers: set[str] = set()
     if shared_brain.as_of != as_of:
         blockers.add("SHARED_BRAIN_AS_OF_MISMATCH")
@@ -137,7 +144,8 @@ def compose_holding_intelligence(
         portfolio_snapshot_id=portfolio_snapshot.snapshot_id,
         holding_id=holding.holding_id,
         instrument_id=holding.instrument_id,
-        as_of=as_of.isoformat(),
+        portfolio_snapshot_as_of=portfolio_snapshot.as_of_timestamp.isoformat(),
+        intelligence_as_of=as_of.isoformat(),
         shared_brain_fingerprint=shared_brain.snapshot_fingerprint,
         shared_brain_context_fingerprint=shared_brain.context_projection_fingerprint,
         policy_fingerprint=COMPOSITION_POLICY_FINGERPRINT,
@@ -149,6 +157,8 @@ def compose_holding_intelligence(
     )
     return HoldingIntelligenceComposition(
         analytics=analytics, portfolio_snapshot_id=portfolio_snapshot.snapshot_id,
+        portfolio_snapshot_as_of=portfolio_snapshot.as_of_timestamp,
+        intelligence_as_of=as_of,
         shared_brain_fingerprint=shared_brain.snapshot_fingerprint,
         shared_brain_context_fingerprint=shared_brain.context_projection_fingerprint,
         composition_policy_id=COMPOSITION_POLICY_ID,

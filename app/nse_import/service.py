@@ -7,6 +7,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 from typing import Iterable, Mapping, Protocol
 from decimal import Decimal
+from urllib.parse import urlsplit
+from xml.etree import ElementTree
 
 from app.data_sources.models import FundamentalFactKind
 from app.filings.models import CorporateActionDisclosure, CorporateFiling, FilingTextAvailability, FilingType, FinancialResultMetadata, PrimarySourceQuality
@@ -64,7 +66,13 @@ class ImportRunStore:
   row=self.c.execute("SELECT payload FROM nse_import_runs WHERE checksum=?",(checksum,)).fetchone();return _run(json.loads(row[0])) if row else None
  def save(self,value):
   existing=self.get_checksum(value.checksum)
-  if existing:return existing
+  if existing:
+   # A rejected raw artifact made no canonical write.  It may be retried after
+   # an independently fixed resolver or current-identity gate; completed raw
+   # evidence remains immutable/idempotent.
+   if existing.status is ImportStatus.REJECTED:
+    self.c.execute("UPDATE nse_import_runs SET payload=? WHERE checksum=?",(json.dumps(_enc(value),sort_keys=True,separators=(",",":")),value.checksum));self.c.commit();return value
+   return existing
   self.c.execute("INSERT INTO nse_import_runs VALUES(?,?,?)",(value.import_id,value.checksum,json.dumps(_enc(value),sort_keys=True,separators=(",",":"))));self.c.commit();return value
 
 class NSEOfficialExportProvider:
@@ -77,9 +85,13 @@ class NSEOfficialExportProvider:
   if "://" in raw:raise ValueError("NSE official import accepts a local file path only.")
   target=Path(path)
   if not target.is_file():raise ValueError("NSE official import file does not exist.")
-  if target.suffix.lower() not in {".csv",".xlsx"}:raise ValueError("NSE official import supports CSV or XLSX only.")
+  if target.suffix.lower() not in {".csv",".xlsx",".xml"}:raise ValueError("NSE official import supports CSV, XLSX, or governed Reg31 XBRL only.")
   if target.stat().st_size>self.maximum_bytes:raise ValueError("NSE official import exceeds configured file-size limit.")
-  checksum=hashlib.sha256(target.read_bytes()).hexdigest();rows=self._rows(target)
+  raw_bytes=target.read_bytes();checksum=hashlib.sha256(raw_bytes).hexdigest()
+  if target.suffix.lower()==".xml":
+   if family is not ExportFamily.REGULATION_31:raise ValueError("REG31_XBRL_FILING_TYPE_MISMATCH")
+   rows=self._reg31_xbrl_row(target,raw_bytes,checksum)
+  else: rows=self._rows(target)
   if len(rows)>self.maximum_rows:raise ValueError("NSE official import exceeds configured row limit.")
   normalized=[{self.ALIASES.get(k.strip().lower(),k.strip().lower()):str(v).strip() for k,v in row.items() if k is not None} for row in rows]
   detected=family or self._detect(normalized[0] if normalized else {})
@@ -87,6 +99,51 @@ class NSEOfficialExportProvider:
   official_reg31={"company_name","broadcast_at","period_end","document_reference"}
   if not normalized or (not required.issubset(normalized[0]) and not (detected is ExportFamily.REGULATION_31 and official_reg31.issubset(normalized[0]))):raise ValueError("NSE official export schema is unsupported for selected family.")
   return target,checksum,detected,normalized
+ def _reg31_xbrl_row(self,path,raw_bytes,checksum):
+  """Expose one verified NSE Reg31 XBRL artifact as the existing row contract.
+
+  The raw document stays untouched.  This adapter reads only the identity and
+  filing headers needed by the pre-existing ``OfficialExchangeImportService``;
+  it deliberately never reads shareholding values.
+  """
+  manifest_path=path.with_suffix(path.suffix+".provenance.json")
+  try: manifest=json.loads(manifest_path.read_text(encoding="utf-8"))
+  except (OSError,UnicodeError,json.JSONDecodeError) as error:raise ValueError("REG31_XBRL_OFFICIAL_SOURCE_REQUIRED") from error
+  if not isinstance(manifest,dict):raise ValueError("REG31_XBRL_OFFICIAL_SOURCE_REQUIRED")
+  reference=manifest.get("source_url")
+  parsed=urlsplit(reference) if isinstance(reference,str) else None
+  if (
+   manifest.get("provider")!="NSE_OFFICIAL" or manifest.get("file_format")!="XBRL/XML"
+   or not parsed or parsed.scheme!="https" or parsed.hostname!="nsearchives.nseindia.com"
+   or not parsed.path.startswith("/corporate/xbrl/SHP_") or not parsed.path.endswith(".xml")
+   or manifest.get("sha256")!=checksum or manifest.get("filename")!=path.name
+   or manifest.get("filing_type")!="REGULATION_31_SHAREHOLDING_PATTERN"
+  ):raise ValueError("REG31_XBRL_OFFICIAL_SOURCE_REQUIRED")
+  try: root=ElementTree.fromstring(raw_bytes)
+  except ElementTree.ParseError as error:raise ValueError("REG31_XBRL_MALFORMED") from error
+  if _xml_local(root.tag)!="xbrl":raise ValueError("REG31_XBRL_UNSUPPORTED_STRUCTURE")
+  schema_refs=[value for element in root.iter() if _xml_local(element.tag)=="schemaRef" for value in element.attrib.values()]
+  if not any("shp" in value.casefold() for value in schema_refs):raise ValueError("REG31_XBRL_FILING_TYPE_MISMATCH")
+  values={}
+  for element in root.iter():
+   text=(element.text or "").strip()
+   if text: values.setdefault(_xml_local(element.tag).casefold(),text)
+  isin=values.get("isin");symbol=values.get("symbol");issuer=values.get("nameofthecompany")
+  if not isin or not symbol or not issuer:raise ValueError("REG31_XBRL_UNSUPPORTED_STRUCTURE")
+  if isin!=manifest.get("isin"):raise ValueError("REG31_XBRL_IDENTITY_MISMATCH")
+  if symbol!=manifest.get("symbol"):raise ValueError("REG31_XBRL_SYMBOL_MISMATCH")
+  if issuer.casefold()!=str(manifest.get("issuer","")).casefold():raise ValueError("REG31_XBRL_ISSUER_MISMATCH")
+  period=manifest.get("reporting_period_end")
+  if not isinstance(period,str) or not period:raise ValueError("REG31_XBRL_PERIOD_MISMATCH")
+  instants={((element.text or "").strip()) for element in root.iter() if _xml_local(element.tag)=="instant"}
+  if period not in instants:raise ValueError("REG31_XBRL_PERIOD_MISMATCH")
+  publication=manifest.get("official_publication_timestamp")
+  retrieved=manifest.get("retrieved_at")
+  if not isinstance(publication,str) or not isinstance(retrieved,str):raise ValueError("REG31_XBRL_UNSUPPORTED_STRUCTURE")
+  _dt(publication);_dt(retrieved)
+  document_id=manifest.get("official_document_id")
+  if not isinstance(document_id,str) or not document_id:raise ValueError("REG31_XBRL_UNSUPPORTED_STRUCTURE")
+  return [{"symbol":symbol,"isin":isin,"canonical_instrument_id":manifest.get("canonical_instrument_id","") ,"company_name":issuer,"subject":"Official NSE Regulation 31 shareholding pattern XBRL","broadcast_at":publication,"period_end":period,"event_id":"reg31-xbrl:"+document_id,"document_reference":reference,"category":"REGULATION_31_SHAREHOLDING_PATTERN","artifact_sha256":checksum}]
  def _rows(self,path):
   if path.suffix.lower()==".csv":
    with path.open("r",encoding="utf-8-sig",newline="") as f:return list(csv.DictReader(f))
@@ -109,7 +166,7 @@ class OfficialExchangeImportService:
   self.provider,self.resolver,self.filings,self.facts,self.runs,self.clock=provider,resolver,filings,facts,runs,clock
  def import_file(self,path,*,family:ExportFamily|None=None,dry_run:bool=False,latest_reg31_period_only:bool=False)->ImportRun:
   started=self.clock();target,checksum,kind,rows=self.provider.read(path,family=family);prior=self.runs.get_checksum(checksum)
-  if prior:return ImportRun(prior.import_id,prior.source,prior.filename,prior.checksum,prior.family,started,self.clock(),prior.rows_seen,0,prior.rows_seen,0,0,0,0,("IDENTICAL_FILE_ALREADY_IMPORTED",),ImportStatus.IDENTICAL)
+  if prior and prior.status is not ImportStatus.REJECTED:return ImportRun(prior.import_id,prior.source,prior.filename,prior.checksum,prior.family,started,self.clock(),prior.rows_seen,0,prior.rows_seen,0,0,0,0,("IDENTICAL_FILE_ALREADY_IMPORTED",),ImportStatus.IDENTICAL)
   if latest_reg31_period_only:
    if kind is not ExportFamily.REGULATION_31:raise ValueError("Latest-period selection is only supported for NSE Regulation 31 exports.")
    latest=max(_dt(row["period_end"]) for row in rows)
@@ -140,7 +197,10 @@ class OfficialExchangeImportService:
   request_reference="local-import:"+_row_fingerprint(row) if kind is ExportFamily.REGULATION_31 else "local-import"
   p=MarketDataProvenance("NSE",event,published,published,received,"nse-official-export-v1",request_reference,row.get("document_reference"))
   category=row.get("category") or ("REGULATION_31_SHAREHOLDING_PATTERN" if kind is ExportFamily.REGULATION_31 else None)
-  return CorporateFiling(identifier,instrument,instrument.exchange,"NSE",PrimarySourceQuality.PRIMARY_EXCHANGE,ftype,category,row.get("subject") or row.get("metric") or ftype.value,published,received,event,row.get("document_reference"),p,period_end=period,text_availability=FilingTextAvailability.SOURCE_TEXT,revision_of_filing_id=row.get("revision_of") or None,action=action,financial_result=financial,normalization_version="nse-official-export-v1",warnings=("IMPORT_METHOD_OFFICIAL_EXPORT",))
+  warnings=("IMPORT_METHOD_OFFICIAL_EXPORT",)
+  if kind is ExportFamily.REGULATION_31 and row.get("artifact_sha256"):
+   warnings=(*warnings,"NSE_REG31_ARTIFACT_SHA256:"+row["artifact_sha256"])
+  return CorporateFiling(identifier,instrument,instrument.exchange,"NSE",PrimarySourceQuality.PRIMARY_EXCHANGE,ftype,category,row.get("subject") or row.get("metric") or ftype.value,published,received,event,row.get("document_reference"),p,period_end=period,text_availability=FilingTextAvailability.SOURCE_TEXT,revision_of_filing_id=row.get("revision_of") or None,action=action,financial_result=financial,normalization_version="nse-official-export-v1",warnings=warnings)
  def _fact(self,row,filing,instrument,count):
   try:metric=FinancialMetric(row["metric"].strip().upper())
   except ValueError:count["rejected"]+=1;return
@@ -156,6 +216,7 @@ def _dt(value):
    return parsed.replace(tzinfo=ZoneInfo("Asia/Kolkata")).astimezone(UTC) if parsed.tzinfo is None else parsed.astimezone(UTC)
   except ValueError:pass
  raise ValueError("invalid required NSE date/timestamp")
+def _xml_local(tag):return tag.rsplit("}",1)[-1].split(":")[-1]
 def _row_fingerprint(row):return hashlib.sha256(json.dumps(row,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 def _period_type(value):
  normalized=(value or "QUARTERLY").strip().upper().replace(" ","_")

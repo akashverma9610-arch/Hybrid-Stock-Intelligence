@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 from fastapi.testclient import TestClient
 
 from app.api.main import create_app
-from app.api.dependencies import get_backend_local_real_portfolio_ohlcv_activation
+from app.api.dependencies import get_backend_local_real_portfolio_ohlcv_activation, get_backend_local_sector_rotation_index_coverage_activation
 from app.connections.credentials import (
     CredentialStoreBackendStatus,
     CredentialStoreUnavailableError,
@@ -19,6 +19,7 @@ from app.market_data.upstox_forensics import CallResult, execute_forensics
 from app.market_data.upstox_analytics import UpstoxAnalyticsFeasibilityTester
 from app.data_operations.backend_local_upstox import (
     BackendLocalOhlcvActivationResult, BackendLocalOhlcvTargetRun, REAL_PORTFOLIO_OHLCV_TARGETS,
+    SECTOR_ROTATION_INDEX_TARGETS,
 )
 
 
@@ -72,6 +73,15 @@ class BackendLocalActivation:
         return BackendLocalOhlcvActivationResult(T, T, runs, runs)
 
 
+class BackendLocalSectorIndexActivation:
+    def run_twice(self):
+        runs = tuple(
+            BackendLocalOhlcvTargetRun(identifier, "EXACT_MAPPING_AVAILABLE", 252, 252, T, 0, 2, 0, "OHLCV_READY", None)
+            for identifier in SECTOR_ROTATION_INDEX_TARGETS
+        )
+        return BackendLocalOhlcvActivationResult(T, T, runs, runs)
+
+
 def test_hidden_backend_local_upstox_activation_has_fixed_targets_and_no_secret_input_or_output() -> None:
     application = create_app()
     application.dependency_overrides[get_backend_local_real_portfolio_ohlcv_activation] = BackendLocalActivation
@@ -81,6 +91,19 @@ def test_hidden_backend_local_upstox_activation_has_fixed_targets_and_no_secret_
     assert response.status_code == 200
     body = response.json()
     assert [item["canonical_instrument_id"] for item in body["first_run"]] == list(REAL_PORTFOLIO_OHLCV_TARGETS)
+    assert body["first_run"] == body["second_run"]
+    assert secret not in response.text and "access_token" not in response.text
+
+
+def test_hidden_sector_index_coverage_activation_has_only_fixed_official_targets_and_no_secret_input_or_output() -> None:
+    application = create_app()
+    application.dependency_overrides[get_backend_local_sector_rotation_index_coverage_activation] = BackendLocalSectorIndexActivation
+    secret = "upstox-secret"
+    with TestClient(application) as client:
+        response = client.post("/api/v1/connections/upstox/sector-index-coverage/refresh")
+    assert response.status_code == 200
+    body = response.json()
+    assert [item["canonical_instrument_id"] for item in body["first_run"]] == list(SECTOR_ROTATION_INDEX_TARGETS)
     assert body["first_run"] == body["second_run"]
     assert secret not in response.text and "access_token" not in response.text
 

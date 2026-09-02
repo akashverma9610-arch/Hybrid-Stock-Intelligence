@@ -43,8 +43,19 @@ from app.historical.guard import manifest_fingerprint
 from app.intelligence.brain_research_comparability_policy import FROZEN_BRAIN_RESEARCH_COMPARABILITY_POLICY_V2
 from app.intelligence.brain_research_comparison_state import ResearchMetricObservation
 from app.intelligence.company_evidence import CompanyEvidenceStoredSource, CompositeStoredIntelligenceSource
+from app.intelligence.decision_score_evidence import (
+    CanonicalDecisionScorecardSource, DecisionScoreEvidenceStoredSource,
+)
+from app.intelligence.six_gates_evidence import (
+    CanonicalSixGatesEvaluationSource, SixGatesEvidenceStoredSource,
+)
 from app.intelligence.macro_news_evidence import MacroNewsEvidenceStoredSource
 from app.intelligence.non_company_evidence import NonCompanyEvidenceStoredSource
+from app.intelligence.governed_setup_evidence import (
+    CanonicalSetupOpportunityEvidenceSource,
+    GovernedSetupEvidenceStoredSource,
+)
+from app.reliability.integrity import ReliabilityIntegrityEvidenceSource
 from app.intelligence.research_diagnostic_evidence import ResearchDiagnosticEvidenceStoredSource
 from app.intelligence.research_metric_directionality_policy import CURRENT_RESEARCH_METRIC_DIRECTIONALITY_POLICY
 from app.intelligence.research_semantic_materiality_policy import CURRENT_RESEARCH_SEMANTIC_MATERIALITY_POLICY
@@ -130,6 +141,7 @@ class SharedBrainAnalysisView:
     requested_context: BrainOutputContext
     evidence_status: str
     evidence_domains: tuple[tuple[str, str], ...]
+    evidence_references: tuple[object, ...]
     financial_semantics: tuple[FinancialSemanticView, ...]
     blockers: tuple[str, ...]
     warnings: tuple[str, ...]
@@ -202,7 +214,10 @@ class _OhlcvConflictEvidenceSource:
         self._historical = historical_bars
 
     def list_stored_intelligence_artifacts(self, canonical_instrument_id: str, *, as_of: datetime) -> tuple[StoredIntelligenceArtifact, ...]:
-        conflicts = self._historical.list_conflict_artifacts(instrument_id=canonical_instrument_id)
+        conflicts = tuple(
+            item for item in self._historical.list_conflict_artifacts(instrument_id=canonical_instrument_id)
+            if item.detected_at <= as_of
+        )
         if not conflicts:
             return ()
         fingerprints = tuple(item.conflict_fingerprint for item in conflicts)
@@ -237,20 +252,36 @@ class StoredSharedBrainEvidenceAssembler:
         historical_bars=None,
         *,
         filings=None,
+        ownership_observations=None,
         historical_security_master=None,
         taxonomy=None,
+        sector_rankings=None,
         macro_evidence_source=None,
         news=None,
         diagnostics: ResearchDiagnosticEvidenceStoredSource | None = None,
+        market_technical_artifacts=None,
+        reliability_integrity_observations=None,
+        decision_scores=None,
+        execution_gates=None,
+        setup_assessments=None,
+        setup_opportunities=None,
     ) -> None:
         self._facts = facts
         self._historical = historical_bars
         self._filings = filings
+        self._ownership_observations = ownership_observations
         self._historical_security_master = historical_security_master
         self._taxonomy = taxonomy
+        self._sector_rankings = sector_rankings
         self._macro_evidence_source = macro_evidence_source
         self._news = news
         self._diagnostics = diagnostics
+        self._market_technical_artifacts = market_technical_artifacts
+        self._reliability_integrity_observations = reliability_integrity_observations
+        self._decision_scores = decision_scores
+        self._execution_gates = execution_gates
+        self._setup_assessments = setup_assessments
+        self._setup_opportunities = setup_opportunities
 
     def assemble(self, instrument: NseEquityInstrument, *, as_of: datetime) -> SharedBrainApplicationInputs:
         sources = [
@@ -258,11 +289,19 @@ class StoredSharedBrainEvidenceAssembler:
             CompanyEvidenceStoredSource(
                 financial_facts=self._facts,
                 filings=self._filings,
+                ownership_observations=self._ownership_observations,
                 historical_security_master=self._historical_security_master,
             ),
             NonCompanyEvidenceStoredSource(
                 taxonomy=self._taxonomy,
+                sector_rankings=self._sector_rankings,
                 historical_security_master=self._historical_security_master,
+                reliability_integrity_source=(
+                    None if self._reliability_integrity_observations is None else
+                    ReliabilityIntegrityEvidenceSource(
+                        self._reliability_integrity_observations,
+                    )
+                ),
             ),
             MacroNewsEvidenceStoredSource(
                 macro_evidence_source=self._macro_evidence_source,
@@ -272,6 +311,24 @@ class StoredSharedBrainEvidenceAssembler:
         ]
         if self._diagnostics is not None:
             sources.append(self._diagnostics)
+        if self._decision_scores is not None:
+            sources.append(DecisionScoreEvidenceStoredSource(
+                CanonicalDecisionScorecardSource(self._decision_scores),
+            ))
+        if self._execution_gates is not None:
+            sources.append(SixGatesEvidenceStoredSource(
+                CanonicalSixGatesEvaluationSource(self._execution_gates),
+            ))
+        if self._setup_assessments is not None:
+            sources.append(GovernedSetupEvidenceStoredSource(
+                self._setup_assessments, include_opportunity=False,
+            ))
+        if self._setup_opportunities is not None:
+            sources.append(CanonicalSetupOpportunityEvidenceSource(
+                self._setup_opportunities,
+            ))
+        if self._market_technical_artifacts is not None:
+            sources.append(self._market_technical_artifacts)
         if self._historical is not None:
             sources.append(_OhlcvConflictEvidenceSource(self._historical))
         source = CompositeStoredIntelligenceSource(*sources)
@@ -439,6 +496,7 @@ def _view(instrument, snapshot: SharedBrainProductionSnapshot, projection, conte
         exchange=instrument.exchange, as_of=snapshot.as_of, requested_context=context,
         evidence_status=snapshot.unified_state.completeness.value,
         evidence_domains=tuple((item.domain.value, item.availability.value) for item in snapshot.unified_state.evidence_references) + (("FORWARD_PERFORMANCE_INTELLIGENCE", paper.instrument_history.evidence_sufficiency),),
+        evidence_references=snapshot.unified_state.evidence_references,
         financial_semantics=semantics, blockers=blockers, warnings=snapshot.warnings,
         snapshot_fingerprint=snapshot.fingerprint, unified_state_fingerprint=snapshot.unified_state.fingerprint,
         brain_research_state_v2_fingerprint=snapshot.brain_research_state_v2.fingerprint,

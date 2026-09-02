@@ -75,6 +75,28 @@ def test_future_diagnostics_are_excluded_and_cannot_create_a_thesis():
     assert "FUTURE_DIAGNOSTIC_EXCLUDED" in value.blockers
 
 
+def test_current_intelligence_uses_later_evidence_without_rewriting_the_snapshot():
+    intelligence_at = T.replace(day=31)
+    diagnostics = tuple(_diagnostic(rule, at=intelligence_at) for rule in (4, 6, 10, 16, 17, 18, 19, 23, 37, 38, 41, 43, 45, 46))
+    _, holding, snapshot = _compose()
+    composition = compose_holding_intelligence(
+        holding=holding, portfolio_snapshot=snapshot, shared_brain=_brain(as_of=intelligence_at),
+        diagnostics=diagnostics, intelligence_as_of=intelligence_at,
+    )
+    decision = evaluate_portfolio_sell_side_action(PortfolioSellSideInput(
+        snapshot, replace(holding, analytics=composition.analytics), None,
+        composition.shared_brain_fingerprint, composition.evidence_conflicted, composition.evidence_comparable,
+        intelligence_as_of=intelligence_at, latest_completed_market_session=T,
+    ))
+    assert composition.portfolio_snapshot_as_of == snapshot.as_of_timestamp
+    assert composition.intelligence_as_of == intelligence_at
+    assert composition.analytics.as_of_timestamp == intelligence_at
+    assert decision.portfolio_snapshot_as_of == snapshot.as_of_timestamp
+    assert decision.intelligence_as_of == intelligence_at
+    assert decision.latest_completed_market_session == T
+    assert snapshot.cash.as_of_timestamp == T and snapshot.cash.amount == Decimal("0")
+
+
 def test_pnl_valuation_score_and_paper_intelligence_do_not_change_thesis():
     diagnostics = _complete_diagnostics()
     first, _, _ = _compose(diagnostics=diagnostics)

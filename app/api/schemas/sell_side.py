@@ -7,6 +7,11 @@ from pydantic import BaseModel
 
 class SellSideHoldingDecisionResponse(BaseModel):
     holding_id: str
+    portfolio_snapshot_as_of: datetime
+    intelligence_as_of: datetime
+    latest_completed_market_session: datetime | None
+    # Retained for clients that consumed the original projection.  New clients
+    # must use the explicit fields above; this value is the intelligence cutoff.
     as_of: datetime
     action: str
     thesis_state: str
@@ -24,4 +29,3 @@ class SellSidePortfolioResponse(BaseModel):
     policy_fingerprint: str
     decisions: tuple[SellSideHoldingDecisionResponse, ...]
     warnings: tuple[str, ...]
-

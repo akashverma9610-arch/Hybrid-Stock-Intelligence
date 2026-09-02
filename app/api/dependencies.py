@@ -21,6 +21,10 @@ from app.portfolio_analysis.service import PortfolioAnalysisJobService
 from app.api.universe_opportunity_query import UniverseOpportunityQueryService
 from app.intelligence.shared_brain_application import SharedBrainApplicationService
 from app.data_operations.service import DataOperationsService
+from app.api.errors import APIRequestError
+from app.intelligence.external_intelligence_application import ExternalIntelligenceApplicationService
+from app.storage.sqlite_external_intelligence_repository import SQLiteExternalIntelligenceRepository
+from app.storage.database import DatabaseBackend
 
 
 def get_api_settings(request: Request) -> APISettings:
@@ -100,8 +104,32 @@ def get_backend_local_real_portfolio_ohlcv_activation(request: Request):
     )
 
 
+def get_backend_local_sector_rotation_index_coverage_activation(request: Request):
+    """Lazily compose the fixed sector-index operation in the serving backend."""
+    from app.data_operations.backend_local_upstox import build_backend_local_sector_rotation_index_coverage_activation
+    from app.storage.database import DatabaseSettings
+
+    database = request.app.state.database_settings
+    if database.storage_mode.value == "IN_MEMORY_SQLITE":
+        database = DatabaseSettings.local_runtime()
+    return build_backend_local_sector_rotation_index_coverage_activation(
+        database_settings=database,
+        credential_store=request.app.state.connection_credential_store,
+    )
+
+
 def get_runtime_health_service(request: Request) -> RuntimeHealthService:
     return request.app.state.runtime_health_service
+
+
+def get_local_runtime_readiness_service(request: Request):
+    from app.api.local_runtime_readiness import LocalRuntimeReadinessService
+
+    return LocalRuntimeReadinessService(
+        request.app.state.database_settings,
+        market_wide_watch_service=getattr(request.app.state, "market_wide_watch_service", None),
+        repository=getattr(request.app.state, "core_api_snapshot_repository", None),
+    )
 
 
 def get_data_source_composition_service(request: Request) -> DataSourceCompositionService:
@@ -149,3 +177,38 @@ def get_data_operations_service(request: Request) -> DataOperationsService:
     if service is None:
         raise RuntimeError("Data operations service is not initialized.")
     return service
+
+
+def get_external_intelligence_application_service(request: Request) -> ExternalIntelligenceApplicationService:
+    """Lazily compose the narrow SQLite intake store after route authentication."""
+    service = getattr(request.app.state, "external_intelligence_application_service", None)
+    if service is not None:
+        return service
+    database = request.app.state.database_settings
+    if database.backend is not DatabaseBackend.SQLITE:
+        raise APIRequestError(
+            status_code=503,
+            code="EXTERNAL_INTELLIGENCE_STORAGE_UNAVAILABLE",
+            message="External-intelligence intake storage is unavailable.",
+        )
+    repository = SQLiteExternalIntelligenceRepository(database.url.removeprefix("sqlite:///"))
+    service = ExternalIntelligenceApplicationService(repository)
+    request.app.state.external_intelligence_application_repository = repository
+    request.app.state.external_intelligence_application_service = service
+    request.app.state.owns_external_intelligence_application_repository = True
+    return service
+
+
+def get_market_wide_watch_service(request: Request):
+    service = getattr(request.app.state, "market_wide_watch_service", None)
+    if service is None:
+        raise APIRequestError(
+            status_code=503,
+            code="MARKET_WIDE_WATCH_UNAVAILABLE",
+            message="Market-Wide Watch storage is unavailable.",
+        )
+    return service
+
+
+def get_dhan_live_market_runtime(request: Request):
+    return request.app.state.dhan_live_market_runtime

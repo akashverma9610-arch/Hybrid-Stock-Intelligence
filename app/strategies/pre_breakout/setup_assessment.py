@@ -118,9 +118,10 @@ class GovernedPreBreakoutSetupAssessmentService:
     ranking, score, candidate, execution, or provider behavior.
     """
 
-    def __init__(self, *, materializer, sector_rotation_service) -> None:
+    def __init__(self, *, materializer, sector_rotation_service, taxonomy_store=None) -> None:
         self._materializer = materializer
         self._sector_rotation = sector_rotation_service
+        self._taxonomy = taxonomy_store
 
     def assess_prebreakout_setup(
         self, instrument_id: str, *, as_of: datetime, sector_rotation=None,
@@ -142,33 +143,40 @@ class GovernedPreBreakoutSetupAssessmentService:
         # times; callers without it retain the established materialization.
         rotation = sector_rotation if sector_rotation is not None else self._sector_rotation.assess(as_of=as_of)
         sector_rows = tuple(item for item in rotation.constituents if item.instrument_id == instrument_id)
-        if not sector_rows:
+        sectors = tuple(sorted({item.sector for item in sector_rows}))
+        if not sectors and self._taxonomy is not None:
+            classification = self._taxonomy.classification_as_of(instrument_id, as_of)
+            sectors = () if classification is None else (classification.sector,)
+        if not sectors:
             blockers.append(_block(PreBreakoutSetupBlockerCategory.DATA_BLOCKER, "SECTOR_ROTATION_UNAVAILABLE"))
             return _assessment(technical, structural, status=_status(blockers), blockers=blockers,
                                sector_rotation=rotation)
-        sectors = tuple(sorted({item.sector for item in sector_rows}))
         if len(sectors) != 1:
             blockers.append(_block(PreBreakoutSetupBlockerCategory.DATA_BLOCKER, "SECTOR_MEMBERSHIP_CONFLICT"))
             return _assessment(technical, structural, status=_status(blockers), blockers=blockers,
                                sector_rotation=rotation, sector=sectors[0] if sectors else None)
         sector = sectors[0]
         unavailable = next((item for item in getattr(rotation, "relative_strength", ()) if item.sector == sector and item.exclusion_reason is not None), None)
-        if unavailable is not None:
+        breadth = next((item for item in getattr(rotation, "breadth", ()) if item.sector == sector), None)
+        ranked_sectors = getattr(rotation, "ranked_sectors", None)
+        ranking_unavailable = unavailable is not None or (ranked_sectors is not None and sector not in ranked_sectors)
+        sector_rotation_status = None
+        if ranking_unavailable:
             # A stock in a sector without governed index evidence cannot move
             # through the top-down path via a stock-only fallback.
             blockers.append(_block(PreBreakoutSetupBlockerCategory.SECTOR_BLOCKER, "SECTOR_RANKING_UNAVAILABLE"))
-            return _assessment(
-                technical, structural, status=_status(blockers), blockers=blockers,
-                sector_rotation=rotation, sector=sector,
-                sector_rotation_status=f"SECTOR_RANKING_UNAVAILABLE:{unavailable.exclusion_reason}",
+            sector_rotation_status = (
+                f"SECTOR_RANKING_UNAVAILABLE:{unavailable.exclusion_reason}"
+                if unavailable is not None else
+                f"SECTOR_RANKING_UNAVAILABLE:BREADTH_{breadth.status if breadth is not None else 'UNAVAILABLE'}"
             )
-        if sector not in rotation.top3:
+        elif sector not in rotation.top3:
             blockers.append(_block(PreBreakoutSetupBlockerCategory.SECTOR_BLOCKER, "NOT_IN_TOP3_SECTOR"))
 
         blockers.extend(_technical_blockers(technical))
         blockers.extend(_structural_blockers(structural))
         return _assessment(technical, structural, status=_status(blockers), blockers=blockers,
-                           sector_rotation=rotation, sector=sector)
+                           sector_rotation=rotation, sector=sector, sector_rotation_status=sector_rotation_status)
 
 
 def _governance_blockers(

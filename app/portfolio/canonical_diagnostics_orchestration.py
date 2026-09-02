@@ -66,16 +66,30 @@ class CanonicalDiagnosticHoldingRun:
     composition: HoldingIntelligenceComposition | None
     sell_side_decision: PortfolioSellSideDecision | None
     blockers: tuple[str, ...]
+    latest_completed_market_session: datetime | None = None
 
 
 @dataclass(frozen=True, slots=True)
 class CanonicalDiagnosticsOrchestrationRun:
     portfolio_snapshot_id: str
-    as_of: datetime
+    portfolio_snapshot_as_of: datetime
+    intelligence_as_of: datetime
+    latest_completed_market_session: datetime | None
     canonical_instrument_ids: tuple[str, ...]
     strategy_version: StrategyVersionReference
     holdings: tuple[CanonicalDiagnosticHoldingRun, ...]
     blockers: tuple[str, ...]
+
+    @property
+    def as_of(self) -> datetime:
+        """Backward-compatible alias for the evidence cutoff.
+
+        New callers must use ``portfolio_snapshot_as_of`` and
+        ``intelligence_as_of`` explicitly; keeping this read-only alias avoids
+        breaking existing in-process consumers while the service contract
+        makes the two time axes unambiguous.
+        """
+        return self.intelligence_as_of
 
 
 class CanonicalPortfolioDiagnosticsOrchestrator:
@@ -109,22 +123,27 @@ class CanonicalPortfolioDiagnosticsOrchestrator:
         portfolio_snapshot: PortfolioSnapshot,
         canonical_instrument_ids: tuple[str, ...],
         strategy_version: StrategyVersionReference,
+        intelligence_as_of: datetime | None = None,
     ) -> CanonicalDiagnosticsOrchestrationRun:
         targets = _validated_targets(portfolio_snapshot, canonical_instrument_ids)
-        as_of = portfolio_snapshot.as_of_timestamp
+        snapshot_as_of = portfolio_snapshot.as_of_timestamp
+        as_of = intelligence_as_of or snapshot_as_of
+        _require_aware(as_of, "INTELLIGENCE_AS_OF_TIMEZONE_REQUIRED")
+        if as_of < snapshot_as_of:
+            raise ValueError("INTELLIGENCE_AS_OF_BEFORE_PORTFOLIO_SNAPSHOT")
         try:
             definition = self._runner.authorize(self._governance)
         except ValueError:
             blocker = "CANONICAL_DIAGNOSTIC_RUNNER_UNAUTHORIZED"
-            return CanonicalDiagnosticsOrchestrationRun(
-                portfolio_snapshot.snapshot_id, as_of, targets, strategy_version,
+            return _orchestration_run(
+                portfolio_snapshot, as_of, targets, strategy_version,
                 tuple(_blocked_holding(item.instrument_id, blocker) for item in _target_holdings(portfolio_snapshot, targets)),
                 (blocker,),
             )
         if strategy_version != definition.reference:
             blocker = "CANONICAL_DIAGNOSTIC_STRATEGY_MISMATCH"
-            return CanonicalDiagnosticsOrchestrationRun(
-                portfolio_snapshot.snapshot_id, as_of, targets, strategy_version,
+            return _orchestration_run(
+                portfolio_snapshot, as_of, targets, strategy_version,
                 tuple(_blocked_holding(item.instrument_id, blocker) for item in _target_holdings(portfolio_snapshot, targets)),
                 (blocker,),
             )
@@ -136,53 +155,55 @@ class CanonicalPortfolioDiagnosticsOrchestrator:
             if instrument is None:
                 results.append(_blocked_holding(holding.instrument_id, "CANONICAL_INSTRUMENT_NOT_AVAILABLE_AT_AS_OF"))
                 continue
-            results.append(self._run_holding(holding, instrument, portfolio_snapshot, strategy_version, definition))
+            results.append(self._run_holding(holding, instrument, portfolio_snapshot, as_of, strategy_version, definition))
         blockers = tuple(sorted({code for item in results for code in item.blockers}))
-        return CanonicalDiagnosticsOrchestrationRun(
-            portfolio_snapshot.snapshot_id, as_of, targets, strategy_version, tuple(results), blockers,
-        )
+        return _orchestration_run(portfolio_snapshot, as_of, targets, strategy_version, tuple(results), blockers)
 
     def _run_holding(
         self,
         holding: PortfolioHolding,
         instrument: NseEquityInstrument,
         portfolio_snapshot: PortfolioSnapshot,
+        intelligence_as_of: datetime,
         strategy_version: StrategyVersionReference,
         definition: CanonicalDiagnosticStrategyDefinition,
     ) -> CanonicalDiagnosticHoldingRun:
-        evidence = self._assembler.assemble(instrument, portfolio_snapshot.as_of_timestamp)
+        evidence = self._assembler.assemble(instrument, intelligence_as_of)
+        latest_session = _latest_completed_market_session(evidence, holding.instrument_id)
         run = self._runner.run(evidence, governance=self._governance)
         records = _canonical_result_records(tuple(item.record for item in run.evaluations), definition)
         if any(item.strategy_version != strategy_version for item in records):
             return _blocked_holding(holding.instrument_id, "CANONICAL_DIAGNOSTIC_STRATEGY_MISMATCH")
-        persisted = _persist_idempotently(self._governance, strategy_version, portfolio_snapshot.as_of_timestamp, records)
+        persisted = _persist_idempotently(self._governance, strategy_version, intelligence_as_of, records)
         diagnostics = rehydrate_persisted_canonical_diagnostics(
-            persisted, instrument_id=holding.instrument_id, as_of=portfolio_snapshot.as_of_timestamp,
+            persisted, instrument_id=holding.instrument_id, as_of=intelligence_as_of,
         )
         evaluated = tuple(item.canonical_rule_id for item in diagnostics if item.eligibility is EvaluationEligibility.ELIGIBLE)
         blocked = tuple(item.canonical_rule_id for item in diagnostics if item.eligibility is not EvaluationEligibility.ELIGIBLE)
         try:
             brain = self._shared_brain.analyze_stock(
                 holding.instrument_id, context=BrainOutputContext.SELL_TRIM_REVIEW,
-                as_of=portfolio_snapshot.as_of_timestamp,
+                as_of=intelligence_as_of,
             )
         except SharedBrainApplicationError as error:
             return CanonicalDiagnosticHoldingRun(
                 holding.instrument_id, evaluated, blocked, tuple(item.id for item in persisted), run.completeness,
-                None, None, None, (error.code,),
+                None, None, None, (error.code,), latest_session,
             )
         composition = compose_holding_intelligence(
             holding=holding, portfolio_snapshot=portfolio_snapshot, shared_brain=brain, diagnostics=diagnostics,
+            intelligence_as_of=intelligence_as_of,
         )
         decision = evaluate_portfolio_sell_side_action(PortfolioSellSideInput(
             portfolio_snapshot, replace(holding, analytics=composition.analytics),
             None, composition.shared_brain_fingerprint, composition.evidence_conflicted, composition.evidence_comparable,
+            intelligence_as_of=intelligence_as_of, latest_completed_market_session=latest_session,
         ))
         if self._sell_side_audits is not None:
             decision = self._sell_side_audits.persist(decision)
         return CanonicalDiagnosticHoldingRun(
             holding.instrument_id, evaluated, blocked, tuple(item.id for item in persisted), run.completeness,
-            brain.evidence_status, composition, decision, composition.blockers,
+            brain.evidence_status, composition, decision, composition.blockers, latest_session,
         )
 
 
@@ -290,6 +311,46 @@ def _target_holdings(snapshot: PortfolioSnapshot, targets: tuple[str, ...]) -> t
 
 def _blocked_holding(instrument_id: str, blocker: str) -> CanonicalDiagnosticHoldingRun:
     return CanonicalDiagnosticHoldingRun(instrument_id, (), (), (), None, None, None, None, (blocker,))
+
+
+def _orchestration_run(
+    portfolio_snapshot: PortfolioSnapshot,
+    intelligence_as_of: datetime,
+    targets: tuple[str, ...],
+    strategy_version: StrategyVersionReference,
+    holdings: tuple[CanonicalDiagnosticHoldingRun, ...],
+    blockers: tuple[str, ...],
+) -> CanonicalDiagnosticsOrchestrationRun:
+    sessions = tuple(item.latest_completed_market_session for item in holdings)
+    # A portfolio-level market cutoff is meaningful only when every requested
+    # holding has a completed stored daily session.  The earliest such session
+    # is the conservative common boundary; never substitute a later bar.
+    common_session = min(sessions) if sessions and all(item is not None for item in sessions) else None
+    return CanonicalDiagnosticsOrchestrationRun(
+        portfolio_snapshot_id=portfolio_snapshot.snapshot_id,
+        portfolio_snapshot_as_of=portfolio_snapshot.as_of_timestamp,
+        intelligence_as_of=intelligence_as_of,
+        latest_completed_market_session=common_session,
+        canonical_instrument_ids=targets,
+        strategy_version=strategy_version,
+        holdings=holdings,
+        blockers=blockers,
+    )
+
+
+def _latest_completed_market_session(evidence, instrument_id: str) -> datetime | None:
+    """Return only the latest stored price-bar session already admitted by PIT."""
+    values = tuple(
+        item.provenance.market_timestamp for item in evidence.snapshot.observations
+        if item.instrument.id == instrument_id and getattr(item.kind, "value", item.kind) == "price_bar"
+        and isinstance(item.provenance.market_timestamp, datetime)
+    )
+    return max(values) if values else None
+
+
+def _require_aware(value: datetime, error: str) -> None:
+    if value.tzinfo is None or value.utcoffset() is None:
+        raise ValueError(error)
 
 
 __all__ = (

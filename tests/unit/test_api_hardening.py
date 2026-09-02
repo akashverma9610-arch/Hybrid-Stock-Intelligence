@@ -6,27 +6,29 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from app.api.main import create_app
-from app.api.routes import capital_rotation, data_operations, data_sources, filings, fundamentals, market, news, opportunities, primary_market, performance_governance, portfolio, portfolio_analysis, portfolio_import, runtime, signals, stocks, system
-from app.api.routes import connections
+from app.api.routes import capital_rotation, data_operations, data_sources, filings, fundamentals, market, market_wide_watch, news, opportunities, primary_market, performance_governance, portfolio, portfolio_analysis, portfolio_import, runtime, signals, stocks, system
+from app.api.routes import connections, intelligence, dhan_live
 
 
 EXPECTED_PATHS = {
     "/health",
     "/api/v1/system/status", "/api/v1/system/version",
-    "/api/v1/runtime/status",
+    "/api/v1/runtime/status", "/api/v1/runtime/local-readiness",
     "/api/v1/data-operations/health",
     "/api/v1/data-sources/status",
     "/api/v1/filings", "/api/v1/filings/{filing_id}",
     "/api/v1/news", "/api/v1/news/{article_id}",
     "/api/v1/primary-market/issues", "/api/v1/primary-market/issues/{issue_id}", "/api/v1/primary-market/summary",
     "/api/v1/fundamentals/{symbol}", "/api/v1/fundamentals/{symbol}/series",
-    "/api/v1/portfolio", "/api/v1/portfolio/holdings", "/api/v1/portfolio/summary", "/api/v1/portfolio/sell-side",
+    "/api/v1/portfolio", "/api/v1/portfolio/holdings", "/api/v1/portfolio/summary", "/api/v1/portfolio/sell-side", "/api/v1/portfolio/live-valuation",
     "/api/v1/portfolio/import/screenshots", "/api/v1/portfolio/import/{import_id}/confirm", "/api/v1/portfolio/import/{import_id}/cancel",
     "/api/v1/portfolio/analysis-jobs", "/api/v1/portfolio/analysis-jobs/{job_id}",
     "/api/v1/capital-rotation",
     "/api/v1/opportunities", "/api/v1/universe-analysis/jobs/{job_id}",
+    "/api/v1/market-wide-watch",
+    "/api/v1/live-market", "/api/v1/live-market/health", "/api/v1/live-market/quotes/{canonical_instrument_id}",
     "/api/v1/market/regime", "/api/v1/market/breadth", "/api/v1/market/extremes", "/api/v1/market/crisis", "/api/v1/sectors", "/api/v1/sectors/{sector_id}",
-    "/api/v1/stocks", "/api/v1/stocks/{symbol}/analysis", "/api/v1/stocks/{symbol}/shared-brain", "/api/v1/signals", "/api/v1/signals/{signal_id}",
+    "/api/v1/stocks", "/api/v1/stocks/{symbol}/analysis", "/api/v1/stocks/{symbol}/live-market", "/api/v1/stocks/{symbol}/shared-brain", "/api/v1/stocks/{symbol}/decision-trust-envelope", "/api/v1/signals", "/api/v1/signals/{signal_id}",
     "/api/v1/paper-trades", "/api/v1/paper-trades/{trade_id}", "/api/v1/paper-trades/performance",
     "/api/v1/performance", "/api/v1/performance/{report_id}",
     "/api/v1/benchmarks", "/api/v1/benchmarks/{benchmark_id}",
@@ -37,6 +39,8 @@ EXPECTED_PATHS = {
     "/api/v1/connections/global-datafeeds", "/api/v1/connections/global-datafeeds/credentials",
     "/api/v1/connections/upstox", "/api/v1/connections/upstox/test", "/api/v1/connections/upstox/credentials",
     "/api/v1/connections/gnews", "/api/v1/connections/gnews/test", "/api/v1/connections/gnews/credentials",
+    "/api/v1/intelligence/auth-check",
+    "/api/v1/intelligence/events",
 }
 
 
@@ -49,7 +53,7 @@ def test_complete_route_inventory_openapi_operations_and_read_only_methods_are_s
     assert document.status_code == docs.status_code == 200
     paths = document.json()["paths"]
     assert EXPECTED_PATHS - {"/health"} == set(paths)
-    mutable_paths = {"/api/v1/connections/kotak-neo", "/api/v1/connections/kotak-neo/test", "/api/v1/connections/kotak-neo/session/test", "/api/v1/connections/kotak-neo/credentials", "/api/v1/connections/global-datafeeds", "/api/v1/connections/global-datafeeds/credentials", "/api/v1/connections/upstox", "/api/v1/connections/upstox/test", "/api/v1/connections/upstox/credentials", "/api/v1/connections/gnews", "/api/v1/connections/gnews/test", "/api/v1/connections/gnews/credentials", "/api/v1/portfolio/import/screenshots", "/api/v1/portfolio/import/{import_id}/confirm", "/api/v1/portfolio/import/{import_id}/cancel", "/api/v1/portfolio/analysis-jobs"}
+    mutable_paths = {"/api/v1/connections/kotak-neo", "/api/v1/connections/kotak-neo/test", "/api/v1/connections/kotak-neo/session/test", "/api/v1/connections/kotak-neo/credentials", "/api/v1/connections/global-datafeeds", "/api/v1/connections/global-datafeeds/credentials", "/api/v1/connections/upstox", "/api/v1/connections/upstox/test", "/api/v1/connections/upstox/credentials", "/api/v1/connections/gnews", "/api/v1/connections/gnews/test", "/api/v1/connections/gnews/credentials", "/api/v1/portfolio/import/screenshots", "/api/v1/portfolio/import/{import_id}/confirm", "/api/v1/portfolio/import/{import_id}/cancel", "/api/v1/portfolio/analysis-jobs", "/api/v1/intelligence/events"}
     assert all(set(item) == {"get"} for path, item in paths.items() if path not in mutable_paths)
     assert set(paths["/api/v1/connections/kotak-neo"]) == {"get", "put"}
     assert set(paths["/api/v1/connections/kotak-neo/test"]) == {"post"}
@@ -67,6 +71,7 @@ def test_complete_route_inventory_openapi_operations_and_read_only_methods_are_s
     assert set(paths["/api/v1/portfolio/import/{import_id}/confirm"]) == {"post"}
     assert set(paths["/api/v1/portfolio/import/{import_id}/cancel"]) == {"post"}
     assert set(paths["/api/v1/portfolio/analysis-jobs"]) == {"get", "post"}
+    assert set(paths["/api/v1/intelligence/events"]) == {"post"}
     assert set(paths["/api/v1/portfolio/analysis-jobs/{job_id}"]) == {"get"}
     operation_ids = [operation["operationId"] for item in paths.values() for operation in item.values()]
     assert len(operation_ids) == len(set(operation_ids))
@@ -99,7 +104,7 @@ def test_default_unavailable_errors_empty_semantics_validation_and_request_ids_a
 
 
 def test_routes_are_thin_no_write_endpoints_or_direct_execution_network_imports():
-    modules = (system, runtime, data_operations, data_sources, filings, fundamentals, news, primary_market, portfolio, portfolio_import, portfolio_analysis, capital_rotation, opportunities, market, stocks, signals, performance_governance, connections)
+    modules = (system, runtime, data_operations, data_sources, filings, fundamentals, news, primary_market, portfolio, portfolio_import, portfolio_analysis, capital_rotation, opportunities, market_wide_watch, dhan_live, market, stocks, signals, performance_governance, connections, intelligence)
     source = "\n".join(inspect.getsource(module) for module in modules)
     forbidden = (
         ".patch(", "requests", "httpx", "broker", "demat",
@@ -154,6 +159,7 @@ def test_frontend_contract_hides_diagnostic_inventory_and_allows_only_explicit_s
         ("/api/v1/portfolio/import/{import_id}/confirm", "post"),
         ("/api/v1/portfolio/import/{import_id}/cancel", "post"),
         ("/api/v1/portfolio/analysis-jobs", "post"),
+        ("/api/v1/intelligence/events", "post"),
     }
 
 

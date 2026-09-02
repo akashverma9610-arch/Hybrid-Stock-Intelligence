@@ -70,6 +70,7 @@ class ExecutionGateConfig:
     max_sector_allocation: Decimal | None
     blackout_sessions: int | None
     heat_methodology_version: str | None = None
+    surveillance_freshness_basis: str = "calendar_days"
 
     def unresolved(self) -> tuple[str, ...]:
         required = {
@@ -222,8 +223,8 @@ class ExecutionGateEngine:
         if self.config.require_economic_hurdle:
             if data.expected_incremental_return is None or data.modeled_switching_friction is None or self.config.net_economic_hurdle is None:
                 return self._decision("GATE_1_ROTATION", GateOutcome.INSUFFICIENT_DATA, "economic friction inputs unavailable")
-            if data.expected_incremental_return - data.modeled_switching_friction < self.config.net_economic_hurdle:
-                return self._decision("GATE_1_ROTATION", GateOutcome.FAIL, "net economic benefit below configured hurdle")
+            if data.expected_incremental_return - data.modeled_switching_friction <= self.config.net_economic_hurdle:
+                return self._decision("GATE_1_ROTATION", GateOutcome.FAIL, "net economic benefit does not exceed configured hurdle")
         return self._decision("GATE_1_ROTATION", GateOutcome.PASS, "configured rotation hurdles met", advantage=advantage)
 
     def _velocity(self, context, asof, data, unresolved):
@@ -242,7 +243,13 @@ class ExecutionGateEngine:
         if any(x in unresolved for x in ("disallowed_asm_stage", "disallow_gsm", "circuit_limit_threshold", "surveillance_max_age_days")):
             return self._decision("GATE_3_SURVEILLANCE", GateOutcome.INSUFFICIENT_DATA, "unresolved surveillance configuration")
         item = data.surveillance
-        if item is None or not item.authoritative or item.effective_at > asof or (asof - item.effective_at).days > self.config.surveillance_max_age_days:
+        age = (
+            self.calendar.sessions_between(item.effective_at.date(), asof.date())
+            if item is not None and self.config.surveillance_freshness_basis == "trading_sessions"
+            else (asof - item.effective_at).days if item is not None else None
+        )
+        if (item is None or not item.authoritative or item.effective_at > asof
+                or age is None or age > self.config.surveillance_max_age_days):
             return self._decision("GATE_3_SURVEILLANCE", GateOutcome.INSUFFICIENT_DATA, "fresh authoritative surveillance observation unavailable")
         if item.asm_stage is None or item.gsm_stage is None or item.circuit_limit is None:
             return self._decision("GATE_3_SURVEILLANCE", GateOutcome.INSUFFICIENT_DATA, "surveillance fields incomplete", item.evidence_ids)

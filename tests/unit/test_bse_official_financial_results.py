@@ -9,9 +9,9 @@ from app.fundamentals.adapter import FundamentalsEngineAdapter
 from app.fundamentals.bse_official import (
     BSE_OFFICIAL_PROVIDER, BSE_RESULT_PAGE, BSEOfficialFinancialResultsIngestionService,
     BSEOfficialFinancialResultsProvider, BSEOfficialLocalXbrlIngestionService,
-    BseOfficialError, BsePublicationAvailability, BseTimestampStatus, parse_bse_xbrl,
+    BseOfficialError, BsePublicationAvailability, BseResultMetadata, BseTimestampStatus, parse_bse_xbrl,
 )
-from app.fundamentals.models import FinancialMetric, NumericScale, StatementScope
+from app.fundamentals.models import FinancialMetric, FinancialPeriodType, FinancialValueBasis, NumericScale, StatementScope
 from app.fundamentals.store import SQLiteFinancialFactStore
 from app.market_data.models import Exchange, InstrumentIdentity, InstrumentType
 
@@ -46,6 +46,17 @@ def _xbrl(*, pat: str, scope: str, isin: str = ISIN, code: str = CODE) -> str:
     <in-capmkt:ScripCode>{code}</in-capmkt:ScripCode><in-capmkt:ISIN>{isin}</in-capmkt:ISIN><in-capmkt:NameOfTheCompany>Apollo Hospitals</in-capmkt:NameOfTheCompany><in-capmkt:DateOfStartOfReportingPeriod>2026-04-01</in-capmkt:DateOfStartOfReportingPeriod><in-capmkt:DateOfEndOfReportingPeriod>2026-06-30</in-capmkt:DateOfEndOfReportingPeriod><in-capmkt:TypeOfReportingPeriod>Quarterly</in-capmkt:TypeOfReportingPeriod>
     <in-capmkt:DescriptionOfPresentationCurrency>INR</in-capmkt:DescriptionOfPresentationCurrency><in-capmkt:LevelOfRounding>Lakhs</in-capmkt:LevelOfRounding><in-capmkt:NatureOfReportStandaloneConsolidated>{scope}</in-capmkt:NatureOfReportStandaloneConsolidated><in-capmkt:WhetherResultsAreAuditedOrUnaudited>Unaudited</in-capmkt:WhetherResultsAreAuditedOrUnaudited>
     <in-capmkt:RevenueFromOperations contextRef=\"previous\">90</in-capmkt:RevenueFromOperations><in-capmkt:RevenueFromOperations contextRef=\"quarter\">100</in-capmkt:RevenueFromOperations><in-capmkt:ProfitLossBeforeTax contextRef=\"quarter\">20</in-capmkt:ProfitLossBeforeTax><in-capmkt:ProfitLoss contextRef=\"quarter\">{pat}</in-capmkt:ProfitLoss><in-capmkt:BasicEarningsPerShare contextRef=\"quarter\">5.5</in-capmkt:BasicEarningsPerShare><in-capmkt:FinanceCosts contextRef=\"quarter\">3</in-capmkt:FinanceCosts><in-capmkt:DepreciationAndAmortisationExpense contextRef=\"quarter\">2</in-capmkt:DepreciationAndAmortisationExpense><in-capmkt:Assets contextRef=\"quarter\">1000</in-capmkt:Assets><in-capmkt:Liabilities contextRef=\"quarter\">400</in-capmkt:Liabilities></xbrli:xbrl>"""
+
+
+def _mixed_march_xbrl() -> str:
+    return f'''<?xml version="1.0"?><xbrli:xbrl xmlns:xbrli="http://www.xbrl.org/2003/instance" xmlns:in-capmkt="http://www.sebi.gov.in/xbrl">
+    <xbrli:context id="quarter"><xbrli:period><xbrli:startDate>2026-01-01</xbrli:startDate><xbrli:endDate>2026-03-31</xbrli:endDate></xbrli:period></xbrli:context>
+    <xbrli:context id="year"><xbrli:period><xbrli:startDate>2025-04-01</xbrli:startDate><xbrli:endDate>2026-03-31</xbrli:endDate></xbrli:period></xbrli:context>
+    <xbrli:context id="instant"><xbrli:period><xbrli:instant>2026-03-31</xbrli:instant></xbrli:period></xbrli:context>
+    <in-capmkt:ScripCode>{CODE}</in-capmkt:ScripCode><in-capmkt:ISIN>{ISIN}</in-capmkt:ISIN><in-capmkt:NameOfTheCompany>Apollo Hospitals</in-capmkt:NameOfTheCompany>
+    <in-capmkt:DateOfStartOfReportingPeriod>2026-01-01</in-capmkt:DateOfStartOfReportingPeriod><in-capmkt:DateOfEndOfReportingPeriod>2026-03-31</in-capmkt:DateOfEndOfReportingPeriod><in-capmkt:TypeOfReportingPeriod>Quarterly</in-capmkt:TypeOfReportingPeriod>
+    <in-capmkt:DescriptionOfPresentationCurrency>INR</in-capmkt:DescriptionOfPresentationCurrency><in-capmkt:LevelOfRounding>Lakhs</in-capmkt:LevelOfRounding><in-capmkt:NatureOfReportStandaloneConsolidated>Standalone</in-capmkt:NatureOfReportStandaloneConsolidated>
+    <in-capmkt:RevenueFromOperations contextRef="quarter">100</in-capmkt:RevenueFromOperations><in-capmkt:RevenueFromOperations contextRef="year">400</in-capmkt:RevenueFromOperations><in-capmkt:ProfitLoss contextRef="quarter">10</in-capmkt:ProfitLoss><in-capmkt:ProfitLoss contextRef="year">40</in-capmkt:ProfitLoss><in-capmkt:Assets contextRef="instant">1000</in-capmkt:Assets></xbrli:xbrl>'''
 
 
 class _MappingStore:
@@ -139,3 +150,29 @@ def test_local_bse_xbrl_uses_system_first_observed_for_pit_not_a_fabricated_publ
     assert "SOURCE_LEVEL_OF_ROUNDING_LAKHS" in stored_pat.provenance and "RAW_XBRL_UNIT_VALUE" in stored_pat.provenance
     repeated = service.ingest(_instrument(), CODE, local)
     assert repeated.filing_outcome.value == "IDENTICAL" and repeated.facts_inserted == 0 and repeated.facts_duplicate == 8
+
+
+def test_staged_march_xbrl_uses_actual_contexts_not_the_year_archive_alias(tmp_path):
+    path = tmp_path / "mixed-march.xml"
+    path.write_text(_mixed_march_xbrl(), encoding="utf-8")
+    metadata = BseResultMetadata(
+        CODE, "2025-2026", "Standalone-Mar-26", "Year", "New", T, None, None,
+        StatementScope.STANDALONE, datetime(2026, 3, 31, tzinfo=UTC),
+        FinancialPeriodType.ANNUAL, FinancialValueBasis.FULL_YEAR,
+        "https://www.bseindia.com/XBRLFILES/mixed-march.xml", PAGE, BseTimestampStatus.DOCUMENTED,
+    )
+    filings = SQLiteCorporateFilingsStore(tmp_path / "filings.sqlite")
+    facts = SQLiteFinancialFactStore(tmp_path / "facts.sqlite")
+    service = BSEOfficialLocalXbrlIngestionService(filings, facts, clock=lambda: T)
+    first = service.ingest_official_staged(_instrument(), CODE, path, metadata=metadata)
+    assert first.facts_inserted == 5 and first.facts_conflicted == 0
+    revenue = facts.series(_instrument().instrument_id, FinancialMetric.REVENUE, scope=StatementScope.STANDALONE, limit=10)
+    assert {(item.period_type, item.value_basis, item.period_start.date(), item.value) for item in revenue} == {
+        (FinancialPeriodType.QUARTERLY, FinancialValueBasis.QUARTER_ONLY, datetime(2026, 1, 1, tzinfo=UTC).date(), __import__("decimal").Decimal("100")),
+        (FinancialPeriodType.ANNUAL, FinancialValueBasis.FULL_YEAR, datetime(2025, 4, 1, tzinfo=UTC).date(), __import__("decimal").Decimal("400")),
+    }
+    assets = facts.series(_instrument().instrument_id, FinancialMetric.TOTAL_ASSETS, scope=StatementScope.STANDALONE, limit=10)
+    assert assets[0].period_type is FinancialPeriodType.POINT_IN_TIME and assets[0].period_start is None
+    assert not facts.series(_instrument().instrument_id, FinancialMetric.REVENUE, as_of=T - timedelta(microseconds=1), limit=10)
+    second = service.ingest_official_staged(_instrument(), CODE, path, metadata=metadata)
+    assert second.filing_outcome.value == "IDENTICAL" and second.facts_inserted == 0 and second.facts_duplicate == 5

@@ -13,6 +13,9 @@ from app.domain.canonical_diagnostic_strategy import (
 )
 from app.storage.repository import MarketDataRepository
 from app.scoring.engine import DecisionScorecard
+from app.portfolio.canonical_decision_score import CanonicalDecisionScorecard
+from app.portfolio.canonical_six_gates import CanonicalExecutionGateEvaluation
+from app.gates.production_policy import SixGatesProductionPolicy
 from app.gates.engine import ExecutionGateEvaluation
 from app.portfolio.models import CorporateAction, Portfolio, PortfolioSnapshot, PortfolioTransaction
 from app.rotation.models import PortfolioRotationEvaluation
@@ -120,6 +123,40 @@ class StrategyGovernanceRepository(MarketDataRepository, ABC):
 
     @abstractmethod
     def get_decision_scorecard(self, scorecard_id: str) -> DecisionScorecard | None: ...
+
+    def save_canonical_decision_scorecard(
+        self, value: CanonicalDecisionScorecard,
+    ) -> CanonicalDecisionScorecard: raise NotImplementedError
+
+    def get_canonical_decision_scorecard(self, value_id: str) -> CanonicalDecisionScorecard | None: raise NotImplementedError
+
+    def list_canonical_decision_scorecards(
+        self, canonical_instrument_id: str | None = None,
+    ) -> tuple[CanonicalDecisionScorecard, ...]: raise NotImplementedError
+
+    def save_canonical_execution_gate_evaluation(
+        self, value: CanonicalExecutionGateEvaluation,
+    ) -> CanonicalExecutionGateEvaluation: raise NotImplementedError
+
+    def get_canonical_execution_gate_evaluation(
+        self, value_id: str,
+    ) -> CanonicalExecutionGateEvaluation | None: raise NotImplementedError
+
+    def list_canonical_execution_gate_evaluations(
+        self, canonical_instrument_id: str | None = None,
+    ) -> tuple[CanonicalExecutionGateEvaluation, ...]: raise NotImplementedError
+
+    def save_six_gates_production_policy(
+        self, value: SixGatesProductionPolicy,
+    ) -> SixGatesProductionPolicy: raise NotImplementedError
+
+    def get_six_gates_production_policy(
+        self, approval_id: str,
+    ) -> SixGatesProductionPolicy | None: raise NotImplementedError
+
+    def selected_six_gates_production_policy(
+        self, *, as_of: datetime,
+    ) -> SixGatesProductionPolicy | None: raise NotImplementedError
 
     @abstractmethod
     def save_execution_gate_evaluation(self, evaluation: ExecutionGateEvaluation) -> None: ...

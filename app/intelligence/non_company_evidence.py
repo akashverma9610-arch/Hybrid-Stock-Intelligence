@@ -12,6 +12,7 @@ from typing import Protocol
 from app.domain.models import FreshnessStatus
 from app.historical.guard import manifest_fingerprint
 from app.historical.security_master import HistoricalIntegrityStatus, HistoricalPriceIntegrity, HistoricalSecurityIdentity, HistoricalSecurityMasterStore
+from app.market_data.current_sector_rotation import CurrentSectorRankingStore
 from app.intelligence.unified_state import IntelligenceEvidenceAvailability, IntelligenceEvidenceDomain, IntelligenceInvalidationDomain
 from app.intelligence.unified_state_builder import StoredIntelligenceArtifact, UnifiedIntelligenceStoredSource
 from app.market_data.reference_data.resolver import TickSizeReferenceResolver, TickSizeResolutionStatus
@@ -23,14 +24,19 @@ from app.taxonomy.service import TaxonomySnapshotStore
 class SectorAndReferenceEvidenceAdapter:
     """Reads only immutable taxonomy classifications eligible at ``as_of``."""
 
-    def __init__(self, taxonomy: TaxonomySnapshotStore) -> None:
-        self._taxonomy = taxonomy
+    def __init__(self, taxonomy: TaxonomySnapshotStore, rankings: CurrentSectorRankingStore | None = None) -> None:
+        self._taxonomy, self._rankings = taxonomy, rankings
 
     def artifacts(self, canonical_instrument_id: str, *, as_of: datetime) -> tuple[StoredIntelligenceArtifact, ...]:
         classification = self._taxonomy.classification_as_of(canonical_instrument_id, as_of)
         if classification is None:
             return ()
-        return (_taxonomy_artifact(classification, IntelligenceEvidenceDomain.SECTOR), _taxonomy_artifact(classification, IntelligenceEvidenceDomain.REFERENCE_DATA))
+        reference = _taxonomy_artifact(classification, IntelligenceEvidenceDomain.REFERENCE_DATA)
+        sector = (
+            _taxonomy_artifact(classification, IntelligenceEvidenceDomain.SECTOR)
+            if self._rankings is None else _sector_ranking_artifact(classification, self._rankings, as_of=as_of)
+        )
+        return sector, reference
 
 
 class HistoricalReferenceAndIntegrityEvidenceAdapter:
@@ -134,6 +140,22 @@ class ReliabilityRepositoryStoredSource:
         ) if value.evaluation_as_of is not None and value.evaluation_as_of <= as_of)
 
 
+class ReliabilityIntegrityStoredSource(Protocol):
+    def list_stored_intelligence_artifacts(
+        self, canonical_instrument_id: str, *, as_of: datetime,
+    ) -> tuple[StoredIntelligenceArtifact, ...]: ...
+
+
+class ReliabilityIntegrityEvidenceAdapter:
+    """Pass through one immutable Reliability / Integrity artifact source."""
+
+    def __init__(self, source: ReliabilityIntegrityStoredSource) -> None:
+        self._source = source
+
+    def artifacts(self, canonical_instrument_id: str, *, as_of: datetime) -> tuple[StoredIntelligenceArtifact, ...]:
+        return self._source.list_stored_intelligence_artifacts(canonical_instrument_id, as_of=as_of)
+
+
 class NonCompanyEvidenceStoredSource:
     """Composes the U14B-3B adapters through the existing stored-source protocol."""
 
@@ -141,15 +163,18 @@ class NonCompanyEvidenceStoredSource:
         self,
         *,
         taxonomy: TaxonomySnapshotStore | None = None,
+        sector_rankings: CurrentSectorRankingStore | None = None,
         historical_security_master: HistoricalSecurityMasterStore | None = None,
         tick_resolver: TickSizeReferenceResolver | None = None,
         reliability_source: ReliabilityDecisionStoredSource | None = None,
+        reliability_integrity_source: ReliabilityIntegrityStoredSource | None = None,
     ) -> None:
         self._adapters = tuple(adapter for adapter in (
-            SectorAndReferenceEvidenceAdapter(taxonomy) if taxonomy is not None else None,
+            SectorAndReferenceEvidenceAdapter(taxonomy, sector_rankings) if taxonomy is not None else None,
             HistoricalReferenceAndIntegrityEvidenceAdapter(historical_security_master) if historical_security_master is not None else None,
             TickReferenceEvidenceAdapter(tick_resolver) if tick_resolver is not None else None,
             ReliabilityEvidenceAdapter(reliability_source) if reliability_source is not None else None,
+            ReliabilityIntegrityEvidenceAdapter(reliability_integrity_source) if reliability_integrity_source is not None else None,
         ) if adapter is not None)
 
     def list_stored_intelligence_artifacts(self, canonical_instrument_id: str, *, as_of: datetime) -> tuple[StoredIntelligenceArtifact, ...]:
@@ -180,6 +205,66 @@ def _taxonomy_artifact(value: InstrumentTaxonomyClassification, domain: Intellig
         historical_integrity_reference=manifest_fingerprint(effective_from=value.effective_from, effective_to=value.effective_to, classification_as_of=value.as_of),
         invalidation_domain=IntelligenceInvalidationDomain.SECTOR if domain is IntelligenceEvidenceDomain.SECTOR else IntelligenceInvalidationDomain.REFERENCE_DATA,
         warnings=warnings,
+    )
+
+
+def _sector_ranking_artifact(
+    classification: InstrumentTaxonomyClassification, rankings: CurrentSectorRankingStore, *, as_of: datetime,
+) -> StoredIntelligenceArtifact:
+    """Project a stored ranking only; no RS, breadth, or Top-3 calculation lives here."""
+    ranking = rankings.latest(as_of=as_of)
+    if ranking is None:
+        return StoredIntelligenceArtifact(
+            canonical_instrument_id=classification.instrument_id, domain=IntelligenceEvidenceDomain.SECTOR,
+            artifact_id=f"taxonomy:{classification.classification_id}:sector-ranking-unavailable",
+            artifact_fingerprint=manifest_fingerprint(classification_id=classification.classification_id, status="CURRENT_SECTOR_RANKING_UNAVAILABLE"),
+            availability=IntelligenceEvidenceAvailability.PARTIAL, evidence_as_of=classification.as_of,
+            observed_at=classification.as_of, available_at=classification.as_of,
+            freshness_status=FreshnessStatus.UNKNOWN, freshness_policy_reference=None,
+            source_provenance_fingerprint=manifest_fingerprint(source=classification.source, source_reference=classification.source_reference),
+            historical_integrity_reference=None, invalidation_domain=IntelligenceInvalidationDomain.SECTOR,
+            warnings=("SECTOR_RANKING_UNAVAILABLE", "CURRENT_SECTOR_RANKING_NOT_MATERIALIZED"),
+        )
+    rs = next((item for item in ranking.report.relative_strength if item.sector == classification.sector), None)
+    breadth = next((item for item in ranking.report.breadth if item.sector == classification.sector), None)
+    rank = (ranking.report.ranked_sectors.index(classification.sector) + 1) if classification.sector in ranking.report.ranked_sectors else None
+    sufficient = rs is not None and rs.exclusion_reason is None and breadth is not None and breadth.status == "READY" and rank is not None
+    warnings = [f"SECTOR_RANKING_ID:{ranking.ranking_id}", f"SECTOR_RANKING_POLICY:{ranking.ranking_policy_version}"]
+    if sufficient:
+        warnings.extend((f"SECTOR_RANK:{rank}", "SECTOR_TOP3" if classification.sector in ranking.report.top3 else "SECTOR_NOT_TOP3"))
+        availability = IntelligenceEvidenceAvailability.AVAILABLE
+    else:
+        availability = IntelligenceEvidenceAvailability.PARTIAL
+        warnings.append("SECTOR_RANKING_UNAVAILABLE")
+        if rs is None or rs.exclusion_reason is not None:
+            warnings.append("SECTOR_RS_INSUFFICIENT")
+        if breadth is None:
+            warnings.append("SECTOR_BREADTH_UNAVAILABLE")
+        elif breadth.status != "READY":
+            warnings.extend((f"SECTOR_BREADTH_{breadth.status}", f"SECTOR_BREADTH_COVERAGE_{breadth.coverage_pct}"))
+    return StoredIntelligenceArtifact(
+        canonical_instrument_id=classification.instrument_id, domain=IntelligenceEvidenceDomain.SECTOR,
+        artifact_id=f"sector-ranking:{ranking.ranking_id}:{classification.classification_id}",
+        artifact_fingerprint=manifest_fingerprint(
+            ranking_id=ranking.ranking_id, ranking_fingerprint=ranking.fingerprint,
+            classification_id=classification.classification_id, sector=classification.sector, rank=rank,
+            top3=classification.sector in ranking.report.top3,
+            breadth_status=None if breadth is None else breadth.status,
+            rs_exclusion=None if rs is None else rs.exclusion_reason,
+        ),
+        availability=availability, evidence_as_of=ranking.ranking_as_of,
+        observed_at=ranking.latest_completed_session, available_at=ranking.ranking_as_of,
+        freshness_status=FreshnessStatus.UNKNOWN, freshness_policy_reference=ranking.ranking_policy_version,
+        source_provenance_fingerprint=manifest_fingerprint(
+            ranking_id=ranking.ranking_id, ranking_fingerprint=ranking.fingerprint,
+            benchmark_identity=ranking.benchmark_identity, taxonomy_source=classification.source,
+        ),
+        historical_integrity_reference=manifest_fingerprint(
+            latest_completed_session=ranking.latest_completed_session,
+            ranking_policy_version=ranking.ranking_policy_version,
+        ),
+        invalidation_domain=IntelligenceInvalidationDomain.SECTOR,
+        warnings=tuple(sorted(set(warnings))),
     )
 
 
@@ -276,6 +361,6 @@ def _artifact_key(value: StoredIntelligenceArtifact) -> tuple[str, str, str]:
 
 __all__ = (
     "HistoricalReferenceAndIntegrityEvidenceAdapter", "NonCompanyEvidenceStoredSource",
-    "ReliabilityEvidenceAdapter", "ReliabilityDecisionStoredSource", "ReliabilityRepositoryStoredSource", "SectorAndReferenceEvidenceAdapter",
+    "ReliabilityEvidenceAdapter", "ReliabilityDecisionStoredSource", "ReliabilityIntegrityEvidenceAdapter", "ReliabilityIntegrityStoredSource", "ReliabilityRepositoryStoredSource", "SectorAndReferenceEvidenceAdapter",
     "StoredReliabilityDecision", "TickReferenceEvidenceAdapter",
 )

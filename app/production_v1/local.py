@@ -15,11 +15,12 @@ from app.production_v1.governed_setup_source import (
 )
 from app.forward_paper.store import ForwardPaperStore
 from app.market_data.historical import PostgreSQLHistoricalBarStore, SQLiteHistoricalBarStore
+from app.market_data.index_close_series import CoreSnapshotIndexCloseStore
 from app.market_data.models import Timeframe
 from app.market_data.ohlcv_readiness import OhlcvReadinessService
 from app.market_data.upstox import UPSTOX_PROVIDER
 from app.market_data.upstox_sector_indices import NIFTY_500_INDEX_ID
-from app.market_data.current_sector_rotation import CurrentSectorRotationService
+from app.market_data.current_sector_rotation import CurrentSectorRankingStore, CurrentSectorRotationService
 from app.production_v1.models import ProductionComponent, ProductionComponentHealth, ProductionReadinessState, ProductionSourceHealth, ProductionSourceStatus
 from app.production_v1.sector_universe_coverage import assess_sector_universe_coverage
 from app.production_v1.service import ProductionV1CycleRunStore, build_readiness_report
@@ -119,7 +120,8 @@ class LocalProductionV1ReadinessService:
             # This consumes the existing stored-only rotation result.  It does
             # not rerun a provider, invent index bars, or change ranking.
             rotation = CurrentSectorRotationService(
-                repository=repository, universe=universe, historical_store=historical, clock=self._clock,
+                repository=repository, universe=universe, historical_store=historical,
+                index_close_store=CoreSnapshotIndexCloseStore(repository), clock=self._clock,
             ).assess(as_of=now)
             sector_coverage = assess_sector_universe_coverage(rotation)
             studies = ForwardPaperStore(repository).studies(); setups = StoredExecutableSetupStore(repository).list(as_of=now)
@@ -255,6 +257,10 @@ def _shared_brain_readiness(repository, settings: DatabaseSettings, universe: Co
         SharedBrainApplicationService,
         StoredSharedBrainEvidenceAssembler,
     )
+    from app.ownership.store import OwnershipObservationStore
+    from app.production_v1.canonical_setup_activation import CanonicalSetupOpportunityStore
+    from app.reliability.integrity import ReliabilityIntegrityObservationStore
+    from app.storage.sqlite_governance_repository import SQLiteStrategyGovernanceRepository
     from app.news.store import PostgreSQLNewsEvidenceStore, SQLiteNewsEvidenceStore
     from app.taxonomy.service import TaxonomySnapshotStore
 
@@ -266,21 +272,31 @@ def _shared_brain_readiness(repository, settings: DatabaseSettings, universe: Co
         filings = SQLiteCorporateFilingsStore(path) if path else PostgreSQLCorporateFilingsStore(DatabaseConnectionFactory(settings))
         news = SQLiteNewsEvidenceStore(path) if path else PostgreSQLNewsEvidenceStore(DatabaseConnectionFactory(settings))
         historical = _historical_store(settings)
+        decision_scores = SQLiteStrategyGovernanceRepository(path) if path else None
         try:
             SharedBrainApplicationService(
                 resolver=CoreUniverseInstrumentResolver(universe),
                 evidence_assembler=StoredSharedBrainEvidenceAssembler(
                     facts, historical,
                     filings=filings,
+                    ownership_observations=OwnershipObservationStore(repository),
                     historical_security_master=HistoricalSecurityMasterStore(repository),
                     taxonomy=TaxonomySnapshotStore(repository),
+                    sector_rankings=CurrentSectorRankingStore(repository),
                     macro_evidence_source=MacroEvidenceStore(repository),
                     news=news,
+                    reliability_integrity_observations=ReliabilityIntegrityObservationStore(repository),
+                    decision_scores=decision_scores,
+                    execution_gates=decision_scores,
+                    setup_assessments=decision_scores,
+                    setup_opportunities=CanonicalSetupOpportunityStore(repository),
                 ),
             )
         finally:
             if hasattr(historical, "close"):
                 historical.close()
+            if decision_scores is not None:
+                decision_scores.close()
     except Exception:
         return ProductionReadinessState.BLOCKED, "PERSISTENT_SHARED_BRAIN_STORE_COMPOSITION_UNAVAILABLE"
     return ProductionReadinessState.READY, "STORED_SHARED_BRAIN_READ_COMPOSITION_OPERATIONAL"

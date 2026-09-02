@@ -22,6 +22,8 @@ from app.intelligence.unified_state import (
     IntelligenceInvalidationDomain,
 )
 from app.intelligence.unified_state_builder import StoredIntelligenceArtifact, UnifiedIntelligenceStoredSource
+from app.ownership.models import OwnershipObservation
+from app.ownership.store import OwnershipObservationStore
 
 
 class CompanyEvidenceAdapter(Protocol):
@@ -66,8 +68,8 @@ class FinancialFactsEvidenceAdapter:
 class ShareholdingFilingsEvidenceAdapter:
     """Projects primary shareholding disclosure lineage, never holding percentages."""
 
-    def __init__(self, store: CorporateFilingsStore) -> None:
-        self._store = store
+    def __init__(self, store: CorporateFilingsStore, ownership_observations: OwnershipObservationStore | None = None) -> None:
+        self._store, self._ownership_observations = store, ownership_observations
 
     def artifacts(self, canonical_instrument_id: str, *, as_of: datetime) -> tuple[StoredIntelligenceArtifact, ...]:
         filings = self._store.list(
@@ -76,7 +78,23 @@ class ShareholdingFilingsEvidenceAdapter:
             as_of=as_of,
             limit=500,
         )
-        return tuple(sorted((_shareholding_artifact(value) for value in filings), key=_artifact_key))
+        materialized = {
+            item.filing_id for item in self._ownership_observations.list_by_instrument(canonical_instrument_id, as_of=as_of, limit=500)
+        } if self._ownership_observations is not None else set()
+        return tuple(sorted((_shareholding_artifact(value, materialized=value.filing_id in materialized) for value in filings), key=_artifact_key))
+
+
+class OwnershipObservationsEvidenceAdapter:
+    """Projects only direct official ownership observations; it makes no thesis."""
+
+    def __init__(self, store: OwnershipObservationStore) -> None:
+        self._store = store
+
+    def artifacts(self, canonical_instrument_id: str, *, as_of: datetime) -> tuple[StoredIntelligenceArtifact, ...]:
+        return tuple(sorted(
+            (_ownership_observation_artifact(value) for value in self._store.list_by_instrument(canonical_instrument_id, as_of=as_of, limit=500)),
+            key=_artifact_key,
+        ))
 
 
 class CorporateActionsEvidenceAdapter:
@@ -100,12 +118,14 @@ class CompanyEvidenceStoredSource:
         *,
         financial_facts: FinancialFactStore | None = None,
         filings: CorporateFilingsStore | None = None,
+        ownership_observations: OwnershipObservationStore | None = None,
         historical_security_master: HistoricalSecurityMasterStore | None = None,
     ) -> None:
         self._adapters: tuple[CompanyEvidenceAdapter, ...] = tuple(
             adapter for adapter in (
                 FinancialFactsEvidenceAdapter(financial_facts) if financial_facts is not None else None,
-                ShareholdingFilingsEvidenceAdapter(filings) if filings is not None else None,
+                ShareholdingFilingsEvidenceAdapter(filings, ownership_observations) if filings is not None else None,
+                OwnershipObservationsEvidenceAdapter(ownership_observations) if ownership_observations is not None else None,
                 CorporateActionsEvidenceAdapter(historical_security_master) if historical_security_master is not None else None,
             ) if adapter is not None
         )
@@ -163,8 +183,7 @@ def _financial_artifact(fact: FinancialFact, domain: IntelligenceEvidenceDomain)
     )
 
 
-def _shareholding_artifact(filing: CorporateFiling) -> StoredIntelligenceArtifact:
-    # The filing store retains primary disclosure lineage, not normalized FII/DII values.
+def _shareholding_artifact(filing: CorporateFiling, *, materialized: bool = False) -> StoredIntelligenceArtifact:
     return StoredIntelligenceArtifact(
         canonical_instrument_id=filing.instrument.instrument_id,
         domain=IntelligenceEvidenceDomain.OWNERSHIP,
@@ -188,7 +207,33 @@ def _shareholding_artifact(filing: CorporateFiling) -> StoredIntelligenceArtifac
             announced_at=filing.announced_at, received_at=filing.received_at,
         ),
         invalidation_domain=IntelligenceInvalidationDomain.FUNDAMENTALS,
-        warnings=("SHAREHOLDING_FACTS_NOT_MATERIALIZED",),
+        warnings=("OWNERSHIP_OBSERVATIONS_MATERIALIZED",) if materialized else ("SHAREHOLDING_FACTS_NOT_MATERIALIZED",),
+    )
+
+
+def _ownership_observation_artifact(value: OwnershipObservation) -> StoredIntelligenceArtifact:
+    """Direct evidence is still PARTIAL until a comparable prior period exists."""
+    return StoredIntelligenceArtifact(
+        canonical_instrument_id=value.canonical_instrument_id,
+        domain=IntelligenceEvidenceDomain.OWNERSHIP,
+        artifact_id=f"ownership-observation:{value.observation_id}",
+        artifact_fingerprint=value.fingerprint,
+        availability=IntelligenceEvidenceAvailability.PARTIAL,
+        evidence_as_of=value.published_at,
+        observed_at=value.published_at,
+        available_at=value.received_at,
+        freshness_status=FreshnessStatus.UNKNOWN,
+        freshness_policy_reference=None,
+        source_provenance_fingerprint=manifest_fingerprint(
+            filing_id=value.filing_id, artifact_sha256=value.artifact_sha256,
+            raw_concept=value.raw_concept, context=value.source_context_reference,
+        ),
+        historical_integrity_reference=manifest_fingerprint(
+            reporting_period=value.reporting_period, published_at=value.published_at,
+            received_at=value.received_at,
+        ),
+        invalidation_domain=IntelligenceInvalidationDomain.FUNDAMENTALS,
+        warnings=("OWNERSHIP_COMPARABLE_PRIOR_PERIOD_UNAVAILABLE",),
     )
 
 
@@ -242,5 +287,5 @@ def _artifact_key(value: StoredIntelligenceArtifact) -> tuple[str, str, str]:
 __all__ = (
     "CompanyEvidenceStoredSource", "CompositeStoredIntelligenceSource",
     "CorporateActionsEvidenceAdapter", "FinancialFactsEvidenceAdapter",
-    "ShareholdingFilingsEvidenceAdapter",
+    "OwnershipObservationsEvidenceAdapter", "ShareholdingFilingsEvidenceAdapter",
 )

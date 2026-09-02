@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
+from dataclasses import replace
 from decimal import Decimal
 import json
 from pathlib import Path
@@ -193,3 +194,52 @@ def test_persisted_diagnostic_source_is_exact_asof_and_future_records_do_not_reh
     assert diagnostic_reference.availability.value == "PARTIAL"
     rehydrated = rehydrate_persisted_canonical_diagnostics((current,), instrument_id=current.instrument_id, as_of=ANALYSIS_TIME)
     assert rehydrated[0].eligibility is EvaluationEligibility.INELIGIBLE_MISSING_DATA
+
+
+def test_same_immutable_snapshot_supports_historical_and_current_intelligence_cutoffs(tmp_path):
+    """Later receipt is visible only to the current evidence cutoff, never PIT replay."""
+    service, governance, definition = _service(tmp_path, registered=True)
+    snapshot = _snapshot()
+    current = ANALYSIS_TIME + timedelta(days=1)
+    original = service._assembler._source.values[0]
+    later = replace(
+        original, id="received-after-snapshot",
+        provenance=replace(original.provenance, retrieved_timestamp=current),
+    )
+    service._assembler._source.values = (*service._assembler._source.values, later)
+
+    historical_evidence = service._assembler.assemble(_instrument(snapshot.holdings[0].instrument_id), ANALYSIS_TIME)
+    current_evidence = service._assembler.assemble(_instrument(snapshot.holdings[0].instrument_id), current)
+    assert "received-after-snapshot" not in {item.id for item in historical_evidence.snapshot.observations}
+    assert "received-after-snapshot" in {item.id for item in current_evidence.snapshot.observations}
+
+    historical = service.run(
+        portfolio_snapshot=snapshot, canonical_instrument_ids=PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS,
+        strategy_version=definition.reference, intelligence_as_of=ANALYSIS_TIME,
+    )
+    operational = service.run(
+        portfolio_snapshot=snapshot, canonical_instrument_ids=PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS,
+        strategy_version=definition.reference, intelligence_as_of=current,
+    )
+    assert historical.portfolio_snapshot_id == operational.portfolio_snapshot_id == snapshot.snapshot_id
+    assert historical.portfolio_snapshot_as_of == operational.portfolio_snapshot_as_of == snapshot.as_of_timestamp
+    assert historical.intelligence_as_of == ANALYSIS_TIME and operational.intelligence_as_of == current
+    assert snapshot.cash.cash_state is CashState.UNKNOWN
+    assert all(len(item.persisted_diagnostic_ids) == 61 for item in (*historical.holdings, *operational.holdings))
+    assert historical.latest_completed_market_session == operational.latest_completed_market_session
+    assert len(governance.list_diagnostic_results(definition.reference, ANALYSIS_TIME)) == 5 * 61
+    assert len(governance.list_diagnostic_results(definition.reference, current)) == 5 * 61
+
+
+def test_intelligence_cutoff_must_be_aware_and_not_precede_the_portfolio_snapshot(tmp_path):
+    service, _, definition = _service(tmp_path, registered=True)
+    with pytest.raises(ValueError, match="INTELLIGENCE_AS_OF_TIMEZONE_REQUIRED"):
+        service.run(
+            portfolio_snapshot=_snapshot(), canonical_instrument_ids=PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS,
+            strategy_version=definition.reference, intelligence_as_of=datetime(2026, 8, 21),
+        )
+    with pytest.raises(ValueError, match="INTELLIGENCE_AS_OF_BEFORE_PORTFOLIO_SNAPSHOT"):
+        service.run(
+            portfolio_snapshot=_snapshot(), canonical_instrument_ids=PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS,
+            strategy_version=definition.reference, intelligence_as_of=ANALYSIS_TIME - timedelta(seconds=1),
+        )

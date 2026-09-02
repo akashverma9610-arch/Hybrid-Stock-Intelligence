@@ -67,8 +67,8 @@ class SQLiteCorporateFilingsStore:
         if as_of:
             clauses.extend(("announced_at<=?", "received_at<=?")); values.extend((_time(as_of), _time(as_of)))
         where = " WHERE " + " AND ".join(clauses) if clauses else ""
-        rows = self._connection.execute("SELECT payload_json FROM corporate_filings" + where + " ORDER BY announced_at DESC, filing_id DESC LIMIT ?", (*values, limit)).fetchall()
-        return tuple(_filing(json.loads(row["payload_json"])) for row in rows)
+        rows = self._connection.execute("SELECT payload_json FROM corporate_filings" + where + " ORDER BY announced_at DESC, filing_id DESC LIMIT ?", (*values, limit * 2)).fetchall()
+        return _effective_filings(tuple(_filing(json.loads(row["payload_json"])) for row in rows), limit)
 
     def revisions(self, filing_id: str) -> tuple[CorporateFiling, ...]:
         rows = self._connection.execute("SELECT payload_json FROM corporate_filings WHERE revision_of_filing_id=? ORDER BY announced_at, filing_id", (filing_id,)).fetchall()
@@ -108,8 +108,8 @@ class PostgreSQLCorporateFilingsStore:
         where = " WHERE " + " AND ".join(clauses) if clauses else ""
         with self._connections.transaction() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT payload_json FROM corporate_filings" + where + " ORDER BY announced_at DESC,filing_id DESC LIMIT %s", (*values, limit)); rows=cursor.fetchall()
-        return tuple(_filing(row[0] if isinstance(row[0],dict) else json.loads(row[0])) for row in rows)
+                cursor.execute("SELECT payload_json FROM corporate_filings" + where + " ORDER BY announced_at DESC,filing_id DESC LIMIT %s", (*values, limit * 2)); rows=cursor.fetchall()
+        return _effective_filings(tuple(_filing(row[0] if isinstance(row[0],dict) else json.loads(row[0])) for row in rows), limit)
 
     def revisions(self, filing_id: str) -> tuple[CorporateFiling, ...]:
         with self._connections.transaction() as connection:
@@ -118,6 +118,17 @@ class PostgreSQLCorporateFilingsStore:
 
 
 def _time(value: datetime) -> str: return value.astimezone(UTC).isoformat()
+def _effective_filings(values: tuple[CorporateFiling, ...], limit: int) -> tuple[CorporateFiling, ...]:
+    """Hide only the parent of an explicit append-only PIT correction.
+
+    ``get`` and ``revisions`` remain audit views.  Ordinary filing revisions
+    are deliberately untouched.
+    """
+    parents = {
+        item.revision_of_filing_id for item in values
+        if item.revision_of_filing_id and any(warning.startswith("NSE_REG31_PIT_TIMESTAMP_CORRECTED_V1:") for warning in item.warnings)
+    }
+    return tuple(item for item in values if item.filing_id not in parents)[:limit]
 def _parse(value: str | None) -> datetime | None: return datetime.fromisoformat(value) if value else None
 def _dump(value: CorporateFiling) -> str:
     return json.dumps(_encode(value), sort_keys=True, separators=(",", ":"))

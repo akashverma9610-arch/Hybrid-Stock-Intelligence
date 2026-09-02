@@ -113,6 +113,13 @@ KOTAK_NEO_CREDENTIAL_DEFINITIONS: tuple[CredentialDefinition, ...] = (
 GLOBAL_DATAFEEDS_CREDENTIAL_DEFINITIONS: tuple[CredentialDefinition, ...] = (CredentialDefinition("access_key", "Access Key", CredentialSensitivity.SECRET, (ConnectionMode.QUOTE_ONLY,), "Required for Global Datafeeds historical REST requests."),)
 UPSTOX_CREDENTIAL_DEFINITIONS: tuple[CredentialDefinition, ...] = (CredentialDefinition("access_token", "Analytics Access Token", CredentialSensitivity.SECRET, (ConnectionMode.HISTORICAL_OHLCV,), "Required for authenticated Upstox Historical Candle V3 requests."),)
 GNEWS_CREDENTIAL_DEFINITIONS: tuple[CredentialDefinition, ...] = (CredentialDefinition("api_key", "API Key", CredentialSensitivity.SECRET, (ConnectionMode.QUOTE_ONLY,), "Required for GNews machine-readable Search API requests."),)
+DHAN_CREDENTIAL_DEFINITIONS: tuple[CredentialDefinition, ...] = (
+    CredentialDefinition("dhan_client_id", "Dhan Client ID", CredentialSensitivity.SENSITIVE_IDENTIFIER, (ConnectionMode.QUOTE_ONLY,), "Dhan-issued client identifier used only with the documented market-data authentication headers."),
+    CredentialDefinition("api_key", "Dhan API Key", CredentialSensitivity.SECRET, (ConnectionMode.QUOTE_ONLY,), "Twelve-month Dhan API-key credential used only to start the documented consent flow."),
+    CredentialDefinition("api_secret", "Dhan API Secret", CredentialSensitivity.SECRET, (ConnectionMode.QUOTE_ONLY,), "Twelve-month Dhan API-secret credential used only to start or consume the documented consent flow."),
+    CredentialDefinition("access_token", "Dhan Access Token", CredentialSensitivity.SECRET, (ConnectionMode.QUOTE_ONLY,), "Expiring Dhan access token used only with explicit read-only Dhan endpoints."),
+    CredentialDefinition("access_token_expiry", "Dhan Access Token Expiry", CredentialSensitivity.NON_SECRET, (ConnectionMode.QUOTE_ONLY,), "ISO-8601 expiry returned by Dhan; retained outside normal application tables so known-expired tokens fail closed."),
+)
 
 
 def requirements_for(mode: ConnectionMode) -> tuple[str, ...]:

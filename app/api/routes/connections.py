@@ -4,7 +4,7 @@ from dataclasses import asdict
 
 from fastapi import APIRouter, Depends
 
-from app.api.dependencies import get_api_settings, get_backend_local_real_portfolio_ohlcv_activation, get_connection_service
+from app.api.dependencies import get_api_settings, get_backend_local_real_portfolio_ohlcv_activation, get_backend_local_sector_rotation_index_coverage_activation, get_connection_service
 from app.api.errors import APIRequestError
 from app.api.schemas.connections import (
     BackendLocalOhlcvActivationResponse, BackendLocalOhlcvTargetResponse, ConnectionListResponse, ConnectionProfileResponse, ConnectionTestResponse,
@@ -100,6 +100,22 @@ def refresh_real_portfolio_upstox_ohlcv(
     service = Depends(get_backend_local_real_portfolio_ohlcv_activation),
 ) -> BackendLocalOhlcvActivationResponse:
     """Local-only, fixed-target evidence activation; it accepts no request body."""
+    _require_local(settings)
+    result = service.run_twice()
+    return BackendLocalOhlcvActivationResponse(
+        requested_at=result.requested_at,
+        completed_at=result.completed_at,
+        first_run=tuple(BackendLocalOhlcvTargetResponse(**asdict(item)) for item in result.first_run),
+        second_run=tuple(BackendLocalOhlcvTargetResponse(**asdict(item)) for item in result.second_run),
+    )
+
+
+@router.post("/connections/upstox/sector-index-coverage/refresh", response_model=BackendLocalOhlcvActivationResponse, include_in_schema=False)
+def refresh_sector_rotation_index_coverage(
+    settings: APISettings = Depends(get_api_settings),
+    service = Depends(get_backend_local_sector_rotation_index_coverage_activation),
+) -> BackendLocalOhlcvActivationResponse:
+    """Local-only, fixed official-index coverage refresh with no body or secret output."""
     _require_local(settings)
     result = service.run_twice()
     return BackendLocalOhlcvActivationResponse(

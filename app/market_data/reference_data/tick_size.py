@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
+import re
 
 from app.historical.guard import manifest_fingerprint
 from app.market_data.models import Exchange
@@ -18,6 +19,18 @@ class TickSizeSourceClass(StrEnum):
 class TickSizeAvailabilitySemantics(StrEnum):
     EXPLICIT_EFFECTIVE_PERIOD = "EXPLICIT_EFFECTIVE_PERIOD"
     FIRST_OBSERVED_ONLY = "FIRST_OBSERVED_ONLY"
+
+
+class TickSizeEvidenceKind(StrEnum):
+    """Whether a tick value was directly supplied or derived from NSE policy."""
+
+    DIRECT_SOURCE = "DIRECT_SOURCE"
+    OFFICIAL_RULE_DERIVED = "OFFICIAL_RULE_DERIVED"
+
+
+class TickSizeEvidenceSufficiency(StrEnum):
+    SUFFICIENT = "SUFFICIENT"
+    INSUFFICIENT = "INSUFFICIENT"
 
 
 class NseTickSizeSegment(StrEnum):
@@ -50,9 +63,20 @@ def nse_tick_size_observation_fingerprint(
     effective_to: datetime | None,
     availability_semantics: TickSizeAvailabilitySemantics,
     warnings: tuple[str, ...],
+    evidence_kind: TickSizeEvidenceKind = TickSizeEvidenceKind.DIRECT_SOURCE,
+    symbol: str | None = None,
+    series: str | None = None,
+    effective_month: str | None = None,
+    reference_trading_session: datetime | None = None,
+    reference_close: Decimal | None = None,
+    rule_id: str | None = None,
+    source_circular_reference: str | None = None,
+    source_artifact_reference: str | None = None,
+    derivation_details: tuple[str, ...] = (),
+    evidence_sufficiency: TickSizeEvidenceSufficiency = TickSizeEvidenceSufficiency.SUFFICIENT,
 ) -> str:
     """Fingerprint every semantic input, excluding only its stored digest."""
-    return manifest_fingerprint(
+    values = dict(
         record_id=record_id,
         canonical_instrument_id=canonical_instrument_id,
         exchange=exchange.value,
@@ -68,6 +92,23 @@ def nse_tick_size_observation_fingerprint(
         availability_semantics=availability_semantics.value,
         warnings=warnings,
     )
+    # Keep legacy direct-source fingerprints stable. Rule-derived records add
+    # their complete policy lineage to the immutable semantic identity.
+    if evidence_kind is TickSizeEvidenceKind.OFFICIAL_RULE_DERIVED:
+        values.update(
+            evidence_kind=evidence_kind.value,
+            symbol=symbol,
+            series=series,
+            effective_month=effective_month,
+            reference_trading_session=reference_trading_session.isoformat() if reference_trading_session else None,
+            reference_close=str(reference_close) if reference_close is not None else None,
+            rule_id=rule_id,
+            source_circular_reference=source_circular_reference,
+            source_artifact_reference=source_artifact_reference,
+            derivation_details=derivation_details,
+            evidence_sufficiency=evidence_sufficiency.value,
+        )
+    return manifest_fingerprint(**values)
 
 
 @dataclass(frozen=True, slots=True)
@@ -93,6 +134,17 @@ class NseTickSizeObservation:
     availability_semantics: TickSizeAvailabilitySemantics
     warnings: tuple[str, ...] = ()
     evidence_fingerprint: str = ""
+    evidence_kind: TickSizeEvidenceKind = TickSizeEvidenceKind.DIRECT_SOURCE
+    symbol: str | None = None
+    series: str | None = None
+    effective_month: str | None = None
+    reference_trading_session: datetime | None = None
+    reference_close: Decimal | None = None
+    rule_id: str | None = None
+    source_circular_reference: str | None = None
+    source_artifact_reference: str | None = None
+    derivation_details: tuple[str, ...] = ()
+    evidence_sufficiency: TickSizeEvidenceSufficiency = TickSizeEvidenceSufficiency.SUFFICIENT
 
     def __post_init__(self) -> None:
         _required(self.record_id, "NSE_TICK_RECORD_ID_REQUIRED")
@@ -107,6 +159,10 @@ class NseTickSizeObservation:
             raise ValueError("NSE_TICK_SOURCE_CLASS_INVALID")
         if not isinstance(self.availability_semantics, TickSizeAvailabilitySemantics):
             raise ValueError("NSE_TICK_AVAILABILITY_SEMANTICS_INVALID")
+        if not isinstance(self.evidence_kind, TickSizeEvidenceKind):
+            raise ValueError("NSE_TICK_EVIDENCE_KIND_INVALID")
+        if not isinstance(self.evidence_sufficiency, TickSizeEvidenceSufficiency):
+            raise ValueError("NSE_TICK_EVIDENCE_SUFFICIENCY_INVALID")
         if self.isin is not None and (not isinstance(self.isin, str) or not self.isin.strip()):
             raise ValueError("NSE_TICK_ISIN_INVALID")
         if not isinstance(self.tick_size, Decimal):
@@ -126,6 +182,7 @@ class NseTickSizeObservation:
             raise ValueError("NSE_TICK_EFFECTIVE_INTERVAL_INVALID")
         if not isinstance(self.warnings, tuple) or any(not isinstance(item, str) or not item for item in self.warnings):
             raise ValueError("NSE_TICK_WARNINGS_INVALID")
+        _rule_derived_fields_valid(self)
         expected = nse_tick_size_observation_fingerprint(
             record_id=self.record_id,
             canonical_instrument_id=self.canonical_instrument_id,
@@ -141,6 +198,17 @@ class NseTickSizeObservation:
             effective_to=self.effective_to,
             availability_semantics=self.availability_semantics,
             warnings=self.warnings,
+            evidence_kind=self.evidence_kind,
+            symbol=self.symbol,
+            series=self.series,
+            effective_month=self.effective_month,
+            reference_trading_session=self.reference_trading_session,
+            reference_close=self.reference_close,
+            rule_id=self.rule_id,
+            source_circular_reference=self.source_circular_reference,
+            source_artifact_reference=self.source_artifact_reference,
+            derivation_details=self.derivation_details,
+            evidence_sufficiency=self.evidence_sufficiency,
         )
         if not self.evidence_fingerprint:
             object.__setattr__(self, "evidence_fingerprint", expected)
@@ -154,3 +222,33 @@ class NseTickSizeObservation:
     def is_eligible_as_of(self, as_of: datetime) -> bool:
         _aware(as_of, "NSE_TICK_AS_OF_NAIVE")
         return as_of >= self.eligible_from and (self.effective_to is None or as_of < self.effective_to)
+
+
+def _rule_derived_fields_valid(value: NseTickSizeObservation) -> None:
+    fields = (
+        value.symbol, value.series, value.effective_month, value.reference_trading_session,
+        value.reference_close, value.rule_id, value.source_circular_reference,
+        value.source_artifact_reference,
+    )
+    if value.evidence_kind is TickSizeEvidenceKind.DIRECT_SOURCE:
+        if any(item is not None for item in fields) or value.derivation_details:
+            raise ValueError("NSE_TICK_DIRECT_SOURCE_DERIVATION_FIELDS_FORBIDDEN")
+        return
+    if value.availability_semantics is not TickSizeAvailabilitySemantics.EXPLICIT_EFFECTIVE_PERIOD:
+        raise ValueError("NSE_TICK_RULE_DERIVED_EFFECTIVE_PERIOD_REQUIRED")
+    if value.source_class is not TickSizeSourceClass.OFFICIAL_EXCHANGE:
+        raise ValueError("NSE_TICK_RULE_DERIVED_OFFICIAL_SOURCE_REQUIRED")
+    if not all(isinstance(item, str) and item.strip() for item in (
+        value.symbol, value.series, value.effective_month, value.rule_id,
+        value.source_circular_reference, value.source_artifact_reference,
+    )):
+        raise ValueError("NSE_TICK_RULE_DERIVED_LINEAGE_REQUIRED")
+    if not re.fullmatch(r"\d{4}-\d{2}", value.effective_month):
+        raise ValueError("NSE_TICK_RULE_DERIVED_EFFECTIVE_MONTH_INVALID")
+    _aware(value.reference_trading_session, "NSE_TICK_RULE_DERIVED_REFERENCE_SESSION_NAIVE")
+    if not isinstance(value.reference_close, Decimal) or not value.reference_close.is_finite() or value.reference_close <= 0:
+        raise ValueError("NSE_TICK_RULE_DERIVED_REFERENCE_CLOSE_INVALID")
+    if not isinstance(value.derivation_details, tuple) or not value.derivation_details or any(
+        not isinstance(item, str) or not item for item in value.derivation_details
+    ):
+        raise ValueError("NSE_TICK_RULE_DERIVED_DETAILS_REQUIRED")

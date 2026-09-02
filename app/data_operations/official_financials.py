@@ -34,6 +34,7 @@ from app.storage.core_api_snapshot_repository import (
     CoreApiSnapshot, CoreApiSnapshotFamily, CoreApiSnapshotRepository,
 )
 from app.universe_analysis.service import CoreUniverseAnalysisStore
+from app.data_operations.nse_shareholding_acquisition import APPROVED_NSE_REG31_TARGETS
 
 
 NSE_OFFICIAL = "NSE_OFFICIAL"
@@ -218,10 +219,10 @@ class NseReg31ShareholdingRefreshJob:
         self._filings, self._facts, self._runs, self._source_directory = filings, facts, runs, source_directory
 
     def refresh(self, request: EvidenceRefreshRequest) -> EvidenceRefreshOutcome:
-        paths = _local_files(self._source_directory, (".csv", ".xlsx"))
+        paths = _preferred_reg31_artifacts(_local_files(self._source_directory, (".csv", ".xlsx", ".xml")))
         if not paths:
             return _source_unavailable("NSE_REG31_SHAREHOLDING_EXPORT_REQUIRED")
-        resolver = _frozen_cohort_resolver(self._repository, self._universe)
+        resolver = _reg31_portfolio_xbrl_resolver(self._universe) if any(path.suffix.lower() == ".xml" for path in paths) else _frozen_cohort_resolver(self._repository, self._universe)
         if resolver is None:
             return _source_unavailable("FROZEN_COHORT_UNIVERSE_REQUIRED")
         service = OfficialExchangeImportService(
@@ -295,6 +296,33 @@ def _frozen_cohort_resolver(repository: CoreApiSnapshotRepository, universe: Cor
         return None
     identities = tuple(_current_identities(universe).values())
     return FrozenCohortInstrumentResolver(identities, trial.selected_instrument_ids)
+
+
+def _preferred_reg31_artifacts(paths: tuple[Path, ...]) -> tuple[Path, ...]:
+    """Prefer an independently validated current XBRL over a same-symbol CSV.
+
+    Legacy CSV bytes remain staged evidence; this selection merely prevents a
+    current XBRL filing from being made to compete with known legacy CSV
+    metadata for the same issuer.
+    """
+    approved_symbols = {target.symbol for target in APPROVED_NSE_REG31_TARGETS}
+    xbrls = tuple(
+        path for path in paths
+        if path.suffix.lower() == ".xml"
+        and path.name.startswith("SHP-Reg31-equities-")
+        and len(path.name.split("-")) > 3
+        and path.name.split("-")[3] in approved_symbols
+    )
+    return xbrls or paths
+
+
+def _reg31_portfolio_xbrl_resolver(universe: CoreUniverseAnalysisStore) -> FrozenCohortInstrumentResolver | None:
+    identities = _current_identities(universe)
+    wanted = tuple(identities.get(target.isin) for target in APPROVED_NSE_REG31_TARGETS)
+    if any(item is None for item in wanted):
+        return None
+    values = tuple(item for item in wanted if item is not None)
+    return FrozenCohortInstrumentResolver(values, (item.instrument_id for item in values))
 
 
 @dataclass(frozen=True, slots=True)

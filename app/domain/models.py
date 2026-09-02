@@ -358,6 +358,11 @@ def canonical_diagnostic_result(
     as_of_timestamp: datetime,
 ) -> DiagnosticResult:
     """Construct a typed canonical result without a generic strategy-version anchor."""
+    # SQLite REAL columns rehydrate integral values as ``1.0``.  Canonicalize
+    # numeric values before fingerprinting so a newly written typed result has
+    # identical lineage before and after durable storage.
+    score = None if score is None else float(score)
+    confidence = None if confidence is None else float(confidence)
     value = DiagnosticResult(
         id, instrument_id, rule_id, strategy_version, result, score, confidence, evidence_ids,
         input_observation_ids, evaluated_at, as_of_timestamp,

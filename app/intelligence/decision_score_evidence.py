@@ -61,6 +61,22 @@ class StrategyGovernanceDecisionScorecardSource:
         return (value,)
 
 
+class CanonicalDecisionScorecardSource:
+    """Read canonical score artifacts without creating generic strategy anchors."""
+
+    def __init__(self, repository: StrategyGovernanceRepository) -> None:
+        self._repository = repository
+
+    def list_stored_decision_scorecards(
+        self, canonical_instrument_id: str, *, as_of: datetime,
+    ) -> tuple[StoredDecisionScorecard, ...]:
+        return tuple(
+            value
+            for value in self._repository.list_canonical_decision_scorecards(canonical_instrument_id)
+            if value.as_of_timestamp <= as_of and value.evaluated_at <= as_of
+        )
+
+
 class DecisionScoreEvidenceAdapter:
     """Project an already-computed scorecard as bounded DECISION_SCORE evidence."""
 
@@ -132,6 +148,11 @@ def _artifact(value: StoredDecisionScorecard) -> StoredIntelligenceArtifact:
             configuration_version=value.configuration_version,
             diagnostic_ids=diagnostic_ids,
             evidence_ids=evidence_ids,
+            canonical_strategy_fingerprint=getattr(value, "canonical_strategy_fingerprint", None),
+            canonical_limitations_fingerprint=getattr(value, "canonical_limitations_fingerprint", None),
+            scoring_policy_version=getattr(value, "scoring_policy_version", None),
+            scoring_policy_fingerprint=getattr(value, "scoring_policy_fingerprint", None),
+            latest_completed_market_session=getattr(value, "latest_completed_market_session", None),
         ),
         historical_integrity_reference=None,
         invalidation_domain=IntelligenceInvalidationDomain.POLICY,
@@ -164,6 +185,11 @@ def decision_scorecard_artifact_fingerprint(value: StoredDecisionScorecard) -> s
             for item in components
         ),
         warnings=tuple(sorted(value.warnings)),
+        canonical_strategy_fingerprint=getattr(value, "canonical_strategy_fingerprint", None),
+        canonical_limitations_fingerprint=getattr(value, "canonical_limitations_fingerprint", None),
+        scoring_policy_version=getattr(value, "scoring_policy_version", None),
+        scoring_policy_fingerprint=getattr(value, "scoring_policy_fingerprint", None),
+        latest_completed_market_session=getattr(value, "latest_completed_market_session", None),
     )
 
 
@@ -205,4 +231,5 @@ def _aware(value: object) -> bool:
 __all__ = (
     "DecisionScoreEvidenceAdapter", "DecisionScoreEvidenceStoredSource", "decision_scorecard_artifact_fingerprint",
     "StoredDecisionScorecard", "StoredDecisionScorecardSource", "StrategyGovernanceDecisionScorecardSource",
+    "CanonicalDecisionScorecardSource",
 )

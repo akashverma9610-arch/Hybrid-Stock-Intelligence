@@ -19,6 +19,15 @@ from app.universe_analysis.service import CoreUniverseAnalysisStore
 
 BENCHMARK_INSTRUMENT_IDS = ("NIFTY_50", "NIFTY_500")
 REAL_PORTFOLIO_OHLCV_TARGETS = (*PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS, *BENCHMARK_INSTRUMENT_IDS)
+# These are the only official index histories currently preventing otherwise
+# governed sector ranking coverage.  This local operation deliberately has no
+# caller-selected symbols, provider, or credential input.
+SECTOR_ROTATION_INDEX_TARGETS = (
+    "NSE_SECTOR_INDEX:CAPITAL_GOODS",
+    "NSE_SECTOR_INDEX:CONSTRUCTION",
+    "NSE_SECTOR_INDEX:CONSUMER_SERVICES",
+    "NSE_SECTOR_INDEX:POWER",
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -116,6 +125,61 @@ class BackendLocalRealPortfolioOhlcvActivation:
         return self._index_job.refresh_selected(request, canonical_instrument_ids=frozenset({instrument_id}))
 
 
+class BackendLocalSectorRotationIndexCoverageActivation:
+    """Refresh only the approved official sector-index coverage gap locally."""
+
+    def __init__(
+        self,
+        *,
+        universe: CoreUniverseAnalysisStore,
+        historical: HistoricalBarStore,
+        index_job: UpstoxIndexBarsRefreshJob,
+        clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+    ) -> None:
+        self._universe = universe
+        self._historical = historical
+        self._index_job = index_job
+        self._clock = clock
+
+    def run_twice(self) -> BackendLocalOhlcvActivationResult:
+        at = self._clock().astimezone(UTC)
+        first = self._run("first", at)
+        second = self._run("second", at)
+        return BackendLocalOhlcvActivationResult(at, self._clock().astimezone(UTC), first, second)
+
+    def _run(self, ordinal: str, at: datetime) -> tuple[BackendLocalOhlcvTargetRun, ...]:
+        values: list[BackendLocalOhlcvTargetRun] = []
+        for instrument_id in SECTOR_ROTATION_INDEX_TARGETS:
+            before = self._session_count(instrument_id)
+            request = EvidenceRefreshRequest(
+                f"backend-local-sector-rotation-index:{ordinal}:{instrument_id}:{uuid4().hex}",
+                EvidenceDataFamily.INDEX_BARS, EvidenceRefreshMode.INCREMENTAL, at, at, None, 2,
+            )
+            outcome = self._index_job.refresh_selected(request, canonical_instrument_ids=frozenset({instrument_id}))
+            visibility_cutoff = self._clock().astimezone(UTC)
+            mapping = self._universe.provider_mapping(
+                canonical_instrument_id=instrument_id, provider=UPSTOX_PROVIDER, as_of=visibility_cutoff,
+            )
+            readiness = OhlcvReadinessService(self._historical).assess(
+                instrument_id, as_of=visibility_cutoff, mapping_available=mapping is not None,
+                required_latest_at=outcome.accepted_through,
+            )
+            values.append(BackendLocalOhlcvTargetRun(
+                instrument_id,
+                "EXACT_MAPPING_AVAILABLE" if mapping is not None else "EXACT_MAPPING_UNAVAILABLE",
+                before, self._session_count(instrument_id, as_of=visibility_cutoff), readiness.latest_bar_at,
+                outcome.accepted_count, outcome.duplicate_count, outcome.conflict_count, readiness.status.value,
+                outcome.error_summary or (None if readiness.ready else readiness.reason),
+            ))
+        return tuple(values)
+
+    def _session_count(self, instrument_id: str, *, as_of: datetime | None = None) -> int:
+        return len(self._historical.range(
+            instrument_id, Timeframe.DAILY, datetime.min.replace(tzinfo=UTC),
+            datetime.max.replace(tzinfo=UTC), as_of=as_of,
+        ))
+
+
 def secure_upstox_token_reader(credentials: CredentialStore) -> Callable[[], str | None]:
     """Return a private reader; callers never receive or serialize its secret."""
     return lambda: credentials.load("upstox").get("access_token")
@@ -171,8 +235,22 @@ def build_backend_local_real_portfolio_ohlcv_activation(*, database_settings, cr
     )
 
 
+def build_backend_local_sector_rotation_index_coverage_activation(*, database_settings, credential_store: CredentialStore) -> BackendLocalSectorRotationIndexCoverageActivation:
+    """Compose the fixed official-index operation inside the serving backend."""
+    portfolio_operation = build_backend_local_real_portfolio_ohlcv_activation(
+        database_settings=database_settings, credential_store=credential_store,
+    )
+    return BackendLocalSectorRotationIndexCoverageActivation(
+        universe=portfolio_operation._universe,
+        historical=portfolio_operation._historical,
+        index_job=portfolio_operation._index_job,
+    )
+
+
 __all__ = (
     "BENCHMARK_INSTRUMENT_IDS", "BackendLocalOhlcvActivationResult",
-    "BackendLocalOhlcvTargetRun", "BackendLocalRealPortfolioOhlcvActivation", "REAL_PORTFOLIO_OHLCV_TARGETS",
-    "build_backend_local_real_portfolio_ohlcv_activation", "secure_upstox_token_reader",
+    "BackendLocalOhlcvTargetRun", "BackendLocalRealPortfolioOhlcvActivation",
+    "BackendLocalSectorRotationIndexCoverageActivation", "REAL_PORTFOLIO_OHLCV_TARGETS",
+    "SECTOR_ROTATION_INDEX_TARGETS", "build_backend_local_real_portfolio_ohlcv_activation",
+    "build_backend_local_sector_rotation_index_coverage_activation", "secure_upstox_token_reader",
 )

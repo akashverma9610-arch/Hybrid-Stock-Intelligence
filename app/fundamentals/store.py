@@ -32,9 +32,14 @@ class SQLiteFinancialFactStore:
         existing=self.get(fact.fact_id)
         if existing is not None: return FinancialFactWriteOutcome.IDENTICAL if existing==fact else FinancialFactWriteOutcome.CONFLICT
         # The same source identity cannot silently acquire a different reported value.
-        row=self._connection.execute("SELECT payload_json FROM financial_facts WHERE instrument_id=? AND metric=? AND period_end=? AND period_type=? AND statement_scope=? AND fact_kind=? AND source=? AND COALESCE(source_reference,'')=COALESCE(?, '')",(fact.instrument.instrument_id,fact.metric.value,_time(fact.period_end),fact.period_type.value,fact.statement_scope.value,fact.fact_kind.value,fact.source,fact.source_reference)).fetchone()
-        if row:
-            return FinancialFactWriteOutcome.IDENTICAL if _fact(json.loads(row[0]))==fact else FinancialFactWriteOutcome.CONFLICT
+        rows=self._connection.execute("SELECT payload_json FROM financial_facts WHERE instrument_id=? AND metric=? AND period_end=? AND period_type=? AND statement_scope=? AND fact_kind=? AND source=? AND COALESCE(source_reference,'')=COALESCE(?, '')",(fact.instrument.instrument_id,fact.metric.value,_time(fact.period_end),fact.period_type.value,fact.statement_scope.value,fact.fact_kind.value,fact.source,fact.source_reference)).fetchall()
+        for row in rows:
+            existing=_fact(json.loads(row[0]))
+            # Distinct context semantics (for example quarter-only and
+            # year-to-date) are separate accounting facts; the same context
+            # must remain immutable and fail closed on a changed value.
+            if existing.period_start==fact.period_start and existing.value_basis is fact.value_basis:
+                return FinancialFactWriteOutcome.IDENTICAL if existing==fact else FinancialFactWriteOutcome.CONFLICT
         self._connection.execute("INSERT INTO financial_facts VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(fact.fact_id,fact.instrument.instrument_id,fact.metric.value,str(fact.value),_time(fact.period_end),fact.period_type.value,fact.statement_scope.value,fact.fact_kind.value,fact.source,fact.source_reference,fact.filing_id,_time(fact.published_at),_time(fact.received_at),_dump(fact)));self._connection.commit();return FinancialFactWriteOutcome.INSERTED
     def get(self,fact_id:str)->FinancialFact|None:
         row=self._connection.execute("SELECT payload_json FROM financial_facts WHERE fact_id=?",(fact_id,)).fetchone();return _fact(json.loads(row[0])) if row else None

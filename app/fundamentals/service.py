@@ -63,5 +63,5 @@ class FinancialDerivationService:
 
 
 def _fact_id(value:StructuredFinancialRecord)->str:
-    raw="|".join((value.source,value.filing_id,value.instrument.instrument_id,value.metric.value,value.period_type.value,value.period_end.isoformat(),value.statement_scope.value,value.source_reference or ""));return "fact:"+hashlib.sha256(raw.encode()).hexdigest()[:24]
+    raw="|".join((value.source,value.filing_id,value.instrument.instrument_id,value.metric.value,value.period_type.value,value.value_basis.value,value.period_start.isoformat() if value.period_start else "",value.period_end.isoformat(),value.statement_scope.value,value.source_reference or ""));return "fact:"+hashlib.sha256(raw.encode()).hexdigest()[:24]
 def _compatible(left:FinancialFact,right:FinancialFact,*,same_metric:bool=False)->bool:return left.instrument.instrument_id==right.instrument.instrument_id and (not same_metric or left.metric==right.metric) and left.statement_scope==right.statement_scope and left.currency==right.currency and left.unit==right.unit and left.scale==right.scale

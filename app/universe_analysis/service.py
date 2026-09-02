@@ -316,6 +316,14 @@ class CoreUniverseAnalysisStore:
         resolved_instrument: InstrumentIdentity | None = None,
         source_reference: str | None = None,
         source_checksum: str | None = None,
+        provider_instrument_type: str | None = None,
+        provider_name: str | None = None,
+        raw_provider_exchange: str | None = None,
+        raw_provider_segment: str | None = None,
+        raw_provider_instrument: str | None = None,
+        raw_provider_instrument_type: str | None = None,
+        raw_provider_series: str | None = None,
+        normalized_instrument: str | None = None,
     ) -> ProviderInstrumentMappingRecord:
         """Persist the one unambiguous mapping already resolved by a provider.
 
@@ -348,6 +356,14 @@ class CoreUniverseAnalysisStore:
             source_reference=source_reference,
             source_checksum=source_checksum,
             mapping_version=value.mapping_version,
+            provider_instrument_type=provider_instrument_type,
+            provider_name=provider_name,
+            raw_provider_exchange=raw_provider_exchange,
+            raw_provider_segment=raw_provider_segment,
+            raw_provider_instrument=raw_provider_instrument,
+            raw_provider_instrument_type=raw_provider_instrument_type,
+            raw_provider_series=raw_provider_series,
+            normalized_instrument=normalized_instrument,
         )
         self.save_provider_mapping(record)
         return record

@@ -17,11 +17,18 @@ from time import sleep
 from typing import Callable, Iterable, Sequence
 
 from app.market_data.historical import HistoricalIngestionService
+from app.market_data.index_close_series import (
+    CloseSeriesPoint,
+    IndexCloseSeriesStore,
+    close_series_from_bars,
+    close_series_from_observations,
+)
 from app.market_data.models import AdjustmentStatus, Exchange, HistoricalBarsRequest, InstrumentIdentity, InstrumentType, MarketDataError, ProviderInstrumentMapping, Timeframe
 from app.market_data.upstox import UPSTOX_PROVIDER, UpstoxHistoricalProvider, UpstoxInstrumentRecord
 from app.market_data.upstox_population import resolve_upstox_equity_mapping
 from app.market_data.upstox_sector_indices import NIFTY_500_INDEX_ID, _sector_index_id
-from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily, CoreApiSnapshotRepository
+from app.storage.core_api_snapshot_repository import CoreApiSnapshot, CoreApiSnapshotFamily, CoreApiSnapshotRepository
+from app.historical.guard import manifest_fingerprint
 from app.strategies.pre_breakout.service import PreBreakoutConfig, PreBreakoutEngine, SectorBreadth, SectorRelativeStrength, mansfield_relative_strength
 from app.taxonomy.nse_sector_indices import NseSectorIndexConstituent, NseSectorIndexMapping, SectorIndexMappingStatus
 from app.universe_analysis.models import NseEquityInstrument
@@ -39,6 +46,7 @@ class CurrentSectorRelativeStrength:
     official_index: str
     canonical_sessions: int
     recent_upstox_sessions: int
+    official_close_sessions: int
     rs20: Decimal | None
     rs60: Decimal | None
     rs120: Decimal | None
@@ -133,6 +141,7 @@ class SectorBackfillPlan:
 @dataclass(frozen=True, slots=True)
 class CurrentSectorRotationReport:
     generated_at: datetime
+    latest_completed_session: datetime | None
     benchmark_sessions: int
     relative_strength: tuple[CurrentSectorRelativeStrength, ...]
     constituents: tuple[CurrentConstituentResolution, ...]
@@ -145,6 +154,67 @@ class CurrentSectorRotationReport:
     pre_breakout_full_ready: int
     inflection_ready: int
     warnings: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentSectorRankingArtifact:
+    """Immutable, PIT-safe record of one already-calculated sector ranking."""
+
+    ranking_id: str
+    ranking_as_of: datetime
+    latest_completed_session: datetime | None
+    benchmark_identity: str
+    ranking_policy_version: str
+    report: CurrentSectorRotationReport
+    fingerprint: str
+
+    @classmethod
+    def create(cls, report: CurrentSectorRotationReport) -> "CurrentSectorRankingArtifact":
+        values = {
+            "ranking_as_of": report.generated_at, "latest_completed_session": report.latest_completed_session,
+            "benchmark_identity": NIFTY_500_INDEX_ID, "ranking_policy_version": "current-sector-rotation-v1",
+            "report": asdict(report),
+        }
+        fingerprint = manifest_fingerprint(**values)
+        return cls(
+            ranking_id=f"current-sector-ranking:{fingerprint[:32]}", ranking_as_of=report.generated_at,
+            latest_completed_session=report.latest_completed_session, benchmark_identity=NIFTY_500_INDEX_ID,
+            ranking_policy_version="current-sector-rotation-v1", report=report, fingerprint=fingerprint,
+        )
+
+
+class CurrentSectorRankingStore:
+    """Immutable snapshot store and PIT reader for current sector rankings."""
+
+    def __init__(self, repository: CoreApiSnapshotRepository) -> None:
+        self._repository = repository
+
+    def save(self, value: CurrentSectorRankingArtifact) -> CurrentSectorRankingArtifact:
+        existing = self._repository.get_snapshot(value.ranking_id)
+        if existing is not None:
+            if existing.payload != value:
+                raise ValueError("CURRENT_SECTOR_RANKING_IMMUTABLE_CONFLICT")
+            return existing.payload
+        self._repository.save_snapshot(CoreApiSnapshot(
+            value.ranking_id, CoreApiSnapshotFamily.CURRENT_SECTOR_RANKING, "v1",
+            "current-sector-ranking-v1", value.fingerprint, value.ranking_as_of, value,
+        ))
+        return value
+
+    def latest(self, *, as_of: datetime) -> CurrentSectorRankingArtifact | None:
+        values: list[CoreApiSnapshot] = []; offset = 0
+        while True:
+            page = self._repository.list_snapshots(CoreApiSnapshotFamily.CURRENT_SECTOR_RANKING, limit=100, offset=offset)
+            values.extend(page)
+            if len(page) < 100:
+                break
+            offset += len(page)
+        eligible = tuple(
+            item.payload for item in values
+            if isinstance(item.payload, CurrentSectorRankingArtifact)
+            and item.created_at <= as_of and item.payload.ranking_as_of <= as_of
+        )
+        return max(eligible, key=lambda item: (item.ranking_as_of, item.ranking_id)) if eligible else None
 
 
 @dataclass(frozen=True, slots=True)
@@ -163,8 +233,10 @@ class CurrentSectorRotationService:
     """Build current/forward rotation readiness solely from stored facts."""
 
     def __init__(self, *, repository: CoreApiSnapshotRepository, universe: CoreUniverseAnalysisStore,
-                 historical_store, clock: Callable[[], datetime] = lambda: datetime.now(UTC)) -> None:
-        self._repository, self._universe, self._historical, self._clock = repository, universe, historical_store, clock
+                 historical_store, index_close_store: IndexCloseSeriesStore | None = None,
+                 ranking_store: CurrentSectorRankingStore | None = None,
+                 clock: Callable[[], datetime] = lambda: datetime.now(UTC)) -> None:
+        self._repository, self._universe, self._historical, self._index_closes, self._ranking_store, self._clock = repository, universe, historical_store, index_close_store, ranking_store, clock
 
     def assess(
         self, *, rs_ready_only: bool = False, as_of: datetime | None = None,
@@ -185,7 +257,7 @@ class CurrentSectorRotationService:
         # ``data_as_of``.  Use the requested boundary directly rather than a
         # later current-universe snapshot.
         instruments = self._universe.instruments_as_of(at)
-        benchmark = self._bars(NIFTY_500_INDEX_ID, at)
+        benchmark = self._close_series(NIFTY_500_INDEX_ID, at)
         rs: list[CurrentSectorRelativeStrength] = []
         resolved: list[CurrentConstituentResolution] = []
         coverage: list[CurrentConstituentHistoryCoverage] = []
@@ -196,8 +268,8 @@ class CurrentSectorRotationService:
         for mapping in sorted(mappings, key=lambda item: item.canonical_sector):
             if mapping.status not in {SectorIndexMappingStatus.EXACT_OFFICIAL, SectorIndexMappingStatus.DETERMINISTIC_FROM_OFFICIAL_CONSTITUENTS} or not mapping.official_index_name:
                 continue
-            sector_bars = self._bars(_sector_index_id(mapping.canonical_sector), at)
-            item_rs = _relative_strength(mapping.canonical_sector, mapping.official_index_name, sector_bars, benchmark)
+            sector_series, official_close_sessions = self._sector_close_series(_sector_index_id(mapping.canonical_sector), at)
+            item_rs = _relative_strength(mapping.canonical_sector, mapping.official_index_name, sector_series, benchmark, official_close_sessions)
             rs.append(item_rs)
             raw_current = _current_constituents(constituents, mapping.official_index_name)
             current = _deduplicated_current_constituents(raw_current)
@@ -216,7 +288,7 @@ class CurrentSectorRotationService:
             breadth.append(sector_breadth)
             if item_rs.exclusion_reason is None and sector_breadth.status == "READY":
                 sector_values.append((
-                    SectorRelativeStrength(mapping.canonical_sector, at, item_rs.rs20, item_rs.rs60, item_rs.rs120, tuple(bar.bar_id for bar in sector_bars)),
+                    SectorRelativeStrength(mapping.canonical_sector, at, item_rs.rs20, item_rs.rs60, item_rs.rs120, tuple(point.evidence_id for point in sector_series)),
                     SectorBreadth(mapping.canonical_sector, at, mapping.mapping_id, sector_breadth.above_50_pct, sector_breadth.above_200_pct, sector_breadth.constituent_count,
                                   tuple(item.instrument_id for item in identities if item.instrument_id is not None)),
                 ))
@@ -227,10 +299,18 @@ class CurrentSectorRotationService:
         plan = _backfill_plan(plan_memberships, rs, instruments, rs_ready_only=rs_ready_only)
         warnings = ["CURRENT_MEMBERSHIP_ONLY", "HISTORICAL_BREADTH_NOT_PIT_VALID", "DELIVERY_DATA_UNAVAILABLE", "INFLECTION_INPUTS_NOT_MATERIALIZED"]
         return CurrentSectorRotationReport(
-            at, len(benchmark), tuple(rs), tuple(resolved), tuple(coverage), tuple(breadth),
+            at, max((point.session for point in benchmark), default=None), len(benchmark), tuple(rs), tuple(resolved), tuple(coverage), tuple(breadth),
             tuple(item.sector for item in scan.relative_strength), scan.selected_sectors, plan,
             sum(item.at_least_320 for item in coverage), 0, 0, tuple(warnings),
         )
+
+    def materialize(self, *, as_of: datetime | None = None) -> CurrentSectorRankingArtifact:
+        if self._ranking_store is None:
+            raise ValueError("CURRENT_SECTOR_RANKING_STORE_REQUIRED")
+        return self._ranking_store.save(CurrentSectorRankingArtifact.create(self.assess(as_of=as_of)))
+
+    def latest_materialized(self, *, as_of: datetime) -> CurrentSectorRankingArtifact | None:
+        return None if self._ranking_store is None else self._ranking_store.latest(as_of=as_of)
 
     def write_reports(self, report: CurrentSectorRotationReport, directory: Path) -> tuple[Path, ...]:
         directory.mkdir(parents=True, exist_ok=True)
@@ -242,6 +322,24 @@ class CurrentSectorRotationService:
 
     def _bars(self, instrument_id: str, at: datetime):
         return self._historical.range(instrument_id, Timeframe.DAILY, datetime(1970, 1, 1, tzinfo=UTC), at, as_of=at)
+
+    def _close_series(self, instrument_id: str, at: datetime) -> tuple[CloseSeriesPoint, ...]:
+        """Close-only RS can safely reuse canonical bar closes for benchmarks."""
+        return close_series_from_bars(self._bars(instrument_id, at))
+
+    def _sector_close_series(self, instrument_id: str, at: datetime) -> tuple[tuple[CloseSeriesPoint, ...], int]:
+        """Official close-only evidence takes precedence for its exact index.
+
+        It is intentionally selected only here.  ATR, BBW, pivots, and all
+        constituent breadth paths continue to call ``_bars`` exclusively.
+        """
+        if self._index_closes is not None:
+            official = self._index_closes.range(instrument_id, datetime(1970, 1, 1, tzinfo=UTC), at, as_of=at)
+            if official:
+                points = close_series_from_observations(official)
+                return points, len(points)
+        values = close_series_from_bars(self._bars(instrument_id, at))
+        return values, 0
 
     def _payloads(self, family: CoreApiSnapshotFamily, *, as_of: datetime | None = None) -> tuple[object, ...]:
         values: list[object] = []; offset = 0
@@ -311,14 +409,23 @@ class CurrentSectorConstituentBackfillService:
         return SectorConstituentBackfillReport(len(plan.need_backfill), requests, accepted, duplicates, conflicts, unresolved, stopped, tuple(failures))
 
 
-def _relative_strength(sector: str, official: str, sector_bars, benchmark_bars) -> CurrentSectorRelativeStrength:
-    by_time = {bar.end_time: bar.close for bar in benchmark_bars}
-    pairs = tuple((bar.close, by_time[bar.end_time]) for bar in sector_bars if bar.end_time in by_time)
+def _relative_strength(sector: str, official: str, sector_points: Sequence[CloseSeriesPoint], benchmark_points: Sequence[CloseSeriesPoint], official_close_sessions: int = 0) -> CurrentSectorRelativeStrength:
+    # Providers may encode the same completed NSE daily session at different
+    # instants.  Align close-only RS on the UTC market-session date, while each
+    # evidence record retains its own precise PIT timestamp.
+    by_session_date = {point.session.astimezone(UTC).date(): point.close for point in benchmark_points}
+    pairs = tuple(
+        (point.close, by_session_date[point.session.astimezone(UTC).date()])
+        for point in sector_points if point.session.astimezone(UTC).date() in by_session_date
+    )
     values = tuple(left for left, _ in pairs); benchmark = tuple(right for _, right in pairs)
     measure = {lookback: mansfield_relative_strength(sector_prices=values, benchmark_prices=benchmark, lookback=lookback) for lookback in SECTOR_RS_LOOKBACKS}
     reason = None if measure[120] is not None else "INSUFFICIENT_ALIGNED_120_SESSION_HISTORY"
-    upstox = sum(bar.provenance.provider.casefold() == UPSTOX_PROVIDER for bar in sector_bars)
-    return CurrentSectorRelativeStrength(sector, official, len(sector_bars), upstox, measure[20], measure[60], measure[120], measure[120], reason)
+    upstox = sum(point.provider.casefold() == UPSTOX_PROVIDER for point in sector_points)
+    return CurrentSectorRelativeStrength(
+        sector, official, len(sector_points), upstox, official_close_sessions,
+        measure[20], measure[60], measure[120], measure[120], reason,
+    )
 
 
 def _current_constituents(values: Iterable[NseSectorIndexConstituent], official: str) -> tuple[NseSectorIndexConstituent, ...]:

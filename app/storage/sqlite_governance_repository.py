@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from dataclasses import replace
 from datetime import datetime, timedelta
 from typing import Any, Mapping
 
@@ -21,6 +22,12 @@ from app.domain.canonical_diagnostic_strategy import (
 from app.storage.governance_repository import StrategyGovernanceRepository
 from app.storage.sqlite_repository import SQLiteMarketDataRepository, _parse_timestamp, _provenance_from_dict, _provenance_to_dict, _timestamp
 from app.scoring.engine import DecisionScorecard, ScoredComponent
+from app.portfolio.canonical_decision_score import (
+    CanonicalDecisionScorecard, canonical_decision_scorecard_from_dict,
+    canonical_decision_scorecard_to_dict,
+)
+from app.portfolio.canonical_six_gates import CanonicalExecutionGateEvaluation
+from app.gates.production_policy import SixGatesProductionPolicy, policy_from_dict, policy_to_dict
 from decimal import Decimal
 from app.gates.engine import ActionContext, ExecutionEligibility, ExecutionGateEvaluation, GateDecisionRecord, GateOutcome as ExecutionGateOutcome
 from app.portfolio.models import CorporateAction, Portfolio, PortfolioSnapshot, PortfolioTransaction
@@ -264,6 +271,32 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
             raise ValueError("Diagnostic result identity has ambiguous strategy lineage.")
         return tuple(sorted(values, key=lambda item: item.id))
 
+    def latest_canonical_diagnostic_results(
+        self, canonical_instrument_id: str, *, as_of: datetime,
+    ) -> tuple[DiagnosticResult, ...]:
+        """Read one latest complete canonical 61 set without creating a generic anchor.
+
+        Discovery consumers need the already-approved canonical results at a
+        cutoff.  This is deliberately a read seam: it neither evaluates rules
+        nor changes diagnostic persistence semantics.
+        """
+        rows = self._connection.execute(
+            """SELECT as_of_timestamp FROM canonical_diagnostic_results
+               WHERE instrument_id = ? AND as_of_timestamp <= ?
+               GROUP BY as_of_timestamp
+               HAVING COUNT(DISTINCT rule_id) = 61
+               ORDER BY as_of_timestamp DESC LIMIT 1""",
+            (canonical_instrument_id, _timestamp(as_of)),
+        ).fetchone()
+        if rows is None:
+            return ()
+        selected = self._connection.execute(
+            """SELECT * FROM canonical_diagnostic_results
+               WHERE instrument_id = ? AND as_of_timestamp = ? ORDER BY rule_id, id""",
+            (canonical_instrument_id, rows["as_of_timestamp"]),
+        ).fetchall()
+        return tuple(self._canonical_diagnostic_from_row(row) for row in selected)
+
     def _save_canonical_diagnostic_result(self, result: DiagnosticResult) -> None:
         if not result.canonical_strategy_fingerprint or not result.canonical_limitations_fingerprint:
             raise ValueError("Canonical diagnostic result requires canonical strategy and limitations fingerprints.")
@@ -340,6 +373,204 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
         if not row:return None
         components=tuple(_decision_component_from_dict(x) for x in json.loads(row["components_json"]))
         return DecisionScorecard(row["id"],row["instrument_id"],StrategyVersionReference(row["strategy_id"],row["version"]),row["registry_version"],row["configuration_version"],_parse_timestamp(row["as_of_timestamp"]),_parse_timestamp(row["evaluated_at"]),components,Decimal(row["final_score"]) if row["final_score"] is not None else None,row["score_status"],row["data_confidence"],tuple(json.loads(row["warnings_json"])))
+
+    def save_canonical_decision_scorecard(self, value: CanonicalDecisionScorecard) -> CanonicalDecisionScorecard:
+        """Persist a complete score against the exact canonical diagnostics only."""
+        value.verify_integrity()
+        definition = self.get_canonical_diagnostic_strategy_definition(value.strategy_version)
+        if definition is None:
+            raise ValueError("Canonical Decision Score requires an exact registered canonical definition.")
+        definition.verify_integrity()
+        if definition.semantic_fingerprint != value.canonical_strategy_fingerprint:
+            raise ValueError("Canonical Decision Score semantic fingerprint does not match its definition.")
+        if governance_limitations_fingerprint(definition.governance_limitations) != value.canonical_limitations_fingerprint:
+            raise ValueError("Canonical Decision Score limitations fingerprint does not match its definition.")
+        diagnostic_ids = {item for component in value.components for item in component.diagnostic_ids}
+        if not diagnostic_ids:
+            raise ValueError("Canonical Decision Score requires canonical diagnostic lineage.")
+        placeholders = ",".join("?" for _ in diagnostic_ids)
+        rows = self._connection.execute(
+            f"""SELECT id, instrument_id, strategy_id, strategy_version, as_of_timestamp, evaluated_at
+                FROM canonical_diagnostic_results WHERE id IN ({placeholders})""",
+            tuple(diagnostic_ids),
+        ).fetchall()
+        if {row["id"] for row in rows} != diagnostic_ids:
+            raise ValueError("Canonical Decision Score references missing canonical diagnostics.")
+        if any(
+            row["instrument_id"] != value.instrument_id
+            or row["strategy_id"] != value.strategy_version.strategy_id
+            or row["strategy_version"] != value.strategy_version.version
+            or _parse_timestamp(row["as_of_timestamp"]) > value.as_of_timestamp
+            or _parse_timestamp(row["evaluated_at"]) > value.as_of_timestamp
+            for row in rows
+        ):
+            raise ValueError("Canonical Decision Score diagnostic lineage violates instrument, strategy, or as-of integrity.")
+        generic_rows = self._connection.execute(
+            f"SELECT id FROM diagnostic_results WHERE id IN ({placeholders})", tuple(diagnostic_ids),
+        ).fetchall()
+        if generic_rows:
+            raise ValueError("Canonical Decision Score cannot use generic diagnostic anchors.")
+        existing = self.get_canonical_decision_scorecard(value.id)
+        if existing is not None:
+            if existing == value:
+                return existing
+            raise ValueError("Canonical Decision Scores are immutable and cannot be overwritten.")
+        self._insert_immutable(
+            """INSERT INTO canonical_decision_scorecards
+               (id, instrument_id, strategy_id, strategy_version, as_of_timestamp, evaluated_at,
+                canonical_strategy_fingerprint, canonical_limitations_fingerprint,
+                scoring_policy_version, scoring_policy_fingerprint, artifact_fingerprint, payload_json)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                value.id, value.instrument_id, value.strategy_version.strategy_id,
+                value.strategy_version.version, _timestamp(value.as_of_timestamp),
+                _timestamp(value.evaluated_at), value.canonical_strategy_fingerprint,
+                value.canonical_limitations_fingerprint, value.scoring_policy_version,
+                value.scoring_policy_fingerprint, value.artifact_fingerprint,
+                _json(canonical_decision_scorecard_to_dict(value)),
+            ),
+            "Canonical Decision Scores are immutable and cannot be overwritten.",
+        )
+        return value
+
+    def get_canonical_decision_scorecard(self, value_id: str) -> CanonicalDecisionScorecard | None:
+        row = self._connection.execute(
+            "SELECT * FROM canonical_decision_scorecards WHERE id = ?", (value_id,),
+        ).fetchone()
+        return self._canonical_decision_scorecard_from_row(row) if row else None
+
+    def list_canonical_decision_scorecards(
+        self, canonical_instrument_id: str | None = None,
+    ) -> tuple[CanonicalDecisionScorecard, ...]:
+        if canonical_instrument_id is None:
+            rows = self._connection.execute(
+                "SELECT * FROM canonical_decision_scorecards ORDER BY as_of_timestamp, id",
+            ).fetchall()
+        else:
+            rows = self._connection.execute(
+                """SELECT * FROM canonical_decision_scorecards
+                   WHERE instrument_id = ? ORDER BY as_of_timestamp, id""",
+                (canonical_instrument_id,),
+            ).fetchall()
+        return tuple(self._canonical_decision_scorecard_from_row(row) for row in rows)
+
+    def save_canonical_execution_gate_evaluation(
+        self, value: CanonicalExecutionGateEvaluation,
+    ) -> CanonicalExecutionGateEvaluation:
+        value.verify_integrity()
+        evaluation = value.evaluation
+        score = self.get_canonical_decision_scorecard(evaluation.scorecard_id)
+        if score is None:
+            raise ValueError("Canonical execution gates require a persisted canonical Decision Score.")
+        if score.artifact_fingerprint != value.canonical_decision_score_fingerprint:
+            raise ValueError("Canonical execution gate Decision Score fingerprint does not match its anchor.")
+        if (score.instrument_id != evaluation.instrument_id or score.strategy_version != evaluation.strategy_version
+                or score.as_of_timestamp > evaluation.as_of_timestamp):
+            raise ValueError("Canonical execution gate score lineage violates instrument, strategy, or as-of integrity.")
+        definition = self.get_canonical_diagnostic_strategy_definition(evaluation.strategy_version)
+        if definition is None or definition.semantic_fingerprint != value.canonical_strategy_fingerprint:
+            raise ValueError("Canonical execution gate requires an exact canonical strategy definition.")
+        if governance_limitations_fingerprint(definition.governance_limitations) != value.canonical_limitations_fingerprint:
+            raise ValueError("Canonical execution gate limitations fingerprint does not match its definition.")
+        if self.get_decision_scorecard(evaluation.scorecard_id) is not None:
+            raise ValueError("Canonical execution gate cannot use a generic Decision Score anchor.")
+        existing = self.get_canonical_execution_gate_evaluation(evaluation.id)
+        if existing is not None:
+            if existing == value:
+                return existing
+            raise ValueError("Canonical execution gate evaluations are immutable and cannot be overwritten.")
+        self._insert_immutable(
+            """INSERT INTO canonical_execution_gate_evaluations
+               (id, instrument_id, strategy_id, strategy_version, scorecard_id, as_of_timestamp,
+                evaluated_at, canonical_decision_score_fingerprint, canonical_strategy_fingerprint,
+                canonical_limitations_fingerprint, artifact_fingerprint, payload_json)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (evaluation.id, evaluation.instrument_id, evaluation.strategy_version.strategy_id,
+             evaluation.strategy_version.version, evaluation.scorecard_id, _timestamp(evaluation.as_of_timestamp),
+             _timestamp(evaluation.evaluated_at), value.canonical_decision_score_fingerprint,
+             value.canonical_strategy_fingerprint, value.canonical_limitations_fingerprint,
+             value.artifact_fingerprint, _json(_canonical_execution_gate_to_dict(value))),
+            "Canonical execution gate evaluations are immutable and cannot be overwritten.",
+        )
+        for decision in evaluation.decisions:
+            self._insert_immutable(
+                """INSERT INTO canonical_execution_gate_decisions
+                   (evaluation_id, gate_id, outcome, detail, confidence, evidence_ids_json, parameters_json)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                (evaluation.id, decision.gate_id, decision.outcome.value, decision.detail,
+                 decision.confidence, _json(list(decision.evidence_ids)), _json(dict(decision.parameters))),
+                "Canonical execution gate decisions are immutable and cannot be overwritten.",
+            )
+        return value
+
+    def get_canonical_execution_gate_evaluation(self, value_id: str) -> CanonicalExecutionGateEvaluation | None:
+        row = self._connection.execute(
+            "SELECT payload_json FROM canonical_execution_gate_evaluations WHERE id = ?", (value_id,),
+        ).fetchone()
+        return _canonical_execution_gate_from_dict(json.loads(row["payload_json"])) if row else None
+
+    def list_canonical_execution_gate_evaluations(
+        self, canonical_instrument_id: str | None = None,
+    ) -> tuple[CanonicalExecutionGateEvaluation, ...]:
+        if canonical_instrument_id is None:
+            rows = self._connection.execute(
+                "SELECT payload_json FROM canonical_execution_gate_evaluations ORDER BY as_of_timestamp, id",
+            ).fetchall()
+        else:
+            rows = self._connection.execute(
+                """SELECT payload_json FROM canonical_execution_gate_evaluations
+                   WHERE instrument_id = ? ORDER BY as_of_timestamp, id""", (canonical_instrument_id,),
+            ).fetchall()
+        return tuple(_canonical_execution_gate_from_dict(json.loads(row["payload_json"])) for row in rows)
+
+    def save_six_gates_production_policy(
+        self, value: SixGatesProductionPolicy,
+    ) -> SixGatesProductionPolicy:
+        value.verify_integrity()
+        existing = self.get_six_gates_production_policy(value.approval_id)
+        if existing is not None:
+            if existing == value:
+                return existing
+            raise ValueError("Six Gates production policies are immutable and cannot be overwritten.")
+        self._insert_immutable(
+            """INSERT INTO six_gates_production_policy_approvals
+               (approval_id, policy_id, version, approved_at, effective_at, fingerprint, payload_json)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (value.approval_id, value.policy_id, value.version, _timestamp(value.approved_at),
+             _timestamp(value.effective_at), value.fingerprint, _json(policy_to_dict(value))),
+            "Six Gates production policies are immutable and cannot be overwritten.",
+        )
+        return value
+
+    def get_six_gates_production_policy(self, approval_id: str) -> SixGatesProductionPolicy | None:
+        row = self._connection.execute(
+            "SELECT payload_json FROM six_gates_production_policy_approvals WHERE approval_id = ?", (approval_id,),
+        ).fetchone()
+        return policy_from_dict(json.loads(row["payload_json"])) if row else None
+
+    def selected_six_gates_production_policy(self, *, as_of: datetime) -> SixGatesProductionPolicy | None:
+        row = self._connection.execute(
+            """SELECT payload_json FROM six_gates_production_policy_approvals
+               WHERE effective_at <= ? ORDER BY effective_at DESC, approval_id DESC LIMIT 1""",
+            (_timestamp(as_of),),
+        ).fetchone()
+        return policy_from_dict(json.loads(row["payload_json"])) if row else None
+
+    def latest_common_canonical_diagnostic_as_of(
+        self, reference: StrategyVersionReference, instrument_ids: tuple[str, ...],
+    ) -> datetime | None:
+        if not instrument_ids or len(set(instrument_ids)) != len(instrument_ids):
+            raise ValueError("Canonical Decision Score requires distinct canonical instrument IDs.")
+        placeholders = ",".join("?" for _ in instrument_ids)
+        row = self._connection.execute(
+            f"""SELECT as_of_timestamp FROM canonical_diagnostic_results
+                WHERE strategy_id = ? AND strategy_version = ? AND instrument_id IN ({placeholders})
+                GROUP BY as_of_timestamp
+                HAVING COUNT(DISTINCT instrument_id) = ?
+                ORDER BY as_of_timestamp DESC LIMIT 1""",
+            (reference.strategy_id, reference.version, *instrument_ids, len(instrument_ids)),
+        ).fetchone()
+        return _parse_timestamp(row["as_of_timestamp"]) if row else None
 
     def save_execution_gate_evaluation(self, evaluation: ExecutionGateEvaluation) -> None:
         self._require_historical_context(evaluation.strategy_version, evaluation.as_of_timestamp)
@@ -1150,6 +1381,36 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
                 FOREIGN KEY (strategy_id, strategy_version)
                     REFERENCES canonical_diagnostic_strategy_definitions(strategy_id, strategy_version)
             );
+            CREATE TABLE IF NOT EXISTS canonical_decision_scorecards (
+                id TEXT PRIMARY KEY, instrument_id TEXT NOT NULL, strategy_id TEXT NOT NULL,
+                strategy_version TEXT NOT NULL, as_of_timestamp TEXT NOT NULL, evaluated_at TEXT NOT NULL,
+                canonical_strategy_fingerprint TEXT NOT NULL, canonical_limitations_fingerprint TEXT NOT NULL,
+                scoring_policy_version TEXT NOT NULL, scoring_policy_fingerprint TEXT NOT NULL,
+                artifact_fingerprint TEXT NOT NULL UNIQUE, payload_json TEXT NOT NULL,
+                FOREIGN KEY (strategy_id, strategy_version)
+                    REFERENCES canonical_diagnostic_strategy_definitions(strategy_id, strategy_version)
+            );
+            CREATE TABLE IF NOT EXISTS canonical_execution_gate_evaluations (
+                id TEXT PRIMARY KEY, instrument_id TEXT NOT NULL, strategy_id TEXT NOT NULL,
+                strategy_version TEXT NOT NULL, scorecard_id TEXT NOT NULL, as_of_timestamp TEXT NOT NULL,
+                evaluated_at TEXT NOT NULL, canonical_decision_score_fingerprint TEXT NOT NULL,
+                canonical_strategy_fingerprint TEXT NOT NULL, canonical_limitations_fingerprint TEXT NOT NULL,
+                artifact_fingerprint TEXT NOT NULL UNIQUE, payload_json TEXT NOT NULL,
+                FOREIGN KEY (strategy_id, strategy_version)
+                    REFERENCES canonical_diagnostic_strategy_definitions(strategy_id, strategy_version),
+                FOREIGN KEY (scorecard_id) REFERENCES canonical_decision_scorecards(id)
+            );
+            CREATE TABLE IF NOT EXISTS canonical_execution_gate_decisions (
+                evaluation_id TEXT NOT NULL, gate_id TEXT NOT NULL, outcome TEXT NOT NULL,
+                detail TEXT NOT NULL, confidence REAL, evidence_ids_json TEXT NOT NULL,
+                parameters_json TEXT NOT NULL, PRIMARY KEY (evaluation_id, gate_id),
+                FOREIGN KEY (evaluation_id) REFERENCES canonical_execution_gate_evaluations(id)
+            );
+            CREATE TABLE IF NOT EXISTS six_gates_production_policy_approvals (
+                approval_id TEXT PRIMARY KEY, policy_id TEXT NOT NULL, version TEXT NOT NULL,
+                approved_at TEXT NOT NULL, effective_at TEXT NOT NULL, fingerprint TEXT NOT NULL UNIQUE,
+                payload_json TEXT NOT NULL, UNIQUE (policy_id, version, effective_at)
+            );
             CREATE TABLE IF NOT EXISTS strategy_versions (
                 strategy_id TEXT NOT NULL, version TEXT NOT NULL, name TEXT NOT NULL, initial_status TEXT NOT NULL,
                 created_at TEXT NOT NULL, effective_from TEXT, effective_to TEXT, description TEXT NOT NULL,
@@ -1364,6 +1625,25 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
         )
 
     @staticmethod
+    def _canonical_decision_scorecard_from_row(row: sqlite3.Row) -> CanonicalDecisionScorecard:
+        value = canonical_decision_scorecard_from_dict(json.loads(row["payload_json"]))
+        if (
+            row["id"] != value.id
+            or row["instrument_id"] != value.instrument_id
+            or row["strategy_id"] != value.strategy_version.strategy_id
+            or row["strategy_version"] != value.strategy_version.version
+            or _parse_timestamp(row["as_of_timestamp"]) != value.as_of_timestamp
+            or _parse_timestamp(row["evaluated_at"]) != value.evaluated_at
+            or row["canonical_strategy_fingerprint"] != value.canonical_strategy_fingerprint
+            or row["canonical_limitations_fingerprint"] != value.canonical_limitations_fingerprint
+            or row["scoring_policy_version"] != value.scoring_policy_version
+            or row["scoring_policy_fingerprint"] != value.scoring_policy_fingerprint
+            or row["artifact_fingerprint"] != value.artifact_fingerprint
+        ):
+            raise ValueError("Stored canonical Decision Score row does not match its immutable fingerprinted payload.")
+        return value
+
+    @staticmethod
     def _canonical_diagnostic_definition_from_row(row: sqlite3.Row) -> CanonicalDiagnosticStrategyDefinition:
         limitations = tuple(
             CanonicalDiagnosticGovernanceLimitation(**item)
@@ -1414,7 +1694,7 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
             DiagnosticStrategyLineageType(row["strategy_lineage_type"]), row["canonical_semantic_fingerprint"],
             row["canonical_limitations_fingerprint"], row["diagnostic_fingerprint"],
         )
-        if canonical_diagnostic_result_fingerprint(result) != result.diagnostic_fingerprint:
+        if not _canonical_diagnostic_fingerprint_matches_stored(result):
             raise ValueError("Stored canonical diagnostic result fingerprint does not match its governed lineage.")
         definition = self.get_canonical_diagnostic_strategy_definition(result.strategy_version)
         if definition is None or definition.semantic_fingerprint != result.canonical_strategy_fingerprint:
@@ -1438,6 +1718,32 @@ class SQLiteStrategyGovernanceRepository(SQLiteMarketDataRepository, StrategyGov
             GateOutcome(row["outcome"]), row["rationale"], tuple(json.loads(row["evidence_ids_json"])),
             json.loads(row["parameters_json"]), _parse_timestamp(row["evaluated_at"]), _parse_timestamp(row["as_of_timestamp"]),
         )
+
+
+def _canonical_diagnostic_fingerprint_matches_stored(result: DiagnosticResult) -> bool:
+    """Verify canonical lineage, including SQLite's legacy integral-REAL form.
+
+    Older rows could fingerprint a runner-provided integer (for example
+    ``confidence=1``) before SQLite stored it as ``1.0`` in a REAL column.
+    Those spellings are numerically identical.  Accept only that exact legacy
+    representation in addition to the normal fingerprint; all other payload
+    changes remain fingerprint-rejected.
+    """
+    if canonical_diagnostic_result_fingerprint(result) == result.diagnostic_fingerprint:
+        return True
+    candidates = (result,)
+    for field in ("score", "confidence"):
+        expanded = []
+        for candidate in candidates:
+            value = getattr(candidate, field)
+            expanded.append(candidate)
+            if isinstance(value, float) and value.is_integer():
+                expanded.append(replace(candidate, **{field: int(value)}))
+        candidates = tuple(expanded)
+    return any(
+        canonical_diagnostic_result_fingerprint(candidate) == result.diagnostic_fingerprint
+        for candidate in candidates
+    )
 
 
 def _canonical_definition_semantics(value: CanonicalDiagnosticStrategyDefinition) -> tuple[Any, ...]:
@@ -1534,6 +1840,28 @@ def _execution_evaluation_from_dict(value: dict[str, Any]) -> ExecutionGateEvalu
         Decimal(value["comparison_score"]) if value["comparison_score"] is not None else None, decisions,
         ExecutionEligibility(value["eligibility"]), tuple(value["failed_gate_ids"]), tuple(value["insufficient_gate_ids"]),
         tuple(value["warnings"]), tuple(value["evidence_ids"]), tuple(value["diagnostic_ids"]), value["configuration_parameters"])
+
+
+def _canonical_execution_gate_to_dict(value: CanonicalExecutionGateEvaluation) -> dict[str, Any]:
+    return {
+        "evaluation": _execution_evaluation_to_dict(value.evaluation),
+        "canonical_decision_score_fingerprint": value.canonical_decision_score_fingerprint,
+        "canonical_strategy_fingerprint": value.canonical_strategy_fingerprint,
+        "canonical_limitations_fingerprint": value.canonical_limitations_fingerprint,
+        "artifact_fingerprint": value.artifact_fingerprint,
+    }
+
+
+def _canonical_execution_gate_from_dict(value: dict[str, Any]) -> CanonicalExecutionGateEvaluation:
+    item = CanonicalExecutionGateEvaluation(
+        evaluation=_execution_evaluation_from_dict(value["evaluation"]),
+        canonical_decision_score_fingerprint=value["canonical_decision_score_fingerprint"],
+        canonical_strategy_fingerprint=value["canonical_strategy_fingerprint"],
+        canonical_limitations_fingerprint=value["canonical_limitations_fingerprint"],
+        artifact_fingerprint=value["artifact_fingerprint"],
+    )
+    item.verify_integrity()
+    return item
 
 
 def _decimal_or_none(value: Decimal | None) -> str | None:

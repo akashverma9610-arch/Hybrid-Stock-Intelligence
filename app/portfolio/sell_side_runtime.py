@@ -32,6 +32,8 @@ class PortfolioSellSideInput:
     shared_brain_fingerprint: str | None
     evidence_conflicted: bool = False
     evidence_comparable: bool = True
+    intelligence_as_of: datetime | None = None
+    latest_completed_market_session: datetime | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,13 +56,17 @@ class PortfolioSellSideDecision:
     policy_version: str
     policy_fingerprint: str
     fingerprint: str
+    portfolio_snapshot_as_of: datetime | None = None
+    intelligence_as_of: datetime | None = None
+    latest_completed_market_session: datetime | None = None
 
 
 def _thesis(value: PortfolioSellSideInput) -> tuple[SellSideThesisState, EvidenceFreshness, tuple[str, ...]]:
     analytics = value.holding.analytics
     if analytics is None or not value.shared_brain_fingerprint:
         return SellSideThesisState.INSUFFICIENT, EvidenceFreshness.MISSING, ("MISSING_THESIS_OR_SHARED_BRAIN_EVIDENCE",)
-    if analytics.as_of_timestamp != value.portfolio_snapshot.as_of_timestamp or analytics.known_at > value.portfolio_snapshot.as_of_timestamp:
+    intelligence_as_of = _intelligence_as_of(value)
+    if analytics.as_of_timestamp != intelligence_as_of or analytics.known_at > intelligence_as_of:
         return SellSideThesisState.INSUFFICIENT, EvidenceFreshness.STALE, ("STALE_OR_FUTURE_THESIS_EVIDENCE",)
     if value.evidence_conflicted:
         return SellSideThesisState.INSUFFICIENT, EvidenceFreshness.CONFLICTED, ("CONFLICTED_THESIS_EVIDENCE",)
@@ -129,8 +135,12 @@ def evaluate_portfolio_sell_side_action(
         action, reasons = SellSideDecision.HOLD, ("INTACT_THESIS_NO_STRONGER_APPROVED_ACTION",)
     else:
         action, reasons = SellSideDecision.NO_ACTION, ("NO_APPROVED_ACTION_SUPPORTED",)
+    intelligence_as_of = _intelligence_as_of(value)
     values = dict(
-        canonical_holding_id=value.holding.holding_id, as_of=value.portfolio_snapshot.as_of_timestamp,
+        canonical_holding_id=value.holding.holding_id,
+        portfolio_snapshot_as_of=value.portfolio_snapshot.as_of_timestamp,
+        intelligence_as_of=intelligence_as_of,
+        latest_completed_market_session=value.latest_completed_market_session,
         action=action.value, thesis_state=thesis.value, capital_efficiency_state=None if capital is None else capital.value,
         rotation_state=None if rotation is None else rotation.value, rotation_evaluation_id=rotation_id,
         portfolio_snapshot_id=value.portfolio_snapshot.snapshot_id,
@@ -142,13 +152,25 @@ def evaluate_portfolio_sell_side_action(
     fingerprint = manifest_fingerprint(**values)
     return PortfolioSellSideDecision(
         decision_id="sell-side-" + fingerprint[:20], fingerprint=fingerprint,
-        canonical_holding_id=value.holding.holding_id, as_of=value.portfolio_snapshot.as_of_timestamp,
+        canonical_holding_id=value.holding.holding_id, as_of=intelligence_as_of,
         action=action, thesis_state=thesis, capital_efficiency_state=capital, rotation_state=rotation,
         rotation_evaluation_id=rotation_id, portfolio_snapshot_id=value.portfolio_snapshot.snapshot_id,
         portfolio_context_references=(value.portfolio_snapshot.snapshot_id,), evidence_freshness=freshness,
         reasons=reasons, blockers=blockers, shared_brain_fingerprint=value.shared_brain_fingerprint or "",
         policy_id=policy.policy_id, policy_version=policy.version, policy_fingerprint=policy.fingerprint,
+        portfolio_snapshot_as_of=value.portfolio_snapshot.as_of_timestamp,
+        intelligence_as_of=intelligence_as_of,
+        latest_completed_market_session=value.latest_completed_market_session,
     )
+
+
+def _intelligence_as_of(value: PortfolioSellSideInput) -> datetime:
+    cutoff = value.intelligence_as_of or value.portfolio_snapshot.as_of_timestamp
+    if cutoff.tzinfo is None or cutoff.utcoffset() is None:
+        raise ValueError("SELL_SIDE_INTELLIGENCE_AS_OF_TIMEZONE_REQUIRED")
+    if cutoff < value.portfolio_snapshot.as_of_timestamp:
+        raise ValueError("SELL_SIDE_INTELLIGENCE_AS_OF_BEFORE_PORTFOLIO_SNAPSHOT")
+    return cutoff
 
 
 class PortfolioSellSideDecisionAuditService:
