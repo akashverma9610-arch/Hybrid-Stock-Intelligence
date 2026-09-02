@@ -44,6 +44,10 @@ pack](POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md). It identifies the
 reusable Core V1 inputs and all unresolved normative definitions; it does not
 implement or activate a long-term product strategy.
 
+The constrained long-term foundation reuses the existing Deep Analysis evidence
+projection; its [reuse and readiness receipt](POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md)
+keeps every long-term family unavailable pending exact policy definitions.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same

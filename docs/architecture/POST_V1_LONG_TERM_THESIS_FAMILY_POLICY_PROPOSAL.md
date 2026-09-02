@@ -2,6 +2,10 @@
 
 **Status: `PROPOSED_FOR_APPROVAL / DOCUMENTATION_ONLY / STRATEGY_POLICIES_NOT_APPROVED / NOT_ACTIVE`.**
 
+The constrained foundation reuses Core V1 Deep Analysis rather than creating a
+second dossier. Actual retained-data gaps are in the [reuse and readiness
+receipt](POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md).
+
 ## Purpose and boundary
 
 This proposal defines the approval decisions required before any Post-V1
