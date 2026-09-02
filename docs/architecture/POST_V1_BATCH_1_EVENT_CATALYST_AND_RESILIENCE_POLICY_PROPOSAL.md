@@ -1,6 +1,6 @@
 # Post-V1 Batch 1 — Event/Catalyst and Market-Red Resilience Policy Proposal
 
-**Status: `PROPOSED / POLICY_APPROVAL_REQUIRED / DOCUMENTATION_ONLY / NOT_ACTIVE`.**
+**Status: `APPROVED_FOR_IMPLEMENTATION / WATCH_ONLY / NON_EXECUTABLE / NOT_ACTIVE`.**
 
 ## Scope
 
@@ -9,6 +9,11 @@ This is the single approval packet for `EVENT_CATALYST_INTELLIGENCE` and
 It selects no policy and creates no runtime, persistence, API, UI, score,
 setup, gate, alert, order, broker authority, portfolio mutation, or trade
 instruction. Any future implementation remains `WATCH_ONLY / NON_EXECUTABLE`.
+
+**Approval record:** the recommended defaults `EC-1`–`EC-7` and `MR-1`–`MR-8`
+were approved for bounded implementation. This approval does not authorize a
+migration, persistence, API/UI, portfolio mutation, broker/order authority, or
+trade authorization.
 
 ## Reusable Core V1 facts and limits
 
@@ -93,10 +98,11 @@ execution-adjacent record requires separate persistence approval.
 
 ## Approval gate
 
-`HSI_CONTINUOUS_LOOP_PAUSED / POLICY_APPROVAL_REQUIRED / BATCH_1`
+`BATCH_1_POLICY_APPROVED / WATCH_ONLY_IMPLEMENTATION_AUTHORIZED`
 
-All Batch 1 strategies remain `STRATEGY_UNAVAILABLE / NOT_ACTIVE`. To resume,
-approve/amend/reject `EC-1`–`EC-7` and `MR-1`–`MR-8` and state:
+No Batch 1 strategy is consumer-active or executable. The policy defaults
+`EC-1`–`EC-7` and `MR-1`–`MR-8` are authorized only for the bounded,
+Watch-only implementation described above.
 
 > Approve Batch 1 Event/Catalyst and Market-Red Resilience policy defaults in
 > `POST_V1_BATCH_1_EVENT_CATALYST_AND_RESILIENCE_POLICY_PROPOSAL.md` for
