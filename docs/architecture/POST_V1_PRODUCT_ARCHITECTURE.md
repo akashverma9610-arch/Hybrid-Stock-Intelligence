@@ -48,6 +48,10 @@ The constrained long-term foundation reuses the existing Deep Analysis evidence
 projection; its [reuse and readiness receipt](POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md)
 keeps every long-term family unavailable pending exact policy definitions.
 
+The next normative boundary is the [Sell/Risk, Profit-Harvesting and
+Fast-Rotation policy approval pack](POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md).
+It is documentation-only and cannot alter portfolio state or execution.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same

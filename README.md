@@ -50,6 +50,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Batch 1 historical calibration research receipt](docs/architecture/POST_V1_BATCH_1_HISTORICAL_CALIBRATION_RESEARCH.md)
 - [Long-Term Thesis Family policy approval pack](docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md)
 - [Long-Term Evidence Dossier reuse and policy-readiness receipt](docs/architecture/POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md)
+- [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Live-readiness hardening candidate (not approved)](docs/architecture/live_readiness_candidate.md)
 - [Economic and news intelligence](docs/architecture/economic_news_intelligence.md)
 - [Controlled real-Brain trial](docs/architecture/real_brain_trial.md)
