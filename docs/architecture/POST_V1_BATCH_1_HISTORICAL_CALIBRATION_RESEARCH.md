@@ -1,6 +1,6 @@
 # Post-V1 Batch 1 — Historical Calibration Research Receipt
 
-**Status: `POLICY_BOUNDARIES_APPROVED / OPERATIONAL_PARAMETERS_UNAVAILABLE / STRATEGY_UNAVAILABLE / NOT_ACTIVE`.**
+**Status: `POLICY_BOUNDARIES_APPROVED / CALIBRATION_DATA_INSUFFICIENT / STRATEGY_UNAVAILABLE / NOT_ACTIVE`.**
 
 ## Purpose and scope
 
@@ -139,6 +139,43 @@ prospective corpus with:
    adjustment provenance; and
 7. a predeclared chronological research/validation/holdout plan with minimum
    coverage and concentration checks approved before selection.
+
+## Prospective collection-readiness support
+
+`app.intelligence.batch1_calibration_readiness` is a pure, read-only coverage
+composition over already-retained canonical evidence and caller-supplied
+completed-session coverage. It creates no storage, clock, signal, policy value,
+or runtime action. It reports only counts, latest retained benchmark sessions,
+forward-window observability, and stable insufficiency codes.
+
+It reuses, rather than replaces:
+
+| Existing boundary | Calibration-readiness use | No new authority |
+| --- | --- | --- |
+| External-intelligence event/evidence repository | Immutable event, source, materiality, exposure, and timestamp facts | Does not classify a source hierarchy or map narrative text. |
+| Canonical instrument identity | Verified exact exposure identity supplied by canonical evidence | No fuzzy company mapping or current-universe fallback. |
+| Historical-bar store | Already-retained completed-session coverage supplied by the caller | No acquisition, normalisation, or selected parameter. |
+| NSE official delivery store | Retained official delivery-session coverage | No estimated delivery or liquidity threshold. |
+| Existing status/receipt records | Stable coverage/blocker reporting | No persistence, migration, API, scheduled job, or automation. |
+
+### Required prospective evidence contract
+
+For an external-intelligence item to become a company-return calibration
+observation, the existing ingestion path must retain, when verified: canonical
+instrument ID; exchange symbol and/or ISIN provenance; allowed exposure type;
+mapping evidence and verification state; primary-source reference; event family;
+materiality; `published_at`, `discovered_at`, `received_at`, and, where known,
+`effective_at`; plus a typed supersedes/cancels reference where applicable.
+Unverified, sector-only, indirect, thematic, or narrative-only items remain
+context and cannot enter company-return calibration.
+
+The existing market-data paths must retain exchange-calendar-certified completed
+benchmark and stock bars, historically valid breadth-universe membership,
+sector mapping effective at the observation time, traded value/volume, official
+delivery where available, and source/received/session lineage. If an existing
+path cannot retain one of those facts, a later proposal must define the smallest
+connector, configuration, or automation change and its safety boundary; none is
+authorized here.
 
 ## Exact next approval decision
 

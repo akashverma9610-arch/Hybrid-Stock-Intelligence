@@ -1,6 +1,6 @@
 # Post-V1 Batch 1 — Event/Catalyst and Market-Red Resilience Policy Proposal
 
-**Status: `POLICY_BOUNDARIES_APPROVED / OPERATIONAL_PARAMETERS_UNAVAILABLE / STRATEGY_UNAVAILABLE / NOT_ACTIVE`.**
+**Status: `POLICY_BOUNDARIES_APPROVED / CALIBRATION_DATA_INSUFFICIENT / STRATEGY_UNAVAILABLE / NOT_ACTIVE`.**
 
 ## Scope
 
@@ -101,7 +101,7 @@ execution-adjacent record requires separate persistence approval.
 
 ## Boundary-approval gate
 
-`POLICY_BOUNDARIES_APPROVED / OPERATIONAL_PARAMETERS_UNAVAILABLE / STRATEGY_UNAVAILABLE / NOT_ACTIVE`
+`POLICY_BOUNDARIES_APPROVED / CALIBRATION_DATA_INSUFFICIENT / STRATEGY_UNAVAILABLE / NOT_ACTIVE`
 
 No Batch 1 strategy is consumer-active, executable, or implemented. The
 policy defaults `EC-1`–`EC-7` and `MR-1`–`MR-8` constrain future policy
