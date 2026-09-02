@@ -43,6 +43,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Model governance and drift](docs/architecture/model_governance.md)
 - [Audit and reproducibility](docs/architecture/audit_reproducibility.md)
 - [Versioning and change control](docs/architecture/versioning_and_change_control.md)
+- [Post-V1 Product Architecture — One Brain, Multiple Signal Windows](docs/architecture/POST_V1_PRODUCT_ARCHITECTURE.md)
 - [Live-readiness hardening candidate (not approved)](docs/architecture/live_readiness_candidate.md)
 - [Economic and news intelligence](docs/architecture/economic_news_intelligence.md)
 - [Controlled real-Brain trial](docs/architecture/real_brain_trial.md)
