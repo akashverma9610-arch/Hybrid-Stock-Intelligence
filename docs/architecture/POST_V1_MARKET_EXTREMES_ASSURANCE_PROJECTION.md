@@ -45,8 +45,10 @@ format and does not modify the generic snapshot wrapper.
 3. Verify each candidate identity, scheme, Core policy version, timestamps,
    fingerprint, and non-empty provenance. Preserve every rejection as a
    reason-coded lineage reference.
-4. Exclude verified candidates whose Core `data_as_of` is later than `as_of`,
-   retaining `MARKET_EXTREMES_AFTER_REQUESTED_AS_OF` in rejected lineage.
+4. Exclude verified candidates whose Core `data_as_of` **or** `assessed_at` is
+   later than `as_of`, retaining `MARKET_EXTREMES_AFTER_REQUESTED_AS_OF` in
+   rejected lineage. A historical consumer cannot use an assessment that was
+   not yet assessed at its requested cutoff.
 5. Select the greatest remaining `data_as_of`. At that timestamp, differing
    verified content fingerprints yield `CONFLICTED`; exact duplicates do not.
 6. A unique selected candidate is `STALE` only when `data_as_of` is earlier
