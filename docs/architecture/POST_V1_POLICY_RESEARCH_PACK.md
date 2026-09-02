@@ -83,6 +83,13 @@ the same identity never increases review state.
 
 ## 4. Profit-Harvesting review proposal
 
+**Implementability correction:**
+[`POST_V1_PROFIT_HARVESTING_IMPLEMENTABILITY_CORRECTION.md`](POST_V1_PROFIT_HARVESTING_IMPLEMENTABILITY_CORRECTION.md)
+records why this research-shadow candidate table is not by itself an
+implementation authorization. In particular, its total-return and PIT-peer
+contracts, grid-to-status mapping, confirmation, persistence, and freshness
+semantics require an explicit selected policy path.
+
 Allowed future statuses only: `PROFIT_REVIEW_UNAVAILABLE`,
 `NO_PROFIT_REVIEW_EVIDENCE`, `MONITOR_PROFIT`, `PRIORITY_PROFIT_REVIEW`,
 `THESIS_REALIZATION_REVIEW`, and `CONFLICTED_PROFIT_REVIEW`. They never mean
