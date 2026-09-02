@@ -47,6 +47,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [P1 Watch-only HSISignal Foundation acceptance](docs/architecture/POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md)
 - [Post-V1 Strategy and Signal-Window Catalogue](docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md)
 - [Batch 1 Event/Catalyst and Market-Red Resilience policy proposal](docs/architecture/POST_V1_BATCH_1_EVENT_CATALYST_AND_RESILIENCE_POLICY_PROPOSAL.md)
+- [Batch 1 historical calibration research receipt](docs/architecture/POST_V1_BATCH_1_HISTORICAL_CALIBRATION_RESEARCH.md)
 - [Live-readiness hardening candidate (not approved)](docs/architecture/live_readiness_candidate.md)
 - [Economic and news intelligence](docs/architecture/economic_news_intelligence.md)
 - [Controlled real-Brain trial](docs/architecture/real_brain_trial.md)

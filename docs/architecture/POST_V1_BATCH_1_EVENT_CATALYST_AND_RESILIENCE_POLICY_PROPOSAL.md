@@ -1,6 +1,6 @@
 # Post-V1 Batch 1 — Event/Catalyst and Market-Red Resilience Policy Proposal
 
-**Status: `APPROVED_FOR_IMPLEMENTATION / WATCH_ONLY / NON_EXECUTABLE / NOT_ACTIVE`.**
+**Status: `POLICY_BOUNDARIES_APPROVED / OPERATIONAL_PARAMETERS_UNAVAILABLE / STRATEGY_UNAVAILABLE / NOT_ACTIVE`.**
 
 ## Scope
 
@@ -10,10 +10,13 @@ It selects no policy and creates no runtime, persistence, API, UI, score,
 setup, gate, alert, order, broker authority, portfolio mutation, or trade
 instruction. Any future implementation remains `WATCH_ONLY / NON_EXECUTABLE`.
 
-**Approval record:** the recommended defaults `EC-1`–`EC-7` and `MR-1`–`MR-8`
-were approved for bounded implementation. This approval does not authorize a
-migration, persistence, API/UI, portfolio mutation, broker/order authority, or
-trade authorization.
+**Approval record:** `EC-1`–`EC-7` and `MR-1`–`MR-8` are approved as
+architectural/evidence boundaries. Their required operational parameters remain
+unapproved, so no strategy implementation is authorized. This boundary approval
+does not authorize a migration, persistence, API/UI, portfolio mutation,
+broker/order authority, trade authorization, or a positive Watch output. The
+read-only retained-data result is recorded in the [Batch 1 historical
+calibration research receipt](POST_V1_BATCH_1_HISTORICAL_CALIBRATION_RESEARCH.md).
 
 ## Reusable Core V1 facts and limits
 
@@ -86,7 +89,7 @@ and sufficient history. Market extremes/regime are context only.
 | MR-7 persistence/expiry | select window/staleness | research and shadow evidence required |
 | MR-8 invalidation | define normalization/liquidity/risk treatment | explicit versioned rule or unavailable |
 
-## Required implementation and shadow evidence after approval
+## Required implementation and shadow evidence after parameter approval
 
 Each family must be implemented separately as a pure Watch-only policy/output.
 Tests must prove identity, PIT/future exclusion, deterministic ordering,
@@ -96,16 +99,18 @@ evaluation must retain policy/evidence identity, benchmark/regime, freshness,
 coverage, and a locked outcome method. A migration, retention change, or
 execution-adjacent record requires separate persistence approval.
 
-## Approval gate
+## Boundary-approval gate
 
-`BATCH_1_POLICY_APPROVED / WATCH_ONLY_IMPLEMENTATION_AUTHORIZED`
+`POLICY_BOUNDARIES_APPROVED / OPERATIONAL_PARAMETERS_UNAVAILABLE / STRATEGY_UNAVAILABLE / NOT_ACTIVE`
 
-No Batch 1 strategy is consumer-active or executable. The policy defaults
-`EC-1`–`EC-7` and `MR-1`–`MR-8` are authorized only for the bounded,
-Watch-only implementation described above.
+No Batch 1 strategy is consumer-active, executable, or implemented. The
+policy defaults `EC-1`–`EC-7` and `MR-1`–`MR-8` constrain future policy
+semantics but do not select the missing versioned parameters.
 
-> Approve Batch 1 Event/Catalyst and Market-Red Resilience policy defaults in
-> `POST_V1_BATCH_1_EVENT_CATALYST_AND_RESILIENCE_POLICY_PROPOSAL.md` for
-> Watch-only, non-executable implementation. No persistence, API/UI,
-> portfolio mutation, broker/order authority, or trade authorization is
+> Approve Batch 1 Event/Catalyst and Market-Red Resilience architectural and
+> evidence boundaries in
+> `POST_V1_BATCH_1_EVENT_CATALYST_AND_RESILIENCE_POLICY_PROPOSAL.md`. Exact
+> versioned operational parameters require a later human approval following
+> PIT-safe calibration evidence. No strategy implementation, persistence,
+> API/UI, portfolio mutation, broker/order authority, or trade authorization is
 > approved.
