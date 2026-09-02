@@ -33,6 +33,11 @@ strategy statuses are catalogued in the [Post-V1 Strategy and Signal-Window
 Catalogue](POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md). It does not
 activate a strategy or alter this architecture's status.
 
+The next unresolved policy boundary is the [Batch 1 Event/Catalyst and
+Market-Red Resilience approval
+pack](POST_V1_BATCH_1_EVENT_CATALYST_AND_RESILIENCE_POLICY_PROPOSAL.md). It is
+documentation-only and cannot activate either strategy.
+
 ## One Brain, multiple signal windows
 
 The future consumer product has one canonical Brain.  It reads the same
