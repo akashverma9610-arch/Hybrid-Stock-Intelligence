@@ -446,6 +446,16 @@ class BSEOfficialLocalXbrlIngestionService:
         self._normalizer, self._clock = normalizer or FinancialFactNormalizationService(), clock
 
     def inspect(self, path: str | Path, *, maximum_bytes: int = 5 * 1024 * 1024) -> BseLocalXbrlInspection:
+        """Inspect a manually supplied local XBRL with no metadata fallback."""
+        return self._inspect(path, maximum_bytes=maximum_bytes)
+
+    def _inspect(
+        self,
+        path: str | Path,
+        *,
+        maximum_bytes: int,
+        staged_metadata: BseResultMetadata | None = None,
+    ) -> BseLocalXbrlInspection:
         target = Path(path)
         if not target.is_file() or target.suffix.lower() not in {".xml", ".xbrl"}:
             raise BseOfficialError("BSE local XBRL file is unavailable.")
@@ -471,6 +481,17 @@ class BSEOfficialLocalXbrlIngestionService:
             period_type, basis, filing_type = FinancialPeriodType.QUARTERLY, FinancialValueBasis.QUARTER_ONLY, "Quarter"
         elif type_text in {"ANNUAL", "YEARLY"}:
             period_type, basis, filing_type = FinancialPeriodType.ANNUAL, FinancialValueBasis.FULL_YEAR, "Year"
+        elif staged_metadata is not None:
+            # Older BSE primary XBRLs may omit this presentation field.  The
+            # staged route has already obtained an exact, timestamped annual
+            # or quarterly classification from BSE's official results archive;
+            # use that verified metadata only for the omission case.  Manual
+            # local imports remain strict and cannot supply this fallback.
+            period_type, basis, filing_type = (
+                staged_metadata.period_type,
+                staged_metadata.value_basis,
+                staged_metadata.filing_type,
+            )
         else:
             raise BseOfficialError("BSE local XBRL result basis is unsupported.")
         checksum = hashlib.sha256(raw).hexdigest()
@@ -569,7 +590,11 @@ class BSEOfficialLocalXbrlIngestionService:
             raise BseOfficialError("BSE staged metadata security code does not match the requested identity.")
         # Only this collector-staged BSE path may use the separately governed
         # 8 MiB acquisition bound. Generic/manual local inspection stays 5 MiB.
-        inspection = self.inspect(path, maximum_bytes=8 * 1024 * 1024)
+        inspection = self._inspect(
+            path,
+            maximum_bytes=8 * 1024 * 1024,
+            staged_metadata=metadata,
+        )
         if inspection.document.scope is not None and inspection.document.scope is not metadata.scope:
             raise BseOfficialError("BSE staged XBRL statement scope conflicts with official metadata.")
         if inspection.period_end != metadata.period_end:
@@ -778,7 +803,13 @@ def parse_bse_xbrl(payload: str, source_url: str, *, period_end: datetime | None
     audit_status = _first(values, "WhetherResultsAreAuditedOrUnaudited")
     scope = _scope(_first(values, "NatureOfReportStandaloneConsolidated"))
     currency = _currency(_first(values, "DescriptionOfPresentationCurrency"))
-    scale = _scale(_first(values, "LevelOfRounding"))
+    # Older official BSE annual XBRLs use this longer, semantically exact
+    # disclosure concept. It is the same reported statement rounding field,
+    # not a scale inferred from a number or a unit.
+    scale = _scale(
+        _first(values, "LevelOfRounding")
+        or _first(values, "LevelOfRoundingUsedInFinancialStatements")
+    )
     if currency is None or scale is None:
         raise BseOfficialError("BSE XBRL omits an explicit recognised currency or scale.")
     selected_end = period_end.date() if period_end is not None else None

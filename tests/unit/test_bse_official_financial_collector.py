@@ -10,18 +10,18 @@ import pytest
 
 from app.filings.store import SQLiteCorporateFilingsStore
 from app.fundamentals.bse_collector import (
-    BSE_OFFICIAL_EXACT_ISIN_LOOKUP_URL, BSE_OFFICIAL_RESULTS_ARCHIVE_URL, BSE_OFFICIAL_SCRIP_MASTER_URL, REAL_PORTFOLIO_BSE_FINANCIAL_TARGETS,
+    BSE_OFFICIAL_EXACT_ISIN_LOOKUP_URL, BSE_OFFICIAL_RESULTS_ARCHIVE_URL, BSE_OFFICIAL_SCRIP_MASTER_URL, COMPOUNDER_NON_FINANCIAL_BSE_HISTORICAL_TARGETS, REAL_PORTFOLIO_BSE_FINANCIAL_TARGETS,
     BseArchiveSnapshot, BseBoundedXbrlRecoveryReceipt, BseCollectorError, BseFilingDisposition, BseMappingStatus, BseOfficialArchiveSnapshotStore, BseOfficialBoundedXbrlAcquirer, BseOfficialFinancialCollector,
     BseOfficialFinancialCollectorSettings, BseOfficialFinancialCollectorWorker,
     BseOfficialHttpResponse, BseOfficialHttpTransport, BseOfficialIciciBoundedXbrlRecovery, BseOfficialSecurityMaster,
-    BseOfficialXbrlStaging, BseXbrlStreamingPolicy,
+    BseOfficialXbrlStaging, BseXbrlStreamingPolicy, _historical_annual_metadata,
     BseOfficialXbrlStaging, BseStageDisposition,
 )
 from app.fundamentals.bse_official import (
     BSE_RESULT_ARCHIVE, BSE_RESULT_PAGE, BSEOfficialFinancialResultsArchiveProvider, BSEOfficialLocalXbrlIngestionService,
     BSEOfficialFinancialResultsProvider, BseOfficialError,
 )
-from app.fundamentals.models import FinancialMetric, StatementScope
+from app.fundamentals.models import FinancialMetric, FinancialPeriodType, FinancialValueBasis, StatementScope
 from app.fundamentals.store import SQLiteFinancialFactStore
 from app.market_data.models import Exchange, InstrumentIdentity, InstrumentType
 from app.universe_analysis.models import NseEquityInstrument
@@ -165,6 +165,39 @@ def test_results_archive_provider_preserves_quarter_year_aliases_with_one_prefer
     shared = next(item for item in aliases if item.document_url.endswith("apar-mar-2026.xml"))
     assert [item.period_type.value for item in shared.aliases] == ["ANNUAL", "QUARTERLY"]
     assert shared.preferred.period_type.value == "ANNUAL"
+
+
+def test_historical_annual_selection_keeps_five_periods_per_scope_and_all_selected_vintages() -> None:
+    provider = BSEOfficialFinancialResultsArchiveProvider(fetch_csv=lambda _url: _archive().decode())
+    base = next(value for value in provider.result_metadata(CODE) if value.period_type is FinancialPeriodType.ANNUAL)
+    values = []
+    for scope in (StatementScope.CONSOLIDATED, StatementScope.STANDALONE):
+        for year in range(2021, 2027):
+            values.append(replace(
+                base, scope=scope, period_end=datetime(year, 3, 31, tzinfo=UTC),
+                filing_at=datetime(year, 5, 1, tzinfo=UTC),
+                financial_year=f"{year - 1}-{year}", quarter_label=f"{scope.value}-Mar-{year}",
+                xbrl_url=f"https://www.bseindia.com/XBRLFILES/{scope.value.lower()}-{year}.xml",
+                period_type=FinancialPeriodType.ANNUAL, value_basis=FinancialValueBasis.FULL_YEAR,
+            ))
+    revision = replace(
+        values[3], filing_at=datetime(2025, 6, 1, tzinfo=UTC), status="Revised",
+        revised_at=datetime(2025, 6, 1, tzinfo=UTC),
+        xbrl_url="https://www.bseindia.com/XBRLFILES/consolidated-2024-revised.xml",
+    )
+    future = replace(values[-1], filing_at=datetime(2027, 5, 1, tzinfo=UTC))
+    selected = _historical_annual_metadata(tuple(values) + (revision, future), datetime(2026, 9, 3, tzinfo=UTC))
+    for scope in (StatementScope.CONSOLIDATED, StatementScope.STANDALONE):
+        scoped = [value for value in selected if value.scope is scope]
+        assert {value.period_end.year for value in scoped} == {2022, 2023, 2024, 2025, 2026}
+    assert revision in selected
+    assert future not in selected
+    assert selected == tuple(sorted(selected, key=lambda value: (
+        value.period_end, value.scope.value, value.filing_at, value.xbrl_url,
+    )))
+    assert COMPOUNDER_NON_FINANCIAL_BSE_HISTORICAL_TARGETS == (
+        "NSE:INE372A01015", "NSE:INE955D01029", "NSE:INE068V01023", "NSE:INE0FHS01024",
+    )
 
 
 def test_results_archive_accepts_only_its_governed_24_hour_month_day_timestamp_format():

@@ -37,6 +37,7 @@ from app.fundamentals.bse_official import (
     BseResultMetadataAliases,
     parse_bse_xbrl,
 )
+from app.fundamentals.models import FinancialPeriodType, FinancialValueBasis, StatementScope
 from app.fundamentals.store import FinancialFactStore
 from app.market_data.models import Exchange, InstrumentIdentity, InstrumentType
 from app.universe_analysis.models import NseEquityInstrument
@@ -47,6 +48,14 @@ REAL_PORTFOLIO_BSE_FINANCIAL_TARGETS = (
     "NSE:INE372A01015", "NSE:INE0FHS01024", "NSE:INE955D01029",
     "NSE:INE068V01023", "NSE:INE090A01021",
 )
+# This is an explicit approved non-financial acquisition scope, not a sector
+# or business-model classification. Financial institutions remain outside the
+# annual Compounder evidence path.
+COMPOUNDER_NON_FINANCIAL_BSE_HISTORICAL_TARGETS = (
+    "NSE:INE372A01015", "NSE:INE955D01029", "NSE:INE068V01023",
+    "NSE:INE0FHS01024",
+)
+_HISTORICAL_ANNUAL_PERIODS_PER_SCOPE = 5
 _ICICI_BOUNDED_XBRL_DOCUMENTS = frozenset({
     "https://www.bseindia.com/XBRLFILES/IFBankingUploadDocument/IFBanking_532174_1942025184029.xml",
     "https://www.bseindia.com/XBRLFILES/IFBankingUploadDocument/IFBanking_532174_1810202517245.xml",
@@ -752,6 +761,27 @@ class BseOfficialFinancialCollector:
         receipts = tuple(self._collect(identifier, instruments.get(identifier), cutoff) for identifier in REAL_PORTFOLIO_BSE_FINANCIAL_TARGETS)
         return BseFinancialCollectorRun(run_id, cutoff, receipts)
 
+    def run_historical_annual_backfill(
+        self, *, requested_as_of: datetime | None = None,
+        run_id: str = "real-portfolio-bse-historical-annuals",
+    ) -> BseFinancialCollectorRun:
+        """Acquire at most five exact annual periods per scope for four targets.
+
+        This is a bounded primary-source replay of the normal collector. It
+        does not infer target eligibility, merge reporting scopes, or change
+        the existing XBRL staging/import path.
+        """
+        cutoff = requested_as_of or self._clock()
+        if cutoff.tzinfo is None or cutoff.utcoffset() is None:
+            raise ValueError("BSE_FINANCIAL_COLLECTOR_AS_OF_TIMEZONE_REQUIRED")
+        self._security_master.begin_run()
+        instruments = {item.instrument_id: item for item in self._universe.instruments_as_of(cutoff)}
+        receipts = tuple(
+            self._collect(identifier, instruments.get(identifier), cutoff, historical_annual=True)
+            for identifier in COMPOUNDER_NON_FINANCIAL_BSE_HISTORICAL_TARGETS
+        )
+        return BseFinancialCollectorRun(run_id, cutoff, receipts)
+
     def refresh(self, request: EvidenceRefreshRequest) -> EvidenceRefreshOutcome:
         run = self.run(requested_as_of=request.requested_as_of, run_id=request.run_id)
         values = run.receipts
@@ -782,7 +812,10 @@ class BseOfficialFinancialCollector:
             findings=findings,
         )
 
-    def _collect(self, identifier: str, instrument: NseEquityInstrument | None, cutoff: datetime) -> BseFinancialCollectorTargetReceipt:
+    def _collect(
+        self, identifier: str, instrument: NseEquityInstrument | None,
+        cutoff: datetime, *, historical_annual: bool = False,
+    ) -> BseFinancialCollectorTargetReceipt:
         if instrument is None or not instrument.isin:
             mapping = _mapping(identifier, "", BseMappingStatus.BLOCKED, (), "CANONICAL_INSTRUMENT_OR_ISIN_UNAVAILABLE")
             return _receipt(identifier, None, mapping, blockers=(mapping.reason or "CANONICAL_IDENTITY_UNAVAILABLE",))
@@ -810,7 +843,7 @@ class BseOfficialFinancialCollector:
         except (BseCollectorError, BseOfficialError):
             return _receipt(instrument.instrument_id, instrument.isin, mapping, blockers=("BSE_OFFICIAL_FILING_DISCOVERY_UNAVAILABLE",))
         receipts: list[tuple[BseResultMetadata, BseStagedXbrl | None, object | None, BseFilingDispositionRecord]] = []
-        selected = metadata[-12:]
+        selected = _historical_annual_metadata(metadata, cutoff) if historical_annual else metadata[-12:]
         eligible = tuple(item for item in selected if item.filing_at <= cutoff)
         for item in eligible:
             try:
@@ -904,6 +937,34 @@ class BseOfficialFinancialCollectorWorker:
 def _identity(value: NseEquityInstrument) -> InstrumentIdentity:
     return InstrumentIdentity(value.instrument_id, Exchange.NSE, value.symbol, value.symbol, value.isin, None,
                               InstrumentType.NSE_EQUITY, value.company_name)
+
+
+def _historical_annual_metadata(
+    values: tuple[BseResultMetadata, ...], cutoff: datetime,
+) -> tuple[BseResultMetadata, ...]:
+    """Select exact annual archive entries without mixing statement scopes.
+
+    Five distinct annual period ends are selected independently for each exact
+    scope. Every legitimate archive vintage for a selected period is retained,
+    so a later restatement cannot erase an earlier filing.
+    """
+    annual = tuple(
+        value for value in values
+        if value.period_type is FinancialPeriodType.ANNUAL
+        and value.value_basis is FinancialValueBasis.FULL_YEAR
+        and value.filing_at <= cutoff
+        and value.scope in {StatementScope.CONSOLIDATED, StatementScope.STANDALONE}
+    )
+    selected: list[BseResultMetadata] = []
+    for scope in (StatementScope.CONSOLIDATED, StatementScope.STANDALONE):
+        scoped = tuple(value for value in annual if value.scope is scope)
+        ends = tuple(sorted({value.period_end for value in scoped}, reverse=True))[
+            :_HISTORICAL_ANNUAL_PERIODS_PER_SCOPE
+        ]
+        selected.extend(value for value in scoped if value.period_end in ends)
+    return tuple(sorted(selected, key=lambda value: (
+        value.period_end, value.scope.value, value.filing_at, value.xbrl_url,
+    )))
 
 
 def _mapping(
@@ -1101,5 +1162,5 @@ __all__ = (
     "BseFinancialRefreshRequest", "BseFilingDisposition", "BseFilingDispositionRecord", "BseMappingStatus", "BseOfficialBoundedXbrlAcquirer", "BseOfficialFinancialCollector",
     "BseOfficialArchiveSnapshotStore", "BseOfficialFinancialCollectorSettings", "BseOfficialFinancialCollectorWorker", "BseOfficialIciciBoundedXbrlRecovery",
     "BseOfficialHttpResponse", "BseOfficialHttpTransport", "BseOfficialSecurityMaster",
-    "BseOfficialXbrlStaging", "BseQuarantinedXbrl", "BseSecurityMapping", "BseXbrlStreamingPolicy", "REAL_PORTFOLIO_BSE_FINANCIAL_TARGETS",
+    "BseOfficialXbrlStaging", "BseQuarantinedXbrl", "BseSecurityMapping", "BseXbrlStreamingPolicy", "COMPOUNDER_NON_FINANCIAL_BSE_HISTORICAL_TARGETS", "REAL_PORTFOLIO_BSE_FINANCIAL_TARGETS",
 )

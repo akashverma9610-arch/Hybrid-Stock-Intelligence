@@ -6,13 +6,26 @@ import inspect
 import json
 from pathlib import Path
 
+import pytest
+
 from app.filings.store import SQLiteCorporateFilingsStore
-from app.fundamentals.bse_official import BSEOfficialLocalXbrlIngestionService, parse_bse_xbrl
+from app.fundamentals.bse_official import (
+    BSEOfficialLocalXbrlIngestionService,
+    BseOfficialError,
+    BseResultMetadata,
+    BseTimestampStatus,
+    parse_bse_xbrl,
+)
 from app.fundamentals.bse_staged_annual_backfill import (
     BseStagedAnnualBackfillDisposition, BseStagedAnnualBackfillTarget,
     BseStagedAnnualFactBackfillService,
 )
-from app.fundamentals.models import FinancialMetric
+from app.fundamentals.models import (
+    FinancialMetric,
+    FinancialPeriodType,
+    FinancialValueBasis,
+    StatementScope,
+)
 from app.fundamentals.store import SQLiteFinancialFactStore
 from app.market_data.models import Exchange, InstrumentIdentity, InstrumentType
 
@@ -47,6 +60,47 @@ def test_exact_bse_concepts_map_to_components_without_debt_or_capex_synthesis() 
     metrics = {value.metric for value in document.context_facts}
     assert {FinancialMetric.CFO, FinancialMetric.PURCHASE_OF_PROPERTY_PLANT_EQUIPMENT, FinancialMetric.TOTAL_EQUITY, FinancialMetric.CASH_AND_EQUIVALENTS, FinancialMetric.CURRENT_BORROWINGS, FinancialMetric.NONCURRENT_BORROWINGS, FinancialMetric.OTHER_BANK_BALANCES} <= metrics
     assert FinancialMetric.TOTAL_DEBT not in metrics and FinancialMetric.CAPEX not in metrics
+
+
+def test_older_bse_annual_rounding_concept_is_an_exact_scale_alias() -> None:
+    older = _xml().replace(
+        "LevelOfRounding>", "LevelOfRoundingUsedInFinancialStatements>",
+    )
+    document = parse_bse_xbrl(
+        older, "https://www.bseindia.com/XBRLFILES/alpha.xml",
+        period_end=datetime(2025, 3, 31, tzinfo=UTC),
+    )
+    assert document.currency == "INR"
+    assert document.scale.value == "CRORES"
+
+
+def test_staged_primary_annual_metadata_supplies_only_an_omitted_reporting_basis(tmp_path: Path) -> None:
+    """Older BSE annual XBRLs can omit a display field retained by the archive."""
+    path = tmp_path / "older-annual.xml"
+    path.write_text(
+        _xml().replace(
+            "<x:TypeOfReportingPeriod>Annual</x:TypeOfReportingPeriod>",
+            "",
+        ),
+        encoding="utf-8",
+    )
+    metadata = BseResultMetadata(
+        CODE, "2024-2025", "Consolidated-Mar-25", "Year", "New", T,
+        None, None, StatementScope.CONSOLIDATED,
+        datetime(2025, 3, 31, tzinfo=UTC), FinancialPeriodType.ANNUAL,
+        FinancialValueBasis.FULL_YEAR, "https://www.bseindia.com/XBRLFILES/alpha.xml",
+        "https://api.bseindia.com/BseIndiaAPI/api/Result_Arch_Download/w?scrip_cd=500001",
+        BseTimestampStatus.EXCHANGE_LOCAL_ASSUMPTION,
+    )
+    service = BSEOfficialLocalXbrlIngestionService(
+        SQLiteCorporateFilingsStore(tmp_path / "filings.sqlite"),
+        SQLiteFinancialFactStore(tmp_path / "facts.sqlite"),
+        clock=lambda: T,
+    )
+    with pytest.raises(BseOfficialError, match="result basis is unsupported"):
+        service.inspect(path)
+    report = service.ingest_official_staged(_identity(), CODE, path, metadata=metadata)
+    assert report.facts_inserted == 9
 
 
 def test_staged_annual_backfill_is_idempotent_and_preserves_publication_time(tmp_path: Path) -> None:

@@ -1101,6 +1101,10 @@ def parser() -> argparse.ArgumentParser:
         "collect-real-portfolio-bse-financials",
         help="Fetch, verify, stage, and import BSE XBRL for exactly the five approved real-portfolio ISINs",
     )
+    commands.add_parser(
+        "collect-real-portfolio-bse-historical-annuals",
+        help="Fetch, verify, stage, and import up to five BSE annual periods per scope for exactly four approved non-financial ISINs",
+    )
     bse_nifty500 = commands.add_parser(
         "bse-nifty500-financials",
         help="Run explicit bounded official-BSE NIFTY 500 financial mapping, planning, and acquisition operations",
@@ -2029,6 +2033,18 @@ def main(
                     f"bse_name={item.mapping.security_name or 'NONE'}",
                     f"mapping_source={item.mapping.source_type}",
                     f"source_master_date={item.mapping.source_master_date.isoformat() if item.mapping.source_master_date else 'NONE'}",
+                    f"filings_discovered={item.filings_discovered}", f"new_filings={item.new_filings}",
+                    f"unchanged_filings={item.unchanged_filings}", f"facts_accepted={item.canonical_facts_accepted}",
+                    f"facts_unchanged={item.canonical_facts_unchanged}", f"conflicts={item.financial_conflicts}",
+                    f"blockers={','.join(item.blockers) if item.blockers else 'NONE'}",
+                )))
+            return 0 if all(not item.blockers and item.financial_conflicts == 0 for item in report.receipts) else 2
+        if arguments.command == "collect-real-portfolio-bse-historical-annuals":
+            report = bse_real_portfolio_collector_factory().run_historical_annual_backfill()
+            for item in report.receipts:
+                output(" ".join((
+                    f"instrument_id={item.canonical_instrument_id}", f"isin={item.isin or 'UNKNOWN'}",
+                    f"mapping={item.mapping.status.value}", f"bse_code={item.mapping.security_code or 'NONE'}",
                     f"filings_discovered={item.filings_discovered}", f"new_filings={item.new_filings}",
                     f"unchanged_filings={item.unchanged_filings}", f"facts_accepted={item.canonical_facts_accepted}",
                     f"facts_unchanged={item.canonical_facts_unchanged}", f"conflicts={item.financial_conflicts}",
