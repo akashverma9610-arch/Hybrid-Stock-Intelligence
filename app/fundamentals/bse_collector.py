@@ -66,6 +66,8 @@ _BSE_HOST = "www.bseindia.com"
 _BSE_API_HOST = "api.bseindia.com"
 BSE_OFFICIAL_EXACT_ISIN_LOOKUP_URL = "https://api.bseindia.com/BseIndiaAPI/api/PeerSmartSearch/w?Type=SS&text={isin}"
 BSE_OFFICIAL_RESULTS_ARCHIVE_URL = "https://api.bseindia.com/BseIndiaAPI/api/Result_Arch_Download/w?scrip_cd={security_code}"
+BSE_OFFICIAL_NOTICE_URL = "https://www.bseindia.com/markets/MarketInfo/DispNewNoticesCirculars.aspx?page={notice_id}"
+BSE_OFFICIAL_COMPULSORY_DELISTED_URL = "https://www.bseindia.com/downloads1/comp_delisted_cos_db.pdf"
 _MAX_XBRL_BYTES = 5 * 1024 * 1024
 _MAX_MASTER_BYTES = 20 * 1024 * 1024
 _MAX_LOOKUP_BYTES = 256 * 1024
@@ -297,6 +299,14 @@ class BseOfficialHttpTransport:
 
     def fetch_results_archive_response(self, url: str) -> BseOfficialHttpResponse:
         return self._request(url, _MAX_RESULTS_ARCHIVE_BYTES, kind="results-archive")
+
+    def fetch_lifecycle_notice(self, notice_id: str) -> BseOfficialHttpResponse:
+        if not re.fullmatch(r"\d{8}-\d{1,3}", notice_id):
+            raise BseCollectorError("BSE_LIFECYCLE_NOTICE_IDENTIFIER_INVALID")
+        return self._request(BSE_OFFICIAL_NOTICE_URL.format(notice_id=notice_id), _MAX_RESULTS_ARCHIVE_BYTES, kind="lifecycle-notice")
+
+    def fetch_compulsory_delisted_list(self) -> BseOfficialHttpResponse:
+        return self._request(BSE_OFFICIAL_COMPULSORY_DELISTED_URL, _MAX_RESULTS_ARCHIVE_BYTES, kind="compulsory-delisted-list")
 
     def fetch_text(self, url: str) -> str:
         response = self._request(url, _MAX_XBRL_BYTES, kind="result-or-xbrl")
@@ -1033,6 +1043,13 @@ def _validate_bse_url(url: str, *, kind: str) -> None:
         return
     if kind == "master":
         allowed = url == BSE_OFFICIAL_SCRIP_MASTER_URL
+    elif kind == "lifecycle-notice":
+        query = parse_qs(parsed.query)
+        allowed = (parsed.path == "/markets/MarketInfo/DispNewNoticesCirculars.aspx"
+                   and len(query.get("page", ())) == 1
+                   and bool(re.fullmatch(r"\d{8}-\d{1,3}", query["page"][0])))
+    elif kind == "compulsory-delisted-list":
+        allowed = url == BSE_OFFICIAL_COMPULSORY_DELISTED_URL
     elif kind == "xbrl":
         allowed = parsed.path.startswith("/XBRLFILES/")
     else:
@@ -1054,6 +1071,8 @@ def _validate_content_type(content_type: str | None, *, kind: str) -> None:
         "result-or-xbrl": {"text/html", "application/xhtml+xml", "application/xml", "text/xml", "application/octet-stream"},
         "isin-lookup": {"application/json"},
         "results-archive": {"text/csv", "application/csv", "application/octet-stream"},
+        "lifecycle-notice": {"text/html", "application/xhtml+xml", "application/octet-stream"},
+        "compulsory-delisted-list": {"application/pdf", "application/octet-stream"},
     }[kind]
     if value not in allowed:
         raise BseCollectorError("BSE_OFFICIAL_CONTENT_TYPE_REJECTED")
@@ -1158,7 +1177,7 @@ def _header(value: str) -> str:
 
 
 __all__ = (
-    "BSE_OFFICIAL_EXACT_ISIN_LOOKUP_URL", "BSE_OFFICIAL_RESULTS_ARCHIVE_URL", "BSE_OFFICIAL_SCRIP_MASTER_URL", "BseArchiveSnapshot", "BseBoundedXbrlRecoveryReceipt", "BseCollectorError", "BseFinancialCollectorRun",
+    "BSE_OFFICIAL_COMPULSORY_DELISTED_URL", "BSE_OFFICIAL_EXACT_ISIN_LOOKUP_URL", "BSE_OFFICIAL_NOTICE_URL", "BSE_OFFICIAL_RESULTS_ARCHIVE_URL", "BSE_OFFICIAL_SCRIP_MASTER_URL", "BseArchiveSnapshot", "BseBoundedXbrlRecoveryReceipt", "BseCollectorError", "BseFinancialCollectorRun",
     "BseFinancialRefreshRequest", "BseFilingDisposition", "BseFilingDispositionRecord", "BseMappingStatus", "BseOfficialBoundedXbrlAcquirer", "BseOfficialFinancialCollector",
     "BseOfficialArchiveSnapshotStore", "BseOfficialFinancialCollectorSettings", "BseOfficialFinancialCollectorWorker", "BseOfficialIciciBoundedXbrlRecovery",
     "BseOfficialHttpResponse", "BseOfficialHttpTransport", "BseOfficialSecurityMaster",

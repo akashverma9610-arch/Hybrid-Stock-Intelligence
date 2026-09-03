@@ -52,6 +52,13 @@ class HistoricalSecurityIdentity:
     version: str
     source_reference: str | None = None
     warnings: tuple[str, ...] = ()
+    # These fields are additive lifecycle provenance.  They are optional so
+    # legacy/NSE identity receipts retain their original meaning.
+    exchange_security_code: str | None = None
+    lifecycle_event_id: str | None = None
+    predecessor_identity_id: str | None = None
+    successor_identity_id: str | None = None
+    source_fingerprint: str | None = None
 
     def eligible_as_of(self, at: datetime) -> bool:
         return self.as_of <= at and self.symbol_effective_from <= at and (self.symbol_effective_to is None or at <= self.symbol_effective_to) and (self.listed_from is None or self.listed_from <= at) and (self.listed_until is None or at <= self.listed_until)
@@ -123,6 +130,9 @@ class HistoricalBacktestIntegrityAssessment:
 class HistoricalSecurityMasterStore:
     def __init__(self, repository: CoreApiSnapshotRepository) -> None: self._repository = repository
     def save_identity(self, value: HistoricalSecurityIdentity) -> None: self._save(CoreApiSnapshotFamily.HISTORICAL_SECURITY_IDENTITY, "historical-security:" + value.identity_id, value, value.as_of)
+    def identity(self, identity_id: str) -> HistoricalSecurityIdentity | None:
+        value = self._repository.get_snapshot("historical-security:" + identity_id)
+        return value.payload if value is not None and isinstance(value.payload, HistoricalSecurityIdentity) else None
     def save_membership(self, value: UniverseMembership, *, as_of: datetime) -> None: self._save(CoreApiSnapshotFamily.HISTORICAL_UNIVERSE_MEMBERSHIP, "historical-membership:" + value.membership_id, value, as_of)
     def save_action(self, value: HistoricalCorporateAction) -> None: self._save(CoreApiSnapshotFamily.HISTORICAL_CORPORATE_ACTION, "historical-action:" + value.action_id, value, value.as_of)
     def save_integrity(self, value: HistoricalPriceIntegrity) -> None: self._save(CoreApiSnapshotFamily.HISTORICAL_PRICE_INTEGRITY, "historical-integrity:" + value.assessment_id, value, value.as_of)

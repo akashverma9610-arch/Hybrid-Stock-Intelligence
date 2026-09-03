@@ -1,6 +1,6 @@
 # Historical Security Identity and Lifecycle Primary Evidence V1
 
-**Status: `RESEARCH_ONLY / NOT_APPROVED / NOT_ACTIVE / NON_EXECUTABLE`.**
+**Status: `IMPLEMENTED_BOUNDED_INGESTION / PRIMARY_SOURCE_ONLY / NOT_ACTIVE / NON_EXECUTABLE`.**
 
 ## Purpose
 
@@ -38,7 +38,7 @@ instrument and aware historical as-of it:
 3. rejects overlapping records with different semantic identity as
    `EVIDENCE_CONFLICTED`;
 4. checks explicit listed and tradable intervals; and
-5. requires explicit `ACTIVE` lifecycle status for an eligible listed result.
+5. requires explicit `ACTIVE` or `RELISTED` lifecycle status for an eligible listed result.
 
 An announcement known before a later effective symbol change remains known but
 does not replace the old symbol before its effective timestamp. A missing
@@ -59,6 +59,26 @@ recommended exact fields are canonical instrument ID, ISIN, exchange, series,
 listed/tradable start and end, effective end, source version, and primary
 source reference. Existing corporate-action ingestion remains separate.
 
+`BSE_PRIMARY_SECURITY_LIFECYCLE_NOTICE_INGESTION_V1` provides a fixed,
+allowlisted BSE acquisition boundary for individual `Notices & Circulars`
+documents and the official compulsory-delisted-company document.  It accepts
+only explicit event types: name/scrip-ID change, delisting/discontinuation,
+merger/cessation, listing/relisting, suspension, and revocation of suspension.
+It records source document identity, content fingerprint, BSE scrip code/ISIN
+where supplied, the notice publication/known time, and the separately stated
+effective time.  It has no crawler or generic URL input.
+
+Every primary document is persisted as immutable lifecycle evidence even when
+it cannot be linked.  An identity is created only after an exact BSE scrip-code
+or ISIN link to one canonical security.  If both identifiers are supplied,
+both must agree.  Company names are retained descriptively in the evidence but
+are never linkage keys.  The current BSE master can provide an exact link only;
+it can never establish historical listing or effective dates.
+
+The compulsory-delisted PDF is acquired only from BSE's fixed official path.
+Its text extraction remains a separate auditable boundary: rows require an
+exact ISIN and delisting date, while name-only rows remain staged/unresolved.
+
 Potential evidence must be an approved primary NSE/BSE/exchange artifact:
 security master, listing/delisting record, exchange circular, symbol/ISIN
 change, or merger/amalgamation effective-date record. Yahoo, Screener,
@@ -67,12 +87,23 @@ current provider master are not canonical historical lifecycle evidence.
 
 ## Current coverage diagnostic
 
-No historical primary lifecycle artifact was available locally in this slice.
-No acquisition was attempted.
+The bounded ingestion mechanism is implemented and validated against
+actual-style BSE notice content.  Production coverage is measured only after a
+document acquisition run; no current master snapshot is counted as historical
+lifecycle evidence.
+
+The bounded first pass acquired three fixed BSE notices (two delistings and
+one revocation of suspension) plus the fixed compulsory-delisted PDF.  The
+three notices each had an exact BSE scrip code and distinct known/effective
+times, but none supplied an exact stored ISIN/canonical-security link; they
+are retained as immutable unresolved evidence.  The PDF was acquired as a
+primary document; no PDF text-extraction dependency is silently invoked, so
+its rows remain unparsed until an auditable extraction is available.
 
 | Measure | Current count | Meaning |
 | --- | ---: | --- |
-| `HISTORICAL_SECURITY_IDENTITY` receipts | 0 | No historical listed-security identity can be resolved. |
+| `HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE` receipts | 3 | Exact BSE notices staged with source/content/known/effective provenance. |
+| `HISTORICAL_SECURITY_IDENTITY` receipts | 0 | No historical listed-security identity can be resolved until exact linked primary evidence is acquired. |
 | Distinct covered securities / ISINs | 0 / 0 | No lifecycle population exists. |
 | Symbol-change lineages | 0 | No continuity may be inferred. |
 | Known listing starts / ends | 0 / 0 | Listing intervals are unavailable. |
@@ -84,11 +115,13 @@ Survivorship reconstruction status: `NOT_READY`.
 
 ## Explicit blockers and next dependency
 
-The smallest primary-source gap is an immutable historical exchange security
-identity/lifecycle archive with effective and known times, listing endpoints,
-symbol/ISIN continuity, and inactive/delisted/merged security retention. Its
-import must be exact and append-only. After usable identity/lifecycle evidence
-exists, the next separate governed dependency is
+The remaining primary-source gap is coverage, not ingestion logic: a bounded
+set of exact BSE notices and delisted-list rows must be acquired, staged, and
+linked through exact historical/current mapping evidence.  NSE dated security
+master availability remains discovery-only; the repository has no proven
+historical NSE snapshots and does not import them in this slice.
+
+After usable identity/lifecycle evidence exists, the next separate governed dependency is
 `PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1`; it must attach to
 the stable canonical listed-security identity and must not be inferred from
 sector/industry or names.

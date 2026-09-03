@@ -92,6 +92,10 @@ class CoreApiSnapshotFamily(StrEnum):
     DATA_COVERAGE_RECORD = "DATA_COVERAGE_RECORD"
     DATA_COVERAGE_SUMMARY = "DATA_COVERAGE_SUMMARY"
     HISTORICAL_SECURITY_IDENTITY = "HISTORICAL_SECURITY_IDENTITY"
+    # Primary exchange lifecycle documents are retained separately from the
+    # identities they may (or may not) link.  An unlinked BSE notice is still
+    # auditable evidence; it must never be promoted by a name match.
+    HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE = "HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE"
     HISTORICAL_UNIVERSE_MEMBERSHIP = "HISTORICAL_UNIVERSE_MEMBERSHIP"
     HISTORICAL_CORPORATE_ACTION = "HISTORICAL_CORPORATE_ACTION"
     HISTORICAL_PRICE_INTEGRITY = "HISTORICAL_PRICE_INTEGRITY"

@@ -94,6 +94,12 @@ def resolve_historical_security_identity(
     effective = tuple(item for item in known if item.symbol_effective_from <= as_of and (item.symbol_effective_to is None or as_of <= item.symbol_effective_to))
     if not effective:
         return _unavailable(canonical_instrument_id, as_of, HistoricalSecurityIdentityResolutionStatus.NOT_EFFECTIVE, HistoricalSecurityIdentityResolutionReason.IDENTITY_NOT_EFFECTIVE_AT_AS_OF)
+    # A later explicit lifecycle event supersedes an older open-ended receipt
+    # from its exact effective boundary.  Conflicts at that latest boundary
+    # still fail closed; a terminal event is never made ambiguous merely
+    # because the earlier receipt had no invented end date.
+    latest_start = max(item.symbol_effective_from for item in effective)
+    effective = tuple(item for item in effective if item.symbol_effective_from == latest_start)
     semantic = {_semantic_key(item) for item in effective}
     if len(semantic) != 1:
         return _unavailable(canonical_instrument_id, as_of, HistoricalSecurityIdentityResolutionStatus.EVIDENCE_CONFLICTED, HistoricalSecurityIdentityResolutionReason.AMBIGUOUS_EFFECTIVE_IDENTITY)
@@ -102,7 +108,7 @@ def resolve_historical_security_identity(
     tradable = (selected.tradable_from is None or selected.tradable_from <= as_of) and (selected.tradable_until is None or as_of <= selected.tradable_until)
     if not listed or not tradable:
         return _unavailable(canonical_instrument_id, as_of, HistoricalSecurityIdentityResolutionStatus.NOT_LISTED, HistoricalSecurityIdentityResolutionReason.LISTING_INTERVAL_EXCLUDES_AS_OF)
-    if selected.status is not HistoricalSecurityStatus.ACTIVE:
+    if selected.status not in {HistoricalSecurityStatus.ACTIVE, HistoricalSecurityStatus.RELISTED}:
         return _unavailable(canonical_instrument_id, as_of, HistoricalSecurityIdentityResolutionStatus.NOT_LISTED, HistoricalSecurityIdentityResolutionReason.LIFECYCLE_NOT_ACTIVE)
     body = dict(canonical_instrument_id=canonical_instrument_id, as_of=as_of, status=HistoricalSecurityIdentityResolutionStatus.RESOLVED, reasons=(), identity_id=selected.identity_id, exchange=selected.exchange, symbol=selected.symbol, isin=selected.isin, listing_status=selected.status, listed=True, eligible=True, source=selected.source, source_reference=selected.source_reference, source_as_of=selected.as_of, effective_from=selected.symbol_effective_from, effective_to=selected.symbol_effective_to, contract_id=CONTRACT_ID, contract_version=CONTRACT_VERSION)
     return HistoricalSecurityIdentityResolution(**body, fingerprint=_fingerprint(body))
@@ -118,7 +124,7 @@ def _unavailable(instrument, as_of, status, reason):
 
 
 def _semantic_key(value):
-    return (value.exchange, value.symbol, value.isin, value.series, value.listed_from, value.listed_until, value.tradable_from, value.tradable_until, value.symbol_effective_from, value.symbol_effective_to, value.status, value.source, value.source_reference, value.as_of, value.version)
+    return (value.exchange, value.symbol, value.isin, value.series, value.listed_from, value.listed_until, value.tradable_from, value.tradable_until, value.symbol_effective_from, value.symbol_effective_to, value.status, value.source, value.source_reference, value.as_of, value.version, value.exchange_security_code, value.lifecycle_event_id, value.predecessor_identity_id, value.successor_identity_id, value.source_fingerprint)
 
 
 def _fingerprint(values):
