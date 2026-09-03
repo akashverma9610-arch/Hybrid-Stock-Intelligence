@@ -51,6 +51,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Long-Term Thesis Family policy approval pack](docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md)
 - [Long-Term Evidence Dossier reuse and policy-readiness receipt](docs/architecture/POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md)
 - [Post-V1 Long-Term Thesis Review Foundation](docs/architecture/POST_V1_LONG_TERM_THESIS_REVIEW_FOUNDATION.md)
+- [Long-Term Thesis Families Research Shadow V1 readiness](docs/architecture/POST_V1_LONG_TERM_RESEARCH_SHADOW_V1.md)
 - [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Post-V1 primary-source policy research pack](docs/architecture/POST_V1_POLICY_RESEARCH_PACK.md)
 - [Post-V1 Fast-Rotation comparison foundation](docs/architecture/POST_V1_FAST_ROTATION_FOUNDATION.md)

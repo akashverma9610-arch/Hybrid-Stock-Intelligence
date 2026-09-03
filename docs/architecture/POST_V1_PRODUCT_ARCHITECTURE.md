@@ -53,6 +53,12 @@ is an injected provenance contract over that same Deep Analysis dossier. It
 cannot classify a family, calculate a score, or change a long-term policy's
 unavailable status.
 
+The approved [Long-Term Thesis Families Research Shadow V1 readiness
+boundary](POST_V1_LONG_TERM_RESEARCH_SHADOW_V1.md) records exact PIT-safe
+coverage and integrity states for all five families.  It has no positive family
+classification, does not select policy parameters, and remains Watch-only and
+non-executable.
+
 The next normative boundary is the [Sell/Risk, Profit-Harvesting and
 Fast-Rotation policy approval pack](POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md).
 The [primary-source policy research pack](POST_V1_POLICY_RESEARCH_PACK.md)
