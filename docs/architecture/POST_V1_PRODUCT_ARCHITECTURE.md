@@ -48,6 +48,11 @@ The constrained long-term foundation reuses the existing Deep Analysis evidence
 projection; its [reuse and readiness receipt](POST_V1_LONG_TERM_EVIDENCE_DOSSIER_REUSE_AND_READINESS.md)
 keeps every long-term family unavailable pending exact policy definitions.
 
+The [Long-Term Thesis Review Foundation](POST_V1_LONG_TERM_THESIS_REVIEW_FOUNDATION.md)
+is an injected provenance contract over that same Deep Analysis dossier. It
+cannot classify a family, calculate a score, or change a long-term policy's
+unavailable status.
+
 The next normative boundary is the [Sell/Risk, Profit-Harvesting and
 Fast-Rotation policy approval pack](POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md).
 The [primary-source policy research pack](POST_V1_POLICY_RESEARCH_PACK.md)
