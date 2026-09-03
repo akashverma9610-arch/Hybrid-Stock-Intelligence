@@ -76,8 +76,19 @@ are never linkage keys.  The current BSE master can provide an exact link only;
 it can never establish historical listing or effective dates.
 
 The compulsory-delisted PDF is acquired only from BSE's fixed official path.
-Its text extraction remains a separate auditable boundary: rows require an
-exact ISIN and delisting date, while name-only rows remain staged/unresolved.
+It has a text-layer, seven-column table and is extracted with the existing
+optional `pdfplumber` convention—never OCR.  Each retained row preserves page
+and ordinal, exact company text, ISIN when structurally present, lot size,
+face value, demat indicator, exact delisting date, document observation time,
+and a raw-row fingerprint.  Rows with unstable boundaries, malformed ISINs,
+or malformed dates are rejected rather than repaired.
+
+A compiled PDF can establish an exact endpoint but not the historical date on
+which an old row was known.  Its observation time is therefore deliberately
+separate from `historical_known_at`, which remains unavailable.  An exact ISIN
+association may be recorded as evidence linkage, but it cannot become a
+PIT-eligible `HistoricalSecurityIdentity` receipt without an approved
+historical known/publication time.  No listing start is inferred.
 
 Potential evidence must be an approved primary NSE/BSE/exchange artifact:
 security master, listing/delisting record, exchange circular, symbol/ISIN
@@ -96,14 +107,16 @@ The bounded first pass acquired three fixed BSE notices (two delistings and
 one revocation of suspension) plus the fixed compulsory-delisted PDF.  The
 three notices each had an exact BSE scrip code and distinct known/effective
 times, but none supplied an exact stored ISIN/canonical-security link; they
-are retained as immutable unresolved evidence.  The PDF was acquired as a
-primary document; no PDF text-extraction dependency is silently invoked, so
-its rows remain unparsed until an auditable extraction is available.
+are retained as immutable unresolved evidence.  The PDF extractor found 1,337
+complete rows (991 structurally valid ISINs), rejected 108 malformed-ISIN rows,
+and rejected no date rows.  Its date range is 2016-08-17 through 2026-06-16.
+No current canonical instrument had an exact ISIN match in this local store.
 
 | Measure | Current count | Meaning |
 | --- | ---: | --- |
-| `HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE` receipts | 3 | Exact BSE notices staged with source/content/known/effective provenance. |
+| `HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE` receipts | 1,340 | Three BSE notices plus 1,337 exact compiled-PDF endpoint rows. |
 | `HISTORICAL_SECURITY_IDENTITY` receipts | 0 | No historical listed-security identity can be resolved until exact linked primary evidence is acquired. |
+| Deterministically extracted compulsory-delisted rows | 1,337 | Endpoint evidence only; no historical known time is claimed. |
 | Distinct covered securities / ISINs | 0 / 0 | No lifecycle population exists. |
 | Symbol-change lineages | 0 | No continuity may be inferred. |
 | Known listing starts / ends | 0 / 0 | Listing intervals are unavailable. |

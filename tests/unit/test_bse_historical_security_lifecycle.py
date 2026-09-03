@@ -1,4 +1,6 @@
 from datetime import UTC, datetime, timedelta
+from types import SimpleNamespace
+import sys
 
 import pytest
 
@@ -6,7 +8,8 @@ from app.fundamentals.bse_collector import BSE_OFFICIAL_NOTICE_URL, BseOfficialH
 from app.historical.bse_lifecycle import (
     BseLifecycleEventType, BseLifecycleReceiptStatus, BsePrimaryLifecycleEvidence,
     BsePrimaryLifecycleEvidenceStore, BsePrimaryLifecycleIngestor, ExactCanonicalSecurityLink,
-    parse_bse_lifecycle_notice, parse_compulsory_delisted_list_text,
+    extract_compulsory_delisted_pdf, parse_bse_lifecycle_notice, parse_compulsory_delisted_list_text,
+    resolve_delisted_row_exact_isin, BseDelistedRowLinkStatus,
 )
 from app.historical.security_identity_selector import HistoricalSecurityIdentityResolutionStatus, resolve_historical_security_identity
 from app.historical.security_master import HistoricalSecurityIdentity, HistoricalSecurityMasterStore, HistoricalSecurityStatus
@@ -127,3 +130,48 @@ def test_forbidden_boundaries_are_static():
     source = open(module.__file__, encoding="utf-8").read()
     for forbidden in ("app.signals", "app.portfolio", "app.broker", "app.orders", "app.api", "app.runtime", "sqlite3", "datetime.now"):
         assert forbidden not in source
+
+
+def test_compulsory_delisted_pdf_extraction_is_deterministic_and_preserves_exact_row_boundaries(monkeypatch):
+    class Page:
+        def extract_tables(self):
+            return [[
+                ["Sr. No.", "Name", "Lot", "ISIN", "Face", "Demat", "Date"],
+                ["1", "Exact Delisted Ltd", "100", "INE814B01014", "10", "D", "August 17, 2016"],
+                ["2", "No Isin Ltd", "1", "Not Available", "10", "P", "August 17, 2016"],
+                ["3", "Bad Isin Ltd", "1", "BAD", "10", "D", "August 17, 2016"],
+                ["4", "Bad Date Ltd", "1", "INE504C01019", "10", "D", "never"],
+            ]]
+        def extract_text(self): return ""
+    class Document:
+        pages = [Page()]
+        def __enter__(self): return self
+        def __exit__(self, *_): return False
+    monkeypatch.setitem(sys.modules, "pdfplumber", SimpleNamespace(open=lambda _source: Document()))
+    response = BseOfficialHttpResponse("https://www.bseindia.com/downloads1/comp_delisted_cos_db.pdf", "application/pdf", b"synthetic-pdf", T)
+    one, two = extract_compulsory_delisted_pdf(response), extract_compulsory_delisted_pdf(response)
+    assert [(item.row_number, item.isin, item.delisted_at) for item in one.rows] == [(1, "INE814B01014", datetime(2016, 8, 17, tzinfo=UTC)), (2, None, datetime(2016, 8, 17, tzinfo=UTC))]
+    assert one.rejected_rows == 2 and one.invalid_isin_rows == 1 and one.invalid_date_rows == 1
+    assert one.fingerprint == two.fingerprint and all(item.historical_known_at is None for item in one.rows)
+
+
+def test_compulsory_delisted_rows_link_by_exact_isin_only_and_are_idempotently_stored(monkeypatch, tmp_path):
+    class Page:
+        def extract_tables(self): return [[["1", "Exact Delisted Ltd", "100", "INE814B01014", "10", "D", "August 17, 2016"]]]
+        def extract_text(self): return ""
+    class Document:
+        pages = [Page()]
+        def __enter__(self): return self
+        def __exit__(self, *_): return False
+    monkeypatch.setitem(sys.modules, "pdfplumber", SimpleNamespace(open=lambda _source: Document()))
+    row = extract_compulsory_delisted_pdf(BseOfficialHttpResponse("https://www.bseindia.com/downloads1/comp_delisted_cos_db.pdf", "application/pdf", b"pdf", T)).rows[0]
+    exact = ExactCanonicalSecurityLink("NSE:INE814B01014", None, "INE814B01014", "BSE_MASTER")
+    linked = resolve_delisted_row_exact_isin(row, links=(exact,))
+    assert linked.status is BseDelistedRowLinkStatus.EXACT_CANONICAL_LINKED and linked.canonical_instrument_id == exact.canonical_instrument_id
+    assert resolve_delisted_row_exact_isin(row, links=()).status is BseDelistedRowLinkStatus.UNRESOLVED
+    ambiguous = ExactCanonicalSecurityLink("NSE:OTHER", None, exact.isin, "BSE_MASTER")
+    assert resolve_delisted_row_exact_isin(row, links=(exact, ambiguous)).status is BseDelistedRowLinkStatus.EVIDENCE_CONFLICTED
+    repo, identities, evidence = _stores(tmp_path)
+    replay = extract_compulsory_delisted_pdf(BseOfficialHttpResponse("https://www.bseindia.com/downloads1/comp_delisted_cos_db.pdf", "application/pdf", b"pdf", T + timedelta(days=1))).rows[0]
+    assert row.row_id == replay.row_id and evidence.save_delisted_row(row) is True and evidence.save_delisted_row(replay) is False
+    assert not identities.identities_as_of(T)

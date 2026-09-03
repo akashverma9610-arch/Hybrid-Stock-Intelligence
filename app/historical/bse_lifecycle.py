@@ -9,9 +9,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
+from decimal import Decimal, InvalidOperation
 from enum import StrEnum
 from hashlib import sha256
 from html import unescape
+from io import BytesIO
 import re
 from typing import Iterable
 
@@ -40,6 +42,12 @@ class BseLifecycleReceiptStatus(StrEnum):
     INSERTED = "INSERTED"
     ALREADY_PRESENT = "ALREADY_PRESENT"
     STAGED_UNRESOLVED = "STAGED_UNRESOLVED"
+    EVIDENCE_CONFLICTED = "EVIDENCE_CONFLICTED"
+
+
+class BseDelistedRowLinkStatus(StrEnum):
+    EXACT_CANONICAL_LINKED = "EXACT_CANONICAL_LINKED"
+    UNRESOLVED = "UNRESOLVED"
     EVIDENCE_CONFLICTED = "EVIDENCE_CONFLICTED"
 
 
@@ -122,6 +130,86 @@ class BseLifecycleIngestionReceipt:
             raise ValueError("BSE_LIFECYCLE_RECEIPT_FINGERPRINT_MISMATCH")
 
 
+@dataclass(frozen=True, slots=True)
+class BseCompulsoryDelistedPdfRow:
+    """One immutable, exact row from BSE's compulsory-delisted PDF.
+
+    ``document_observed_at`` is an acquisition observation only.  The compiled
+    PDF does not establish when any historical row became known, so
+    ``historical_known_at`` is intentionally always unavailable.
+    """
+
+    document_fingerprint: str
+    source_reference: str
+    source_page: int
+    row_number: int
+    company_name: str
+    isin: str | None
+    delisted_at: datetime
+    lot_size: int
+    face_value: Decimal
+    demat_indicator: str
+    document_observed_at: datetime
+    raw_row_fingerprint: str
+    historical_known_at: None = None
+    contract_id: str = CONTRACT_ID
+    contract_version: str = CONTRACT_VERSION
+
+    def __post_init__(self) -> None:
+        if (not self.document_fingerprint.startswith("sha256:") or not self.source_reference
+                or self.source_page < 1 or self.row_number < 1 or not self.company_name.strip()
+                or not _aware(self.delisted_at) or self.lot_size < 1 or self.face_value <= 0
+                or self.demat_indicator not in {"P", "D"} or not _aware(self.document_observed_at)
+                or not self.raw_row_fingerprint.startswith("sha256:")
+                or self.historical_known_at is not None
+                or self.contract_id != CONTRACT_ID or self.contract_version != CONTRACT_VERSION):
+            raise ValueError("BSE_COMPULSORY_DELISTED_ROW_INVALID")
+        if self.isin is not None and not re.fullmatch(r"[A-Z0-9]{12}", self.isin.upper()):
+            raise ValueError("BSE_COMPULSORY_DELISTED_ROW_ISIN_INVALID")
+
+    @property
+    def row_id(self) -> str:
+        return "bse-compulsory-delisted-row:" + _fingerprint(_delisted_row_manifest(self))[:32]
+
+
+@dataclass(frozen=True, slots=True)
+class BseCompulsoryDelistedPdfExtraction:
+    document_fingerprint: str
+    source_reference: str
+    document_observed_at: datetime
+    rows: tuple[BseCompulsoryDelistedPdfRow, ...]
+    rejected_rows: int
+    invalid_isin_rows: int
+    invalid_date_rows: int
+    fingerprint: str
+
+    def __post_init__(self) -> None:
+        if (not self.document_fingerprint.startswith("sha256:") or not self.source_reference
+                or not _aware(self.document_observed_at) or self.rows != tuple(sorted(self.rows, key=lambda item: (item.source_page, item.row_number)))
+                or min(self.rejected_rows, self.invalid_isin_rows, self.invalid_date_rows) < 0
+                or self.fingerprint != "sha256:" + manifest_fingerprint(**_delisted_extraction_manifest(self))):
+            raise ValueError("BSE_COMPULSORY_DELISTED_EXTRACTION_INVALID")
+
+
+@dataclass(frozen=True, slots=True)
+class BseDelistedRowLinkResolution:
+    row_id: str
+    status: BseDelistedRowLinkStatus
+    canonical_instrument_id: str | None
+    reason_codes: tuple[str, ...]
+    fingerprint: str
+
+    def __post_init__(self) -> None:
+        if self.reason_codes != tuple(sorted(set(self.reason_codes))):
+            raise ValueError("BSE_COMPULSORY_DELISTED_LINK_REASONS_NONCANONICAL")
+        if self.status is BseDelistedRowLinkStatus.EXACT_CANONICAL_LINKED:
+            valid = bool(self.canonical_instrument_id) and not self.reason_codes
+        else:
+            valid = self.canonical_instrument_id is None and bool(self.reason_codes)
+        if not valid or self.fingerprint != "sha256:" + manifest_fingerprint(**_delisted_link_manifest(self)):
+            raise ValueError("BSE_COMPULSORY_DELISTED_LINK_INVALID")
+
+
 class BsePrimaryLifecycleEvidenceStore:
     def __init__(self, repository: CoreApiSnapshotRepository) -> None:
         self._repository = repository
@@ -139,6 +227,22 @@ class BsePrimaryLifecycleEvidenceStore:
         self._repository.save_snapshot(CoreApiSnapshot(
             value.evidence_id, CoreApiSnapshotFamily.HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE, "v1",
             CONTRACT_ID, "sha256:" + _fingerprint(_evidence_manifest(value)), value.published_at, value,
+        ))
+        return True
+
+    def delisted_row(self, row_id: str) -> BseCompulsoryDelistedPdfRow | None:
+        snapshot = self._repository.get_snapshot(row_id)
+        return snapshot.payload if snapshot is not None and isinstance(snapshot.payload, BseCompulsoryDelistedPdfRow) else None
+
+    def save_delisted_row(self, value: BseCompulsoryDelistedPdfRow) -> bool:
+        existing = self.delisted_row(value.row_id)
+        if existing is not None:
+            if not _same_delisted_row(existing, value):
+                raise ValueError("BSE_COMPULSORY_DELISTED_ROW_ID_COLLISION")
+            return False
+        self._repository.save_snapshot(CoreApiSnapshot(
+            value.row_id, CoreApiSnapshotFamily.HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE, "v1",
+            "bse-compulsory-delisted-pdf-row-v1", "sha256:" + _fingerprint(_delisted_row_manifest(value)), value.document_observed_at, value,
         ))
         return True
 
@@ -188,6 +292,61 @@ class BsePrimaryLifecycleSource:
     def compulsory_delisted_document(self) -> BseOfficialHttpResponse:
         """Fetch only the fixed official PDF; extraction is intentionally separate."""
         return self._transport.fetch_compulsory_delisted_list()
+
+
+def extract_compulsory_delisted_pdf(response: BseOfficialHttpResponse) -> BseCompulsoryDelistedPdfExtraction:
+    """Extract only complete, seven-column rows from BSE's fixed PDF table."""
+    try:
+        import pdfplumber
+    except ImportError as error:  # pragma: no cover - dependency is optional at runtime
+        raise RuntimeError("PDFPLUMBER_REQUIRED_FOR_BSE_COMPULSORY_DELISTED_EXTRACTION") from error
+    document_fingerprint = "sha256:" + sha256(response.body).hexdigest()
+    rows: list[BseCompulsoryDelistedPdfRow] = []
+    rejected = invalid_isin = invalid_date = 0
+    try:
+        with pdfplumber.open(BytesIO(response.body)) as document:
+            for page_number, page in enumerate(document.pages, start=1):
+                tables = page.extract_tables() or ()
+                if len(tables) != 1:
+                    rejected += sum(1 for line in (page.extract_text() or "").splitlines() if re.match(r"^\d+\s", line))
+                    continue
+                for table_row in tables[0]:
+                    if not _pdf_table_row(table_row):
+                        continue
+                    parsed, reason = _parse_pdf_table_row(
+                        table_row, source_reference=response.url, document_fingerprint=document_fingerprint,
+                        page_number=page_number, observed_at=response.received_at,
+                    )
+                    if parsed is None:
+                        rejected += 1
+                        invalid_isin += reason == "INVALID_ISIN"
+                        invalid_date += reason == "INVALID_DATE"
+                    else:
+                        rows.append(parsed)
+    except Exception as error:
+        if isinstance(error, ValueError):
+            raise
+        raise ValueError("BSE_COMPULSORY_DELISTED_PDF_EXTRACTION_FAILED") from error
+    ordered = tuple(sorted(rows, key=lambda item: (item.source_page, item.row_number)))
+    body = dict(document_fingerprint=document_fingerprint, source_reference=response.url, document_observed_at=response.received_at,
+                rows=ordered, rejected_rows=rejected, invalid_isin_rows=invalid_isin, invalid_date_rows=invalid_date)
+    return BseCompulsoryDelistedPdfExtraction(**body, fingerprint="sha256:" + manifest_fingerprint(**_delisted_extraction_manifest_values(body)))
+
+
+def resolve_delisted_row_exact_isin(row: BseCompulsoryDelistedPdfRow, *, links: Iterable[ExactCanonicalSecurityLink]) -> BseDelistedRowLinkResolution:
+    """Associate a PDF row only by its exact ISIN; no identity is created.
+
+    The compiled document has no historical known time, so this association is
+    intentionally not a PIT-eligible historical-security receipt.
+    """
+    if row.isin is None:
+        return _delisted_link(row, BseDelistedRowLinkStatus.UNRESOLVED, None, ("EXACT_ISIN_REQUIRED",))
+    canonical = tuple(sorted({item.canonical_instrument_id for item in links if item.isin is not None and item.isin.upper() == row.isin.upper()}))
+    if not canonical:
+        return _delisted_link(row, BseDelistedRowLinkStatus.UNRESOLVED, None, ("EXACT_CANONICAL_ISIN_LINK_REQUIRED",))
+    if len(canonical) != 1:
+        return _delisted_link(row, BseDelistedRowLinkStatus.EVIDENCE_CONFLICTED, None, ("EXACT_CANONICAL_ISIN_LINK_AMBIGUOUS",))
+    return _delisted_link(row, BseDelistedRowLinkStatus.EXACT_CANONICAL_LINKED, canonical[0], ())
 
 
 def parse_bse_lifecycle_notice(response: BseOfficialHttpResponse) -> BsePrimaryLifecycleEvidence:
@@ -323,6 +482,39 @@ def _event_type(text: str) -> BseLifecycleEventType:
     raise ValueError("BSE_LIFECYCLE_EVENT_TYPE_UNSUPPORTED")
 
 
+def _pdf_table_row(value: list[str | None]) -> bool:
+    return len(value) == 7 and bool(re.fullmatch(r"\d+", (value[0] or "").strip()))
+
+
+def _parse_pdf_table_row(
+    value: list[str | None], *, source_reference: str, document_fingerprint: str, page_number: int, observed_at: datetime,
+) -> tuple[BseCompulsoryDelistedPdfRow | None, str | None]:
+    ordinal, company, lot, isin, face, demat, delisted = (item.strip() if item is not None else "" for item in value)
+    if not company or not ordinal.isdigit() or not lot.isdigit() or demat not in {"P", "D"}:
+        return None, "ROW_BOUNDARY"
+    try:
+        face_value = Decimal(face)
+    except (InvalidOperation, ValueError):
+        return None, "ROW_BOUNDARY"
+    try:
+        delisted_at = _parse_bse_date(delisted)
+    except ValueError:
+        return None, "INVALID_DATE"
+    if isin.upper() == "NOT AVAILABLE":
+        parsed_isin = None
+    elif re.fullmatch(r"[A-Z0-9]{12}", isin.upper()):
+        parsed_isin = isin.upper()
+    else:
+        return None, "INVALID_ISIN"
+    raw = "|".join((str(page_number), ordinal, company, lot, isin, face, demat, delisted))
+    return BseCompulsoryDelistedPdfRow(
+        document_fingerprint=document_fingerprint, source_reference=source_reference, source_page=page_number,
+        row_number=int(ordinal), company_name=company, isin=parsed_isin, delisted_at=delisted_at,
+        lot_size=int(lot), face_value=face_value, demat_indicator=demat, document_observed_at=observed_at,
+        raw_row_fingerprint="sha256:" + sha256(raw.encode()).hexdigest(),
+    ), None
+
+
 def _effective_date(text: str) -> datetime:
     patterns = (r"(?:with\s+effect\s+from|w\.e\.f\.?|effective\s+from)\s*(?:Friday,?\s*)?([A-Za-z]+\s+\d{1,2},\s+\d{4})",)
     for pattern in patterns:
@@ -369,6 +561,39 @@ def _evidence_manifest(value: BsePrimaryLifecycleEvidence) -> dict[str, object]:
     return {name: getattr(value, name).astimezone(UTC).isoformat() if isinstance(getattr(value, name), datetime) else getattr(value, name).value if isinstance(getattr(value, name), StrEnum) else getattr(value, name) for name in value.__dataclass_fields__}
 
 
+def _delisted_row_manifest(value: BseCompulsoryDelistedPdfRow) -> dict[str, object]:
+    return {
+        name: getattr(value, name).astimezone(UTC).isoformat() if isinstance(getattr(value, name), datetime)
+        else str(getattr(value, name)) if isinstance(getattr(value, name), Decimal) else getattr(value, name)
+        for name in value.__dataclass_fields__ if name not in {"document_observed_at", "historical_known_at"}
+    }
+
+
+def _delisted_extraction_manifest_values(value: dict[str, object]) -> dict[str, object]:
+    return {
+        "document_fingerprint": value["document_fingerprint"], "source_reference": value["source_reference"],
+        "row_ids": tuple(item.row_id for item in value["rows"]), "rejected_rows": value["rejected_rows"],
+        "invalid_isin_rows": value["invalid_isin_rows"], "invalid_date_rows": value["invalid_date_rows"],
+    }
+
+
+def _delisted_extraction_manifest(value: BseCompulsoryDelistedPdfExtraction) -> dict[str, object]:
+    return _delisted_extraction_manifest_values({name: getattr(value, name) for name in value.__dataclass_fields__ if name != "fingerprint"})
+
+
+def _delisted_link_manifest(value: BseDelistedRowLinkResolution) -> dict[str, object]:
+    return {name: getattr(value, name).value if isinstance(getattr(value, name), StrEnum) else getattr(value, name) for name in value.__dataclass_fields__ if name != "fingerprint"}
+
+
+def _delisted_link(row, status, canonical_instrument_id, reason_codes):
+    body = dict(row_id=row.row_id, status=status, canonical_instrument_id=canonical_instrument_id, reason_codes=tuple(sorted(set(reason_codes))))
+    return BseDelistedRowLinkResolution(**body, fingerprint="sha256:" + manifest_fingerprint(**body))
+
+
+def _same_delisted_row(left: BseCompulsoryDelistedPdfRow, right: BseCompulsoryDelistedPdfRow) -> bool:
+    return _delisted_row_manifest(left) == _delisted_row_manifest(right)
+
+
 def _receipt_manifest(value: BseLifecycleIngestionReceipt) -> dict[str, object]:
     return {name: getattr(value, name).value if isinstance(getattr(value, name), StrEnum) else getattr(value, name) for name in value.__dataclass_fields__ if name != "fingerprint"}
 
@@ -383,6 +608,7 @@ def _aware(value: datetime) -> bool:
 
 __all__ = (
     "BSE_PRIMARY_SOURCE", "CONTRACT_ID", "CONTRACT_VERSION", "BseLifecycleEventType", "BseLifecycleIngestionReceipt",
+    "BseCompulsoryDelistedPdfExtraction", "BseCompulsoryDelistedPdfRow", "BseDelistedRowLinkResolution", "BseDelistedRowLinkStatus",
     "BseLifecycleReceiptStatus", "BsePrimaryLifecycleEvidence", "BsePrimaryLifecycleEvidenceStore", "BsePrimaryLifecycleIngestor",
-    "BsePrimaryLifecycleSource", "ExactCanonicalSecurityLink", "parse_bse_lifecycle_notice", "parse_compulsory_delisted_list_text",
+    "BsePrimaryLifecycleSource", "ExactCanonicalSecurityLink", "extract_compulsory_delisted_pdf", "parse_bse_lifecycle_notice", "parse_compulsory_delisted_list_text", "resolve_delisted_row_exact_isin",
 )
