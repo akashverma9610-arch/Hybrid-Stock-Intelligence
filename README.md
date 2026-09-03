@@ -54,6 +54,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Long-Term Thesis Families Research Shadow V1 readiness](docs/architecture/POST_V1_LONG_TERM_RESEARCH_SHADOW_V1.md)
 - [Long-Term Quality at Fair Value Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_QUALITY_FAIR_VALUE_RESEARCH_SHADOW_V1.md)
 - [Long-Term Fundamental Compounder Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_FUNDAMENTAL_COMPOUNDER_RESEARCH_SHADOW_V1.md)
+- [Long-Term Fundamental Inflection Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_FUNDAMENTAL_INFLECTION_RESEARCH_SHADOW_V1.md)
 - [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Post-V1 primary-source policy research pack](docs/architecture/POST_V1_POLICY_RESEARCH_PACK.md)
 - [Post-V1 Fast-Rotation comparison foundation](docs/architecture/POST_V1_FAST_ROTATION_FOUNDATION.md)
