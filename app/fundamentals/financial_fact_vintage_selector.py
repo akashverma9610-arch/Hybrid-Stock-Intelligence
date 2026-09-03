@@ -686,8 +686,14 @@ def _semantic_key_values(value: FinancialFactSemanticKey) -> tuple[str, ...]:
     return value.ordering_key()
 
 
-def _timestamp_key(value: datetime | None) -> str | None:
-    return value.astimezone(UTC).isoformat() if value is not None else None
+def _timestamp_key(value: datetime | None) -> str:
+    """A total ordering key for optional period boundaries.
+
+    Optional ``period_start`` is an established stored-fact state.  It must
+    remain distinct from a timestamp while still allowing semantic keys with
+    and without that optional boundary to be sorted deterministically.
+    """
+    return value.astimezone(UTC).isoformat() if value is not None else ""
 
 
 def _timezone_aware(value: datetime) -> bool:

@@ -117,6 +117,18 @@ def test_contracts_are_immutable_and_fingerprints_are_deterministic() -> None:
         result.selections = ()
 
 
+def test_optional_period_start_has_a_total_deterministic_semantic_key_order() -> None:
+    complete = _fact("complete", period_end=datetime(2025, 3, 31, tzinfo=UTC))
+    incomplete = replace(
+        _fact("incomplete", period_end=datetime(2026, 3, 31, tzinfo=UTC)),
+        period_start=None,
+    )
+    left = select_financial_fact_vintages((complete, incomplete), canonical_instrument_id="NSE:ALPHA", as_of=T, policy=POLICY)
+    right = select_financial_fact_vintages((incomplete, complete), canonical_instrument_id="NSE:ALPHA", as_of=T, policy=POLICY)
+    assert left.fingerprint == right.fingerprint
+    assert {value.selected_fact_id for value in left.selections} == {"complete", "incomplete"}
+
+
 def test_policy_must_be_exact_frozen_approved_and_inactive() -> None:
     assert not POLICY.active and not POLICY.selected_for_future_selector
     bad = create_frozen_financial_fact_vintage_selection_policy(
