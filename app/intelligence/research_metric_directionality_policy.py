@@ -84,7 +84,11 @@ class ResearchMetricDirectionalityPolicy:
             raise ValueError("RESEARCH_METRIC_DIRECTIONALITY_POLICY_MUST_NOT_BE_ACTIVE")
         if (self.required_trajectory_policy_id, self.required_trajectory_policy_version, self.required_trajectory_policy_fingerprint) != _TRAJECTORY_POLICY:
             raise ValueError("RESEARCH_METRIC_DIRECTIONALITY_POLICY_TRAJECTORY_LINEAGE_REQUIRED")
-        expected = {(metric, basis) for metric in FinancialMetric for basis in FinancialMetricTrajectoryBasis}
+        expected = {
+            (metric, basis)
+            for metric in _FROZEN_POLICY_METRICS
+            for basis in FinancialMetricTrajectoryBasis
+        }
         actual = {(rule.metric, rule.basis) for rule in self.rules}
         if len(self.rules) != len(actual) or actual != expected:
             raise ValueError("RESEARCH_METRIC_DIRECTIONALITY_POLICY_COMPLETE_MATRIX_REQUIRED")
@@ -119,9 +123,29 @@ _HIGHER_YOY_METRICS = frozenset({
 _NON_DIRECTIONAL_FLOW_METRICS = frozenset({FinancialMetric.CFI, FinancialMetric.CFF})
 _NON_DIRECTIONAL_STOCK_METRICS = frozenset({FinancialMetric.SHARES_OUTSTANDING, FinancialMetric.FACE_VALUE})
 
+# This approved v1 matrix is deliberately closed over its originally approved
+# metrics.  Adding a raw canonical metric must not silently change its
+# fingerprint or grant it a directionality interpretation; that needs a new
+# separately governed policy version.
+_FROZEN_POLICY_METRICS = frozenset({
+    FinancialMetric.REVENUE, FinancialMetric.OTHER_INCOME, FinancialMetric.EBITDA,
+    FinancialMetric.OPERATING_PROFIT, FinancialMetric.EBIT, FinancialMetric.DEPRECIATION,
+    FinancialMetric.FINANCE_COST, FinancialMetric.PBT, FinancialMetric.TAX,
+    FinancialMetric.PAT, FinancialMetric.MINORITY_INTEREST, FinancialMetric.EPS_BASIC,
+    FinancialMetric.EPS_DILUTED, FinancialMetric.TOTAL_ASSETS,
+    FinancialMetric.TOTAL_LIABILITIES, FinancialMetric.TOTAL_EQUITY,
+    FinancialMetric.NET_WORTH, FinancialMetric.TOTAL_DEBT,
+    FinancialMetric.CASH_AND_EQUIVALENTS, FinancialMetric.CURRENT_ASSETS,
+    FinancialMetric.CURRENT_LIABILITIES, FinancialMetric.INVENTORY,
+    FinancialMetric.RECEIVABLES, FinancialMetric.PAYABLES, FinancialMetric.CFO,
+    FinancialMetric.CFI, FinancialMetric.CFF, FinancialMetric.CAPEX,
+    FinancialMetric.FREE_CASH_FLOW, FinancialMetric.SHARES_OUTSTANDING,
+    FinancialMetric.FACE_VALUE,
+})
+
 
 def create_research_metric_directionality_policy() -> ResearchMetricDirectionalityPolicy:
-    rules = tuple(sorted((_rule(metric, basis) for metric in FinancialMetric for basis in FinancialMetricTrajectoryBasis), key=lambda rule: (rule.metric.value, rule.basis.value)))
+    rules = tuple(sorted((_rule(metric, basis) for metric in _FROZEN_POLICY_METRICS for basis in FinancialMetricTrajectoryBasis), key=lambda rule: (rule.metric.value, rule.basis.value)))
     values = dict(
         policy_id="research-metric-directionality-policy", version="v1-approved", proposal_version="v1-proposed",
         approval_status=ResearchMetricDirectionalityPolicyApprovalStatus.APPROVED,

@@ -155,6 +155,26 @@ def test_comparable_depth_is_factual_and_not_a_compounder_score() -> None:
     assert "CANDIDATE" not in serialize_canonical_annual_facts_readiness(receipt)
 
 
+def test_annual_end_balance_sheet_stock_is_not_rejected_for_lacking_a_flow_duration() -> None:
+    value = _fact("equity", metric=FinancialMetric.TOTAL_EQUITY, fiscal_year=2025)
+    value = replace(value, period_type=FinancialPeriodType.POINT_IN_TIME, value_basis=FinancialValueBasis.UNKNOWN, period_start=None)
+    receipt = assess_canonical_annual_facts((value,), canonical_instrument_id="NSE:ALPHA", statement_scope=StatementScope.CONSOLIDATED, as_of=T)
+    coverage = _cover(receipt, CompounderAnnualMeasureFamily.SHAREHOLDERS_EQUITY)
+    assert coverage.status is CanonicalAnnualFactReadinessStatus.PIT_READY
+    assert coverage.comparable_annual_period_count == 1
+
+
+def test_balance_sheet_stock_rejects_flow_period_or_non_unknown_basis() -> None:
+    value = _fact("equity-flow", metric=FinancialMetric.TOTAL_EQUITY)
+    receipt = assess_canonical_annual_facts(
+        (value,), canonical_instrument_id="NSE:ALPHA",
+        statement_scope=StatementScope.CONSOLIDATED, as_of=T,
+    )
+    coverage = _cover(receipt, CompounderAnnualMeasureFamily.SHAREHOLDERS_EQUITY)
+    assert coverage.status is CanonicalAnnualFactReadinessStatus.BASIS_MISMATCH
+    assert coverage.reasons == (CanonicalAnnualFactReadinessReason.FULL_YEAR_BASIS_REQUIRED,)
+
+
 def test_serialization_is_stable_and_tampering_is_rejected() -> None:
     receipt = assess_canonical_annual_facts((_fact("revenue"),), canonical_instrument_id="NSE:ALPHA", statement_scope=StatementScope.CONSOLIDATED, as_of=T)
     assert serialize_canonical_annual_facts_readiness(receipt) == serialize_canonical_annual_facts_readiness(receipt)

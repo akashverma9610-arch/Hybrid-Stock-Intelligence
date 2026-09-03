@@ -868,7 +868,12 @@ def _selected_context_facts(document: BseXbrlDocument, period_end: datetime) -> 
     a selected filing from silently becoming evidence for a different filing
     period.  Balance-sheet metrics are the only mapped instant facts.
     """
-    instant_metrics = {FinancialMetric.TOTAL_ASSETS, FinancialMetric.TOTAL_LIABILITIES}
+    instant_metrics = {
+        FinancialMetric.TOTAL_ASSETS, FinancialMetric.TOTAL_LIABILITIES,
+        FinancialMetric.TOTAL_EQUITY, FinancialMetric.CASH_AND_EQUIVALENTS,
+        FinancialMetric.OTHER_BANK_BALANCES, FinancialMetric.CURRENT_BORROWINGS,
+        FinancialMetric.NONCURRENT_BORROWINGS,
+    }
     return tuple(
         item for item in document.context_facts
         if item.context.period_end == period_end
@@ -877,7 +882,8 @@ def _selected_context_facts(document: BseXbrlDocument, period_end: datetime) -> 
 
 
 # The mappings are deliberately one-way: an ambiguous/unsupported BSE concept
-# creates no canonical numerical fact.  EBITDA and cash-flow are intentionally absent.
+# creates no canonical numerical fact.  In particular, no mapping derives
+# EBITDA, total debt, aggregate capex, or period-end shares.
 _CONCEPTS = (
     ("RevenueFromOperations", FinancialMetric.REVENUE),
     ("OtherIncome", FinancialMetric.OTHER_INCOME),
@@ -895,6 +901,14 @@ _CONCEPTS = (
     ("DepreciationAndAmortisationExpense", FinancialMetric.DEPRECIATION),
     ("Assets", FinancialMetric.TOTAL_ASSETS),
     ("Liabilities", FinancialMetric.TOTAL_LIABILITIES),
+    ("Equity", FinancialMetric.TOTAL_EQUITY),
+    ("CashAndCashEquivalents", FinancialMetric.CASH_AND_EQUIVALENTS),
+    ("BankBalanceOtherThanCashAndCashEquivalents", FinancialMetric.OTHER_BANK_BALANCES),
+    ("BorrowingsCurrent", FinancialMetric.CURRENT_BORROWINGS),
+    ("BorrowingsNoncurrent", FinancialMetric.NONCURRENT_BORROWINGS),
+    ("CashFlowsFromUsedInOperatingActivities", FinancialMetric.CFO),
+    ("PurchaseOfPropertyPlantAndEquipmentClassifiedAsInvestingActivities", FinancialMetric.PURCHASE_OF_PROPERTY_PLANT_EQUIPMENT),
+    ("PurchaseOfIntangibleAssetsClassifiedAsInvestingActivities", FinancialMetric.PURCHASE_OF_INTANGIBLE_ASSETS),
 )
 
 

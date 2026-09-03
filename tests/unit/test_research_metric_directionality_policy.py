@@ -29,7 +29,18 @@ def test_frozen_identity_governance_and_fingerprint_are_exact_and_immutable() ->
 
 
 def test_matrix_is_complete_duplicate_free_and_future_enum_safety_is_explicit() -> None:
-    expected = {(metric, basis) for metric in FinancialMetric for basis in FinancialMetricTrajectoryBasis}
+    expected = {
+        (metric, basis)
+        for metric in FinancialMetric
+        if metric not in {
+            FinancialMetric.CURRENT_BORROWINGS,
+            FinancialMetric.NONCURRENT_BORROWINGS,
+            FinancialMetric.OTHER_BANK_BALANCES,
+            FinancialMetric.PURCHASE_OF_PROPERTY_PLANT_EQUIPMENT,
+            FinancialMetric.PURCHASE_OF_INTANGIBLE_ASSETS,
+        }
+        for basis in FinancialMetricTrajectoryBasis
+    }
     actual = {(rule.metric, rule.basis) for rule in POLICY.rules}
     assert len(POLICY.rules) == len(expected) == len(actual)
     assert all(rule.required_trajectory_policy_fingerprint == "15c73f130f99cd690ddb9241a616bb0c4a1604daf14e3b59c4cefad8e41d66a7" for rule in POLICY.rules)

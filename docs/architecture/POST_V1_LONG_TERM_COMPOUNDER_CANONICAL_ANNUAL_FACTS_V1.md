@@ -56,9 +56,11 @@ source of truth.
 ## Direct reported measure admission
 
 The `CompounderAnnualMeasureFamily` receipt always reports all families below.
-An entry is admitted only when the existing fact is `REPORTED`, `ANNUAL`,
-`FULL_YEAR`, the exact requested scope, and the family has an exact direct
-canonical mapping.
+An entry is admitted only when it is `REPORTED`, has the exact requested
+scope, and the family has an exact direct canonical mapping.  Income-statement
+and cash-flow flows must be `ANNUAL` / `FULL_YEAR`; exact balance-sheet stocks
+must be `POINT_IN_TIME` / `UNKNOWN` at the reported fiscal year end.  A stock
+is never given an invented annual duration.
 
 | Candidate family | Existing direct metric admitted in V1 | Statement family | Current rule |
 | --- | --- | --- | --- |
@@ -75,6 +77,38 @@ canonical mapping.
 An unavailable mapping is not a zero, neutral observation, or adverse company
 finding.  It is a fail-closed data-contract state.  Later source-mapping work
 must establish exact reported concepts before it can change this table.
+
+## Local official BSE staged-XBRL annual backfill
+
+`BseStagedAnnualFactBackfillService` replays only an already staged local
+official BSE XBRL through the existing exact-ISIN canonical importer.  It has
+no network, provider, discovery, taxonomy, portfolio, broker, order, API, or
+runtime-clock dependency.  The caller supplies every approved target's
+canonical identity and numeric BSE security code explicitly; it never infers
+non-financial eligibility.
+
+Before import it verifies the staged alias's canonical instrument, ISIN,
+security code, XML SHA-256 and exactly one `ANNUAL` / `FULL_YEAR` alias.  The
+existing importer then verifies the XBRL's own ISIN/security-code identity,
+keeps original/revision evidence immutable, preserves statement scope,
+period/basis and source publication metadata, and uses its existing
+insert-only conflict rules.  Replaying an unchanged document is reported as
+`UNCHANGED`; a changed immutable fact is never overwritten.
+
+The direct additions are intentionally narrow: `CFO`, annual-end
+`TOTAL_EQUITY`, annual-end `CASH_AND_EQUIVALENTS`,
+`CURRENT_BORROWINGS`, `NONCURRENT_BORROWINGS`, and
+`OTHER_BANK_BALANCES`.  Purchase-of-PPE and purchase-of-intangibles remain
+separate reported components.  The backfill does not synthesize `CAPEX`,
+`TOTAL_DEBT`, net debt, free cash flow, EBIT/EBITDA, shares, ratios, or
+quality/valuation conclusions.
+
+The fact contract keeps `available_at = max(published_at, received_at)`.
+Consequently, an archive replay preserves the source publication timestamp but
+does not backdate the first local receipt for historical selection.  This is a
+conservative existing PIT rule, not a fetch-time substitute for source
+availability.  Upstox remains reconciliation-only and is never promoted by
+this path.
 
 ## PIT and vintage rules
 

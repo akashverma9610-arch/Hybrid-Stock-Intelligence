@@ -238,7 +238,18 @@ def test_available_only_and_exact_policy_lineages_fail_closed() -> None:
 
 
 def test_policy_matrix_is_complete_exact_and_has_no_lower_favorable_rule() -> None:
-    expected = {(metric, basis) for metric in FinancialMetric for basis in Basis}
+    expected = {
+        (metric, basis)
+        for metric in FinancialMetric
+        if metric not in {
+            FinancialMetric.CURRENT_BORROWINGS,
+            FinancialMetric.NONCURRENT_BORROWINGS,
+            FinancialMetric.OTHER_BANK_BALANCES,
+            FinancialMetric.PURCHASE_OF_PROPERTY_PLANT_EQUIPMENT,
+            FinancialMetric.PURCHASE_OF_INTANGIBLE_ASSETS,
+        }
+        for basis in Basis
+    }
     assert len(POLICY.rules) == 124
     assert {(rule.metric, rule.basis) for rule in POLICY.rules} == expected
     assert not [rule for rule in POLICY.rules if rule.disposition is Disposition.LOWER_POTENTIALLY_FAVORABLE]

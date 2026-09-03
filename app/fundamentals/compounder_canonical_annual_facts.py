@@ -88,10 +88,11 @@ class CanonicalAnnualFactCoverage:
     """A factual, non-qualifying measure-family coverage receipt.
 
     ``selected_fact_ids`` are references to stored ``FinancialFact`` records,
-    never copied values.  A period is comparable only if it is directly
+    never copied values. A flow is comparable only when it is directly
     reported, full-year, scope-exact, PIT-selected, and has an explicit annual
-    start/end/fiscal-year identity.  This strictness avoids silently treating
-    an end date alone as evidence of a complete accounting year.
+    start/end/fiscal-year identity. A stock is comparable only when it is an
+    exact point-in-time observation at the fiscal annual end; it never needs a
+    fabricated duration.
     """
 
     measure_family: CompounderAnnualMeasureFamily
@@ -208,6 +209,10 @@ _STATEMENT_FAMILIES = {
     CompounderAnnualMeasureFamily.CASH_AND_CASH_EQUIVALENTS: AnnualStatementFamily.BALANCE_SHEET,
     CompounderAnnualMeasureFamily.PERIOD_END_SHARES_OUTSTANDING: AnnualStatementFamily.SHARE_CAPITAL,
 }
+
+_POINT_IN_TIME_METRICS = frozenset({
+    FinancialMetric.TOTAL_EQUITY, FinancialMetric.CASH_AND_EQUIVALENTS,
+})
 
 
 def assess_canonical_annual_facts(
@@ -331,21 +336,18 @@ def _coverage(
     admitted = tuple(
         value for value in relevant
         if value.fact_kind is FundamentalFactKind.REPORTED
-        and value.period_type is FinancialPeriodType.ANNUAL
-        and value.value_basis is FinancialValueBasis.FULL_YEAR
+        and _admitted_period(value, metric)
         and value.statement_scope is statement_scope
     )
     wrong_basis = any(
         value.fact_kind is FundamentalFactKind.REPORTED
-        and value.period_type is FinancialPeriodType.ANNUAL
         and value.statement_scope is statement_scope
-        and value.value_basis is not FinancialValueBasis.FULL_YEAR
+        and not _admitted_period(value, metric)
         for value in relevant
     )
     wrong_scope = any(
         value.fact_kind is FundamentalFactKind.REPORTED
-        and value.period_type is FinancialPeriodType.ANNUAL
-        and value.value_basis is FinancialValueBasis.FULL_YEAR
+        and _admitted_period(value, metric)
         and value.statement_scope is not statement_scope
         for value in relevant
     )
@@ -443,7 +445,15 @@ def _make_coverage(
 
 
 def _complete_annual_identity(value: FinancialFact) -> bool:
+    if value.period_type is FinancialPeriodType.POINT_IN_TIME:
+        return value.fiscal_year is not None
     return value.period_start is not None and value.fiscal_year is not None and value.period_start < value.period_end
+
+
+def _admitted_period(value: FinancialFact, metric: FinancialMetric) -> bool:
+    if metric in _POINT_IN_TIME_METRICS:
+        return value.period_type is FinancialPeriodType.POINT_IN_TIME and value.value_basis is FinancialValueBasis.UNKNOWN
+    return value.period_type is FinancialPeriodType.ANNUAL and value.value_basis is FinancialValueBasis.FULL_YEAR
 
 
 def _fact_fingerprint(value: FinancialFact) -> str:
