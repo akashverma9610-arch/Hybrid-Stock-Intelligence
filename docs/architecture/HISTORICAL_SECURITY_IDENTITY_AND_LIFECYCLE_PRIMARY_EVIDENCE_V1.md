@@ -128,11 +128,14 @@ Survivorship reconstruction status: `NOT_READY`.
 
 ## Explicit blockers and next dependency
 
-The remaining primary-source gap is coverage, not ingestion logic: a bounded
-set of exact BSE notices and delisted-list rows must be acquired, staged, and
-linked through exact historical/current mapping evidence.  NSE dated security
-master availability remains discovery-only; the repository has no proven
-historical NSE snapshots and does not import them in this slice.
+The remaining primary-source gap is historical known-time coverage. BSE
+notice/PDF evidence remains separately staged according to its own source
+semantics. The bounded official NSE MII security-master acquisition is
+documented in
+[NSE Historical MII Security Master Snapshot Acquisition V1](NSE_HISTORICAL_MII_SECURITY_MASTER_SNAPSHOT_ACQUISITION_V1.md).
+Its date-labelled snapshots are immutable exact identity evidence, but public
+files do not supply a verifiable publication time and therefore cannot yet be
+promoted into PIT-eligible identities.
 
 After usable identity/lifecycle evidence exists, the next separate governed dependency is
 `PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1`; it must attach to

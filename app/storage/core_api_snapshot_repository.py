@@ -4,7 +4,7 @@ from __future__ import annotations
 import importlib
 import json
 from dataclasses import asdict, dataclass, fields, is_dataclass
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from enum import Enum, StrEnum
 from typing import Any, Protocol
@@ -96,6 +96,11 @@ class CoreApiSnapshotFamily(StrEnum):
     # identities they may (or may not) link.  An unlinked BSE notice is still
     # auditable evidence; it must never be promoted by a name match.
     HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE = "HISTORICAL_SECURITY_LIFECYCLE_EVIDENCE"
+    # Date-labelled NSE MII security-master artifacts are immutable snapshot
+    # evidence.  They are deliberately separate from PIT-eligible identity
+    # receipts: the public report supplies a session date, not a verifiable
+    # publication timestamp.
+    HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT = "HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT"
     HISTORICAL_UNIVERSE_MEMBERSHIP = "HISTORICAL_UNIVERSE_MEMBERSHIP"
     HISTORICAL_CORPORATE_ACTION = "HISTORICAL_CORPORATE_ACTION"
     HISTORICAL_PRICE_INTEGRITY = "HISTORICAL_PRICE_INTEGRITY"
@@ -173,6 +178,7 @@ def snapshot_json_from(value: str | dict[str, Any]) -> CoreApiSnapshot:
 
 def _encode(value: Any) -> Any:
     if isinstance(value, datetime): return {"$type": "datetime", "value": value.isoformat()}
+    if isinstance(value, date): return {"$type": "date", "value": value.isoformat()}
     if isinstance(value, Decimal): return {"$type": "decimal", "value": str(value)}
     if isinstance(value, Enum): return {"$type": "enum", "class": _path(type(value)), "value": value.value}
     if is_dataclass(value): return {"$type": "dataclass", "class": _path(type(value)), "fields": {item.name: _encode(getattr(value, item.name)) for item in fields(value)}}
@@ -186,6 +192,7 @@ def _decode(value: Any) -> Any:
     if not isinstance(value, dict): return [_decode(item) for item in value] if isinstance(value, list) else value
     kind = value.get("$type")
     if kind == "datetime": return datetime.fromisoformat(value["value"])
+    if kind == "date": return date.fromisoformat(value["value"])
     if kind == "decimal": return Decimal(value["value"])
     if kind == "tuple": return tuple(_decode(item) for item in value["items"])
     if kind == "dict": return {key: _decode(item) for key, item in value["items"]}

@@ -251,6 +251,8 @@ adjustment basis are separate from today’s NSE universe. The historical securi
 master keeps effective-date provenance and rejects mixed or raw-across-split
 price series as technical inputs rather than silently changing history. See
 [historical security master](docs/architecture/historical_security_master.md).
+The bounded official NSE dated-security-master boundary is documented in
+[NSE Historical MII Security Master Snapshot Acquisition V1](docs/architecture/NSE_HISTORICAL_MII_SECURITY_MASTER_SNAPSHOT_ACQUISITION_V1.md).
 
 The initial FastAPI boundary exposes `/health`, `/api/v1/system/status`,
 `/api/v1/system/version`, and read-only portfolio snapshot, holdings, and
