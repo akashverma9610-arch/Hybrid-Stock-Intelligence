@@ -61,6 +61,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Long-Term Compounder Policy Research Proposal V1](docs/architecture/POST_V1_LONG_TERM_COMPOUNDER_POLICY_RESEARCH_PROPOSAL_V1.md)
 - [Long-Term Compounder Canonical Annual Facts V1](docs/architecture/POST_V1_LONG_TERM_COMPOUNDER_CANONICAL_ANNUAL_FACTS_V1.md)
 - [Compounder Testable Derived Metrics V1](docs/architecture/POST_V1_COMPOUNDER_TESTABLE_DERIVED_METRICS_V1.md)
+- [Compounder Backtest Universe Readiness and PIT Dataset V1](docs/architecture/POST_V1_COMPOUNDER_BACKTEST_UNIVERSE_READINESS_AND_PIT_DATASET_V1.md)
 - [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Post-V1 primary-source policy research pack](docs/architecture/POST_V1_POLICY_RESEARCH_PACK.md)
 - [Post-V1 Fast-Rotation comparison foundation](docs/architecture/POST_V1_FAST_ROTATION_FOUNDATION.md)
