@@ -66,6 +66,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [PIT Company-Type Classification Research and Contract V1](docs/architecture/PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1.md)
 - [PIT Regulator Company-Type Evidence Ingestion V1](docs/architecture/PIT_REGULATOR_COMPANY_TYPE_EVIDENCE_INGESTION_V1.md)
 - [Regulator–Issuer Exact Legal-Name Correspondence Policy Proposal V1](docs/architecture/REGULATOR_ISSUER_EXACT_LEGAL_NAME_CORRESPONDENCE_POLICY_PROPOSAL_V1.md)
+- [Regulator–Issuer RAW_EXACT Linkage Activation V1](docs/architecture/REGULATOR_ISSUER_RAW_EXACT_LINKAGE_ACTIVATION_V1.md)
 - [Issuer / Legal-Entity ↔ Listed-Security Identity Bridge — Primary Evidence V1](docs/architecture/ISSUER_LEGAL_ENTITY_SECURITY_IDENTITY_BRIDGE_PRIMARY_EVIDENCE_V1.md)
 - [Exact Issuer-Identifier Primary Acquisition V1](docs/architecture/EXACT_ISSUER_IDENTIFIER_PRIMARY_ACQUISITION_V1.md)
 - [BRSR Primary Issuer-Identifier Backfill V1](docs/architecture/BRSR_PRIMARY_ISSUER_IDENTIFIER_BACKFILL_V1.md)
