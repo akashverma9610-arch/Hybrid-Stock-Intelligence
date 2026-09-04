@@ -256,6 +256,10 @@ The bounded official NSE dated-security-master boundary is documented in
 The follow-on same-session identity interpretation remains a non-active,
 human-approval-gated proposal in
 [NSE Security Master Session-Knownness Policy Proposal V1](docs/architecture/NSE_SECURITY_MASTER_SESSION_KNOWNNESS_POLICY_PROPOSAL_V1.md).
+Its separately recorded approved activation is limited to discrete session
+observations in
+[NSE Session-Known Security Identity Activation V1](docs/architecture/NSE_SESSION_KNOWN_SECURITY_IDENTITY_ACTIVATION_V1.md);
+it does not create listing intervals or survivorship-safe historical coverage.
 
 The initial FastAPI boundary exposes `/health`, `/api/v1/system/status`,
 `/api/v1/system/version`, and read-only portfolio snapshot, holdings, and

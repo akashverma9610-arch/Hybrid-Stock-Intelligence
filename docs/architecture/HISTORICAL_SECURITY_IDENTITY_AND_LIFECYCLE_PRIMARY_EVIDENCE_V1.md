@@ -133,9 +133,13 @@ notice/PDF evidence remains separately staged according to its own source
 semantics. The bounded official NSE MII security-master acquisition is
 documented in
 [NSE Historical MII Security Master Snapshot Acquisition V1](NSE_HISTORICAL_MII_SECURITY_MASTER_SNAPSHOT_ACQUISITION_V1.md).
-Its date-labelled snapshots are immutable exact identity evidence, but public
-files do not supply a verifiable publication time and therefore cannot yet be
-promoted into PIT-eligible identities.
+Its date-labelled snapshots are immutable exact identity evidence. They do not
+provide a verifiable publication timestamp and cannot become PIT listing
+intervals. A separately human-approved, session-point-only activation may
+describe exact identity presence for the same labelled NSE trading session;
+see [NSE Session-Known Security Identity Activation V1](NSE_SESSION_KNOWN_SECURITY_IDENTITY_ACTIVATION_V1.md).
+It is not an interval receipt and cannot establish prior/later presence,
+listing, delisting, continuity, or membership.
 
 After usable identity/lifecycle evidence exists, the next separate governed dependency is
 `PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1`; it must attach to

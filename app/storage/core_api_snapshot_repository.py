@@ -101,6 +101,9 @@ class CoreApiSnapshotFamily(StrEnum):
     # receipts: the public report supplies a session date, not a verifiable
     # publication timestamp.
     HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT = "HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT"
+    # Human-approved, exact NSE session-point observations.  These are not
+    # HistoricalSecurityIdentity intervals and cannot establish lifecycle.
+    HISTORICAL_NSE_SESSION_IDENTITY = "HISTORICAL_NSE_SESSION_IDENTITY"
     HISTORICAL_UNIVERSE_MEMBERSHIP = "HISTORICAL_UNIVERSE_MEMBERSHIP"
     HISTORICAL_CORPORATE_ACTION = "HISTORICAL_CORPORATE_ACTION"
     HISTORICAL_PRICE_INTEGRITY = "HISTORICAL_PRICE_INTEGRITY"
