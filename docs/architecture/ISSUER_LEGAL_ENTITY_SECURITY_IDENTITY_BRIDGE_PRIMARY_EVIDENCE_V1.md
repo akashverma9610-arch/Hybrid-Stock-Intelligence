@@ -33,7 +33,7 @@ No edit distance, case-folded name equality, aliases, manual mapping, LLM infere
 
 ## Existing model and artifact audit
 
-There is no populated canonical issuer/legal-entity model or issuer table in the active production database. The acquisition adapter now has an append-only primary-evidence receipt/bridge store; it does not create an issuer master. The old proposed company-type contract has a small `ExactIssuerSecurityBridge` input shape, but it is neither a canonical issuer store nor a stored receipt.
+There is no populated canonical issuer/legal-entity model or issuer table in the active production database. The acquisition adapter has an append-only primary-evidence receipt/bridge store; it does not create an issuer master. The official NSE BRSR FY23-24 backfill has populated 1,199 filing-level `CIN + symbol` source receipts, but has created zero session bridges. The old proposed company-type contract has a small `ExactIssuerSecurityBridge` input shape, but it is neither a canonical issuer store nor a stored receipt.
 
 The gap is both model absence (no populated legal issuer entity/identifier registry) and mapping absence (no stored primary artifact linking an NSE session security to CIN, LEI, regulator registration, official listing issuer ID, or another stable legal key).
 
@@ -57,7 +57,7 @@ The [NSE circular describing the daily MII security file](https://nsearchives.ns
 
 | Identifier type | Exact validation | Current coverage |
 | --- | --- | ---: |
-| `CIN` | Upper-case Indian CIN structure | 0 |
+| `CIN` | Upper-case Indian CIN structure | 1,199 BRSR filing receipts / 1,171 distinct CINs / 0 session bridges |
 | `LEI` | Upper-case 20-character LEI | 0 |
 | `REGULATOR_REGISTRATION_ID` | Exact source-keyed registration value | 0 |
 | `OFFICIAL_LISTING_ISSUER_ID` | Exact source-keyed listing issuer value | 0 |
@@ -91,31 +91,38 @@ Repeated identical inputs are canonicalized and do not create false ambiguity. D
 
 ## Read-only current-anchor audit
 
-Scope: read-only production SQLite inspection of `HISTORICAL_NSE_SESSION_IDENTITY`. No bridge was written, no regulator source was acquired, and no company type was evaluated.
+Scope: production SQLite inspection after the bounded official NSE BRSR FY23-24 evidence append. No session bridge was written, no regulator source was acquired, and no company type was evaluated.
 
 | Anchor session | Session receipts | Exact rows with ISIN | Bridges | Distinct issuers | CIN | LEI | Other keys | Conflicts | Issuer unresolved | PIT unsupported |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | `2024-02-05` | 24,693 | 24,693 | 0 | 0 | 0 | 0 | 0 | 0 | 24,693 | 0 |
 | `2026-08-31` | 37,155 | 37,155 | 0 | 0 | 0 | 0 | 0 | 0 | 37,155 | 0 |
 
+The 1,199 BRSR rows contain no ISIN. Their dated exact symbol+CIN evidence is
+not eligible for the above same-session resolver. At the 2024 anchor all BRSR
+filings are still future evidence. At the 2026 anchor, 1,150 exact NSE symbols
+(7,465 session receipts) have earlier BRSR symbol+CIN observations and are
+therefore `POTENTIAL_PIT_BRIDGE_CONTINUITY`, not bridges. No continuity is
+promoted by this document.
+
 There are 11,295 distinct ISINs / 10,252 symbols at the 2024 anchor and 16,520 ISINs / 16,019 symbols at the 2026 anchor. These are security facts, not issuer counts. The unresolved column means issuer linkage is absent; it does not claim the exact session-security receipt is missing.
 
 | Symbol | ISIN | 2024 rows | 2026 rows | Bridge readiness |
 | --- | --- | ---: | ---: | --- |
-| `APARINDS` | `INE372A01015` | 5 | 7 | `ISSUER_EVIDENCE_UNAVAILABLE` |
-| `GENUSPOWER` | `INE955D01029` | 5 | 7 | `ISSUER_EVIDENCE_UNAVAILABLE` |
-| `GLAND` | `INE068V01023` | 5 | 7 | `ISSUER_EVIDENCE_UNAVAILABLE` |
-| `DEEPINDS` | `INE0FHS01024` | 5 | 5 | `ISSUER_EVIDENCE_UNAVAILABLE` |
-| `ICICIBANK` | `INE090A01021` | 6 | 8 | `ISSUER_EVIDENCE_UNAVAILABLE` |
+| `APARINDS` | `INE372A01015` | 5 | 7 | `ISSUER_EVIDENCE_UNAVAILABLE`; 2026 exact BRSR symbol+CIN potential only. |
+| `GENUSPOWER` | `INE955D01029` | 5 | 7 | `ISSUER_EVIDENCE_UNAVAILABLE`; 2026 exact BRSR symbol+CIN potential only. |
+| `GLAND` | `INE068V01023` | 5 | 7 | `ISSUER_EVIDENCE_UNAVAILABLE`; 2026 exact BRSR symbol+CIN potential only. |
+| `DEEPINDS` | `INE0FHS01024` | 5 | 5 | `ISSUER_EVIDENCE_UNAVAILABLE`; 2026 exact BRSR symbol+CIN potential only. |
+| `ICICIBANK` | `INE090A01021` | 6 | 8 | `ISSUER_EVIDENCE_UNAVAILABLE`; 2026 exact BRSR symbol+CIN potential only. |
 
 Row multiplicity is exchange session-security data, not separate issuers. No target is classified as bank, non-financial, or comparable.
 
-If the separate PIT company-type proposal were later approved, **zero** session-security receipts at either anchor currently have enough exact issuer linkage to attempt regulator/taxonomy classification. No `BANK`, `NBFC`, `INSURER`, or `NON_FINANCIAL` result exists here.
+If the separate PIT company-type proposal were later approved, **zero** session-security receipts at either anchor currently have enough exact issuer linkage to attempt regulator/taxonomy classification. The BRSR evidence creates a bounded continuity-policy question, not a classification input. No `BANK`, `NBFC`, `INSURER`, or `NON_FINANCIAL` result exists here.
 
 ## Non-goals and dependency
 
 This slice does not ingest RBI/IRDAI evidence, assign a taxonomy, construct a Compounder universe, run a candidate grid, rank securities, evaluate holdings, or change Discovery, Harvest, Sell, Rotation, Decision Score, Six Gates, portfolio state, or execution. It creates no issuer registry or database migration.
 
-Meaningful issuer/security linkage has not yet been established, so the conditional next roadmap step is not started. After a separately approved source-specific bridge acquisition establishes it, the sequence is `PIT_REGULATOR_COMPANY_TYPE_EVIDENCE_INGESTION_V1`, then `PIT_COMPANY_TYPE_CLASSIFICATION_ACTIVATION_V1`, then `COMPOUNDER_BACKTEST_PANEL_READINESS_V2`.
+Meaningful primary issuer **evidence** exists, but meaningful issuer/security linkage has not been promoted. The immediate next step is `ISIN_ISSUER_BRIDGE_CONTINUITY_POLICY_PROPOSAL_V1`; only if that policy is separately approved and applied safely can the sequence proceed to `PIT_REGULATOR_COMPANY_TYPE_EVIDENCE_INGESTION_V1`, then `PIT_COMPANY_TYPE_CLASSIFICATION_ACTIVATION_V1`, then `COMPOUNDER_BACKTEST_PANEL_READINESS_V2`.
 
 Listed security is not issuer, issuer is not parent group, current identity is not historical identity, missing bridge is not inferred issuer, and company type is not investment qualification.

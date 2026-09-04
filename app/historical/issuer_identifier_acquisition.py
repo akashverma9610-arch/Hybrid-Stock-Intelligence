@@ -53,6 +53,10 @@ class IssuerIdentifierEvidenceSource(StrEnum):
     """Source lineages retained independently; no precedence is implied."""
 
     NSE_STRUCTURED_FILING = "NSE_STRUCTURED_FILING"
+    # The official NSE BRSR bulk archive is a distinct filing lineage.  Its
+    # general-disclosure table may prove a CIN plus an exact NSE symbol without
+    # asserting an ISIN or a timeless security relationship.
+    NSE_BRSR_ARCHIVE = "NSE_BRSR_ARCHIVE"
     BSE_STRUCTURED_FILING = "BSE_STRUCTURED_FILING"
     GLEIF_ANNA_ISIN_LEI = "GLEIF_ANNA_ISIN_LEI"
 
@@ -107,7 +111,7 @@ class ExactIssuerIdentifierEvidence:
     source_as_of_date: date
     source_observed_at: datetime
     historical_known_at: datetime | None
-    isin: str
+    isin: str | None
     nse_symbol: str | None
     bse_scrip_code: str | None
     issuer_identifier_type: IssuerIdentifierType
@@ -257,9 +261,10 @@ class IssuerIdentifierEvidenceStore:
 
 
 def evidence_from_structured_row(
-    *, source: IssuerIdentifierEvidenceSource, source_document: bytes,
+    *, source: IssuerIdentifierEvidenceSource, source_document: bytes | None = None,
+    source_document_fingerprint: str | None = None,
     source_reference: str, source_record_id: str, source_as_of_date: date,
-    source_observed_at: datetime, isin: str, issuer_identifier_type: IssuerIdentifierType,
+    source_observed_at: datetime, isin: str | None, issuer_identifier_type: IssuerIdentifierType,
     issuer_identifier_value: str, nse_symbol: str | None = None,
     bse_scrip_code: str | None = None, issuer_legal_name: str | None = None,
     registration_authority_id: str | None = None,
@@ -269,16 +274,27 @@ def evidence_from_structured_row(
     """Create source evidence only from fields already labelled by its source."""
     if not isinstance(source, IssuerIdentifierEvidenceSource):
         raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_EVIDENCE_SOURCE_INVALID")
-    if not source_document:
-        raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_SOURCE_DOCUMENT_REQUIRED")
     if not _identifier(source_record_id) or not _date(source_as_of_date) or not _aware(source_observed_at):
         raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_SOURCE_METADATA_INVALID")
     if historical_known_at is not None and (not _aware(historical_known_at) or _utc(historical_known_at).date() > source_as_of_date):
         raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_FUTURE_KNOWN_TIME")
-    source_document_fingerprint = _bytes_hash(source_document)
+    if (source_document is None) == (source_document_fingerprint is None):
+        raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_SOURCE_DOCUMENT_LINEAGE_REQUIRED")
+    if source_document is not None and not source_document:
+        raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_SOURCE_DOCUMENT_REQUIRED")
+    if source_document_fingerprint is not None and not _fingerprint(source_document_fingerprint):
+        raise IssuerIdentifierAcquisitionError("ISSUER_IDENTIFIER_SOURCE_DOCUMENT_FINGERPRINT_INVALID")
+    # NSE BRSR General evidence is intentionally a CIN+NSE-symbol filing
+    # observation.  The source-specific parser never claims an ISIN, so a
+    # caller cannot accidentally repurpose this lineage into a bridge.
+    if source is IssuerIdentifierEvidenceSource.NSE_BRSR_ARCHIVE and (
+        isin is not None or nse_symbol is None or bse_scrip_code is not None
+    ):
+        raise IssuerIdentifierAcquisitionError("BRSR_FILING_SECURITY_LOCATOR_INVALID")
+    document_fingerprint = source_document_fingerprint or _bytes_hash(source_document or b"")
     values = dict(
         source=source, source_record_id=source_record_id,
-        source_document_fingerprint=source_document_fingerprint,
+        source_document_fingerprint=document_fingerprint,
         source_reference=source_reference, source_as_of_date=source_as_of_date,
         source_observed_at=_utc(source_observed_at),
         historical_known_at=_utc(historical_known_at) if historical_known_at is not None else None,
@@ -437,7 +453,8 @@ def acquire_exact_issuer_bridges(
         e_present += outcome is IssuerIdentifierWriteOutcome.ALREADY_PRESENT
     by_isin: dict[str, list[ExactIssuerIdentifierEvidence]] = {}
     for item in supplied:
-        by_isin.setdefault(item.isin, []).append(item)
+        if item.isin is not None:
+            by_isin.setdefault(item.isin, []).append(item)
     for session in sessions:
         if session.session_date != source_as_of_date:
             continue
@@ -523,6 +540,7 @@ def audit_target_issuer_coverage(
 def _bridge_source_type(source: IssuerIdentifierEvidenceSource) -> IssuerSecurityBridgeSourceType:
     return {
         IssuerIdentifierEvidenceSource.NSE_STRUCTURED_FILING: IssuerSecurityBridgeSourceType.OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY,
+        IssuerIdentifierEvidenceSource.NSE_BRSR_ARCHIVE: IssuerSecurityBridgeSourceType.OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY,
         IssuerIdentifierEvidenceSource.BSE_STRUCTURED_FILING: IssuerSecurityBridgeSourceType.OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY,
         IssuerIdentifierEvidenceSource.GLEIF_ANNA_ISIN_LEI: IssuerSecurityBridgeSourceType.GLEIF_ANNA_CERTIFIED_ISIN_LEI_RELATIONSHIP,
     }[source]
@@ -591,9 +609,11 @@ def _evidence_valid(value: ExactIssuerIdentifierEvidence) -> bool:
         _identifier(value.evidence_id), isinstance(value.source, IssuerIdentifierEvidenceSource),
         _identifier(value.source_record_id), _fingerprint(value.source_document_fingerprint),
         _fingerprint(value.source_record_fingerprint), _nonblank(value.source_reference),
-        _date(value.source_as_of_date), _aware(value.source_observed_at), _ISIN.fullmatch(value.isin) is not None,
+        _date(value.source_as_of_date), _aware(value.source_observed_at),
+        value.isin is None or _ISIN.fullmatch(value.isin) is not None,
         value.nse_symbol is None or _nonblank(value.nse_symbol),
         value.bse_scrip_code is None or _nonblank(value.bse_scrip_code),
+        value.isin is not None or value.nse_symbol is not None or value.bse_scrip_code is not None,
         isinstance(value.issuer_identifier_type, IssuerIdentifierType), valid_identifier,
         value.issuer_legal_name is None or _nonblank(value.issuer_legal_name),
         (pair[0] is None) == (pair[1] is None),
