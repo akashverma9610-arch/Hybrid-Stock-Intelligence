@@ -142,6 +142,6 @@ It is not an interval receipt and cannot establish prior/later presence,
 listing, delisting, continuity, or membership.
 
 After usable identity/lifecycle evidence exists, the next separate governed dependency is
-`PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1`; it must attach to
-the stable canonical listed-security identity and must not be inferred from
-sector/industry or names.
+[`PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1`](PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1.md);
+it must attach to the stable canonical listed-security identity and must not be
+inferred from sector/industry or names.
