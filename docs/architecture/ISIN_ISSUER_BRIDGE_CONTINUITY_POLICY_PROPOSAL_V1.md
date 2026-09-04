@@ -1,6 +1,13 @@
 # ISIN ↔ Issuer Bridge Continuity Policy Proposal V1
 
-**Status: `PROPOSED / NOT_APPROVED / NOT_ACTIVE / RESEARCH_ONLY / NON_EXECUTABLE`.**
+**Status: `APPROVED_SEMANTICS / NOT_ACTIVE / RESEARCH_ONLY / NON_EXECUTABLE`.**
+
+The anchor and strictly forward same-ISIN continuity semantics in this document
+have human approval. That approval does **not** activate a bridge, selection,
+or issuer master. The bounded
+[`BRSR Issuer Anchor Session-Master Backfill V1`](BRSR_ISSUER_ANCHOR_SESSION_MASTER_BACKFILL_V1.md)
+is primary-evidence acquisition only; any continuity activation remains a
+separate governed slice.
 
 ## Purpose and fixed boundary
 
@@ -197,7 +204,7 @@ state system unnecessarily.
 
 ## Read-only impact audit
 
-### FY23-24 corpus and stored source snapshots
+### FY23-24 corpus and bounded anchor evidence
 
 The persisted official FY23-24 BRSR General evidence has 1,199 accepted direct
 CIN+NSE-symbol rows, 1,174 symbols, 1,171 CINs, and 138 filing dates. It has
@@ -205,16 +212,19 @@ no ISIN. It includes 133 weekend-dated rows, which cannot receive an
 exact-session anchor under this proposal without separately approved explicit
 effective evidence.
 
-Only two MII snapshot/session-identity populations are stored: `2024-02-05`
-and `2026-08-31`. Neither is a FY23-24 BRSR filing date.
+The primary-evidence backfill has now retained a bounded exact-date population.
+Its immutable production receipt, including date availability and conflict
+counts, is maintained in
+[`BRSR Issuer Anchor Session-Master Backfill V1`](BRSR_ISSUER_ANCHOR_SESSION_MASTER_BACKFILL_V1.md).
+It does not activate this continuity policy.
 
 | Audit item | Result |
 | --- | ---: |
-| BRSR rows sharing a stored MII snapshot date | 0 |
-| BRSR symbols sharing a stored MII snapshot date | 0 |
-| FY23-24 BRSR anchor snapshots already stored | 0 |
-| Candidate snapshot dates still to acquire/validate | 138 filing dates, subject to calendar filtering |
-| Existing exact issuer/security bridges | 0 |
+| FY23-24 BRSR rows in corpus | 1,199 |
+| Candidate snapshot dates | 138 filing dates, subject to exact-date validation |
+| `v2` terminal MII date receipts | 55 (52 acquired; 3 unavailable) |
+| Exact non-active anchor-ready records | 358 |
+| Active issuer/security bridges under this policy | 0 |
 
 Any candidate can use only the existing official fixed path:
 
@@ -227,18 +237,19 @@ validates gzip, filename, schema, report-date binding, and source fingerprint.
 
 ### Named-target requirements
 
-Each target date is a weekday, but the identity boundary stores no durable NSE
-holiday dataset. The dates below are **candidate** sessions pending the existing
-calendar assertion, never invented calendar facts. No required snapshot is
-currently stored.
+The identity boundary still stores no durable NSE holiday dataset. For the five
+rows below, however, the exact official date-labelled MII report was validated
+successfully and is retained as direct primary evidence for that labelled
+session. This source fact does not create a general weekday/holiday rule or an
+intraday availability claim.
 
-| Symbol | BRSR known time | Candidate session / required MII file | Snapshot stored? | Current result | 2026 forward potential after a valid anchor |
-| --- | --- | --- | --- | --- | --- |
-| `DEEPINDS` | `2024-06-20T10:38:09+00:00` | `2024-06-20` / `NSE_CM_security_20062024.csv.gz` | No | `ANCHOR_SESSION_SECURITY_EVIDENCE_MISSING` | Potential only for `INE0FHS01024`. |
-| `APARINDS` | `2024-07-31T11:41:17+00:00` | `2024-07-31` / `NSE_CM_security_31072024.csv.gz` | No | `ANCHOR_SESSION_SECURITY_EVIDENCE_MISSING` | Potential only for `INE372A01015`. |
-| `ICICIBANK` | `2024-08-05T17:45:27+00:00` | `2024-08-05` / `NSE_CM_security_05082024.csv.gz` | No | `ANCHOR_SESSION_SECURITY_EVIDENCE_MISSING` | Potential only for `INE090A01021`. |
-| `GLAND` | `2024-08-07T13:57:13+00:00` | `2024-08-07` / `NSE_CM_security_07082024.csv.gz` | No | `ANCHOR_SESSION_SECURITY_EVIDENCE_MISSING` | Potential only for `INE068V01023`. |
-| `GENUSPOWER` | `2024-09-06T05:41:15+00:00` | `2024-09-06` / `NSE_CM_security_06092024.csv.gz` | No | `ANCHOR_SESSION_SECURITY_EVIDENCE_MISSING` | Potential only for `INE955D01029`. |
+| Symbol | BRSR known time | Required MII session / file | Exact anchor result | 2026 same-ISIN read-only potential |
+| --- | --- | --- | --- | --- |
+| `DEEPINDS` | `2024-06-20T10:38:09+00:00` | `2024-06-20` / `NSE_CM_security_20062024.csv.gz` | `ISSUER_ANCHOR_READY` / `INE0FHS01024` | Potential only; not a forward bridge. |
+| `APARINDS` | `2024-07-31T11:41:17+00:00` | `2024-07-31` / `NSE_CM_security_31072024.csv.gz` | `ISSUER_ANCHOR_READY` / `INE372A01015` | Potential only; not a forward bridge. |
+| `ICICIBANK` | `2024-08-05T17:45:27+00:00` | `2024-08-05` / `NSE_CM_security_05082024.csv.gz` | `ISSUER_ANCHOR_READY` / `INE090A01021` | Potential only; not a forward bridge. |
+| `GLAND` | `2024-08-07T13:57:13+00:00` | `2024-08-07` / `NSE_CM_security_07082024.csv.gz` | `ISSUER_ANCHOR_READY` / `INE068V01023` | Potential only; not a forward bridge. |
+| `GENUSPOWER` | `2024-09-06T05:41:15+00:00` | `2024-09-06` / `NSE_CM_security_06092024.csv.gz` | `ISSUER_ANCHOR_READY` / `INE955D01029` | Potential only; not a forward bridge. |
 
 Each target's earliest possible issuer-known time remains its exact BRSR `T`.
 FY23-24 BRSR cannot make 2024-02-05 issuer-complete: all 1,199 facts are
@@ -295,6 +306,7 @@ BRSR_ISSUER_ANCHOR_SESSION_MASTER_BACKFILL_V1
 
 No stage may be skipped.
 
-**`HUMAN_APPROVAL_REQUIRED`** — neither anchor bridging nor forward ISIN
-continuity may be activated until the policy, intraday/calendar limitation,
-receipt representation, and conflict treatment receive explicit approval.
+**`CONTINUITY_ACTIVATION_REMAINS_REQUIRED`** — the approved semantics do not
+by themselves create an active bridge or forward observation. Activation still
+requires exact anchor receipts, governed receipt representation and selection,
+the retained intraday/calendar limitation, and conflict treatment.

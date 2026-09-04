@@ -108,6 +108,10 @@ class CoreApiSnapshotFamily(StrEnum):
     # security bridges.  These are intentionally distinct from both the
     # NSE security receipt and a future issuer/company master.
     HISTORICAL_ISSUER_IDENTIFIER_EVIDENCE = "HISTORICAL_ISSUER_IDENTIFIER_EVIDENCE"
+    # Non-active, immutable BRSR-to-exact-MII anchor readiness receipts. They
+    # retain primary source lineage only and are not issuer bridges or forward
+    # continuity observations.
+    HISTORICAL_ISSUER_ANCHOR_EVIDENCE = "HISTORICAL_ISSUER_ANCHOR_EVIDENCE"
     HISTORICAL_ISSUER_SECURITY_BRIDGE = "HISTORICAL_ISSUER_SECURITY_BRIDGE"
     HISTORICAL_UNIVERSE_MEMBERSHIP = "HISTORICAL_UNIVERSE_MEMBERSHIP"
     HISTORICAL_CORPORATE_ACTION = "HISTORICAL_CORPORATE_ACTION"
