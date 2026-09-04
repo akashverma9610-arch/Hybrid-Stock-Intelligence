@@ -64,6 +64,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Compounder Backtest Universe Readiness and PIT Dataset V1](docs/architecture/POST_V1_COMPOUNDER_BACKTEST_UNIVERSE_READINESS_AND_PIT_DATASET_V1.md)
 - [Historical Security Identity and Lifecycle Primary Evidence V1](docs/architecture/HISTORICAL_SECURITY_IDENTITY_AND_LIFECYCLE_PRIMARY_EVIDENCE_V1.md)
 - [PIT Company-Type Classification Research and Contract V1](docs/architecture/PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1.md)
+- [Issuer / Legal-Entity ↔ Listed-Security Identity Bridge — Primary Evidence V1](docs/architecture/ISSUER_LEGAL_ENTITY_SECURITY_IDENTITY_BRIDGE_PRIMARY_EVIDENCE_V1.md)
 - [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Post-V1 primary-source policy research pack](docs/architecture/POST_V1_POLICY_RESEARCH_PACK.md)
 - [Post-V1 Fast-Rotation comparison foundation](docs/architecture/POST_V1_FAST_ROTATION_FOUNDATION.md)
