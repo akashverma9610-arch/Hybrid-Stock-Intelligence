@@ -104,6 +104,11 @@ class CoreApiSnapshotFamily(StrEnum):
     # Human-approved, exact NSE session-point observations.  These are not
     # HistoricalSecurityIdentity intervals and cannot establish lifecycle.
     HISTORICAL_NSE_SESSION_IDENTITY = "HISTORICAL_NSE_SESSION_IDENTITY"
+    # Exact, source-dated legal-entity evidence and its session-scoped
+    # security bridges.  These are intentionally distinct from both the
+    # NSE security receipt and a future issuer/company master.
+    HISTORICAL_ISSUER_IDENTIFIER_EVIDENCE = "HISTORICAL_ISSUER_IDENTIFIER_EVIDENCE"
+    HISTORICAL_ISSUER_SECURITY_BRIDGE = "HISTORICAL_ISSUER_SECURITY_BRIDGE"
     HISTORICAL_UNIVERSE_MEMBERSHIP = "HISTORICAL_UNIVERSE_MEMBERSHIP"
     HISTORICAL_CORPORATE_ACTION = "HISTORICAL_CORPORATE_ACTION"
     HISTORICAL_PRICE_INTEGRITY = "HISTORICAL_PRICE_INTEGRITY"

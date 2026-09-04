@@ -51,6 +51,7 @@ class IssuerSecurityBridgeSourceType(StrEnum):
     OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY = "OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY"
     APPROVED_DEPOSITORY_SECURITY_REFERENCE = "APPROVED_DEPOSITORY_SECURITY_REFERENCE"
     OFFICIAL_REGULATOR_ENTITY_RECORD = "OFFICIAL_REGULATOR_ENTITY_RECORD"
+    GLEIF_ANNA_CERTIFIED_ISIN_LEI_RELATIONSHIP = "GLEIF_ANNA_CERTIFIED_ISIN_LEI_RELATIONSHIP"
 
 
 class IssuerSecurityBridgeTemporalSemantics(StrEnum):
@@ -111,6 +112,9 @@ class IssuerSecurityBridge:
     effective_from: date | None
     effective_to: date | None
     fingerprint: str
+    # Exact source-display metadata only.  It is never used for matching,
+    # continuity, identity resolution, or issuer-ID derivation.
+    issuer_legal_name: str | None = None
     contract_id: str = CONTRACT_ID
     contract_version: str = CONTRACT_VERSION
 
@@ -154,6 +158,7 @@ def create_issuer_security_bridge(
     session_security: NseSessionPointIdentity,
     issuer_identifier_type: IssuerIdentifierType,
     issuer_identifier_value: str,
+    issuer_legal_name: str | None = None,
     source_evidence_id: str,
     source_evidence_fingerprint: str,
     source_type: IssuerSecurityBridgeSourceType,
@@ -189,6 +194,7 @@ def create_issuer_security_bridge(
         "issuer_identifier_type": issuer_identifier_type,
         "issuer_identifier_value": issuer_identifier_value,
         "issuer_legal_entity_id": issuer_legal_entity_id,
+        "issuer_legal_name": issuer_legal_name,
         "source_evidence_id": source_evidence_id,
         "source_evidence_fingerprint": source_evidence_fingerprint,
         "source_type": source_type,
@@ -306,6 +312,7 @@ def _validate_bridge(value: IssuerSecurityBridge) -> None:
             isinstance(value.issuer_identifier_type, IssuerIdentifierType),
             _issuer_identifier_valid(value.issuer_identifier_type, value.issuer_identifier_value),
             value.issuer_legal_entity_id == _issuer_legal_entity_id(value.issuer_identifier_type, value.issuer_identifier_value),
+            value.issuer_legal_name is None or _nonblank(value.issuer_legal_name),
             _identifier(value.source_evidence_id), _fingerprint(value.source_evidence_fingerprint),
             isinstance(value.source_type, IssuerSecurityBridgeSourceType), _nonblank(value.source_reference),
             _date(value.source_as_of_date), _aware(value.source_observed_at),
@@ -446,6 +453,7 @@ def _bridge_identity_from_values(value: dict[str, object]) -> dict[str, object]:
         "issuer_identifier_type": value["issuer_identifier_type"].value,
         "issuer_identifier_value": value["issuer_identifier_value"],
         "issuer_legal_entity_id": value["issuer_legal_entity_id"],
+        "issuer_legal_name": value["issuer_legal_name"],
         "source_evidence_id": value["source_evidence_id"],
         "source_evidence_fingerprint": value["source_evidence_fingerprint"],
         "source_type": value["source_type"].value,

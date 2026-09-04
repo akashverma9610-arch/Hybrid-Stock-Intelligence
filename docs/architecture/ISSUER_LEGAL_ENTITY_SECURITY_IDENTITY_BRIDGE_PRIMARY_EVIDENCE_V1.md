@@ -1,6 +1,6 @@
 # Issuer / Legal-Entity ↔ Listed-Security Identity Bridge — Primary Evidence V1
 
-**Status: `IMPLEMENTED_PURE_CONTRACT / PRIMARY_SOURCE_ONLY / NOT_ACTIVE / NON_EXECUTABLE`.**
+**Status: `IMPLEMENTED_CONTRACT / PRIMARY_SOURCE_ONLY / NOT_ACTIVE / NON_EXECUTABLE`.**
 
 ## Purpose and boundary
 
@@ -8,7 +8,7 @@ This foundation is a frozen, point-in-time-safe receipt linking one exact listed
 
 The security-side fact is the existing [`NseSessionPointIdentity`](NSE_SESSION_KNOWN_SECURITY_IDENTITY_ACTIVATION_V1.md): one official NSE row proves its exact exchange, symbol, series, ISIN, security code, and identity only for its labelled trading session. `IssuerSecurityBridge` can bind that receipt only when a separately supplied approved primary artifact proves both the exact security and stable issuer identifier.
 
-There is no storage, source acquisition, API, UI, provider, scoring, portfolio, broker, order, or execution dependency. This code cannot classify a company, establish investment qualification, calculate a metric, or run a backtest.
+The contract itself has no source acquisition, API, UI, provider, scoring, portfolio, broker, order, or execution dependency. The separately bounded [exact primary acquisition](EXACT_ISSUER_IDENTIFIER_PRIMARY_ACQUISITION_V1.md) stores supplied, structured source receipts and their same-session bridges in the existing immutable snapshot repository. Neither component can classify a company, establish investment qualification, calculate a metric, or run a backtest.
 
 ## Identity levels remain separate
 
@@ -33,7 +33,7 @@ No edit distance, case-folded name equality, aliases, manual mapping, LLM infere
 
 ## Existing model and artifact audit
 
-There is no populated canonical issuer/legal-entity model, issuer table, or persisted issuer-to-security bridge in the active production database. The old proposed company-type contract has a small `ExactIssuerSecurityBridge` input shape, but it is neither a canonical issuer store nor a stored receipt.
+There is no populated canonical issuer/legal-entity model or issuer table in the active production database. The acquisition adapter now has an append-only primary-evidence receipt/bridge store; it does not create an issuer master. The old proposed company-type contract has a small `ExactIssuerSecurityBridge` input shape, but it is neither a canonical issuer store nor a stored receipt.
 
 The gap is both model absence (no populated legal issuer entity/identifier registry) and mapping absence (no stored primary artifact linking an NSE session security to CIN, LEI, regulator registration, official listing issuer ID, or another stable legal key).
 
@@ -65,7 +65,7 @@ The [NSE circular describing the daily MII security file](https://nsearchives.ns
 
 Legal names are not supported identifier types. The contract does not replace, trim, case-fold, normalize, tokenize, or compare name text.
 
-The only admissible source-family declarations are `NSE_OFFICIAL_LISTING_RECORD`, `BSE_OFFICIAL_LISTING_RECORD`, `OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY`, `APPROVED_DEPOSITORY_SECURITY_REFERENCE`, and `OFFICIAL_REGULATOR_ENTITY_RECORD`. This code fetches none; a future adapter must first prove structured security-and-issuer evidence.
+The only admissible source-family declarations are `NSE_OFFICIAL_LISTING_RECORD`, `BSE_OFFICIAL_LISTING_RECORD`, `OFFICIAL_CORPORATE_FILING_STRUCTURED_IDENTITY`, `APPROVED_DEPOSITORY_SECURITY_REFERENCE`, `OFFICIAL_REGULATOR_ENTITY_RECORD`, and `GLEIF_ANNA_CERTIFIED_ISIN_LEI_RELATIONSHIP`. The bridge contract fetches none. The separate source-specific adapter accepts only a supplied structured NSE/BSE row or a supplied dated GLEIF/ANNA archive; it does not fetch a current security master, parse prose, or infer an identifier.
 
 | Temporal semantic | Required assertion | PIT rule |
 | --- | --- | --- |
@@ -114,7 +114,7 @@ If the separate PIT company-type proposal were later approved, **zero** session-
 
 ## Non-goals and dependency
 
-This slice does not ingest RBI/IRDAI evidence, assign a taxonomy, construct a Compounder universe, run a candidate grid, rank securities, evaluate holdings, or change Discovery, Harvest, Sell, Rotation, Decision Score, Six Gates, portfolio state, or execution. It creates no issuer registry or persistence migration.
+This slice does not ingest RBI/IRDAI evidence, assign a taxonomy, construct a Compounder universe, run a candidate grid, rank securities, evaluate holdings, or change Discovery, Harvest, Sell, Rotation, Decision Score, Six Gates, portfolio state, or execution. It creates no issuer registry or database migration.
 
 Meaningful issuer/security linkage has not yet been established, so the conditional next roadmap step is not started. After a separately approved source-specific bridge acquisition establishes it, the sequence is `PIT_REGULATOR_COMPANY_TYPE_EVIDENCE_INGESTION_V1`, then `PIT_COMPANY_TYPE_CLASSIFICATION_ACTIVATION_V1`, then `COMPOUNDER_BACKTEST_PANEL_READINESS_V2`.
 
