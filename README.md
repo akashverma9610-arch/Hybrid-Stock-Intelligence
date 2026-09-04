@@ -64,6 +64,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Compounder Backtest Universe Readiness and PIT Dataset V1](docs/architecture/POST_V1_COMPOUNDER_BACKTEST_UNIVERSE_READINESS_AND_PIT_DATASET_V1.md)
 - [Historical Security Identity and Lifecycle Primary Evidence V1](docs/architecture/HISTORICAL_SECURITY_IDENTITY_AND_LIFECYCLE_PRIMARY_EVIDENCE_V1.md)
 - [PIT Company-Type Classification Research and Contract V1](docs/architecture/PIT_COMPANY_TYPE_CLASSIFICATION_RESEARCH_AND_CONTRACT_V1.md)
+- [PIT Regulator Company-Type Evidence Ingestion V1](docs/architecture/PIT_REGULATOR_COMPANY_TYPE_EVIDENCE_INGESTION_V1.md)
 - [Issuer / Legal-Entity ↔ Listed-Security Identity Bridge — Primary Evidence V1](docs/architecture/ISSUER_LEGAL_ENTITY_SECURITY_IDENTITY_BRIDGE_PRIMARY_EVIDENCE_V1.md)
 - [Exact Issuer-Identifier Primary Acquisition V1](docs/architecture/EXACT_ISSUER_IDENTIFIER_PRIMARY_ACQUISITION_V1.md)
 - [BRSR Primary Issuer-Identifier Backfill V1](docs/architecture/BRSR_PRIMARY_ISSUER_IDENTIFIER_BACKFILL_V1.md)

@@ -113,6 +113,10 @@ class CoreApiSnapshotFamily(StrEnum):
     # continuity observations.
     HISTORICAL_ISSUER_ANCHOR_EVIDENCE = "HISTORICAL_ISSUER_ANCHOR_EVIDENCE"
     HISTORICAL_ISSUER_SECURITY_BRIDGE = "HISTORICAL_ISSUER_SECURITY_BRIDGE"
+    # Immutable primary regulator records used only to establish future
+    # company-type evidence readiness.  This family is not a company-type
+    # classification, issuer master, or policy-activation store.
+    HISTORICAL_REGULATOR_ENTITY_EVIDENCE = "HISTORICAL_REGULATOR_ENTITY_EVIDENCE"
     HISTORICAL_UNIVERSE_MEMBERSHIP = "HISTORICAL_UNIVERSE_MEMBERSHIP"
     HISTORICAL_CORPORATE_ACTION = "HISTORICAL_CORPORATE_ACTION"
     HISTORICAL_PRICE_INTEGRITY = "HISTORICAL_PRICE_INTEGRITY"
