@@ -1,17 +1,19 @@
 # ISIN ↔ Issuer Bridge Continuity Policy Proposal V1
 
-**Status: `APPROVED_SEMANTICS / NOT_ACTIVE / RESEARCH_ONLY / NON_EXECUTABLE`.**
+**Status: `APPROVED_SEMANTICS / ACTIVE / IDENTITY_ONLY / NON_EXECUTABLE`.**
 
 The anchor and strictly forward same-ISIN continuity semantics in this document
 have human approval. That approval does **not** activate a bridge, selection,
 or issuer master. The bounded
 [`BRSR Issuer Anchor Session-Master Backfill V1`](BRSR_ISSUER_ANCHOR_SESSION_MASTER_BACKFILL_V1.md)
-is primary-evidence acquisition only; any continuity activation remains a
-separate governed slice.
+is primary-evidence acquisition only. The separately governed
+[`ISIN Issuer Bridge Continuity Activation V1`](ISIN_ISSUER_BRIDGE_CONTINUITY_ACTIVATION_V1.md)
+implements the approved semantics; its production receipt determines active
+coverage without expanding the policy.
 
 ## Purpose and fixed boundary
 
-This research-only policy defines two separate questions:
+This V1 policy defines two separate questions:
 
 ```text
 anchor:      exact BRSR symbol S ↔ CIN C at known time T
@@ -23,9 +25,10 @@ continuity:  approved exact I ↔ C anchor at T0
              → candidate forward-only issuer continuity
 ```
 
-It neither activates either semantic nor writes a bridge, continuity receipt,
-issuer master, company type, strategy result, or investment output. It reuses
-the existing immutable primary evidence and preserves:
+This policy document does not itself write a bridge, continuity receipt,
+issuer master, company type, strategy result, or investment output. The active
+V1 implementation reuses the existing immutable primary evidence and
+preserves:
 
 ```text
 FACT → DATA → INTERPRETATION → INFERENCE

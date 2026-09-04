@@ -69,6 +69,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [BRSR Primary Issuer-Identifier Backfill V1](docs/architecture/BRSR_PRIMARY_ISSUER_IDENTIFIER_BACKFILL_V1.md)
 - [ISIN ↔ Issuer Bridge Continuity Policy Proposal V1](docs/architecture/ISIN_ISSUER_BRIDGE_CONTINUITY_POLICY_PROPOSAL_V1.md)
 - [BRSR Issuer Anchor Session-Master Backfill V1](docs/architecture/BRSR_ISSUER_ANCHOR_SESSION_MASTER_BACKFILL_V1.md)
+- [ISIN Issuer Bridge Continuity Activation V1](docs/architecture/ISIN_ISSUER_BRIDGE_CONTINUITY_ACTIVATION_V1.md)
 - [Sell/Risk, Profit-Harvesting and Fast-Rotation policy approval pack](docs/architecture/POST_V1_SELL_PROFIT_ROTATION_POLICY_PROPOSAL.md)
 - [Post-V1 primary-source policy research pack](docs/architecture/POST_V1_POLICY_RESEARCH_PACK.md)
 - [Post-V1 Fast-Rotation comparison foundation](docs/architecture/POST_V1_FAST_ROTATION_FOUNDATION.md)
