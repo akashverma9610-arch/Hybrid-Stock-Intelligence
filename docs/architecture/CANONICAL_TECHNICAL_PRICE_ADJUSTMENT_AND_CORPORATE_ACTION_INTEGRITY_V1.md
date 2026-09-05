@@ -26,6 +26,12 @@ diagnostic dependency. Existing `HistoricalCorporateAction`,
 `HistoricalPriceIntegrityService` remain the only corporate-action/raw-bar
 storage and existing consumption paths.
 
+The separate [Canonical Technical Source-Basis and Action-Coverage Decision
+V1](CANONICAL_TECHNICAL_SOURCE_BASIS_AND_ACTION_COVERAGE_DECISION_V1.md)
+governs whether a provider basis and an action-free lookback can be certified
+before this adjustment contract is considered. It does not change this
+contract's supported split/bonus derivative families.
+
 Raw provider OHLCV remains immutable. A `DerivedTechnicalOHLCVBar` exists only
 in the caller's returned `TechnicalPriceAdjustmentResult`; it retains raw-bar
 fingerprint, price/volume factor, action IDs, requested `as_of`, adjustment
