@@ -1050,6 +1050,11 @@ def parser() -> argparse.ArgumentParser:
     commands.add_parser("dhan-auth-status", help="Read secret-free Dhan market-data authentication status")
     commands.add_parser("dhan-auth-configure", help="Store Dhan Client ID, API Key, and API Secret through hidden local prompts")
     commands.add_parser("dhan-auth-diagnose", help="Perform only one bounded Dhan Generate Consent diagnostic; never opens a browser")
+    nse_udiff_backfill = commands.add_parser(
+        "backfill-nse-udiff-daily-history",
+        help="Acquire immutable NSE UDiFF Final-Bhavcopy daily source artifacts and additive raw bars; never selects a technical source",
+    )
+    nse_udiff_backfill.add_argument("--max-sessions", type=int, help="Bound one resumable sequential acquisition run; omit for the approved full UDiFF-era window")
     commands.add_parser("dhan-materialize-mappings", help="Materialize the current immutable Dhan provider mappings from the official master")
     dhan_ltp_canary = commands.add_parser("dhan-ltp-canary", help="One bounded host-only Dhan LTP batch; defaults to the five portfolio holdings")
     dhan_ltp_canary.add_argument("--scope", choices=("portfolio", "all-current-targets"), default="portfolio", help="Use all stored current targets only when explicitly requested")
@@ -1278,6 +1283,30 @@ def main(
     arguments = parser().parse_args(argv)
     try:
         settings = RuntimeSchedulerSettings.from_environment()
+        if arguments.command == "backfill-nse-udiff-daily-history":
+            from app.market_data.nse_udiff_daily_history import build_local_nse_udiff_daily_backfill
+            service, resources = build_local_nse_udiff_daily_backfill()
+            try:
+                report = service.run(max_sessions=arguments.max_sessions)
+                counts: dict[str, int] = {}
+                for item in report.receipts:
+                    counts[item.status.value] = counts.get(item.status.value, 0) + 1
+                output(" ".join((
+                    f"acquisition_id={report.acquisition_id}",
+                    f"manifest_id={report.manifest.manifest_id}",
+                    f"attempted_sessions={report.attempted_sessions}",
+                    f"replayed_sessions={report.replayed_sessions}",
+                    f"inserted={report.inserted}", f"duplicates={report.duplicates}",
+                    f"source_rows={report.source_rows}",
+                    f"source_blocked={'yes' if report.source_blocked else 'no'}",
+                    f"receipt_statuses={','.join(f'{key}:{value}' for key, value in sorted(counts.items())) or 'NONE'}",
+                )))
+                return 0 if not report.source_blocked else 2
+            finally:
+                for resource in resources:
+                    close = getattr(resource, "close", None)
+                    if callable(close):
+                        close()
         if arguments.command == "compounder-prospective-shadow":
             from app.research.compounder_prospective_runtime import run_local_compounder_prospective_shadow
             cutoff = _prebreakout_timestamp(arguments.as_of)
@@ -2388,7 +2417,7 @@ def main(
         # An explicit bounded ingestion command needs an actionable local
         # blocker, while the generic scheduler commands retain their safe
         # configuration-error behaviour.
-        if arguments.command in {"ingest-upstox-frozen-cohort", "ingest-yfinance-frozen-cohort", "validate-yfinance-frozen-stock", "import-bse-financial-feasibility", "collect-real-portfolio-bse-financials", "import-nse-delivery", "import-nse-tick-master", "approve-prebreakout-policy", "select-prebreakout-policy", "data-operations-run", "reconcile-upstox-historical-conflicts", "data-operations-schedule-once", "data-operations-worker", "historical-bar-conflicts", "ohlcv-readiness", "materialize-real-portfolio-nse-reg31-ownership", "materialize-real-portfolio-reliability-integrity", "dhan-ltp-canary", "dhan-materialize-mappings"}:
+        if arguments.command in {"backfill-nse-udiff-daily-history", "ingest-upstox-frozen-cohort", "ingest-yfinance-frozen-cohort", "validate-yfinance-frozen-stock", "import-bse-financial-feasibility", "collect-real-portfolio-bse-financials", "import-nse-delivery", "import-nse-tick-master", "approve-prebreakout-policy", "select-prebreakout-policy", "data-operations-run", "reconcile-upstox-historical-conflicts", "data-operations-schedule-once", "data-operations-worker", "historical-bar-conflicts", "ohlcv-readiness", "materialize-real-portfolio-nse-reg31-ownership", "materialize-real-portfolio-reliability-integrity", "dhan-ltp-canary", "dhan-materialize-mappings"}:
             output(str(error) or "UPSTOX_INGESTION_CONFIGURATION_ERROR")
         else:
             output("RUNTIME CONFIGURATION ERROR")

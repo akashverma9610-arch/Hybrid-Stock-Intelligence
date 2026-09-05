@@ -453,6 +453,34 @@ class SQLiteHistoricalBarStore:
 
     def upsert(self, bar: CanonicalOHLCVBar) -> BarWriteOutcome:
         self._require_provider_versioned_schema()
+        outcome = self._upsert_without_commit(bar)
+        if outcome is BarWriteOutcome.INSERTED:
+            self._connection.commit()
+        return outcome
+
+    def upsert_many(self, bars: Iterable[CanonicalOHLCVBar]) -> tuple[BarWriteOutcome, ...]:
+        """Atomically write independent provider-versioned observations.
+
+        This is a narrowly scoped throughput helper for bounded official-source
+        imports.  It intentionally uses the same primary key and content
+        comparison as :meth:`upsert`; it neither selects a provider nor
+        suppresses a same-provider revision conflict.  Conflict artifacts
+        remain the caller's responsibility because they need the ingestion
+        receipt's detected-at lineage.
+        """
+        self._require_provider_versioned_schema()
+        outcomes: list[BarWriteOutcome] = []
+        try:
+            self._connection.execute("BEGIN")
+            for bar in bars:
+                outcomes.append(self._upsert_without_commit(bar))
+            self._connection.commit()
+        except Exception:
+            self._connection.rollback()
+            raise
+        return tuple(outcomes)
+
+    def _upsert_without_commit(self, bar: CanonicalOHLCVBar) -> BarWriteOutcome:
         provider = _provider_identity(bar)
         query = f"SELECT * FROM {self._TABLE} WHERE instrument_id=? AND timeframe=? AND start_time=? AND end_time=? AND provider_identity=?"
         existing = self._connection.execute(query, (*_key_values(_bar_key(bar)), provider)).fetchone()
@@ -462,7 +490,6 @@ class SQLiteHistoricalBarStore:
             f"INSERT INTO {self._TABLE} VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             _provider_bar_values(bar, provider),
         )
-        self._connection.commit()
         return BarWriteOutcome.INSERTED
 
     def same_provider_bar(self, bar: CanonicalOHLCVBar) -> CanonicalOHLCVBar | None:
