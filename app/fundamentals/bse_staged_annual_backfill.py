@@ -142,6 +142,7 @@ def _annual_metadata(payload: dict) -> BseResultMetadata | None:
             value.get("revision_reason"), StatementScope(value["statement_scope"]), datetime.fromisoformat(value["period_end"]),
             FinancialPeriodType(value["period_type"]), FinancialValueBasis(value["value_basis"]), payload["document_identifier"],
             value["source_page"], BseTimestampStatus(value["timestamp_status"]),
+            value.get("raw_filing_timestamp"), value.get("raw_filing_timestamp_field_path"),
         )
     except (KeyError, TypeError, ValueError):
         return None

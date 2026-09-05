@@ -91,6 +91,9 @@ def test_bse_xbrl_exact_isin_mapping_metric_scope_scale_revision_and_pit(tmp_pat
     assert not facts.series(instrument.instrument_id, FinancialMetric.EBITDA, limit=10)
     assert not facts.series(instrument.instrument_id, FinancialMetric.CFO, limit=10)
     assert facts.series(instrument.instrument_id, FinancialMetric.TOTAL_LIABILITIES, scope=StatementScope.CONSOLIDATED, limit=10)[0].value == __import__("decimal").Decimal("400")
+    retained = tuple(item.timestamp_evidence for item in filings.list(limit=10))
+    assert all(item is not None for item in retained)
+    assert {item.raw_timestamp_field_path for item in retained if item} == {"BSE_RESULT_PAGE.HTML.filing_date_time", "BSE_RESULT_PAGE.HTML.revised_date_time"}
     before = datetime(2026, 8, 1, 4, 29, 59, tzinfo=UTC)
     after_original = datetime(2026, 8, 1, 4, 30, 1, tzinfo=UTC)
     after_revision = datetime(2026, 8, 5, 4, 30, 1, tzinfo=UTC)

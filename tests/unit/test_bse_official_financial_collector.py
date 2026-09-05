@@ -162,6 +162,8 @@ def test_results_archive_provider_preserves_quarter_year_aliases_with_one_prefer
     assert result[-1].filing_at.isoformat() == "2026-07-24T13:01:40+00:00"
     assert result[-1].xbrl_url == XBRL
     assert result[-1].source_page == ARCHIVE
+    assert result[-1].raw_filing_timestamp == "7/24/2026 6:31:40 PM"
+    assert result[-1].raw_filing_timestamp_field_path == "BSE_RESULT_ARCHIVE.CSV.filing_date_time"
     shared = next(item for item in aliases if item.document_url.endswith("apar-mar-2026.xml"))
     assert [item.period_type.value for item in shared.aliases] == ["ANNUAL", "QUARTERLY"]
     assert shared.preferred.period_type.value == "ANNUAL"

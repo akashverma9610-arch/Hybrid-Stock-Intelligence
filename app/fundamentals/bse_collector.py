@@ -574,6 +574,8 @@ class BseOfficialXbrlStaging:
                     "value_basis": item.value_basis.value,
                     "source_page": item.source_page,
                     "timestamp_status": item.timestamp_status.value,
+                    "raw_filing_timestamp": item.raw_filing_timestamp,
+                    "raw_filing_timestamp_field_path": item.raw_filing_timestamp_field_path,
                 }
                 for item in aliases.aliases
             ],

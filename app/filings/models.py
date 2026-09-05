@@ -29,6 +29,34 @@ class FilingIngestionStatus(StrEnum):
 
 
 @dataclass(frozen=True, slots=True)
+class FilingTimestampSourceEvidence:
+    """Verbatim source timestamp evidence; it asserts no timezone semantics.
+
+    This small carrier keeps a source field and its exact value separate from
+    the existing canonical ``announced_at``/``received_at`` timestamps.  The
+    latter may have been normalized by a legacy adapter, so consumers must use
+    a governed timestamp-provenance resolver before treating this evidence as
+    an exact event time.
+    """
+
+    source_family: str
+    source_document_identity: str
+    source_payload_identity: str
+    raw_timestamp_field_path: str
+    raw_timestamp_value: str
+    timestamp_role: str
+
+    def __post_init__(self) -> None:
+        values = (
+            self.source_family, self.source_document_identity,
+            self.source_payload_identity, self.raw_timestamp_field_path,
+            self.raw_timestamp_value, self.timestamp_role,
+        )
+        if any(not isinstance(value, str) or not value.strip() for value in values):
+            raise ValueError("FILING_TIMESTAMP_SOURCE_EVIDENCE_INVALID")
+
+
+@dataclass(frozen=True, slots=True)
 class FilingAttachment:
     attachment_id: str
     document_type: str
@@ -95,6 +123,7 @@ class CorporateFiling:
     reporting_as_of: datetime | None = None
     normalization_version: str = "corporate-filings-v1"
     warnings: tuple[str, ...] = ()
+    timestamp_evidence: FilingTimestampSourceEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)

@@ -26,7 +26,7 @@ from zoneinfo import ZoneInfo
 from app.data_sources.models import FundamentalFactKind
 from app.filings.models import (
     AttachmentParseStatus, CorporateFiling, FilingAttachment,
-    FilingTextAvailability, FilingType, FinancialResultMetadata,
+    FilingTextAvailability, FilingTimestampSourceEvidence, FilingType, FinancialResultMetadata,
     PrimarySourceQuality,
 )
 from app.filings.store import CorporateFilingsStore, FilingWriteOutcome
@@ -98,6 +98,8 @@ class BseResultMetadata:
     xbrl_url: str
     source_page: str
     timestamp_status: BseTimestampStatus
+    raw_filing_timestamp: str | None = None
+    raw_filing_timestamp_field_path: str | None = None
 
     @property
     def is_revised(self) -> bool:
@@ -410,6 +412,7 @@ class BSEOfficialFinancialResultsIngestionService:
             attachments=(attachment,), revision_of_filing_id=parent, financial_result=FinancialResultMetadata(
                 metadata.period_end, metadata.scope.value, metadata.period_type.value, metadata.is_revised,
             ), normalization_version="bse-official-xbrl-v1", warnings=tuple(warnings),
+            timestamp_evidence=_timestamp_source_evidence(metadata),
         )
 
     def _save_fact(self, instrument: InstrumentIdentity, filing: CorporateFiling, metadata: BseResultMetadata,
@@ -766,16 +769,39 @@ def _metadata_from_row(row: _ResultRow, security_code: str, scope: StatementScop
                        status: BseTimestampStatus, *, archive_timestamp: bool = False) -> BseResultMetadata:
     period_end, period_type, basis = _period(row.quarter, row.filing_type)
     revised = _bse_timestamp(row.revised_time, status, optional=True, archive_timestamp=archive_timestamp)
+    raw_value = _blank(row.revised_time) if row.status.upper() == "REVISED" else _blank(row.filing_time)
+    raw_field = "revised_date_time" if row.status.upper() == "REVISED" else "filing_date_time"
     filing = revised if row.status.upper() == "REVISED" else _bse_timestamp(
         row.filing_time, status, archive_timestamp=archive_timestamp,
     )
     if filing is None and row.status.upper() == "REVISED":
         filing = _bse_timestamp(row.filing_time, status, archive_timestamp=archive_timestamp)
+        raw_value, raw_field = _blank(row.filing_time), "filing_date_time"
     if filing is None:
         raise BseOfficialError("BSE filing timestamp is unavailable or timezone-unknown.")
     return BseResultMetadata(
         security_code, row.financial_year, row.quarter, row.filing_type, row.status, filing, revised,
         _blank(row.revision_reason), scope, period_end, period_type, basis, url, page, status,
+        raw_value, _bse_timestamp_field_path(raw_field, archive_timestamp),
+    )
+
+
+def _bse_timestamp_field_path(field: str, archive_timestamp: bool) -> str:
+    source = "BSE_RESULT_ARCHIVE.CSV" if archive_timestamp else "BSE_RESULT_PAGE.HTML"
+    return source + "." + field
+
+
+def _timestamp_source_evidence(metadata: BseResultMetadata) -> FilingTimestampSourceEvidence | None:
+    """Retain exact BSE source text without asserting its timezone semantics."""
+    if not metadata.raw_filing_timestamp or not metadata.raw_filing_timestamp_field_path:
+        return None
+    return FilingTimestampSourceEvidence(
+        "BSE_OFFICIAL_FINANCIAL_RESULTS",
+        metadata.xbrl_url,
+        metadata.source_page,
+        metadata.raw_filing_timestamp_field_path,
+        metadata.raw_filing_timestamp,
+        "BSE_RESULT_FILING_OR_REVISION_TIMESTAMP",
     )
 
 
