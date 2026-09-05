@@ -60,6 +60,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Inflection Event-Session and Market-Reaction Policy Proposal V1](docs/architecture/INFLECTION_EVENT_SESSION_AND_MARKET_REACTION_POLICY_PROPOSAL_V1.md)
 - [Canonical Market Session and Event Time V1](docs/architecture/CANONICAL_MARKET_SESSION_AND_EVENT_TIME_V1.md)
 - [Technical Diagnostic Timeframe and Data Readiness V1](docs/architecture/TECHNICAL_DIAGNOSTIC_TIMEFRAME_DATA_READINESS_V1.md)
+- [Canonical Technical Bar Timeframe and Completeness Contract V1](docs/architecture/CANONICAL_TECHNICAL_BAR_TIMEFRAME_AND_COMPLETENESS_CONTRACT_V1.md)
 - [Canonical Filing Timestamp Timezone Provenance V1](docs/architecture/CANONICAL_FILING_TIMESTAMP_TIMEZONE_PROVENANCE_V1.md)
 - [Inflection Accounting-only Prospective Shadow V1](docs/architecture/INFLECTION_ACCOUNTING_ONLY_PROSPECTIVE_SHADOW_V1.md)
 - [Multi-Funnel Discovery Contract and Registry V1](docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md)

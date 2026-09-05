@@ -192,7 +192,7 @@ class Canonical61DiagnosticRunner:
         sector = evidence.sector_id or instrument
         if rule_id == 2: return e.sector_health(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
         if rule_id == 3: return e.sector_rotation(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
-        if rule_id == 4: return e.primary_trend(s, s, instrument, strategy, trend_rules, now)
+        if rule_id == 4: return e.primary_trend(None, s, instrument, strategy, trend_rules, now)
         if rule_id == 5: return e.weinstein(s, instrument, strategy, WeinsteinRules(3, 2), now)
         if rule_id == 6: return e.relative_strength(s, instrument, self._benchmark, sector, (), strategy, relative_rules, now)
         if rule_id == 7: return e.smart_money_proxies(s, instrument, strategy, liquidity_rules, now)
@@ -202,7 +202,7 @@ class Canonical61DiagnosticRunner:
         if rule_id == 11: return e.volume(s, instrument, strategy, 3, 1.5, .5, now)
         if rule_id == 12: return e.ichimoku(s, instrument, strategy, 2, 3, 4, 1, now)
         if rule_id == 13: return e.chikou(s, instrument, strategy, 2, 3, 4, 1, now)
-        if rule_id == 14: return e.mtf({"daily": s, "weekly": s}, instrument, strategy, now)
+        if rule_id == 14: return e.mtf({"daily": s}, instrument, strategy, now)
         if rule_id == 15: return e.business_model_moat(evidence.research, instrument, strategy, now)
         if rule_id == 16: return e.financial_trend(s, instrument, strategy, fundamental_rules, now)
         if rule_id == 17: return e.return_ratios(s, instrument, strategy, fundamental_rules, now)

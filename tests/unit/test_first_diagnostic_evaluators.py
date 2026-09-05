@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 from app.analysis.models import MarketRegimeRules, RelativeStrengthRules, TrendRules
 from app.diagnostics.evaluators import ComponentEligibilityService, DeterministicDiagnosticEvaluators, WeinsteinRules
 from app.diagnostics.models import ComponentEligibility, EvaluationEligibility
@@ -10,7 +12,9 @@ RS = RelativeStrengthRules(3, .1, .03, -.03)
 def test_six_canonical_diagnostics_reuse_analytical_engines() -> None:
     evaluator = DeterministicDiagnosticEvaluators()
     regime = evaluator.market_regime(snapshot(uptrend_bars("benchmark")), "benchmark", STRATEGY_REFERENCE, REGIME, ANALYSIS_TIME)
-    trend = evaluator.primary_trend(snapshot(uptrend_bars("stock")), snapshot(uptrend_bars("stock")), "stock", STRATEGY_REFERENCE, TrendRules(3, 5, True, 1), ANALYSIS_TIME)
+    weekly = replace(snapshot(tuple(replace(item, id=f"weekly-{item.id}") for item in uptrend_bars("stock"))), id="weekly-snapshot")
+    daily = replace(snapshot(uptrend_bars("stock")), id="daily-snapshot")
+    trend = evaluator.primary_trend(weekly, daily, "stock", STRATEGY_REFERENCE, TrendRules(3, 5, True, 1), ANALYSIS_TIME)
     stage = evaluator.weinstein(snapshot(bars("stock", [10, 10, 10, 11, 12, 13, 14, 15])), "stock", STRATEGY_REFERENCE, WeinsteinRules(3, 2), ANALYSIS_TIME)
     relative = evaluator.relative_strength(snapshot(uptrend_bars("stock"), uptrend_bars("benchmark")), "stock", "benchmark", None, (), STRATEGY_REFERENCE, RS, ANALYSIS_TIME)
     structure = evaluator.market_structure(snapshot(uptrend_bars("stock")), "stock", STRATEGY_REFERENCE, 1, ANALYSIS_TIME)
@@ -23,9 +27,20 @@ def test_six_canonical_diagnostics_reuse_analytical_engines() -> None:
 
 def test_mixed_missing_and_component_eligibility_remain_separate_from_score() -> None:
     evaluator = DeterministicDiagnosticEvaluators()
-    mixed = evaluator.primary_trend(snapshot(uptrend_bars("stock")), snapshot(downtrend_bars("stock")), "stock", STRATEGY_REFERENCE, TrendRules(3, 5, True, 1), ANALYSIS_TIME)
+    weekly = replace(snapshot(tuple(replace(item, id=f"weekly-{item.id}") for item in uptrend_bars("stock"))), id="weekly-snapshot")
+    daily = replace(snapshot(downtrend_bars("stock")), id="daily-snapshot")
+    mixed = evaluator.primary_trend(weekly, daily, "stock", STRATEGY_REFERENCE, TrendRules(3, 5, True, 1), ANALYSIS_TIME)
     missing = evaluator.primary_trend(None, snapshot(uptrend_bars("stock")), "stock", STRATEGY_REFERENCE, TrendRules(3, 5, True, 1), ANALYSIS_TIME)
     contribution = ComponentEligibilityService().assess(missing)
     assert mixed.record.result == "MIXED"
     assert missing.record.result == "INSUFFICIENT_DATA" and missing.eligibility is EvaluationEligibility.INELIGIBLE_MISSING_DATA
     assert contribution.status is ComponentEligibility.INELIGIBLE and missing.record.score is None
+
+
+def test_same_snapshot_cannot_be_presented_as_distinct_weekly_or_mtf_evidence() -> None:
+    evaluator = DeterministicDiagnosticEvaluators()
+    same = snapshot(uptrend_bars("stock"))
+    trend = evaluator.primary_trend(same, same, "stock", STRATEGY_REFERENCE, TrendRules(3, 5, True, 1), ANALYSIS_TIME)
+    mtf = evaluator.mtf({"daily": same, "weekly": same}, "stock", STRATEGY_REFERENCE, ANALYSIS_TIME)
+    assert trend.record.result == mtf.record.result == "INSUFFICIENT_DATA"
+    assert trend.eligibility is mtf.eligibility is EvaluationEligibility.INELIGIBLE_MISSING_DATA

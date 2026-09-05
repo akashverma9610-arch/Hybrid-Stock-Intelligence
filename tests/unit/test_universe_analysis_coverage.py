@@ -136,8 +136,9 @@ def test_rich_stored_fixture_reaches_all_61_without_private_api_exposure() -> No
     evidence = StockDiagnosticInputAssembler(StoredFacts(rich_observations())).assemble(_instrument(), T)
     result = Canonical61DiagnosticRunner().run(evidence)
     assert len(result.evaluations) == 61
-    assert result.evaluated == 61, [(item.canonical_rule_id, item.record.result) for item in result.evaluations if item.eligibility.value != "eligible"]
-    assert result.missing == 0 and result.completeness is DiagnosticCompleteness.COMPLETE
+    assert result.evaluated == 59, [(item.canonical_rule_id, item.record.result) for item in result.evaluations if item.eligibility.value != "eligible"]
+    assert {item.canonical_rule_id for item in result.evaluations if item.eligibility.value != "eligible"} == {4, 14}
+    assert result.missing == 2 and result.completeness is DiagnosticCompleteness.PARTIAL
 
 
 def test_coverage_preflight_is_persisted_and_missing_required_history_is_not_neutral(tmp_path) -> None:
@@ -210,7 +211,7 @@ def test_e2e_candidates_are_materialized_only_from_job_outputs_and_reused_by_rot
     assert job.stage is UniverseAnalysisStage.CANDIDATES_MATERIALIZED
     assert {item.instrument_id for item in candidates} == {item.instrument_id for item in instruments}
     qualified = tuple(item for item in candidates if item.qualification_status == "QUALIFIED")
-    assert {item.instrument_id for item in qualified} >= {"C", "HOLD_A", "HOLD_B"}
+    assert qualified == ()  # Rule 4/14 remain fail-closed without distinct canonical timeframe bars.
     assert next(item for item in candidates if item.instrument_id == "D").qualification_status == "PARTIAL"
     incomplete = next(item for item in candidates if item.instrument_id == "E")
     assert incomplete.decision_score is not None and incomplete.qualification_status == "PARTIAL"
@@ -221,9 +222,8 @@ def test_e2e_candidates_are_materialized_only_from_job_outputs_and_reused_by_rot
     ).evaluate(portfolio=_portfolio(), universe=universe, job=job, evaluated_at=T)
     evaluation = store._repository.get_snapshot(f"universe-rotation:{rotation.rotation_evaluation_id}").payload
     assert rotation.rotation_evaluation_id is not None
-    assert evaluation.preferred_candidate_id == "C"
-    assert all(item.candidate.instrument_id not in {"HOLD_A", "HOLD_B"} for item in evaluation.ranked_candidates)
-    assert evaluation.context.candidates[0].decision_scorecard_id == next(item for item in qualified if item.instrument_id == "C").scorecard_id
+    assert evaluation.preferred_candidate_id is None
+    assert evaluation.ranked_candidates == () and evaluation.context.candidates == ()
     assert service.get_job(job.job_id).stage is UniverseAnalysisStage.COMPLETED
     assert PortfolioUniverseRotationService(store=store, rotation_config=RotationConfig("rotation-rich", Decimal(".1"), .7, Decimal("2"), True, True, False, "friction-v1", 0, 0)).evaluate(
         portfolio=_portfolio(), universe=universe, job=job, evaluated_at=T

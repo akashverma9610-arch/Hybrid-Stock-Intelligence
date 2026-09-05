@@ -34,6 +34,8 @@ class DeterministicDiagnosticEvaluators:
 
     def primary_trend(self, weekly: AsOfSnapshot | None, daily: AsOfSnapshot | None, instrument: str, strategy: StrategyVersionReference, rules: TrendRules, now: datetime) -> EvaluatedDiagnostic:
         if weekly is None or daily is None: return self._missing(4, instrument, strategy, now, "weekly and daily bars are both required")
+        if weekly.id == daily.id or {item.id for item in weekly.observations} & {item.id for item in daily.observations}:
+            return self._missing(4, instrument, strategy, now, "distinct canonical daily and weekly snapshots are required")
         w=self.trend.classify(weekly,instrument_id=instrument,strategy_version=strategy,rules=rules,evaluated_at=now); d=self.trend.classify(daily,instrument_id=instrument,strategy_version=strategy,rules=rules,evaluated_at=now)
         if w.status is not AnalysisStatus.VALID or d.status is not AnalysisStatus.VALID: return self._missing(4,instrument,strategy,now,"timeframe trend is insufficient")
         result = "BULLISH" if w.classification.value==d.classification.value=="uptrend" else "BEARISH" if w.classification.value==d.classification.value=="downtrend" else "SIDEWAYS" if w.classification.value==d.classification.value=="sideways" else "MIXED"
@@ -72,8 +74,17 @@ class DeterministicDiagnosticEvaluators:
         x=ichimoku(snapshot,instrument,tenkan,kijun,span_b,displacement); return self._simple(13,instrument,strategy,now,snapshot,x,(("chikou",dict(x.details).get("chikou","INSUFFICIENT_DATA")),),dict(x.details).get("chikou","INSUFFICIENT_DATA"))
     def mtf(self,timeframes,instrument,strategy,now,tenkan=2,kijun=3,span_b=4,displacement=1):
         available=[snapshot for snapshot in timeframes.values() if snapshot is not None]
-        if not available:return self._missing(14,instrument,strategy,now,"no configured timeframe is available")
-        return self._simple(14,instrument,strategy,now,available[0],multi_timeframe_alignment(timeframes,instrument,tenkan,kijun,span_b,displacement))
+        analysis=multi_timeframe_alignment(timeframes,instrument,tenkan,kijun,span_b,displacement)
+        # Raw future/invalid observations take precedence over an otherwise
+        # insufficient timeframe composition.  A caller cannot mask malformed
+        # evidence by labelling one snapshot as more than one timeframe.
+        if analysis.status is AnalysisStatus.INVALID_DATA:
+            return self._simple(14,instrument,strategy,now,available[0] if available else None,analysis)
+        identities=[(snapshot.id, tuple(sorted(item.id for item in snapshot.observations))) for snapshot in available]
+        if len(available) < 2:return self._missing(14,instrument,strategy,now,"at least two distinct canonical timeframes are required")
+        if len(set(identities)) != len(identities) or any(set(left[1]) & set(right[1]) for index,left in enumerate(identities) for right in identities[index + 1:]):
+            return self._missing(14,instrument,strategy,now,"distinct canonical timeframe snapshots are required")
+        return self._simple(14,instrument,strategy,now,available[0],analysis)
     def vwap(self,snapshot,instrument,strategy,now): return self._simple(35,instrument,strategy,now,snapshot,vwap(snapshot,instrument))
     def obv(self,snapshot,instrument,strategy,lookback,now): return self._simple(36,instrument,strategy,now,snapshot,obv(snapshot,instrument,lookback))
     def financial_trend(self,snapshot,instrument,strategy,rules:FundamentalRules,now): return self._simple(16,instrument,strategy,now,snapshot,five_year_trend(snapshot,instrument,rules))

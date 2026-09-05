@@ -1,5 +1,8 @@
+from dataclasses import replace
+
 from app.analysis.sector_volume_ichimoku import ichimoku, vwap
 from app.diagnostics.evaluators import ComponentEligibilityService, DeterministicDiagnosticEvaluators
+from app.domain.models import AsOfSnapshot
 from tests.fixtures.analytical_observations import ANALYSIS_TIME, STRATEGY_REFERENCE, bars, snapshot
 
 
@@ -11,15 +14,26 @@ def _market():
     )
 
 
+def _distinct_weekly_snapshot(data: AsOfSnapshot) -> AsOfSnapshot:
+    """Fixture-only stand-in for independently canonical weekly bars."""
+    return AsOfSnapshot(
+        "weekly-analysis-snapshot",
+        data.as_of_timestamp,
+        data.created_timestamp,
+        data.inclusion_policy,
+        tuple(replace(item, id=f"weekly-{item.id}") for item in data.observations),
+    )
+
+
 def test_all_eight_new_diagnostic_wrappers_are_deterministic_and_mapped():
-    data = _market(); engine = DeterministicDiagnosticEvaluators()
+    data = _market(); weekly = _distinct_weekly_snapshot(data); engine = DeterministicDiagnosticEvaluators()
     cases = (
         lambda: engine.sector_health(data, "sector", "benchmark", STRATEGY_REFERENCE, 3, .05, -.05, ANALYSIS_TIME),
         lambda: engine.sector_rotation(data, "sector", "benchmark", STRATEGY_REFERENCE, 3, .05, -.05, ANALYSIS_TIME),
         lambda: engine.volume(data, "stock", STRATEGY_REFERENCE, 3, 1.5, .7, ANALYSIS_TIME),
         lambda: engine.ichimoku(data, "stock", STRATEGY_REFERENCE, 2, 3, 4, 1, ANALYSIS_TIME),
         lambda: engine.chikou(data, "stock", STRATEGY_REFERENCE, 2, 3, 4, 1, ANALYSIS_TIME),
-        lambda: engine.mtf({"daily": data, "weekly": data}, "stock", STRATEGY_REFERENCE, ANALYSIS_TIME),
+        lambda: engine.mtf({"daily": data, "weekly": weekly}, "stock", STRATEGY_REFERENCE, ANALYSIS_TIME),
         lambda: engine.vwap(data, "stock", STRATEGY_REFERENCE, ANALYSIS_TIME),
         lambda: engine.obv(data, "stock", STRATEGY_REFERENCE, 3, ANALYSIS_TIME),
     )
