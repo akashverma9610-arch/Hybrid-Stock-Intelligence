@@ -62,6 +62,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Canonical Filing Timestamp Timezone Provenance V1](docs/architecture/CANONICAL_FILING_TIMESTAMP_TIMEZONE_PROVENANCE_V1.md)
 - [Inflection Accounting-only Prospective Shadow V1](docs/architecture/INFLECTION_ACCOUNTING_ONLY_PROSPECTIVE_SHADOW_V1.md)
 - [Multi-Funnel Discovery Contract and Registry V1](docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md)
+- [Multi-Funnel Discovery Adapters V1](docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md)
 - [Long-Term Policy Transmission Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_POLICY_TRANSMISSION_RESEARCH_SHADOW_V1.md)
 - [Long-Term Thesis Invalidation Lifecycle Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_THESIS_INVALIDATION_LIFECYCLE_RESEARCH_SHADOW_V1.md)
 - [Long-Term Portfolio Observation Adapter Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_PORTFOLIO_OBSERVATION_ADAPTER_RESEARCH_SHADOW_V1.md)

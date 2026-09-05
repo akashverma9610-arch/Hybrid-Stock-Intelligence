@@ -131,11 +131,11 @@ are references only, and all Strategy Registry, HSI Signal, Decision Score,
 and Six-Gates boundaries remain unchanged.
 
 The exact next bounded continuation is
-`MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1`: adapt only the registry entries whose
-existing source semantics can produce a PIT-valid inspection lead, with no
-whole-market runner or union.  Candidate union/identity is later, followed by
-whole-market orchestration; Discovery Recall remains deferred until the
-foundation is closed.
+the active read-only [Multi-Funnel Discovery Adapters V1](MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md).
+It adapts only PIT-valid existing source states, with no whole-market runner or
+union.  Candidate union/identity is later, followed by whole-market
+orchestration; Discovery Recall remains deferred until the foundation is
+closed.
 
 ## Invariants
 
