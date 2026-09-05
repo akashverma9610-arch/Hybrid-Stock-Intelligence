@@ -96,16 +96,19 @@ adjustment lineage are not available for the retained daily population. Rules
 | Benchmark / sector temporal parity | `NOT_READY` | same source/session/timing gaps |
 | Weekly / monthly derivation gates | `NOT_READY` | daily temporal and adjustment prerequisites incomplete |
 
-## Next bounded repair
+## Follow-on source semantics
 
-`CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1`
+[Canonical Daily Source Session and Publication Semantics V1](CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1.md)
+is now active as a source-facts and forward-adapter boundary. It preserves raw
+Upstox V3 interval-start evidence while isolating its legacy mislabelled
+`end_time`, repairs future adapter capture without fabricating a daily end, and
+permits only a forward HSI-observed known-at receipt. It does not rewrite
+retained rows or certify historical publication time.
 
-It should add only governed source-specific evidence adapters for the actual
-retained Upstox, official NSE bhavcopy, and any approved benchmark/sector
-sources: exact daily session-date mapping, timestamp role, session completion,
-and availability/publication semantics. It must not rewrite historical bars,
-infer old publication timestamps, repair adjustments, derive weekly/monthly
-bars, or activate a horizon policy.
+The remaining dominant repair is
+`CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1`: effective-dated
+first-party ordinary-session identity and close evidence only. Adjustment
+repair, weekly/monthly derivation, and horizon policy remain out of scope.
 
 `4H_SEMANTICS = UNRESOLVED`
 `HORIZON_SPECIFIC_TECHNICAL_POLICY = NOT_ACTIVE`

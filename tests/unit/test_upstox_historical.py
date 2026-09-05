@@ -66,8 +66,13 @@ def test_v3_daily_request_normalizes_decimal_timezone_volume_and_unknown_adjustm
         "Authorization": "Bearer secret",
     }
     assert bars[0].close == Decimal("102.50") and bars[0].end_time.tzinfo is not None
+    assert bars[0].start_time == bars[0].end_time == datetime(2026, 8, 19, 18, 30, tzinfo=UTC)
+    assert bars[0].provenance.exchange_timestamp == bars[0].start_time
+    assert bars[0].provenance.normalization_version == "upstox-history-v4-interval-start"
     assert bars[0].volume == 1234 and bars[0].adjustment_status is AdjustmentStatus.UNKNOWN
     assert "UPSTOX_ADJUSTMENT_SEMANTICS_UNDOCUMENTED" in bars[0].warnings
+    assert "UPSTOX_DAILY_TIMESTAMP_INTERVAL_START" in bars[0].warnings
+    assert "UPSTOX_DAILY_SESSION_END_UNBOUND" in bars[0].warnings
     assert "UPSTOX_OPEN_INTEREST_NOT_IN_CANONICAL_OHLCV_CONTRACT" in bars[0].warnings
 
 

@@ -62,6 +62,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Technical Diagnostic Timeframe and Data Readiness V1](docs/architecture/TECHNICAL_DIAGNOSTIC_TIMEFRAME_DATA_READINESS_V1.md)
 - [Canonical Technical Bar Timeframe and Completeness Contract V1](docs/architecture/CANONICAL_TECHNICAL_BAR_TIMEFRAME_AND_COMPLETENESS_CONTRACT_V1.md)
 - [Canonical Daily Technical Bar Known-at and Completeness Evidence V1](docs/architecture/CANONICAL_DAILY_TECHNICAL_BAR_KNOWN_AT_AND_COMPLETENESS_EVIDENCE_V1.md)
+- [Canonical Daily Source Session and Publication Semantics V1](docs/architecture/CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1.md)
 - [Canonical Filing Timestamp Timezone Provenance V1](docs/architecture/CANONICAL_FILING_TIMESTAMP_TIMEZONE_PROVENANCE_V1.md)
 - [Inflection Accounting-only Prospective Shadow V1](docs/architecture/INFLECTION_ACCOUNTING_ONLY_PROSPECTIVE_SHADOW_V1.md)
 - [Multi-Funnel Discovery Contract and Registry V1](docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md)

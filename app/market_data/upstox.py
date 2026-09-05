@@ -12,7 +12,7 @@ import json
 import gzip
 import requests
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 from typing import Callable, Mapping, Sequence
@@ -257,7 +257,7 @@ def _bar_from_candle(request: HistoricalBarsRequest, mapping: ProviderInstrument
     if not isinstance(row, (list, tuple)) or len(row) < 6:
         raise MarketDataError(ErrorCode.MALFORMED_RESPONSE, "Upstox candle row is malformed.")
     try:
-        end = datetime.fromisoformat(str(row[0]).replace("Z", "+00:00")).astimezone(UTC)
+        source_start = datetime.fromisoformat(str(row[0]).replace("Z", "+00:00")).astimezone(UTC)
         open_, high, low, close = (Decimal(str(value)) for value in row[1:5])
         # V3 index candles can legitimately omit volume.  Canonical OHLCV
         # represents that absence as ``None`` rather than inventing zero or
@@ -271,16 +271,27 @@ def _bar_from_candle(request: HistoricalBarsRequest, mapping: ProviderInstrument
     # contract has no OI field, so it remains non-required/non-analytical and
     # is explicitly surfaced as an availability warning rather than invented.
     oi_warning = ("UPSTOX_OPEN_INTEREST_NOT_IN_CANONICAL_OHLCV_CONTRACT",) if len(row) > 6 and row[6] is not None else ()
-    key = f"{request.instrument.instrument_id}:{request.timeframe.value}:{end.isoformat()}"
+    # Upstox V3 defines its candle timestamp as the timeframe's *start*.  A
+    # daily NSE session end is not ``start + 24 hours`` and requires separate
+    # governed session evidence, so the forward adapter retains an unbound
+    # interval representation instead of fabricating an end instant.  The
+    # version makes this distinct from retained V3 rows whose ``end_time`` was
+    # historically populated with the same raw start timestamp.
+    key = f"{request.instrument.instrument_id}:{request.timeframe.value}:{source_start.isoformat()}"
     provenance = MarketDataProvenance(
-        UPSTOX_PROVIDER, mapping.provider_instrument_reference, end, end, received,
-        "upstox-history-v3", "Historical Candle V3", "upstox-v3-historical-candle",
+        UPSTOX_PROVIDER, mapping.provider_instrument_reference, source_start, source_start, received,
+        "upstox-history-v4-interval-start", "Historical Candle V3", "upstox-v3-historical-candle",
     )
     return CanonicalOHLCVBar(
         f"upstox:{sha256(key.encode()).hexdigest()[:24]}", request.instrument, request.timeframe,
-        end - timedelta(days=1), end, open_, high, low, close, volume, None, None,
+        source_start, source_start, open_, high, low, close, volume, None, None,
         AdjustmentStatus.UNKNOWN, provenance, DataQuality.HIGH,
-        ("UPSTOX_ADJUSTMENT_SEMANTICS_UNDOCUMENTED", *oi_warning),
+        (
+            "UPSTOX_ADJUSTMENT_SEMANTICS_UNDOCUMENTED",
+            "UPSTOX_DAILY_TIMESTAMP_INTERVAL_START",
+            "UPSTOX_DAILY_SESSION_END_UNBOUND",
+            *oi_warning,
+        ),
     )
 
 

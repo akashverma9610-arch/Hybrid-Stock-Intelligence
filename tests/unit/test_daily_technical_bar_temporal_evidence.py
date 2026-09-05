@@ -96,6 +96,29 @@ def test_explicit_publication_before_close_and_after_pit_cutoff_fail_closed():
     assert result.strict_pit_usability is DailyStrictPitUsability.BLOCKED
 
 
+def test_immutable_hsi_observation_is_forward_safe_but_never_historical_source_publication():
+    observed = datetime(2026, 8, 25, 11, tzinfo=UTC)
+    timing = DailyBarSourceTimingEvidence(
+        "fixture", date(2026, 8, 25),
+        DailySourceAvailabilitySemantics.HSI_OBSERVED_AT_FORWARD_ONLY,
+        None, "source-temporal-receipt", FP, observed,
+    )
+    before = resolve_daily_technical_bar_temporal_evidence(
+        canonical_bar_id="technical-bar:before-observation", bar=_bar(), calendar=_calendar(),
+        evaluation_as_of=datetime(2026, 8, 25, 10, tzinfo=UTC), source_timing=timing,
+    )
+    after = resolve_daily_technical_bar_temporal_evidence(
+        canonical_bar_id="technical-bar:after-observation", bar=_bar(), calendar=_calendar(),
+        evaluation_as_of=T, source_timing=timing,
+    )
+    assert before.known_at_state is DailyKnownAtState.KNOWN_AT_FROM_HSI_OBSERVATION
+    assert before.known_at == observed
+    assert before.strict_pit_usability is DailyStrictPitUsability.BLOCKED
+    assert after.known_at_state is DailyKnownAtState.KNOWN_AT_FROM_HSI_OBSERVATION
+    assert after.known_at == observed
+    assert after.strict_pit_usability is DailyStrictPitUsability.USABLE
+
+
 def test_volume_and_adjustment_readiness_remain_separate_from_temporal_readiness():
     result = resolve_daily_technical_bar_temporal_evidence(canonical_bar_id="technical-bar:alpha", bar=_bar(volume=None, adjustment=AdjustmentStatus.UNKNOWN), calendar=_calendar(), evaluation_as_of=T, source_timing=_timing())
     assert result.strict_pit_usability is DailyStrictPitUsability.USABLE

@@ -34,6 +34,7 @@ class DailyTemporalEvidenceError(ValueError):
 class DailySourceAvailabilitySemantics(StrEnum):
     EXPLICIT_PUBLICATION_TIMESTAMP = "EXPLICIT_PUBLICATION_TIMESTAMP"
     PROVIDER_CONTRACT_AFTER_SESSION_CLOSE = "PROVIDER_CONTRACT_AFTER_SESSION_CLOSE"
+    HSI_OBSERVED_AT_FORWARD_ONLY = "HSI_OBSERVED_AT_FORWARD_ONLY"
     UNRESOLVED = "UNRESOLVED"
 
 
@@ -55,6 +56,7 @@ class DailyCompletenessState(StrEnum):
 class DailyKnownAtState(StrEnum):
     RESOLVED_EXPLICIT = "RESOLVED_EXPLICIT"
     RESOLVED_SESSION_CLOSE = "RESOLVED_SESSION_CLOSE"
+    KNOWN_AT_FROM_HSI_OBSERVATION = "KNOWN_AT_FROM_HSI_OBSERVATION"
     SOURCE_TIMING_UNRESOLVED = "SOURCE_TIMING_UNRESOLVED"
 
 
@@ -71,6 +73,7 @@ class DailyTemporalReason(StrEnum):
     SESSION_CLOSE_UNRESOLVED = "SESSION_CLOSE_UNRESOLVED"
     SOURCE_TIMING_UNRESOLVED = "SOURCE_TIMING_UNRESOLVED"
     SOURCE_PUBLICATION_PRECEDES_SESSION_CLOSE = "SOURCE_PUBLICATION_PRECEDES_SESSION_CLOSE"
+    HSI_OBSERVATION_PRECEDES_SESSION_CLOSE = "HSI_OBSERVATION_PRECEDES_SESSION_CLOSE"
     CURRENT_SESSION_IN_PROGRESS = "CURRENT_SESSION_IN_PROGRESS"
     KNOWN_AT_AFTER_EVALUATION_AS_OF = "KNOWN_AT_AFTER_EVALUATION_AS_OF"
     VOLUME_NOT_READY = "VOLUME_NOT_READY"
@@ -78,7 +81,11 @@ class DailyTemporalReason(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class DailyBarSourceTimingEvidence:
-    """Source-backed facts only; ``received_at`` is intentionally absent."""
+    """Source-backed timing facts, including an immutable HSI receipt only when explicit.
+
+    An HSI receipt is never relabelled as source publication.  It can establish
+    a conservative forward-only known-at after the source session has closed.
+    """
 
     provider: str
     session_date: date | None
@@ -86,6 +93,7 @@ class DailyBarSourceTimingEvidence:
     explicit_known_at: datetime | None
     evidence_id: str | None
     evidence_fingerprint: str | None
+    hsi_observed_at: datetime | None = None
 
     def __post_init__(self) -> None:
         if (
@@ -93,10 +101,13 @@ class DailyBarSourceTimingEvidence:
             or not isinstance(self.availability_semantics, DailySourceAvailabilitySemantics)
             or (self.session_date is not None and not isinstance(self.session_date, date))
             or (self.explicit_known_at is not None and not _aware(self.explicit_known_at))
+            or (self.hsi_observed_at is not None and not _aware(self.hsi_observed_at))
             or ((self.evidence_id is None) != (self.evidence_fingerprint is None))
             or (self.evidence_id is not None and (not _ID.fullmatch(self.evidence_id) or not _FP.fullmatch(self.evidence_fingerprint or "")))
             or (self.availability_semantics is DailySourceAvailabilitySemantics.EXPLICIT_PUBLICATION_TIMESTAMP and self.explicit_known_at is None)
             or (self.availability_semantics is DailySourceAvailabilitySemantics.PROVIDER_CONTRACT_AFTER_SESSION_CLOSE and self.explicit_known_at is not None)
+            or (self.availability_semantics is DailySourceAvailabilitySemantics.HSI_OBSERVED_AT_FORWARD_ONLY and (self.explicit_known_at is not None or self.hsi_observed_at is None))
+            or (self.availability_semantics is not DailySourceAvailabilitySemantics.HSI_OBSERVED_AT_FORWARD_ONLY and self.hsi_observed_at is not None)
             or (self.availability_semantics is not DailySourceAvailabilitySemantics.UNRESOLVED and self.evidence_id is None)
         ):
             raise DailyTemporalEvidenceError("DAILY_SOURCE_TIMING_EVIDENCE_INVALID")
@@ -140,7 +151,11 @@ class DailyTechnicalBarTemporalReceipt:
             or self.fingerprint != expected
         ):
             raise DailyTemporalEvidenceError("DAILY_TEMPORAL_RECEIPT_INVALID")
-        resolved = self.known_at_state in {DailyKnownAtState.RESOLVED_EXPLICIT, DailyKnownAtState.RESOLVED_SESSION_CLOSE}
+        resolved = self.known_at_state in {
+            DailyKnownAtState.RESOLVED_EXPLICIT,
+            DailyKnownAtState.RESOLVED_SESSION_CLOSE,
+            DailyKnownAtState.KNOWN_AT_FROM_HSI_OBSERVATION,
+        }
         if resolved != (self.known_at is not None):
             raise DailyTemporalEvidenceError("DAILY_KNOWN_AT_STATE_INVALID")
         if self.strict_pit_usability is DailyStrictPitUsability.USABLE and not (
@@ -203,6 +218,13 @@ def resolve_daily_technical_bar_temporal_evidence(
                 known_at, known_state, completeness = _utc(source_timing.explicit_known_at), DailyKnownAtState.RESOLVED_EXPLICIT, DailyCompletenessState.CLOSED
         elif source_timing.availability_semantics is DailySourceAvailabilitySemantics.PROVIDER_CONTRACT_AFTER_SESSION_CLOSE:
             known_at, known_state, completeness = close, DailyKnownAtState.RESOLVED_SESSION_CLOSE, DailyCompletenessState.CLOSED
+        elif source_timing.availability_semantics is DailySourceAvailabilitySemantics.HSI_OBSERVED_AT_FORWARD_ONLY:
+            assert source_timing.hsi_observed_at is not None
+            observed_at = _utc(source_timing.hsi_observed_at)
+            if observed_at < close:
+                reasons.append(DailyTemporalReason.HSI_OBSERVATION_PRECEDES_SESSION_CLOSE)
+            else:
+                known_at, known_state, completeness = observed_at, DailyKnownAtState.KNOWN_AT_FROM_HSI_OBSERVATION, DailyCompletenessState.CLOSED
         else:
             reasons.append(DailyTemporalReason.SOURCE_TIMING_UNRESOLVED)
     elif session_identity is DailySessionIdentityState.RESOLVED:
@@ -232,7 +254,7 @@ def _payload_values_dict(value: dict[str, object]) -> dict[str, object]:
     source = value["source_timing"]
     assert day is None or isinstance(day, CanonicalTradingDay)
     assert isinstance(source, DailyBarSourceTimingEvidence)
-    return {"contract": CONTRACT_ID, "version": CONTRACT_VERSION, "canonical_bar_id": value["canonical_bar_id"], "canonical_instrument_id": value["canonical_instrument_id"], "provider": value["provider"], "source_bar_id": value["source_bar_id"], "session_date": _date(value["session_date"]), "session_identity": _enum(value["session_identity"]), "trading_day_fingerprint": None if day is None else day.fingerprint, "regular_session_close": _time(value["regular_session_close"]), "session_evidence_id": value["session_evidence_id"], "session_evidence_fingerprint": value["session_evidence_fingerprint"], "source_timing": {"provider": source.provider, "session_date": _date(source.session_date), "availability_semantics": source.availability_semantics.value, "explicit_known_at": _time(source.explicit_known_at), "evidence_id": source.evidence_id, "evidence_fingerprint": source.evidence_fingerprint}, "completeness": _enum(value["completeness"]), "known_at_state": _enum(value["known_at_state"]), "known_at": _time(value["known_at"]), "strict_pit_usability": _enum(value["strict_pit_usability"]), "source_exchange_timestamp": _time(value["source_exchange_timestamp"]), "source_provider_timestamp": _time(value["source_provider_timestamp"]), "source_received_at": _time(value["source_received_at"]), "adjustment_status": _enum(value["adjustment_status"]), "volume_readiness": _enum(value["volume_readiness"]), "reasons": [_enum(item) for item in value["reasons"]]}
+    return {"contract": CONTRACT_ID, "version": CONTRACT_VERSION, "canonical_bar_id": value["canonical_bar_id"], "canonical_instrument_id": value["canonical_instrument_id"], "provider": value["provider"], "source_bar_id": value["source_bar_id"], "session_date": _date(value["session_date"]), "session_identity": _enum(value["session_identity"]), "trading_day_fingerprint": None if day is None else day.fingerprint, "regular_session_close": _time(value["regular_session_close"]), "session_evidence_id": value["session_evidence_id"], "session_evidence_fingerprint": value["session_evidence_fingerprint"], "source_timing": {"provider": source.provider, "session_date": _date(source.session_date), "availability_semantics": source.availability_semantics.value, "explicit_known_at": _time(source.explicit_known_at), "hsi_observed_at": _time(source.hsi_observed_at), "evidence_id": source.evidence_id, "evidence_fingerprint": source.evidence_fingerprint}, "completeness": _enum(value["completeness"]), "known_at_state": _enum(value["known_at_state"]), "known_at": _time(value["known_at"]), "strict_pit_usability": _enum(value["strict_pit_usability"]), "source_exchange_timestamp": _time(value["source_exchange_timestamp"]), "source_provider_timestamp": _time(value["source_provider_timestamp"]), "source_received_at": _time(value["source_received_at"]), "adjustment_status": _enum(value["adjustment_status"]), "volume_readiness": _enum(value["volume_readiness"]), "reasons": [_enum(item) for item in value["reasons"]]}
 
 
 def _canonical(value: object) -> str: return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
