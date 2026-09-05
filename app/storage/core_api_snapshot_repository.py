@@ -85,6 +85,10 @@ class CoreApiSnapshotFamily(StrEnum):
     # future issuer company-type classifier.  It is deliberately neither a
     # final company-type receipt nor a regulator-evidence family.
     TAXONOMY_CATEGORY_EVIDENCE = "TAXONOMY_CATEGORY_EVIDENCE"
+    # Final, policy-governed PIT company-type receipts.  This is deliberately
+    # distinct from taxonomy evidence, regulator evidence, and issuer bridges:
+    # each remains independently auditable input provenance.
+    PIT_COMPANY_TYPE_CLASSIFICATION = "PIT_COMPANY_TYPE_CLASSIFICATION"
     NSE_INDICES_TAXONOMY_SOURCE = "NSE_INDICES_TAXONOMY_SOURCE"
     NSE_SECTOR_INDEX_SOURCE = "NSE_SECTOR_INDEX_SOURCE"
     NSE_SECTOR_INDEX_REGISTRY = "NSE_SECTOR_INDEX_REGISTRY"
