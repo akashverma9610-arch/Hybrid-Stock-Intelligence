@@ -29,7 +29,13 @@ class CorporateActionKind(StrEnum):
 
 
 class PriceAdjustmentBasis(StrEnum):
+    # ``SPLIT_ADJUSTED`` and ``CORPORATE_ACTION_ADJUSTED`` are retained for
+    # compatibility with existing historical-integrity receipts.  The more
+    # precise values below are consumed only by the additive, derived
+    # technical-price-adjustment contract; they never relabel a raw provider
+    # observation.
     RAW="RAW"; SPLIT_ADJUSTED="SPLIT_ADJUSTED"; CORPORATE_ACTION_ADJUSTED="CORPORATE_ACTION_ADJUSTED"; TOTAL_RETURN_ADJUSTED="TOTAL_RETURN_ADJUSTED"; UNKNOWN="UNKNOWN"
+    SPLIT_BONUS_ADJUSTED="SPLIT_BONUS_ADJUSTED"; PRICE_ADJUSTED="PRICE_ADJUSTED"; PROVIDER_ADJUSTED_UNKNOWN_METHOD="PROVIDER_ADJUSTED_UNKNOWN_METHOD"
 
 
 @dataclass(frozen=True, slots=True)
