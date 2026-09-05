@@ -214,7 +214,8 @@ boundary:
 No stage authorizes a later stage by implication.
 
 The active read-only [Multi-Funnel Discovery Contract and Registry V1](MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md)
-is the candidate-recall foundation for these product windows.  It records
-independent inspection origins without introducing a second Brain, a universal
-scanner, qualification, or consumer activation.  Its future adapter, union,
-and whole-market runner stages remain separately governed.
+and [Multi-Funnel Candidate Union and Identity V1](MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md)
+are the candidate-recall foundation for these product windows.  They retain
+independent inspection origins and group exact security identities without
+introducing a second Brain, a universal scanner, qualification, ranking, or
+consumer activation.  Whole-market orchestration remains separately governed.

@@ -30,8 +30,10 @@ explicit `DATA_BLOCKED`, `IDENTITY_BLOCKED`, `POLICY_BLOCKED`, `CONFLICTED`,
 
 An identical replay of one source identity/fingerprint cannot create a second
 lead.  A conflicting replay fails closed.  Separate source observations in a
-single funnel remain separate lead origins; cross-funnel union is explicitly
-deferred to `MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1`.
+single funnel remain separate lead origins.  The active read-only
+[candidate-union layer](MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md)
+now groups those origins by exact canonical security without scoring or
+discarding them.
 
 ## Adapted sources
 
@@ -75,7 +77,7 @@ five-holding report is source lineage only: no lead is a stock judgment.
 
 ## Next boundary
 
-The next bounded slice remains `MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1`.
-It must preserve every funnel origin and source fingerprint for a security,
-without scores/voting/qualification.  Whole-market orchestration and Discovery
-Recall Audit remain not active.
+`MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1` is active as a pure,
+read-only exact-security composition boundary.  The next bounded slice is
+`MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1`; it and Discovery Recall Audit
+remain not active.

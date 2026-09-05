@@ -130,12 +130,11 @@ approval of a final opportunity is represented.  Existing policy identities
 are references only, and all Strategy Registry, HSI Signal, Decision Score,
 and Six-Gates boundaries remain unchanged.
 
-The exact next bounded continuation is
-the active read-only [Multi-Funnel Discovery Adapters V1](MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md).
-It adapts only PIT-valid existing source states, with no whole-market runner or
-union.  Candidate union/identity is later, followed by whole-market
-orchestration; Discovery Recall remains deferred until the foundation is
-closed.
+The active read-only [Multi-Funnel Discovery Adapters V1](MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md)
+adapt only PIT-valid existing source states.  The active read-only
+[Multi-Funnel Candidate Union and Identity V1](MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md)
+then groups exact securities while retaining all origins and coverage.  The
+whole-market runner and Discovery Recall remain separately deferred.
 
 ## Invariants
 
