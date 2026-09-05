@@ -67,6 +67,15 @@ classification cannot appear before its local observed timestamp. This means a
 newly imported classification may be used by forward/current composition but
 cannot alter an earlier frozen trial or backtest.
 
+## Historical assignment acquisition boundary
+
+Historical taxonomy **structure** is not a historical company assignment. The
+completed, bounded [Historical NSE Taxonomy Assignment Acquisition V1](HISTORICAL_NSE_TAXONOMY_ASSIGNMENT_ACQUISITION_V1.md)
+audit recovered historical NSE Indices code-structure documents but no
+date-labelled, official company/security-to-taxonomy assignment artifact. The
+result is `HISTORICAL_TAXONOMY_ASSIGNMENT_COVERAGE = UNAVAILABLE`; no current
+classification may be backfilled into 2024 or another earlier cutoff.
+
 Sector labels alone do not create sector-rotation evidence. The existing
 sector-rotation path also requires a canonical sector-index mapping and
 point-in-time sector price history. Until those official index series are

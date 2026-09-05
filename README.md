@@ -70,6 +70,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Historical Regulator Company-Type Evidence Acquisition V1](docs/architecture/HISTORICAL_REGULATOR_COMPANY_TYPE_EVIDENCE_ACQUISITION_V1.md)
 - [NSE Taxonomy Company-Type Code-Map Proposal V1](docs/architecture/NSE_TAXONOMY_COMPANY_TYPE_CODE_MAP_PROPOSAL_V1.md)
 - [NSE Taxonomy Company-Type Code-Map Activation V1](docs/architecture/NSE_TAXONOMY_COMPANY_TYPE_CODE_MAP_ACTIVATION_V1.md)
+- [Historical NSE Taxonomy Assignment Acquisition V1](docs/architecture/HISTORICAL_NSE_TAXONOMY_ASSIGNMENT_ACQUISITION_V1.md)
 - [Issuer / Legal-Entity ↔ Listed-Security Identity Bridge — Primary Evidence V1](docs/architecture/ISSUER_LEGAL_ENTITY_SECURITY_IDENTITY_BRIDGE_PRIMARY_EVIDENCE_V1.md)
 - [Exact Issuer-Identifier Primary Acquisition V1](docs/architecture/EXACT_ISSUER_IDENTIFIER_PRIMARY_ACQUISITION_V1.md)
 - [BRSR Primary Issuer-Identifier Backfill V1](docs/architecture/BRSR_PRIMARY_ISSUER_IDENTIFIER_BACKFILL_V1.md)
