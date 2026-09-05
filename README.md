@@ -58,6 +58,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Fundamental Inflection Policy Research Proposal V1](docs/architecture/FUNDAMENTAL_INFLECTION_POLICY_RESEARCH_PROPOSAL_V1.md)
 - [Inflection Testable Derived Metrics and Event Alignment V1](docs/architecture/INFLECTION_TESTABLE_DERIVED_METRICS_AND_EVENT_ALIGNMENT_V1.md)
 - [Inflection Event-Session and Market-Reaction Policy Proposal V1](docs/architecture/INFLECTION_EVENT_SESSION_AND_MARKET_REACTION_POLICY_PROPOSAL_V1.md)
+- [Canonical Market Session and Event Time V1](docs/architecture/CANONICAL_MARKET_SESSION_AND_EVENT_TIME_V1.md)
 - [Long-Term Policy Transmission Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_POLICY_TRANSMISSION_RESEARCH_SHADOW_V1.md)
 - [Long-Term Thesis Invalidation Lifecycle Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_THESIS_INVALIDATION_LIFECYCLE_RESEARCH_SHADOW_V1.md)
 - [Long-Term Portfolio Observation Adapter Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_PORTFOLIO_OBSERVATION_ADAPTER_RESEARCH_SHADOW_V1.md)
