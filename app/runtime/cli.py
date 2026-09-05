@@ -1138,6 +1138,11 @@ def parser() -> argparse.ArgumentParser:
         help="Materialize the stored-only NIFTY 500 Quality & Inflection Watch twice for idempotency",
     )
     market_wide_watch.add_argument("--as-of", help="Timezone-aware ISO8601 cutoff; defaults to current UTC time")
+    compounder_prospective = commands.add_parser(
+        "compounder-prospective-shadow",
+        help="Create explicit-as-of immutable Compounder research observations; never qualifies a company",
+    )
+    compounder_prospective.add_argument("--as-of", required=True, help="Timezone-aware ISO8601 PIT cutoff")
     bridge_inbox = commands.add_parser(
         "bridge-external-intelligence-inbox",
         help="Claim and deliver a bounded Supabase intelligence inbox batch to loopback HSI",
@@ -1268,6 +1273,22 @@ def main(
     arguments = parser().parse_args(argv)
     try:
         settings = RuntimeSchedulerSettings.from_environment()
+        if arguments.command == "compounder-prospective-shadow":
+            from app.research.compounder_prospective_runtime import run_local_compounder_prospective_shadow
+            cutoff = _prebreakout_timestamp(arguments.as_of)
+            report = run_local_compounder_prospective_shadow(as_of=cutoff)
+            output(" ".join((
+                f"as_of={report.as_of.isoformat()}",
+                f"non_financial_issuers={report.non_financial_issuers_considered}",
+                f"prospective_ready={report.prospective_ready}",
+                f"observations_inserted={report.observations_inserted}",
+                f"observations_already_present={report.observations_already_present}",
+                f"consolidated_ready={report.consolidated_ready}",
+                f"standalone_ready={report.standalone_ready}",
+                f"rejections={','.join(f'{key}:{count}' for key, count in report.rejected_by_state) or 'NONE'}",
+                f"report_id={report.report_id}",
+            )))
+            return 0
         if arguments.command == "materialize-market-wide-watch":
             from app.intelligence.market_wide_watch import build_local_market_wide_watch_service
             as_of = _prebreakout_timestamp(arguments.as_of) if arguments.as_of else datetime.now(UTC)

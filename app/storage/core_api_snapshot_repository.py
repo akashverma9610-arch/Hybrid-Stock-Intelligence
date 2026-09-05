@@ -154,6 +154,10 @@ class CoreApiSnapshotFamily(StrEnum):
     # financial acquisition coordinator.  This is deliberately separate from
     # both canonical filings/facts and generic evidence-refresh records.
     BSE_FINANCIAL_ACQUISITION = "BSE_FINANCIAL_ACQUISITION"
+    # Forward-only, non-executable Compounder research observations.  This is
+    # deliberately distinct from strategies, signals, and calibration: it
+    # retains factual input provenance without evaluating a candidate grid.
+    COMPOUNDER_PROSPECTIVE_SHADOW = "COMPOUNDER_PROSPECTIVE_SHADOW"
 
 
 @dataclass(frozen=True, slots=True)

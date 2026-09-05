@@ -282,18 +282,11 @@ limited `DESCRIPTIVE_RETROSPECTIVE_SANITY_CHECK` could later describe the
 two-to-three current examples with fully preserved limitations, but it must not
 be called a backtest, select a grid value, or be used for threshold selection.
 
-The appropriate next research path is:
-
-`COMPOUNDER_PROSPECTIVE_SHADOW_VALIDATION_V1`
-
-That future, separately approved slice should begin only from newly captured
-genuine PIT boundaries; retain exact `NON_FINANCIAL` type, issuer, security,
-scope, financial-vintage, and metric lineage; and wait for completed business
-and market horizons. It is **partially** supported today by active
-non-financial type receipts and deterministic derived facts, but it needs a
-new exact session/membership capture, coherent price-integrity assessment, a
-trial ledger, and elapsed future time before it can form outcome labels. No
-prospective implementation is authorised here.
+The separately approved forward-only implementation is now documented in
+[Compounder Prospective Shadow Validation V1](COMPOUNDER_PROSPECTIVE_SHADOW_VALIDATION_V1.md).
+It retains exact `NON_FINANCIAL` type, issuer, security, scope,
+financial-vintage, and metric lineage and waits for genuine future outcomes.
+It does not reopen historical reconstruction or execute candidate thresholds.
 
 ## Non-goals
 
