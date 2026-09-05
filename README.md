@@ -56,6 +56,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Long-Term Fundamental Compounder Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_FUNDAMENTAL_COMPOUNDER_RESEARCH_SHADOW_V1.md)
 - [Long-Term Fundamental Inflection Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_FUNDAMENTAL_INFLECTION_RESEARCH_SHADOW_V1.md)
 - [Fundamental Inflection Policy Research Proposal V1](docs/architecture/FUNDAMENTAL_INFLECTION_POLICY_RESEARCH_PROPOSAL_V1.md)
+- [Inflection Testable Derived Metrics and Event Alignment V1](docs/architecture/INFLECTION_TESTABLE_DERIVED_METRICS_AND_EVENT_ALIGNMENT_V1.md)
 - [Long-Term Policy Transmission Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_POLICY_TRANSMISSION_RESEARCH_SHADOW_V1.md)
 - [Long-Term Thesis Invalidation Lifecycle Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_THESIS_INVALIDATION_LIFECYCLE_RESEARCH_SHADOW_V1.md)
 - [Long-Term Portfolio Observation Adapter Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_PORTFOLIO_OBSERVATION_ADAPTER_RESEARCH_SHADOW_V1.md)
