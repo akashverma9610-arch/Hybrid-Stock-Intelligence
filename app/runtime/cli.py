@@ -1143,6 +1143,11 @@ def parser() -> argparse.ArgumentParser:
         help="Create explicit-as-of immutable Compounder research observations; never qualifies a company",
     )
     compounder_prospective.add_argument("--as-of", required=True, help="Timezone-aware ISO8601 PIT cutoff")
+    inflection_accounting_prospective = commands.add_parser(
+        "inflection-accounting-prospective-shadow",
+        help="Create explicit-as-of immutable Inflection accounting observations; never qualifies an issuer",
+    )
+    inflection_accounting_prospective.add_argument("--as-of", required=True, help="Timezone-aware ISO8601 PIT cutoff")
     bridge_inbox = commands.add_parser(
         "bridge-external-intelligence-inbox",
         help="Claim and deliver a bounded Supabase intelligence inbox batch to loopback HSI",
@@ -1285,6 +1290,23 @@ def main(
                 f"observations_already_present={report.observations_already_present}",
                 f"consolidated_ready={report.consolidated_ready}",
                 f"standalone_ready={report.standalone_ready}",
+                f"rejections={','.join(f'{key}:{count}' for key, count in report.rejected_by_state) or 'NONE'}",
+                f"report_id={report.report_id}",
+            )))
+            return 0
+        if arguments.command == "inflection-accounting-prospective-shadow":
+            from app.research.inflection_accounting_prospective_runtime import run_local_inflection_accounting_prospective_shadow
+            cutoff = _prebreakout_timestamp(arguments.as_of)
+            report = run_local_inflection_accounting_prospective_shadow(as_of=cutoff)
+            output(" ".join((
+                f"as_of={report.as_of.isoformat()}",
+                f"non_financial_issuers={report.non_financial_issuers_considered}",
+                f"issuers_with_quarterly_facts={report.issuers_with_quarterly_facts}",
+                f"revenue_acceleration_ready={report.revenue_acceleration_ready}",
+                f"pat_acceleration_ready={report.pat_acceleration_ready}",
+                f"both_acceleration_ready={report.both_acceleration_ready}",
+                f"observations_inserted={report.observations_inserted}",
+                f"observations_already_present={report.observations_already_present}",
                 f"rejections={','.join(f'{key}:{count}' for key, count in report.rejected_by_state) or 'NONE'}",
                 f"report_id={report.report_id}",
             )))

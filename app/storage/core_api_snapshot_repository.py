@@ -158,6 +158,10 @@ class CoreApiSnapshotFamily(StrEnum):
     # deliberately distinct from strategies, signals, and calibration: it
     # retains factual input provenance without evaluating a candidate grid.
     COMPOUNDER_PROSPECTIVE_SHADOW = "COMPOUNDER_PROSPECTIVE_SHADOW"
+    # Forward-only factual quarterly Inflection accounting observations and
+    # their later accounting-only outcomes.  This is deliberately distinct
+    # from signals, candidates, qualification, and market-reaction evidence.
+    INFLECTION_ACCOUNTING_PROSPECTIVE_SHADOW = "INFLECTION_ACCOUNTING_PROSPECTIVE_SHADOW"
 
 
 @dataclass(frozen=True, slots=True)
