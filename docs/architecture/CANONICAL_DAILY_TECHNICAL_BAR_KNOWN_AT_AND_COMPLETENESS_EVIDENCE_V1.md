@@ -58,10 +58,12 @@ PIT without supplying source timing/session evidence. This is not a claim that
 the historical prices are false; it is a refusal to retrospectively invent
 when they became usable.
 
-The bounded 2022–2026 first-party calendar intentionally has incomplete
-ordinary-weekday evidence. It can validate its explicit special/Muhurat
-sessions, but cannot establish universal historical regular-session identity
-or close timing for this data population.
+The bounded 2022–2026 first-party calendar now has a current, effective-dated
+ordinary weekday/regular-close rule from 2026-09-05 after the retained source
+`known_at`. It can validate a corrected **forward** source fact observed after
+that close, but cannot establish universal historical regular-session identity
+or close timing for this retained data population. See
+[ordinary-session and close evidence](CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1.md).
 
 References: [Upstox Historical Candle Data V3](https://upstox.com/developer/api-documentation/v3/get-historical-candle-data/)
 defines candle timestamp as the start of its timeframe; [NSE EOD data](https://www.nseindia.com/static/market-data/eod-historical-data-subscription)
@@ -73,10 +75,11 @@ into a historical market-known timestamp.
 ## Parity and derivation gates
 
 NIFTY 50 and NIFTY 500 have retained daily bars (746 and 1,673 respectively)
-but share the same missing source timing/session evidence; broad benchmark
-parity is `NOT_READY`. Sector indices are likewise daily-only and have no
-temporal shortcut. Relative strength must not compare a future-certified stock
-bar with a temporally unresolved benchmark/sector bar.
+and sector indices are likewise daily-only. Corrected future equity, benchmark,
+and sector rows use the same forward calendar/close gate, but the retained
+benchmark/sector rows remain V3/yfinance and therefore blocked. Relative
+strength must not compare a forward-certified stock bar with a temporally
+unresolved benchmark/sector bar.
 
 Weekly and monthly derivation remain `NOT_READY`: required constituent session
 identity, closed status, known-at, exact period coverage, and compatible
@@ -87,13 +90,13 @@ adjustment lineage are not available for the retained daily population. Rules
 
 | Classification | State | Reason |
 | --- | --- | --- |
-| Daily session identity | `NOT_READY` | retained source session-date receipt absent; ordinary calendar evidence incomplete |
-| Daily completeness | `NOT_READY` | exact session close and source availability proof absent |
-| Daily known-at | `NOT_READY` | fetch/ingest time is not market known-at |
+| Daily session identity | `PARTIAL` | source session date plus effective current/forward calendar evidence can resolve a daily session; retained historical ordinary dates cannot |
+| Daily completeness | `PARTIAL` | effective current/forward 15:30 IST close is available; source availability/publication proof remains absent |
+| Daily known-at | `PARTIAL` | a post-close immutable HSI observation is a narrow forward-use boundary, never historical market publication |
 | Daily strict PIT usability | `NOT_READY` | 0 retained rows certified by this contract |
 | Daily volume readiness | `PARTIAL` | 11,279 null/zero-volume rows; price validity is separate |
 | Daily adjustment readiness | `PARTIAL` | 1,518,652 `UNKNOWN`, 26,487 `RAW` |
-| Benchmark / sector temporal parity | `NOT_READY` | same source/session/timing gaps |
+| Benchmark / sector temporal parity | `PARTIAL_CAPABILITY / NOT_READY_RETAINED_ROWS` | corrected future rows follow the same calendar gate; retained V3/yfinance rows remain blocked |
 | Weekly / monthly derivation gates | `NOT_READY` | daily temporal and adjustment prerequisites incomplete |
 
 ## Follow-on source semantics
@@ -105,10 +108,10 @@ Upstox V3 interval-start evidence while isolating its legacy mislabelled
 permits only a forward HSI-observed known-at receipt. It does not rewrite
 retained rows or certify historical publication time.
 
-The remaining dominant repair is
-`CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1`: effective-dated
-first-party ordinary-session identity and close evidence only. Adjustment
-repair, weekly/monthly derivation, and horizon policy remain out of scope.
+`CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1` is complete:
+it adds effective-dated first-party forward ordinary-session identity and close
+evidence only. Adjustment repair, weekly/monthly derivation, and horizon policy
+remain out of scope.
 
 `4H_SEMANTICS = UNRESOLVED`
 `HORIZON_SPECIFIC_TECHNICAL_POLICY = NOT_ACTIVE`

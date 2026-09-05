@@ -1,14 +1,15 @@
 """Bounded first-party NSE CM calendar evidence recovered for 2022--2026.
 
-The records are deliberately narrow: annual Capital Market trading-holiday
-circulars, and exact special-session circulars where one was recovered.  They
-do *not* invent a historical normal-weekday convention or a timeless normal
-market phase rule.  Consequently ordinary historical dates remain unresolved
-until an effective-dated first-party rule is retained.
+Annual Capital Market holiday circulars and exact special-session circulars
+remain the historical record.  A retained current NSE equity-timings page is
+also a *forward-only* rule from its immutable ``known_at``: it establishes
+Monday--Friday ordinary trading and the 09:15--15:30 regular-continuous phase
+only from 2026-09-05.  It is never projected into earlier years or even an
+earlier PIT cutoff on that date.
 """
 from __future__ import annotations
 
-from datetime import date, time
+from datetime import UTC, date, datetime, time
 
 from app.historical.canonical_market_session_event_time import (
     CanonicalMarketSessionCalendar,
@@ -19,6 +20,7 @@ from app.historical.canonical_market_session_event_time import (
     make_effective_session_phase_timing,
     make_first_party_session_source,
     make_special_trading_day,
+    make_weekday_trading_convention,
 )
 
 
@@ -27,11 +29,12 @@ COVERAGE_END = date(2026, 12, 31)
 
 
 def nse_capital_market_calendar_2022_2026() -> CanonicalMarketSessionCalendar:
-    """Return the bounded source-backed calendar without implicit weekdays.
+    """Return the bounded source-backed calendar with a forward-only weekday rule.
 
     Every source was published before the dated holiday or special session it
-    controls.  The function performs no retrieval and has no system-clock
-    dependency.  It remains intentionally incomplete for ordinary weekdays.
+    controls, except the retained current timing page, whose explicit known-at
+    bounds its prospective rule. The function performs no retrieval and has no
+    system-clock dependency. Historical ordinary weekdays remain incomplete.
     """
     holidays_2022 = make_first_party_session_source(
         source_id="nse-cmtr-50560-2022-holidays",
@@ -88,6 +91,16 @@ def nse_capital_market_calendar_2022_2026() -> CanonicalMarketSessionCalendar:
         source_reference="https://nsearchives.nseindia.com/content/circulars/CMTR72349.pdf",
         published_on=date(2026, 1, 16),
     )
+    # The current NSE page has no stable publication timestamp.  This is the
+    # immutable HSI knowledge cutoff for the retained page, not a claim that
+    # NSE published the page at that instant.  Its current wording is scoped
+    # prospectively; it cannot settle ordinary-session identity before either
+    # this cutoff or its declared effective date.
+    ordinary_2026_current = make_first_party_session_source(
+        source_id="nse-equity-market-timings-current-2026-09-05",
+        source_reference="https://nseindia.com/resources/exchange-communication-holidays",
+        known_at=datetime(2026, 9, 5, 16, 47, tzinfo=UTC),
+    )
     schedules = (
         make_annual_holiday_schedule(calendar_year=2022, source=holidays_2022, holidays=_days("2022-01-26", "2022-03-01", "2022-03-18", "2022-04-14", "2022-04-15", "2022-05-03", "2022-08-09", "2022-08-15", "2022-08-31", "2022-10-05", "2022-10-24", "2022-10-26", "2022-11-08")),
         make_annual_holiday_schedule(calendar_year=2023, source=holidays_2023, holidays=_days("2023-01-26", "2023-03-07", "2023-03-30", "2023-04-04", "2023-04-07", "2023-04-14", "2023-05-01", "2023-06-28", "2023-08-15", "2023-09-19", "2023-10-02", "2023-10-24", "2023-11-14", "2023-11-27", "2023-12-25")),
@@ -102,6 +115,10 @@ def nse_capital_market_calendar_2022_2026() -> CanonicalMarketSessionCalendar:
         make_special_trading_day(session_date=date(2025, 2, 1), state=TradingDayState.SPECIAL_TRADING_DAY, source=budget_2025),
         make_special_trading_day(session_date=date(2025, 10, 21), state=TradingDayState.MUHURAT_TRADING, source=muhurat_2025),
         make_special_trading_day(session_date=date(2026, 2, 1), state=TradingDayState.SPECIAL_TRADING_DAY, source=budget_2026),
+        # The current NSE timing/holiday page identifies the date and the
+        # forthcoming Muhurat session, but explicitly says timings will be
+        # notified later.  Retain only the descriptive day state.
+        make_special_trading_day(session_date=date(2026, 11, 8), state=TradingDayState.MUHURAT_TRADING, source=ordinary_2026_current),
     )
     # NSE Clearing explicitly quotes CMTR57285 and the June 28 -> 29 change.
     # Retain the amendment as a separate PIT-visible record, never edit the base.
@@ -131,13 +148,25 @@ def nse_capital_market_calendar_2022_2026() -> CanonicalMarketSessionCalendar:
         _phase("nse-cm-2025-muhurat-regular", date(2025, 10, 21), TradingDayState.MUHURAT_TRADING, SessionPhaseType.REGULAR_CONTINUOUS, time(13, 45), time(14, 45), muhurat_2025),
         _phase("nse-cm-2025-muhurat-closing", date(2025, 10, 21), TradingDayState.MUHURAT_TRADING, SessionPhaseType.CLOSING_SESSION, time(14, 55), time(15, 5), muhurat_2025),
         _phase("nse-cm-2026-budget-regular", date(2026, 2, 1), TradingDayState.SPECIAL_TRADING_DAY, SessionPhaseType.REGULAR_CONTINUOUS, time(9, 15), time(15, 30), budget_2026),
+        make_effective_session_phase_timing(
+            timing_id="nse-cm-ordinary-regular-2026-09-05-current",
+            effective_from=date(2026, 9, 5), effective_to=COVERAGE_END,
+            applies_to_states=(TradingDayState.REGULAR_TRADING_DAY,),
+            phase_type=SessionPhaseType.REGULAR_CONTINUOUS,
+            starts_at_local=time(9, 15), ends_at_local=time(15, 30),
+            source=ordinary_2026_current,
+        ),
     )
     return make_canonical_market_session_calendar(
-        calendar_id="nse-capital-market-first-party-2022-2026-v1",
+        calendar_id="nse-capital-market-first-party-2022-2026-v2-ordinary-forward",
         coverage_start=COVERAGE_START,
         coverage_end=COVERAGE_END,
         annual_holiday_schedules=schedules,
-        weekday_conventions=(),
+        weekday_conventions=(make_weekday_trading_convention(
+            convention_id="nse-cm-ordinary-weekdays-2026-09-05-current",
+            effective_from=date(2026, 9, 5), effective_to=COVERAGE_END,
+            trading_weekdays=range(5), source=ordinary_2026_current,
+        ),),
         special_trading_days=specials,
         phase_timings=timings,
     )

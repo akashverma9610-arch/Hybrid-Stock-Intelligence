@@ -58,22 +58,31 @@ NIFTY 50 has 746 daily Upstox V3 rows. NIFTY 500 has 938 Upstox V3 rows and 735 
 | Gate | State | Reason |
 | --- | --- | --- |
 | `UPSTOX_HISTORICAL_TEMPORAL_READINESS` | `NOT_READY` | Recoverable raw start, mislabelled legacy end, no historical source availability. |
-| `UPSTOX_FORWARD_TEMPORAL_READINESS` | `PARTIAL` | V4 captures raw start and HSI observation; ordinary NSE session/close proof is absent. |
-| `NSE_BHAVCOPY_HISTORICAL_TEMPORAL_READINESS` | `NOT_READY` | Trade-date exists; historical publication and ordinary session/close proof do not. |
-| `NSE_BHAVCOPY_FORWARD_TEMPORAL_READINESS` | `PARTIAL` | Trade-date and HSI receipt can feed the resolver, subject to calendar proof. |
+| `UPSTOX_FORWARD_TEMPORAL_READINESS` | `PARTIAL` | V4 captures raw start and HSI observation; source-backed ordinary NSE session/close proof now exists only from 2026-09-05 after its retained `known_at`. |
+| `NSE_BHAVCOPY_HISTORICAL_TEMPORAL_READINESS` | `NOT_READY` | Trade-date exists; historical publication and historical ordinary-session proof do not. |
+| `NSE_BHAVCOPY_FORWARD_TEMPORAL_READINESS` | `PARTIAL` | Trade-date and HSI receipt can feed the resolver only for the effective forward calendar window. |
 | `YFINANCE_CANONICAL_AUTHORITY` | `NOT_READY` | Secondary research source with no approved canonical timing contract. |
-| `BENCHMARK_FORWARD_TEMPORAL_READINESS` | `NOT_READY` | Retained benchmark rows are V3/yfinance only. |
-| `SECTOR_FORWARD_TEMPORAL_READINESS` | `NOT_READY` | Retained sector rows are V3 only. |
-| `DAILY_SESSION_IDENTITY` / `DAILY_COMPLETENESS` | `NOT_READY` | First-party calendar lacks ordinary-weekday identity/regular-close coverage. |
+| `BENCHMARK_FORWARD_TEMPORAL_READINESS` | `PARTIAL_CAPABILITY / NOT_READY_RETAINED_ROWS` | Corrected future Upstox index rows follow the same calendar gate; retained benchmark rows are V3/yfinance only. |
+| `SECTOR_FORWARD_TEMPORAL_READINESS` | `PARTIAL_CAPABILITY / NOT_READY_RETAINED_ROWS` | Corrected future Upstox sector rows follow the same calendar gate; retained sector rows are V3 only. |
+| `DAILY_SESSION_IDENTITY` / `DAILY_COMPLETENESS` | `PARTIAL` | First-party ordinary-weekday identity and regular close exist only for effective current/forward 2026 dates; historical ordinary dates remain unresolved. |
 | `DAILY_KNOWN_AT` / `DAILY_FORWARD_PIT` | `PARTIAL` | HSI-observation boundary exists, subject to session proof; source publication remains unavailable. |
 | `DAILY_HISTORICAL_STRICT_PIT` | `NOT_READY` | Zero retained rows receive a historical source-availability certificate. |
 | `WEEKLY_DERIVATION_GATE` / `MONTHLY_DERIVATION_GATE` | `NOT_READY` | Daily end/session/known-at and adjustment parity are not certified. |
 
-HSI cannot yet claim trustworthy current/forward daily technical evaluation for the general eligible NSE universe, discovered candidates, holdings, or watchlists. A prospective corrected-source path exists but is not broadly operational or a historical-backtest substitute.
+HSI cannot yet claim broad historical daily technical evaluation for the general
+eligible NSE universe, discovered candidates, holdings, or watchlists. A
+corrected forward source path can now obtain a narrow post-close HSI-observed
+receipt within the effective 2026 ordinary-session window; it is not broad
+operational coverage or a historical-backtest substitute. See
+[ordinary-session and close evidence](CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1.md).
 
 ## Next repair and preserved boundaries
 
-`UNKNOWN` adjustment remains `UNKNOWN`. Rules 4 and 14 remain `INSUFFICIENT_DATA`; no daily row is relabelled weekly/monthly, no fake MTF or horizon policy is added, and no multi-timeframe orchestrator is active. The next exact continuation is `CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1`: effective-dated first-party ordinary-session identity/close evidence only, with no fabricated publication times, adjustment repair, indicators, portfolio, or execution authority.
+`UNKNOWN` adjustment remains `UNKNOWN`. Rules 4 and 14 remain `INSUFFICIENT_DATA`; no daily row is relabelled weekly/monthly, no fake MTF or horizon policy is added, and no multi-timeframe orchestrator is active. The completed
+`CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1` continuation
+adds only effective-dated first-party ordinary-session/close facts, with no
+fabricated publication times, adjustment repair, indicators, portfolio, or
+execution authority.
 
 `ONE_CANONICAL_61_DIAGNOSTIC_REGISTRY = TRUE`
 `SEPARATE_TECHNICAL_BRAIN = FALSE`

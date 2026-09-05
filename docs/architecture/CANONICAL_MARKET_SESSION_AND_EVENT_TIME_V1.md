@@ -38,21 +38,23 @@ years **2022-01-01 through 2026-12-31**, avoiding an open-ended archive hunt.
 Only first-party NSE Capital Market sources are catalogued. Annual holiday
 circulars supply declared holidays; special-session circulars supply only the
 exact special date and phases they state. The current NSE
-[Market Timings](https://www.nseindia.com/static/market-data/market-timings)
-page states normal-market 09:15–15:30 and separate post-close activity, but is
-not backfilled into historical years.
+[Market Timings & Holidays](https://www.nseindia.com/resources/exchange-communication-holidays)
+page states the equity Monday–Friday/holiday rule and normal-market
+09:15–15:30. Its retained current evidence is effective only from
+2026-09-05 after its recorded `known_at`; it is not backfilled into historical
+years. See [ordinary-session and close evidence](CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1.md).
 
 | First-party family | Recovered evidence | V1 use |
 | --- | --- | --- |
 | NSE CM annual holiday circulars | [CMTR50560](https://archives.nseindia.com/content/circulars/CMTR50560.pdf) (2022), [CMTR54757](https://archives.nseindia.com/content/circulars/CMTR54757.pdf) (2023), [CMTR59722](https://archives.nseindia.com/content/circulars/CMTR59722.pdf) (2024), [CMTR65587](https://nsearchives.nseindia.com/content/circulars/CMTR65587.pdf) (2025), [CMTR71775](https://nsearchives.nseindia.com/content/circulars/CMTR71775.pdf) (2026) | Declared `HOLIDAY` dates only. |
 | NSE Muhurat circulars | [CMTR54023](https://archives.nseindia.com/content/circulars/CMTR54023.pdf) (2022-10-24), [CMTR59124](https://nsearchives.nseindia.com/content/circulars/CMTR59124.pdf) (2023-11-12), [CMTR64628](https://nsearchives.nseindia.com/content/circulars/CMTR64628.pdf) (2024-11-01), [CMTR70319](https://nsearchives.nseindia.com/content/circulars/CMTR70319.pdf) (2025-10-21) | Exact `MUHURAT_TRADING` day and phases. |
 | NSE Budget live-session circulars | [CMTR65729](https://nsearchives.nseindia.com/content/circulars/CMTR65729.pdf) (2025-02-01), [CMTR72349](https://nsearchives.nseindia.com/content/circulars/CMTR72349.pdf) (2026-02-01) | Exact `SPECIAL_TRADING_DAY` and regular-continuous phase. |
-| Current NSE timing page | Current semantics | Never a historical phase rule. |
+| Current NSE timing/holiday page | Current ordinary equity weekdays and 09:15–15:30 regular-continuous phase | Forward-only from 2026-09-05 after the retained `known_at`; never historical. |
 
 Each catalogued evidence record has deterministic identity, HTTPS primary-source
-reference, publication-date provenance, and fingerprint. A source without an
-exact publication time becomes PIT-visible only after its local publication
-date; it is never presumed known earlier on that same date.
+reference, publication-date or immutable `known_at` provenance, and fingerprint.
+A source without an exact publication time becomes PIT-visible only after its
+local publication date; it is never presumed known earlier on that same date.
 
 The June 2023 holiday amendment is retained separately: first-party
 [CMPT57296](https://nsearchives.nseindia.com/content/circulars/CMPT57296.pdf)
@@ -77,10 +79,11 @@ catalogued record content; they are not hashes of downloaded PDF bytes.
 
 An annual holiday schedule alone does not prove an ordinary historical weekday
 was a trading day. Weekday derivation requires a separately retained,
-first-party, effective-dated weekday convention. A special circular overrides
-a weekday or holiday only for its exact date. Missing, future, outside-coverage,
-or conflicting evidence stays unavailable; conflicting source order never
-selects a winner.
+first-party, effective-dated weekday convention. The current retained ordinary
+rule starts only on 2026-09-05; 2022–2025 ordinary days consequently remain
+unresolved. A special circular overrides a weekday or holiday only for its
+exact date. Missing, future, outside-coverage, or conflicting evidence stays
+unavailable; conflicting source order never selects a winner.
 
 `EffectiveSessionPhaseTiming` is independent of the day calendar. It contains
 effective dates, eligible day state, phase type, local start/end,
@@ -129,7 +132,10 @@ return.
 
 ## Initial coverage audit
 
-At explicit `as_of=2026-09-05T00:00:00Z`, the bounded catalogue produces:
+Before the ordinary-rule `known_at`, the bounded catalogue produced only the
+following special/holiday facts. The new forward-only ordinary coverage is
+audited in [ordinary-session and close evidence](CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1.md);
+it does not revise this historical-state receipt.
 
 | Measure | Count / state |
 | --- | ---: |

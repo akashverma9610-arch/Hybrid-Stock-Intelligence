@@ -59,6 +59,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Inflection Testable Derived Metrics and Event Alignment V1](docs/architecture/INFLECTION_TESTABLE_DERIVED_METRICS_AND_EVENT_ALIGNMENT_V1.md)
 - [Inflection Event-Session and Market-Reaction Policy Proposal V1](docs/architecture/INFLECTION_EVENT_SESSION_AND_MARKET_REACTION_POLICY_PROPOSAL_V1.md)
 - [Canonical Market Session and Event Time V1](docs/architecture/CANONICAL_MARKET_SESSION_AND_EVENT_TIME_V1.md)
+- [Canonical NSE Ordinary Session Identity and Close Evidence V1](docs/architecture/CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1.md)
 - [Technical Diagnostic Timeframe and Data Readiness V1](docs/architecture/TECHNICAL_DIAGNOSTIC_TIMEFRAME_DATA_READINESS_V1.md)
 - [Canonical Technical Bar Timeframe and Completeness Contract V1](docs/architecture/CANONICAL_TECHNICAL_BAR_TIMEFRAME_AND_COMPLETENESS_CONTRACT_V1.md)
 - [Canonical Daily Technical Bar Known-at and Completeness Evidence V1](docs/architecture/CANONICAL_DAILY_TECHNICAL_BAR_KNOWN_AT_AND_COMPLETENESS_EVIDENCE_V1.md)
