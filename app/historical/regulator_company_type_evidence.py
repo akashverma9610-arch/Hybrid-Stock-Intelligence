@@ -101,6 +101,10 @@ class RegulatorSourceArtifact:
     fingerprint: str
     contract_id: str = CONTRACT_ID
     contract_version: str = CONTRACT_VERSION
+    # A dated historical publication can be acquired later without changing
+    # the date on which the regulator made it knowable.  This date-only field
+    # deliberately does not manufacture a publication time of day.
+    source_known_on: date | None = None
 
     def __post_init__(self) -> None:
         if not _artifact_valid(self) or self.fingerprint != _hash(_artifact_payload(self)):
@@ -130,6 +134,11 @@ class RegulatorEntityEvidence:
     fingerprint: str
     contract_id: str = CONTRACT_ID
     contract_version: str = CONTRACT_VERSION
+    # These fields preserve an RBI cancellation/surrender event as stated by
+    # the source.  A CoR issue date is not a derived registration interval.
+    source_known_on: date | None = None
+    cor_issued_on: date | None = None
+    event_reason: str | None = None
 
     def __post_init__(self) -> None:
         if not _evidence_valid(self) or self.fingerprint != _hash(_evidence_payload(self)):
@@ -215,7 +224,8 @@ class RegulatorCompanyTypeEvidenceStore:
 
 def source_artifact_from_payload(*, source: RegulatorEvidenceSource, source_reference: str, payload: bytes,
                                  content_type: str, observed_at: datetime, source_as_of_date: date | None,
-                                 schema: Iterable[str], temporal_status: RegulatorTemporalStatus | None = None) -> RegulatorSourceArtifact:
+                                 schema: Iterable[str], temporal_status: RegulatorTemporalStatus | None = None,
+                                 source_known_on: date | None = None) -> RegulatorSourceArtifact:
     """Create a source receipt.  Current observation never claims historic knowledge."""
     if not _aware(observed_at) or not _nonblank(source_reference) or not payload:
         raise RegulatorCompanyTypeEvidenceError("REGULATOR_SOURCE_METADATA_INVALID")
@@ -225,23 +235,27 @@ def source_artifact_from_payload(*, source: RegulatorEvidenceSource, source_refe
         "source": source.value, "source_reference": source_reference, "source_fingerprint": source_fingerprint,
         "source_as_of_date": _date_text(source_as_of_date), "temporal_status": status.value,
     }
+    if source_known_on is not None:
+        identity["source_known_on"] = _date_text(source_known_on)
     artifact_id = "regulator-source:" + _hash(identity)[7:39]
     values = dict(
         source_artifact_id=artifact_id, source=source, source_reference=source_reference,
         source_fingerprint=source_fingerprint, content_type=content_type, content_length=len(payload),
         source_as_of_date=source_as_of_date, observed_at=_utc(observed_at), temporal_status=status,
         schema=tuple(sorted({_clean_header(item) for item in schema if _nonblank(item)})),
+        source_known_on=source_known_on,
     )
     return RegulatorSourceArtifact(**values, fingerprint=_hash(_artifact_payload_from_values(values)))
 
 
 def rbi_scheduled_bank_batch(*, payload: bytes, observed_at: datetime, source_as_of_date: date | None = None,
-                             source_reference: str = RBI_SCHEDULED_BANKS_URL) -> RegulatorEvidenceBatch:
+                             source_reference: str = RBI_SCHEDULED_BANKS_URL,
+                             source_known_on: date | None = None) -> RegulatorEvidenceBatch:
     rows = _html_rows(payload)
     artifact = source_artifact_from_payload(
         source=RegulatorEvidenceSource.RBI_SCHEDULED_COMMERCIAL_BANKS, source_reference=source_reference,
         payload=payload, content_type="text/html", observed_at=observed_at, source_as_of_date=source_as_of_date,
-        schema=("category", "serial_number", "legal_name"),
+        schema=("category", "serial_number", "legal_name"), source_known_on=source_known_on,
     )
     category: str | None = None
     values: list[RegulatorEntityEvidence] = []
@@ -260,7 +274,8 @@ def rbi_scheduled_bank_batch(*, payload: bytes, observed_at: datetime, source_as
 
 
 def rbi_nbfc_arc_batch(*, payload: bytes, source: RegulatorEvidenceSource, observed_at: datetime,
-                       source_as_of_date: date, source_reference: str) -> RegulatorEvidenceBatch:
+                       source_as_of_date: date, source_reference: str,
+                       source_known_on: date | None = None) -> RegulatorEvidenceBatch:
     """Parse an official RBI XLSX without manufacturing absent identifiers.
 
     The official list's headers vary by release.  Only explicit, recognized
@@ -284,6 +299,7 @@ def rbi_nbfc_arc_batch(*, payload: bytes, source: RegulatorEvidenceSource, obser
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         observed_at=observed_at, source_as_of_date=source_as_of_date, schema=header,
         temporal_status=RegulatorTemporalStatus.SOURCE_DATE_PRESENT,
+        source_known_on=source_known_on,
     )
     category_column = _column(header, "CATEGORY", "TYPE OF NBFC", "NBFC CATEGORY", "COMPANY CATEGORY")
     cor_column = _column(header, "COR NO", "COR NUMBER", "CERTIFICATE OF REGISTRATION NO", "REGISTRATION NO")
@@ -391,6 +407,7 @@ def audit_exact_regulator_issuer_links(*, evidence: Iterable[RegulatorEntityEvid
             reason=(
                 "INCOMPATIBLE_EXACT_REGULATOR_EVIDENCE" if conflicted else "EXACT_CIN_MATCH" if matches else
                 "SOURCE_DATE_UNAVAILABLE" if item.source_as_of_date is None else
+                "SOURCE_KNOWN_AFTER_AS_OF" if item.source_known_on is not None and item.source_known_on > _utc(as_of).date() else
                 "SOURCE_OBSERVED_AFTER_AS_OF" if item.observed_at > _utc(as_of) else
                 "REGULATOR_CIN_ABSENT" if item.cin is None else "NO_ACTIVE_EXACT_CIN_BRIDGE"
             ),
@@ -430,23 +447,36 @@ def _entity(*, artifact: RegulatorSourceArtifact, source_record_id: str, entity_
             entity_status: RegulatorEntityStatus, legal_name: str, regulator_registration_id: str | None = None,
             cin: str | None = None, regulator_subtype: str | None = None, address: str | None = None,
             effective_on: date | None = None, cancellation_on: date | None = None,
-            temporal_status: RegulatorTemporalStatus | None = None) -> RegulatorEntityEvidence:
+            temporal_status: RegulatorTemporalStatus | None = None, cor_issued_on: date | None = None,
+            event_reason: str | None = None) -> RegulatorEntityEvidence:
     legal_name = _required(legal_name, "REGULATOR_ENTITY_LEGAL_NAME_INVALID")
+    record_values = {
+        "source_artifact": artifact.source_fingerprint, "record": source_record_id, "legal_name": legal_name,
+        "registration": regulator_registration_id, "cin": cin, "subtype": regulator_subtype,
+        "address": address, "effective": _date_text(effective_on), "cancelled": _date_text(cancellation_on),
+    }
+    if cor_issued_on is not None:
+        record_values["cor_issued_on"] = _date_text(cor_issued_on)
+    if event_reason is not None:
+        record_values["event_reason"] = event_reason
     values = dict(
         source_artifact_id=artifact.source_artifact_id, source_artifact_fingerprint=artifact.fingerprint,
         source=artifact.source, source_record_id=_required(source_record_id, "REGULATOR_SOURCE_RECORD_ID_INVALID"),
-        source_record_fingerprint=_hash({"source_artifact": artifact.source_fingerprint, "record": source_record_id, "legal_name": legal_name,
-                                         "registration": regulator_registration_id, "cin": cin, "subtype": regulator_subtype,
-                                         "address": address, "effective": _date_text(effective_on), "cancelled": _date_text(cancellation_on)}),
+        source_record_fingerprint=_hash(record_values),
         entity_kind=entity_kind, entity_status=entity_status, legal_name=legal_name,
         regulator_registration_id=_optional(regulator_registration_id), cin=_optional(cin), regulator_subtype=_optional(regulator_subtype),
         address=_optional(address), effective_on=effective_on, cancellation_on=cancellation_on,
         source_as_of_date=artifact.source_as_of_date, observed_at=artifact.observed_at,
         temporal_status=temporal_status or artifact.temporal_status,
+        source_known_on=artifact.source_known_on, cor_issued_on=cor_issued_on, event_reason=_optional(event_reason),
     )
     if values["cin"] is not None and _CIN.fullmatch(values["cin"]) is None:
         raise RegulatorCompanyTypeEvidenceError("REGULATOR_ENTITY_CIN_INVALID")
-    identity = {key: _scalar(value) for key, value in values.items() if key not in {"observed_at", "source_record_fingerprint"}}
+    optional_new = {"source_known_on", "cor_issued_on", "event_reason"}
+    identity = {
+        key: _scalar(value) for key, value in values.items()
+        if key not in {"observed_at", "source_record_fingerprint"} and (key not in optional_new or value is not None)
+    }
     evidence_id = "regulator-entity:" + _hash(identity)[7:39]
     return RegulatorEntityEvidence(evidence_id=evidence_id, **values, fingerprint=_hash(_evidence_payload_from_values(values | {"evidence_id": evidence_id})))
 
@@ -527,8 +557,18 @@ def _canonical_evidence(values: Iterable[RegulatorEntityEvidence]) -> tuple[Regu
 
 
 def _evidence_pit_eligible(value: RegulatorEntityEvidence, as_of: datetime) -> bool:
-    """No source date or later observation may be repaired with current data."""
-    return value.source_as_of_date is not None and value.source_as_of_date <= as_of.date() and value.observed_at <= as_of
+    """Use a regulator's supplied known date where one is preserved.
+
+    Historical publication dates are deliberately date-granular.  The local
+    receipt timestamp records acquisition, not the date the regulator made a
+    historical document public.  Undated/current adapters retain the original
+    stricter receipt-time rule.
+    """
+    if value.source_as_of_date is None or value.source_as_of_date > as_of.date():
+        return False
+    if value.source_known_on is not None:
+        return value.source_known_on <= as_of.date()
+    return value.observed_at <= as_of
 
 
 def _artifact_valid(value: RegulatorSourceArtifact) -> bool:
@@ -536,6 +576,7 @@ def _artifact_valid(value: RegulatorSourceArtifact) -> bool:
         _identifier(value.source_artifact_id), isinstance(value.source, RegulatorEvidenceSource), _nonblank(value.source_reference),
         _fingerprint(value.source_fingerprint), _nonblank(value.content_type), isinstance(value.content_length, int) and value.content_length > 0,
         value.source_as_of_date is None or _is_date(value.source_as_of_date), _aware(value.observed_at),
+        value.source_known_on is None or _is_date(value.source_known_on),
         isinstance(value.temporal_status, RegulatorTemporalStatus), bool(value.schema), value.contract_id == CONTRACT_ID, value.contract_version == CONTRACT_VERSION,
     ))
 
@@ -550,15 +591,23 @@ def _evidence_valid(value: RegulatorEntityEvidence) -> bool:
         value.regulator_subtype is None or _nonblank(value.regulator_subtype), value.address is None or _nonblank(value.address),
         value.effective_on is None or _is_date(value.effective_on), value.cancellation_on is None or _is_date(value.cancellation_on),
         value.source_as_of_date is None or _is_date(value.source_as_of_date), _aware(value.observed_at),
+        value.source_known_on is None or _is_date(value.source_known_on), value.cor_issued_on is None or _is_date(value.cor_issued_on),
+        value.event_reason is None or _nonblank(value.event_reason),
         isinstance(value.temporal_status, RegulatorTemporalStatus), (not cancelled) or value.entity_kind in {RegulatorEntityEvidenceKind.RBI_CANCELLED_NBFC, RegulatorEntityEvidenceKind.RBI_CANCELLED_ARC},
         value.contract_id == CONTRACT_ID, value.contract_version == CONTRACT_VERSION,
     ))
 
 
 def _artifact_payload(value: RegulatorSourceArtifact) -> dict[str, object]: return _artifact_payload_from_values({field.name: getattr(value, field.name) for field in fields(value) if field.name not in {"fingerprint", "contract_id", "contract_version"}})
-def _artifact_payload_from_values(value: Mapping[str, object]) -> dict[str, object]: return {key: _scalar(item) for key, item in value.items()}
+def _artifact_payload_from_values(value: Mapping[str, object]) -> dict[str, object]: return _payload_values(value)
 def _evidence_payload(value: RegulatorEntityEvidence) -> dict[str, object]: return _evidence_payload_from_values({field.name: getattr(value, field.name) for field in fields(value) if field.name not in {"fingerprint", "contract_id", "contract_version"}})
-def _evidence_payload_from_values(value: Mapping[str, object]) -> dict[str, object]: return {key: _scalar(item) for key, item in value.items()}
+def _evidence_payload_from_values(value: Mapping[str, object]) -> dict[str, object]: return _payload_values(value)
+def _payload_values(value: Mapping[str, object]) -> dict[str, object]:
+    # Preserve validation of existing v1 snapshots created before these
+    # optional source-detail fields were added.  New non-null values are part
+    # of immutable source/evidence fingerprints.
+    optional_new = {"source_known_on", "cor_issued_on", "event_reason"}
+    return {key: _scalar(item) for key, item in value.items() if key not in optional_new or item is not None}
 def _hash(value: object) -> str: return "sha256:" + sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode()).hexdigest()
 def _bytes_hash(value: bytes) -> str: return "sha256:" + sha256(value).hexdigest()
 def _scalar(value: object) -> object:

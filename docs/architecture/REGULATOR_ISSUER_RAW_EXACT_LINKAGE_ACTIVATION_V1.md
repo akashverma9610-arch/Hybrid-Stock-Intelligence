@@ -98,20 +98,13 @@ or a trade/sell/rotation result. No match is not `NON_FINANCIAL`.
 The independent next policy dependency for positive non-financial evidence is
 `NSE_TAXONOMY_COMPANY_TYPE_CODE_MAP_PROPOSAL_V1`; it is not activated here.
 
-## Smallest remaining historical evidence gap
+## Historical evidence follow-through
 
-No broad crawler is authorized by this activation. The next bounded evidence
-slice, if approved, is
-`HISTORICAL_REGULATOR_COMPANY_TYPE_EVIDENCE_ACQUISITION_V1` and must retain
-only exact dated primary records:
-
-1. an RBI dated scheduled-bank list, circular, or regulator-status record with
-   a PIT-compatible publication/effective timestamp;
-2. date-labelled IRDAI life, general, and health insurer registers or status
-   records with the same exact knownness discipline; and
-3. a safely acquired RBI NBFC/ARC current or historical official source, after
-   separately resolving the existing official XLSX transport/availability gap.
-
-Those records must be independently acquired, immutable, source-dated where
-available, and evaluated through the same RAW_EXACT and one-to-one rules. They
-must not reinterpret the current records backward.
+The approved bounded follow-through,
+[Historical Regulator Company-Type Evidence Acquisition V1](HISTORICAL_REGULATOR_COMPANY_TYPE_EVIDENCE_ACQUISITION_V1.md),
+has now retained source-dated IRDAI 2022–23 Life/General/Health insurer rows
+and a bounded set of RBI cancellation events. Those immutable records remain
+evidence only. They do not repair the zero historical issuer-bridge count at
+the February-2024 anchor, alter the current RAW_EXACT receipts, or activate a
+company type. Historical RBI-bank rows and the exact June-2024 RBI NBFC/ARC
+snapshot remain separate, unfilled primary-source gaps.
