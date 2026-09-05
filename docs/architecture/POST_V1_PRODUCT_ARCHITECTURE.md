@@ -212,3 +212,9 @@ boundary:
    authority unless independently approved.
 
 No stage authorizes a later stage by implication.
+
+The active read-only [Multi-Funnel Discovery Contract and Registry V1](MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md)
+is the candidate-recall foundation for these product windows.  It records
+independent inspection origins without introducing a second Brain, a universal
+scanner, qualification, or consumer activation.  Its future adapter, union,
+and whole-market runner stages remain separately governed.
