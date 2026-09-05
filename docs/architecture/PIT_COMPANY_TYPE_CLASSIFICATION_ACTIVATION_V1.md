@@ -115,11 +115,13 @@ observations are both available. The February-2024 research start remains
 impossible: zero PIT-valid active issuer observations yield zero final receipts.
 Current 2026 regulator evidence does not repair that gap.
 
-The next review is `COMPOUNDER_BACKTEST_PANEL_READINESS_V2`. It must determine
-whether 2026 coverage and available financial history can support a genuine
-research panel without inventing sample size. If not, the permitted follow-on
-is `COMPOUNDER_PROSPECTIVE_SHADOW_VALIDATION_V1` from genuine current/future
-PIT evidence. This does not activate candidate thresholds or qualification.
+The completed [Compounder Backtest Panel Readiness V2](COMPOUNDER_BACKTEST_PANEL_READINESS_V2.md)
+audit found `BACKTEST_PANEL_NOT_READY`: the 2026 company-type coverage and
+financial facts do not create a historically truthful, survivorship-safe,
+outcome-mature research panel. Historical reconstruction stops at that bounded
+decision. The permitted future follow-on is the separately approved
+`COMPOUNDER_PROSPECTIVE_SHADOW_VALIDATION_V1` from genuine current/future PIT
+evidence; this does not activate candidate thresholds or qualification.
 
 ## Deliberate non-goals
 
