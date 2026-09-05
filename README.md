@@ -67,6 +67,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Whole-Market Multi-Funnel Orchestration V1](docs/architecture/MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md)
 - [Discovery Recall Audit Contract and Outcome Classification V1](docs/architecture/DISCOVERY_RECALL_AUDIT_CONTRACT_AND_OUTCOME_CLASSIFICATION_V1.md)
 - [Discovery Recall Reference Outcome and Matching V1](docs/architecture/DISCOVERY_RECALL_REFERENCE_OUTCOME_AND_MATCHING_V1.md)
+- [Discovery Recall Per-Security Evaluation Trace V1](docs/architecture/DISCOVERY_RECALL_PER_SECURITY_EVALUATION_TRACE_V1.md)
 - [Long-Term Policy Transmission Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_POLICY_TRANSMISSION_RESEARCH_SHADOW_V1.md)
 - [Long-Term Thesis Invalidation Lifecycle Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_THESIS_INVALIDATION_LIFECYCLE_RESEARCH_SHADOW_V1.md)
 - [Long-Term Portfolio Observation Adapter Research Shadow V1](docs/architecture/POST_V1_LONG_TERM_PORTFOLIO_OBSERVATION_ADAPTER_RESEARCH_SHADOW_V1.md)

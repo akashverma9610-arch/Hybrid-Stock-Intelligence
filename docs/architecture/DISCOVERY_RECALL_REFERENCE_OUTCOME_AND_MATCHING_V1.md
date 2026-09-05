@@ -148,11 +148,8 @@ No anecdotal security is classified as a reference opportunity. No registry,
 adapter, union, runner, Brain, Six-Gates, signal/action, holding/harvest/sell/
 rotation, execution, or provider behavior changes.
 
-The exact next bounded continuation is:
-
-`DISCOVERY_RECALL_PER_SECURITY_EVALUATION_TRACE_V1`
-
-It should add bounded, immutable per-security evaluation/non-emission provenance
-without changing discovery intelligence. A real audit runner remains blocked until
-an independent active reference policy, adequate historical universe/price data,
-and mature comparable outcomes also exist.
+The active [Per-Security Evaluation Trace V1](DISCOVERY_RECALL_PER_SECURITY_EVALUATION_TRACE_V1.md)
+now supplies the bounded provenance boundary without changing discovery
+intelligence. A real audit runner remains blocked until an independent active
+reference policy, adequate historical universe/price data, and mature comparable
+outcomes also exist.
