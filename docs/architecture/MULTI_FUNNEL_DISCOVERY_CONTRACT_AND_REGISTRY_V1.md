@@ -1,6 +1,6 @@
 # Multi-Funnel Discovery Contract and Registry V1
 
-**Status: `ACTIVE_FOUNDATION / READ_ONLY / WATCH_ONLY / NON_EXECUTABLE / WHOLE_MARKET_RUNNER_NOT_ACTIVE`.**
+**Status: `ACTIVE_FOUNDATION / READ_ONLY / WATCH_ONLY / NON_EXECUTABLE`.**
 
 ## Purpose and boundary
 
@@ -13,9 +13,10 @@ Score, a Six-Gates result, or a portfolio/execution system.
 The implemented V1 foundation contains only immutable contracts and a static,
 versioned inventory.  It does not invoke any funnel, scan the market,
 materialize leads, union securities, query a provider, persist data, or expose
-an API/UI.  Therefore `MULTI_FUNNEL_DISCOVERY_FOUNDATION = ACTIVE`, while
-`WHOLE_MARKET_MULTI_FUNNEL_RUNNER = NOT_ACTIVE` and
-`DISCOVERY_RECALL_AUDIT = NOT_ACTIVE`.
+an API/UI. `MULTI_FUNNEL_DISCOVERY_FOUNDATION = ACTIVE`.
+The separately implemented [whole-market orchestration](MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md)
+now provides `WHOLE_MARKET_MULTI_FUNNEL_RUNNER = ACTIVE_READ_ONLY`;
+`DISCOVERY_RECALL_AUDIT = NOT_ACTIVE` remains unchanged.
 
 Discovery answers “why inspect this security?”; the shared Brain alone judges
 evidence quality, setup, decision, portfolio relevance and any future
@@ -118,7 +119,7 @@ per-funnel coverage, and emitted lead identities.  It is deterministic,
 requires exact coverage for every executed/blocked funnel, and has no runtime
 clock or latest-record fallback.
 
-The future union must retain every funnel origin for a security.  It must not
+The active union retains every funnel origin for a security. It must not
 discard all but a “best” reason, score sources, or use cross-funnel voting.
 Discovery Recall Audit can later answer whether a funnel ran, an instrument
 was examined, a lead was emitted, or data/policy blocked evaluation.
@@ -134,7 +135,8 @@ The active read-only [Multi-Funnel Discovery Adapters V1](MULTI_FUNNEL_DISCOVERY
 adapt only PIT-valid existing source states.  The active read-only
 [Multi-Funnel Candidate Union and Identity V1](MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md)
 then groups exact securities while retaining all origins and coverage.  The
-whole-market runner and Discovery Recall remain separately deferred.
+[whole-market runner](MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md) binds the
+eligible universe and these components read-only. Discovery Recall remains deferred.
 
 ## Invariants
 

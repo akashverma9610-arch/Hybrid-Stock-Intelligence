@@ -1,6 +1,6 @@
 # Multi-Funnel Candidate Union and Identity V1
 
-**Status: `ACTIVE_READ_ONLY / CANDIDATE_POOL_FOR_SHARED_BRAIN_INSPECTION / NON_EXECUTABLE / NO_RUNNER / NO_RECALL_AUDIT`.**
+**Status: `ACTIVE_READ_ONLY / CANDIDATE_POOL_FOR_SHARED_BRAIN_INSPECTION / NON_EXECUTABLE / NO_RECALL_AUDIT`.**
 
 ## Purpose and strict boundary
 
@@ -18,9 +18,9 @@ Brain/61-point diagnostic, resolve a final horizon, compute a score or
 confidence, call Six Gates, access a portfolio, create a trade plan, or
 access broker/order/API/UI/runtime state.
 
-The next separately governed boundary is
-`MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1`; it is **not active**.
-`DISCOVERY_RECALL_AUDIT` is also **not active**.
+The separately implemented [whole-market orchestration](MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md)
+binds the eligible universe and invokes this unchanged union read-only.
+`DISCOVERY_RECALL_AUDIT` is **not active**; Brain inspection is not invoked.
 
 ## Authoritative identity
 

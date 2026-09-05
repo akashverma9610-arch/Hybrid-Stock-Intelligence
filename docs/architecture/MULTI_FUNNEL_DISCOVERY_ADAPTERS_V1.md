@@ -1,6 +1,6 @@
 # Multi-Funnel Discovery Adapters V1
 
-**Status: `ACTIVE_READ_ONLY_ADAPTERS / WATCH_ONLY_INSPECTION / NON_EXECUTABLE / NO_UNION / NO_RUNNER`.**
+**Status: `ACTIVE_READ_ONLY_ADAPTERS / WATCH_ONLY_INSPECTION / NON_EXECUTABLE`.**
 
 ## Scope
 
@@ -78,6 +78,8 @@ five-holding report is source lineage only: no lead is a stock judgment.
 ## Next boundary
 
 `MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1` is active as a pure,
-read-only exact-security composition boundary.  The next bounded slice is
-`MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1`; it and Discovery Recall Audit
-remain not active.
+read-only exact-security composition boundary. The separate
+[whole-market orchestration](MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md)
+now composes these unchanged adapters and the union (`ACTIVE_READ_ONLY`).
+Discovery Recall Audit remains not active. Adapter availability does not
+upgrade the registry's underlying intelligence or policy statuses.
