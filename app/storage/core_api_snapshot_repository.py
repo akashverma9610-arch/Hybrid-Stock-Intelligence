@@ -81,6 +81,10 @@ class CoreApiSnapshotFamily(StrEnum):
     STRATEGY_SETUP_QUALITY = "STRATEGY_SETUP_QUALITY"
     STRATEGY_OUTCOME_ATTRIBUTION = "STRATEGY_OUTCOME_ATTRIBUTION"
     TAXONOMY_CLASSIFICATION = "TAXONOMY_CLASSIFICATION"
+    # Exact-code NSE taxonomy category evidence is an immutable input to a
+    # future issuer company-type classifier.  It is deliberately neither a
+    # final company-type receipt nor a regulator-evidence family.
+    TAXONOMY_CATEGORY_EVIDENCE = "TAXONOMY_CATEGORY_EVIDENCE"
     NSE_INDICES_TAXONOMY_SOURCE = "NSE_INDICES_TAXONOMY_SOURCE"
     NSE_SECTOR_INDEX_SOURCE = "NSE_SECTOR_INDEX_SOURCE"
     NSE_SECTOR_INDEX_REGISTRY = "NSE_SECTOR_INDEX_REGISTRY"
