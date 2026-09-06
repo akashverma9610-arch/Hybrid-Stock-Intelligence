@@ -61,6 +61,19 @@ def nse_capital_market_calendar_2022_2026() -> CanonicalMarketSessionCalendar:
         source_reference="https://nsearchives.nseindia.com/content/circulars/CMTR71775.pdf",
         published_on=date(2025, 12, 12),
     )
+    # These are exchange-issued, date-specific amendments to the annual
+    # capital-market holiday schedules.  They are retained as amendments,
+    # rather than inferred from a missing end-of-day file.
+    election_2024 = make_first_party_session_source(
+        source_id="nse-cmtr-64960-2024-maharashtra-election",
+        source_reference="https://nsearchives.nseindia.com/content/circulars/CMTR64960.pdf",
+        published_on=date(2024, 11, 8),
+    )
+    election_2026 = make_first_party_session_source(
+        source_id="nse-cmtr-72260-2026-maharashtra-election",
+        source_reference="https://nsearchives.nseindia.com/content/circulars/CMTR72260.pdf",
+        published_on=date(2026, 1, 12),
+    )
     muhurat_2022 = make_first_party_session_source(
         source_id="nse-cmtr-54023-2022-muhurat",
         source_reference="https://archives.nseindia.com/content/circulars/CMTR54023.pdf",
@@ -133,6 +146,20 @@ def nse_capital_market_calendar_2022_2026() -> CanonicalMarketSessionCalendar:
         holidays=tuple(day for day in base_2023.holidays if day != date(2023, 6, 28)) + (date(2023, 6, 29),),
         supersedes_source_ids=(holidays_2023.source_id,),
     ),)
+    base_2024 = schedules[2]
+    base_2026 = schedules[4]
+    schedules += (
+        make_annual_holiday_schedule(
+            calendar_year=2024, source=election_2024,
+            holidays=base_2024.holidays + (date(2024, 11, 20),),
+            supersedes_source_ids=(holidays_2024.source_id,),
+        ),
+        make_annual_holiday_schedule(
+            calendar_year=2026, source=election_2026,
+            holidays=base_2026.holidays + (date(2026, 1, 15),),
+            supersedes_source_ids=(holidays_2026.source_id,),
+        ),
+    )
     timings = (
         _phase("nse-cm-2022-muhurat-pre-open", date(2022, 10, 24), TradingDayState.MUHURAT_TRADING, SessionPhaseType.PRE_OPEN, time(18), time(18, 8), muhurat_2022),
         _phase("nse-cm-2022-muhurat-regular", date(2022, 10, 24), TradingDayState.MUHURAT_TRADING, SessionPhaseType.REGULAR_CONTINUOUS, time(18, 15), time(19, 15), muhurat_2022),

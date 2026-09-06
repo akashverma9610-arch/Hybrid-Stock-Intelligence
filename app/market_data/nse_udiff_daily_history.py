@@ -303,6 +303,15 @@ class NseUdiffDailyHistoryStore:
         value = self._repository.get_snapshot(_artifact_id(acquisition_id, trade_date))
         return value.payload if value is not None and isinstance(value.payload, NseUdiffDailySourceArtifact) else None
 
+    def artifacts(self, acquisition_id: str) -> tuple[NseUdiffDailySourceArtifact, ...]:
+        """Return retained artifacts for one immutable acquisition identity."""
+        values = (
+            item.payload for item in self._all(CoreApiSnapshotFamily.NSE_UDIFF_DAILY_SOURCE_ARTIFACT)
+            if isinstance(item.payload, NseUdiffDailySourceArtifact)
+            and item.payload.acquisition_id == acquisition_id
+        )
+        return tuple(sorted(values, key=lambda item: (item.trade_date, item.observed_at, item.artifact_id)))
+
     def save_artifact(self, value: NseUdiffDailySourceArtifact) -> bool:
         existing = self.artifact(value.acquisition_id, value.trade_date)
         if existing is not None:

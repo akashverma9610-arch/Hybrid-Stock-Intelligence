@@ -1055,6 +1055,11 @@ def parser() -> argparse.ArgumentParser:
         help="Acquire immutable NSE UDiFF Final-Bhavcopy daily source artifacts and additive raw bars; never selects a technical source",
     )
     nse_udiff_backfill.add_argument("--max-sessions", type=int, help="Bound one resumable sequential acquisition run; omit for the approved full UDiFF-era window")
+    nse_udiff_integrity = commands.add_parser(
+        "audit-nse-udiff-daily-integrity",
+        help="Materialize only an explicit-as-of UDiFF source-session coverage receipt; never selects, adjusts, or derives technical bars",
+    )
+    nse_udiff_integrity.add_argument("--as-of", required=True, help="Timezone-aware ISO8601 evidence cutoff; no runtime-time default")
     commands.add_parser("dhan-materialize-mappings", help="Materialize the current immutable Dhan provider mappings from the official master")
     dhan_ltp_canary = commands.add_parser("dhan-ltp-canary", help="One bounded host-only Dhan LTP batch; defaults to the five portfolio holdings")
     dhan_ltp_canary.add_argument("--scope", choices=("portfolio", "all-current-targets"), default="portfolio", help="Use all stored current targets only when explicitly requested")
@@ -1307,6 +1312,19 @@ def main(
                     close = getattr(resource, "close", None)
                     if callable(close):
                         close()
+        if arguments.command == "audit-nse-udiff-daily-integrity":
+            from app.market_data.nse_udiff_daily_integrity import run_local_udiff_daily_integrity_audit
+            report = run_local_udiff_daily_integrity_audit(as_of=_udiff_integrity_timestamp(arguments.as_of))
+            output(" ".join((
+                f"manifest_id={report.manifest.manifest_id}",
+                f"manifest_inserted={'yes' if report.manifest_inserted else 'no'}",
+                f"artifact_valid_sessions={report.valid_artifact_sessions}",
+                f"confirmed_non_trading_days={report.confirmed_non_trading_days}",
+                f"expected_session_source_missing={report.expected_session_source_missing}",
+                f"historical_session_unresolved={report.unresolved_sessions}",
+                f"unresolved_udiff_conflicts={report.unresolved_conflicts}",
+            )))
+            return 0
         if arguments.command == "compounder-prospective-shadow":
             from app.research.compounder_prospective_runtime import run_local_compounder_prospective_shadow
             cutoff = _prebreakout_timestamp(arguments.as_of)
@@ -2417,7 +2435,7 @@ def main(
         # An explicit bounded ingestion command needs an actionable local
         # blocker, while the generic scheduler commands retain their safe
         # configuration-error behaviour.
-        if arguments.command in {"backfill-nse-udiff-daily-history", "ingest-upstox-frozen-cohort", "ingest-yfinance-frozen-cohort", "validate-yfinance-frozen-stock", "import-bse-financial-feasibility", "collect-real-portfolio-bse-financials", "import-nse-delivery", "import-nse-tick-master", "approve-prebreakout-policy", "select-prebreakout-policy", "data-operations-run", "reconcile-upstox-historical-conflicts", "data-operations-schedule-once", "data-operations-worker", "historical-bar-conflicts", "ohlcv-readiness", "materialize-real-portfolio-nse-reg31-ownership", "materialize-real-portfolio-reliability-integrity", "dhan-ltp-canary", "dhan-materialize-mappings"}:
+        if arguments.command in {"backfill-nse-udiff-daily-history", "audit-nse-udiff-daily-integrity", "ingest-upstox-frozen-cohort", "ingest-yfinance-frozen-cohort", "validate-yfinance-frozen-stock", "import-bse-financial-feasibility", "collect-real-portfolio-bse-financials", "import-nse-delivery", "import-nse-tick-master", "approve-prebreakout-policy", "select-prebreakout-policy", "data-operations-run", "reconcile-upstox-historical-conflicts", "data-operations-schedule-once", "data-operations-worker", "historical-bar-conflicts", "ohlcv-readiness", "materialize-real-portfolio-nse-reg31-ownership", "materialize-real-portfolio-reliability-integrity", "dhan-ltp-canary", "dhan-materialize-mappings"}:
             output(str(error) or "UPSTOX_INGESTION_CONFIGURATION_ERROR")
         else:
             output("RUNTIME CONFIGURATION ERROR")
@@ -2437,6 +2455,16 @@ def _prebreakout_timestamp(value: str) -> datetime:
         raise ValueError("PREBREAKOUT_POLICY_TIMESTAMP_INVALID") from error
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         raise ValueError("PREBREAKOUT_POLICY_TIMESTAMP_NAIVE")
+    return parsed
+
+
+def _udiff_integrity_timestamp(value: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError as error:
+        raise ValueError("NSE_UDIFF_INTEGRITY_TIMESTAMP_INVALID") from error
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError("NSE_UDIFF_INTEGRITY_TIMESTAMP_NAIVE")
     return parsed
 
 
