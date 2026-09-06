@@ -429,9 +429,8 @@ def certify_daily_technical_eligibility(
         item for item in conflict_values
         if item.canonical_instrument_id == canonical_instrument_id
         and item.trade_date in expected
-        and item.state is NseUdiffConflictState.CONFLICT_UNRESOLVED
     )
-    if relevant_conflicts:
+    if any(item.blocks_window(bars, at) for item in relevant_conflicts):
         source_valid = False
         reasons.append(DailyTechnicalEligibilityReason.SAME_PROVIDER_CONFLICT)
     series = tuple(sorted({fields["SctySrs"].upper() for _, fields in source_rows.values()}))

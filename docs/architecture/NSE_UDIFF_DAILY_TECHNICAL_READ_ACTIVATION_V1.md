@@ -84,7 +84,14 @@ history is not historically known evidence; read activation is not indicator
 activation; identity coverage is not series equivalence; action coverage is
 not adjustment; `BL != EQ`; `T0 != EQ`.
 
-## Initial read-path audit
+## Initial read-path audit (superseded conflict assessment)
+
+The counts below preserve the initial audit result. The
+[resolved-conflict eligibility repair](NSE_UDIFF_RESOLVED_CONFLICT_ELIGIBILITY_REPAIR_V1.md)
+subsequently proves that the retained structural collision artifacts were
+incorrectly treated as current unresolved conflicts and records corrected
+coverage. GENUSPOWER has two historical artifacts in total, but only its
+2026-08-28 artifact lies inside this six-session window.
 
 The read-only production audit used the immutable current-universe snapshot
 `nse-universe:fundamental-probe:2d5692582f3f43fda4eb73aa3caf2d34`, the exact
@@ -115,7 +122,7 @@ proved as follows:
 | --- | --- | ---: | --- | --- | --- | --- |
 | APARINDS | `READY` | 6 | EQ | ready / ready | 6 observations, 6 source artifacts | — |
 | DEEPINDS | `READY` | 6 | EQ | ready / ready | 6 observations, 6 source artifacts | — |
-| GENUSPOWER | `NOT_READY` | 0 | EQ candidates | source conflict / source gap | retained only in blocked certificate | 2 same-provider conflict artifacts in the exact window |
+| GENUSPOWER | `NOT_READY` | 0 | EQ candidates | source conflict / source gap | retained only in blocked certificate | Historical 28 August BL/EQ collision incorrectly assessed as unresolved; now reconciled by the linked repair |
 | GLAND | `READY` | 6 | EQ | ready / ready | 6 observations, 6 source artifacts | — |
 | ICICIBANK | `READY` | 6 | EQ | ready / ready | 6 observations, 6 source artifacts | — |
 

@@ -27,6 +27,9 @@ from app.historical.security_identity_selector import (
     HistoricalSecurityIdentityResolutionStatus,
 )
 from app.market_data.historical import HistoricalBarConflictArtifact
+from app.market_data.nse_udiff_conflict_resolution import (
+    NseUdiffConflictReconciliation, NseUdiffCurrentConflictState,
+)
 from app.market_data.models import CanonicalOHLCVBar, Timeframe
 from app.market_data.nse_udiff_daily_history import (
     NSE_UDIFF_BAR_PROVIDER,
@@ -191,6 +194,7 @@ class NseUdiffConflictAssessment:
     source_identity: str
     differing_fields: tuple[str, ...]
     fingerprint: str
+    reconciliation: NseUdiffConflictReconciliation | None = None
 
     def __post_init__(self) -> None:
         values = dict(
@@ -200,18 +204,38 @@ class NseUdiffConflictAssessment:
             stored_provider_reference=self.stored_provider_reference,
             incoming_provider_reference=self.incoming_provider_reference,
             source_identity=self.source_identity, differing_fields=self.differing_fields,
+            reconciliation=self.reconciliation,
         )
+        if self.reconciliation is not None:
+            self.reconciliation.__post_init__()
+            artifact = self.reconciliation.artifact
+            if (artifact.conflict_fingerprint != self.conflict_fingerprint
+                    or artifact.canonical_instrument_id != self.canonical_instrument_id
+                    or _nse_trade_date(artifact.start_time) != self.trade_date):
+                raise ValueError("NSE_UDIFF_CONFLICT_RECONCILIATION_BINDING_INVALID")
+        resolved = (self.reconciliation is not None and self.reconciliation.state
+                    is NseUdiffCurrentConflictState.RESOLVED_STRUCTURAL_CONFLICT)
         if (
             not _HEX.fullmatch(self.conflict_fingerprint)
             or not _ID.fullmatch(self.canonical_instrument_id)
             or not isinstance(self.trade_date, date)
-            or self.state is not NseUdiffConflictState.CONFLICT_UNRESOLVED
+            or self.state is not (NseUdiffConflictState.CONFLICT_RESOLVED_BY_SOURCE_SEMANTICS
+                                 if resolved else NseUdiffConflictState.CONFLICT_UNRESOLVED)
             or not self.source_identity.startswith("https://")
             or not self.differing_fields
             or self.differing_fields != tuple(sorted(set(self.differing_fields)))
             or self.fingerprint != _fingerprint(_conflict_payload(values))
         ):
             raise ValueError("NSE_UDIFF_CONFLICT_ASSESSMENT_INVALID")
+
+    @property
+    def current_state(self) -> NseUdiffCurrentConflictState:
+        return (self.reconciliation.state if self.reconciliation is not None
+                else NseUdiffCurrentConflictState.CURRENT_UNRESOLVED_CONFLICT)
+
+    def blocks_window(self, bars: Iterable[CanonicalOHLCVBar], as_of: datetime) -> bool:
+        self.__post_init__()
+        return self.reconciliation is None or not self.reconciliation.resolves_window(bars, as_of)
 
 
 @dataclass(frozen=True, slots=True)
@@ -425,10 +449,19 @@ def build_udiff_session_coverage_manifest(
 
 def audit_udiff_same_provider_conflicts(
     values: Iterable[HistoricalBarConflictArtifact],
+    *, reconciliations: Iterable[NseUdiffConflictReconciliation] = (),
 ) -> tuple[NseUdiffConflictAssessment, ...]:
-    """Classify retained UDiFF conflicts without selecting a winner."""
+    """Retain every artifact; resolve only with exact archived/storage proof."""
+    evidence = {}
+    for item in reconciliations:
+        item.__post_init__()
+        key = item.artifact.conflict_fingerprint
+        if key in evidence:
+            raise ValueError("NSE_UDIFF_CONFLICT_RECONCILIATION_DUPLICATE")
+        evidence[key] = item
     result: list[NseUdiffConflictAssessment] = []
     for value in values:
+        value.__post_init__()
         if value.stored_lineage.provider_identity.casefold() != NSE_UDIFF_BAR_PROVIDER.casefold():
             continue
         if value.incoming_lineage.provider_identity.casefold() != NSE_UDIFF_BAR_PROVIDER.casefold():
@@ -444,18 +477,27 @@ def audit_udiff_same_provider_conflicts(
         else:
             cause = NseUdiffConflictCause.UNRESOLVED_SOURCE_CONFLICT
         trade_date = _nse_trade_date(value.start_time)
+        reconciliation = evidence.pop(value.conflict_fingerprint, None)
+        if reconciliation is not None and reconciliation.artifact != value:
+            raise ValueError("NSE_UDIFF_CONFLICT_RECONCILIATION_ARTIFACT_MISMATCH")
         body = dict(
             conflict_fingerprint=value.conflict_fingerprint,
             canonical_instrument_id=value.canonical_instrument_id,
             trade_date=trade_date,
-            state=NseUdiffConflictState.CONFLICT_UNRESOLVED,
+            state=(NseUdiffConflictState.CONFLICT_RESOLVED_BY_SOURCE_SEMANTICS
+                   if reconciliation is not None and reconciliation.state
+                   is NseUdiffCurrentConflictState.RESOLVED_STRUCTURAL_CONFLICT
+                   else NseUdiffConflictState.CONFLICT_UNRESOLVED),
             cause=cause,
             stored_provider_reference=value.stored_lineage.provider_instrument_reference,
             incoming_provider_reference=value.incoming_lineage.provider_instrument_reference,
             source_identity=value.stored_lineage.source_identity or "https://nsearchives.nseindia.com/unknown",
             differing_fields=tuple(sorted(value.differing_fields)),
+            reconciliation=reconciliation,
         )
         result.append(NseUdiffConflictAssessment(**body, fingerprint=_fingerprint(_conflict_payload(body))))
+    if evidence:
+        raise ValueError("NSE_UDIFF_CONFLICT_RECONCILIATION_ORPHAN")
     return tuple(sorted(result, key=lambda item: (item.canonical_instrument_id, item.trade_date, item.conflict_fingerprint)))
 
 
@@ -694,6 +736,9 @@ def _conflict_payload(value: Mapping[str, object]) -> dict[str, object]:
         "cause": _enum(value["cause"]), "stored_ref": value["stored_provider_reference"],
         "incoming_ref": value["incoming_provider_reference"], "source": value["source_identity"],
         "fields": list(value["differing_fields"]),
+        # No added key for legacy assessments: their hashes remain reproducible.
+        **({"reconciliation": value["reconciliation"].fingerprint}
+           if value.get("reconciliation") is not None else {}),
     }
 
 
