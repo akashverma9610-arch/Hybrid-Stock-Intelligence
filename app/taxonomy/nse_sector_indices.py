@@ -1,9 +1,10 @@
 """Official NSE Indices sector-index registry and fail-closed mapping import.
 
 This consumes only locally archived, visible official NSE Indices pages and
-their documented constituent CSV downloads.  It intentionally contains no
-historical-data request implementation: the public historical report currently
-publishes interactive selectors but no ordinary static export URL.
+their documented constituent CSV downloads.  Historical Daily index OHLC is a
+separate, bounded first-party source contract in
+``official_nse_index_ohlc``; this mapping importer neither fetches it nor
+claims historical PIT availability.
 """
 from __future__ import annotations
 

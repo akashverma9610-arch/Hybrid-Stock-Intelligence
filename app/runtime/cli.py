@@ -757,6 +757,39 @@ def build_official_nse_index_close_series_refresh():
     ), repository
 
 
+def build_official_nse_index_ohlc_series_refresh():
+    """Compose exactly the active Rule 1--3/6 first-party PRI targets."""
+    from app.market_data.official_nse_index_ohlc import CoreSnapshotOfficialIndexOhlcStore, OfficialNseIndexOhlcSeriesRefresh
+    from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily
+    from app.storage.database import DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.taxonomy.nse_sector_indices import NseSectorIndexMapping, SectorIndexMappingStatus
+    from app.universe_analysis.benchmark_sector_technical_input import canonical_sector_index_id
+
+    settings = DatabaseSettings.local_runtime()
+    if settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("OFFICIAL_NSE_INDEX_OHLC_SERIES_REQUIRES_PERSISTENT_STORE")
+    repository = create_core_api_snapshot_repository(settings)
+    mappings = []
+    offset = 0
+    while True:
+        page = repository.list_snapshots(CoreApiSnapshotFamily.NSE_SECTOR_INDEX_MAPPING, limit=100, offset=offset)
+        mappings.extend(item.payload for item in page if isinstance(item.payload, NseSectorIndexMapping))
+        if len(page) < 100:
+            break
+        offset += len(page)
+    exact = tuple(sorted(
+        (item for item in mappings if item.status is SectorIndexMappingStatus.EXACT_OFFICIAL and item.official_index_name),
+        key=lambda item: item.canonical_sector,
+    ))
+    targets = [("NIFTY_50", "Nifty 50")]
+    targets.extend((canonical_sector_index_id(item.canonical_sector), item.official_index_name) for item in exact)
+    root = Path(__file__).resolve().parents[2] / "data" / "official_sources" / "nse_index_ohlc_series"
+    return OfficialNseIndexOhlcSeriesRefresh(
+        store=CoreSnapshotOfficialIndexOhlcStore(repository), targets=tuple(sorted(targets)), artifact_directory=root,
+    ), repository
+
+
 def build_current_sector_constituent_backfill_service():
     """Compose the explicit live U07 backfill; it performs no request itself."""
     from app.market_data.current_sector_rotation import CurrentSectorConstituentBackfillService
@@ -1209,6 +1242,10 @@ def parser() -> argparse.ArgumentParser:
         "ingest-official-nse-index-close-series",
         help="Acquire the fixed four exact official NSE Indices close-only series; never creates OHLC bars",
     )
+    commands.add_parser(
+        "ingest-official-nse-index-ohlc-series",
+        help="Acquire active Rule 1--3/6 exact official NSE Indices price-return Daily OHLC evidence",
+    )
     current_prebreakout = commands.add_parser("current-prebreakout-status", help="Stored-only current Top-3 official NSE delivery gate and Pre-Breakout readiness")
     current_prebreakout.add_argument("--report-dir", default="reports")
     governed_setup_source = commands.add_parser("run-governed-executable-setup-source", help="Explicit stored-only governed Pre-Breakout assessment and executable-setup persistence; never starts paper trading")
@@ -1268,6 +1305,7 @@ def main(
     upstox_sector_index_status_factory: Callable[[], object] = build_upstox_sector_index_status_service,
     current_sector_rotation_factory: Callable[[], object] = build_current_sector_rotation_service,
     official_index_close_refresh_factory: Callable[[], object] = build_official_nse_index_close_series_refresh,
+    official_index_ohlc_refresh_factory: Callable[[], object] = build_official_nse_index_ohlc_series_refresh,
     current_prebreakout_factory: Callable[[], object] = build_current_prebreakout_service,
     governed_executable_setup_source_factory: Callable[..., object] = build_governed_executable_setup_source_service,
     current_sector_constituent_backfill_factory: Callable[[], object] = build_current_sector_constituent_backfill_service,
@@ -1912,6 +1950,26 @@ def main(
             return 0 if report.migration_status.value in {"MIGRATED", "ALREADY_CURRENT"} else 2
         if arguments.command == "ingest-official-nse-index-close-series":
             service, repository = official_index_close_refresh_factory()
+            try:
+                result = service.run_twice()
+            finally:
+                if hasattr(repository, "close"):
+                    repository.close()
+            output(f"requested_at={result.requested_at.isoformat()} completed_at={result.completed_at.isoformat()}")
+            for label, values in (("first", result.first_run), ("second", result.second_run)):
+                for item in values:
+                    output(" ".join((
+                        f"run={label}", f"canonical_index_id={item.canonical_index_id}",
+                        f"official_index_name={item.official_index_name}",
+                        f"before={item.sessions_before}", f"after={item.sessions_after}",
+                        f"inserted={item.inserted_count}", f"duplicates={item.duplicate_count}",
+                        f"conflicts={item.conflict_count}",
+                        f"latest={item.latest_session.isoformat() if item.latest_session else 'NONE'}",
+                        f"artifact_sha256={item.raw_artifact_sha256}", f"blocker={item.blocker or 'NONE'}",
+                    )))
+            return 0 if not any(item.conflict_count for item in (*result.first_run, *result.second_run)) else 2
+        if arguments.command == "ingest-official-nse-index-ohlc-series":
+            service, repository = official_index_ohlc_refresh_factory()
             try:
                 result = service.run_twice()
             finally:

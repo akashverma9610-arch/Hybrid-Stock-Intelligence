@@ -48,14 +48,18 @@ into an earlier frozen Brain trial or historical backtest.
 ## Historical-export boundary
 
 The official [Historical Data report](https://www.niftyindices.com/reports/historical-data)
-currently presents interactive index and date selectors but does not expose an
-ordinary static historical CSV download URL in the public page. The application
-therefore records `NSE_INDICES_HISTORICAL_EXPORT_UNAVAILABLE` and does not call
-or reverse-engineer an undocumented UI endpoint. No Yahoo index fallback is
-permitted. The missing static NSE archive is never used to fabricate OHLC;
-only separately governed canonical sector-index bars may support current
-selection. A sector without that evidence remains excluded, and historical
-sector rotation remains unavailable.
+uses interactive index and date selectors rather than an ordinary static CSV
+download. The separately governed
+[Canonical Benchmark / Sector Technical History Closure V1](CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
+may use the corresponding first-party historical-data response for a bounded,
+exact-name Daily OHLC acquisition. It accepts only fully supplied official
+price-return index OHLC and records current-descriptive source lineage; it
+does not reverse-engineer a browser UI or make a historical-PIT claim.
+
+No Yahoo index fallback is permitted. A close-only, empty, malformed, or
+unmapped official sector remains excluded from the OHLC technical path rather
+than receiving fabricated fields. Historical sector rotation remains
+unavailable until source-availability evidence independently proves PIT use.
 
 ## Current partial-sector consumer boundary
 

@@ -49,6 +49,12 @@ class CoreApiSnapshotFamily(StrEnum):
     # open/high/low while still being suitable for relative-strength work.
     OFFICIAL_INDEX_CLOSE_ARTIFACT = "OFFICIAL_INDEX_CLOSE_ARTIFACT"
     CANONICAL_INDEX_CLOSE_OBSERVATION = "CANONICAL_INDEX_CLOSE_OBSERVATION"
+    # First-party calculated-index OHLC levels are kept separately from both
+    # equity bars and the close-only index evidence used by current sector
+    # ranking.  An index level has its own methodology and must never inherit
+    # equity corporate-action or volume-continuity semantics.
+    OFFICIAL_INDEX_OHLC_ARTIFACT = "OFFICIAL_INDEX_OHLC_ARTIFACT"
+    CANONICAL_INDEX_OHLC_OBSERVATION = "CANONICAL_INDEX_OHLC_OBSERVATION"
     CURRENT_SECTOR_RANKING = "CURRENT_SECTOR_RANKING"
     TOP3_OPPORTUNITY_FINDER_RUN = "TOP3_OPPORTUNITY_FINDER_RUN"
     GOVERNANCE_DRIFT_OBSERVATION = "GOVERNANCE_DRIFT_OBSERVATION"

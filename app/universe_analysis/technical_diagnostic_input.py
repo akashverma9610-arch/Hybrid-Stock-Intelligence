@@ -562,7 +562,11 @@ _RULE_REQUIREMENTS = (
     TechnicalDiagnosticRuleRequirement(3, TechnicalEvidenceClass.SECTOR_RELATIVE, None, None, False, False, True, True, False, False),
     TechnicalDiagnosticRuleRequirement(4, TechnicalEvidenceClass.PRICE_ONLY, 6, 6, True, False, False, False, False, False),
     TechnicalDiagnosticRuleRequirement(5, TechnicalEvidenceClass.PRICE_ONLY, None, 5, False, False, False, False, False, False),
-    TechnicalDiagnosticRuleRequirement(6, TechnicalEvidenceClass.BENCHMARK_RELATIVE, 4, None, True, False, True, True, True, False),
+    # Existing Rule 6 classification consumes certified stock/benchmark price
+    # returns.  A mapped sector series is optional explanatory context and the
+    # ``peers`` tuple is currently recorded only as a detail; neither changes
+    # its numerical return nor classification.  Do not invent a cohort gate.
+    TechnicalDiagnosticRuleRequirement(6, TechnicalEvidenceClass.BENCHMARK_RELATIVE, 4, None, True, False, True, False, False, False),
     TechnicalDiagnosticRuleRequirement(7, TechnicalEvidenceClass.PRICE_AND_VOLUME, 3, None, True, True, False, False, False, False),
     TechnicalDiagnosticRuleRequirement(8, TechnicalEvidenceClass.PRICE_AND_VOLUME, 2, None, True, True, False, False, False, False),
     TechnicalDiagnosticRuleRequirement(9, TechnicalEvidenceClass.PRICE_AND_VOLUME, 3, None, True, True, False, False, False, False),

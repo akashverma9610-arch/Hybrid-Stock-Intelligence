@@ -44,6 +44,7 @@ from .requirements import DIAGNOSTIC_INPUT_REQUIREMENTS
 
 if TYPE_CHECKING:
     from app.storage.governance_repository import StrategyGovernanceRepository
+    from app.universe_analysis.benchmark_sector_technical_input import CanonicalBenchmarkSectorTechnicalInput
     from app.universe_analysis.technical_diagnostic_input import CanonicalTechnicalDiagnosticInput
 
 
@@ -71,6 +72,7 @@ class AssembledStockEvidence:
     warnings: tuple[str, ...]
     freshness: str
     technical_input: "CanonicalTechnicalDiagnosticInput | None" = None
+    benchmark_sector_input: "CanonicalBenchmarkSectorTechnicalInput | None" = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -92,6 +94,7 @@ class StockDiagnosticInputAssembler:
     def assemble(
         self, instrument: NseEquityInstrument, as_of: datetime,
         *, technical_input: CanonicalTechnicalDiagnosticInput | None = None,
+        benchmark_sector_input: CanonicalBenchmarkSectorTechnicalInput | None = None,
     ) -> AssembledStockEvidence:
         if technical_input is not None:
             technical_input.__post_init__()
@@ -100,6 +103,20 @@ class StockDiagnosticInputAssembler:
                 or technical_input.as_of.astimezone(UTC) != as_of.astimezone(UTC)
             ):
                 raise UniverseAnalysisError("Canonical technical input must match the instrument and as-of cutoff.")
+        if benchmark_sector_input is not None:
+            benchmark_sector_input.__post_init__()
+            if (
+                benchmark_sector_input.canonical_instrument_id != instrument.instrument_id
+                or benchmark_sector_input.as_of.astimezone(UTC) != as_of.astimezone(UTC)
+                or (
+                    technical_input is not None
+                    and (
+                        benchmark_sector_input.technical_input is None
+                        or benchmark_sector_input.technical_input.fingerprint != technical_input.fingerprint
+                    )
+                )
+            ):
+                raise UniverseAnalysisError("Canonical benchmark/sector input must match the instrument, technical input, and as-of cutoff.")
         cached = self._frozen_by_as_of.get(as_of)
         if cached is None:
             selected: list[MarketObservation] = []
@@ -127,7 +144,7 @@ class StockDiagnosticInputAssembler:
         freshness = "FRESH" if own and all(_valid(item) for item in own) else "PARTIAL" if own else "UNAVAILABLE"
         crowd, research = _research_evidence(selected, instrument.instrument_id, as_of)
         return AssembledStockEvidence(instrument.symbol, instrument.instrument_id, instrument.sector, as_of, snapshot,
-                                      crowd, research, tuple(warnings), freshness, technical_input)
+                                      crowd, research, tuple(warnings), freshness, technical_input, benchmark_sector_input)
 
 
 class Canonical61DiagnosticRunner:
@@ -196,6 +213,15 @@ class Canonical61DiagnosticRunner:
         crowd_rules = CrowdRules(-.2, .2, -.6, .6, .7, .4)
         synthesis_rules = SynthesisRules()
         if rule_id == 1:
+            if evidence.benchmark_sector_input is not None:
+                snapshot, reason, _ = evidence.benchmark_sector_input.rule_input(1)
+                if snapshot is None:
+                    return e._missing(1, instrument, strategy, now, reason or "certified benchmark technical input is unavailable")
+                cached = self._market_regime_cache.get(snapshot.id)
+                if cached is None:
+                    cached = e.market_regime(snapshot, self._benchmark, strategy, market_rules, now)
+                    self._market_regime_cache[snapshot.id] = cached
+                return cached
             if evidence.technical_input is not None:
                 _, reason = self._technical_snapshot(evidence, rule_id, "daily")
                 return e._missing(1, instrument, strategy, now, reason or "certified benchmark technical input is unavailable")
@@ -205,18 +231,34 @@ class Canonical61DiagnosticRunner:
                 self._market_regime_cache[s.id] = cached
             return cached
         sector = evidence.sector_id or instrument
-        if rule_id in {2, 3, 6} and evidence.technical_input is not None:
-            _, reason = self._technical_snapshot(evidence, rule_id, "daily")
-            return e._missing(rule_id, instrument, strategy, now, reason or "certified relative technical inputs are unavailable")
-        if rule_id == 2: return e.sector_health(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
-        if rule_id == 3: return e.sector_rotation(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
+        if rule_id in {2, 3}:
+            if evidence.benchmark_sector_input is not None:
+                snapshot, reason, sector_index = evidence.benchmark_sector_input.rule_input(rule_id)
+                return (
+                    e._missing(rule_id, instrument, strategy, now, reason or "certified sector technical input is unavailable")
+                    if snapshot is None or sector_index is None
+                    else e.sector_health(snapshot, sector_index, self._benchmark, strategy, 3, .03, -.03, now)
+                    if rule_id == 2
+                    else e.sector_rotation(snapshot, sector_index, self._benchmark, strategy, 3, .03, -.03, now)
+                )
+            if evidence.technical_input is not None:
+                _, reason = self._technical_snapshot(evidence, rule_id, "daily")
+                return e._missing(rule_id, instrument, strategy, now, reason or "certified relative technical inputs are unavailable")
+            return e.sector_health(s, sector, self._benchmark, strategy, 3, .03, -.03, now) if rule_id == 2 else e.sector_rotation(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
         if rule_id == 4:
             daily, weekly, reason = self._technical_timeframes(evidence, rule_id)
             return e.primary_trend(weekly, daily, instrument, strategy, trend_rules, now) if reason is None else e._missing(4, instrument, strategy, now, reason)
         if rule_id == 5:
             weekly, reason = self._technical_snapshot(evidence, rule_id, "weekly")
             return e.weinstein(weekly, instrument, strategy, WeinsteinRules(3, 2), now) if reason is None else e._missing(5, instrument, strategy, now, reason)
-        if rule_id == 6: return e.relative_strength(s, instrument, self._benchmark, sector, (), strategy, relative_rules, now)
+        if rule_id == 6:
+            if evidence.benchmark_sector_input is not None:
+                snapshot, reason, sector_index = evidence.benchmark_sector_input.rule_input(6)
+                return e._missing(6, instrument, strategy, now, reason or "certified relative technical input is unavailable") if snapshot is None else e.relative_strength(snapshot, instrument, self._benchmark, sector_index, (), strategy, relative_rules, now)
+            if evidence.technical_input is not None:
+                _, reason = self._technical_snapshot(evidence, rule_id, "daily")
+                return e._missing(6, instrument, strategy, now, reason or "certified relative technical inputs are unavailable")
+            return e.relative_strength(s, instrument, self._benchmark, sector, (), strategy, relative_rules, now)
         if rule_id in {7, 8, 9, 10, 11, 12, 13}:
             daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
             if reason is not None:

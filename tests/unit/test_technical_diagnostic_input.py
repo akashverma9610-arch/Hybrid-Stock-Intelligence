@@ -110,11 +110,10 @@ def test_rule_readiness_is_rule_level_and_keeps_vwap_benchmark_and_event_gaps_ex
     assert trend.strict_historical_pit_operational is StrictHistoricalPitTechnicalState.NOT_READY
     rs = technical_diagnostic_readiness(value, 6)
     assert rs.current_descriptive_operational is TechnicalDiagnosticReadiness.PARTIAL
-    assert {
-        TechnicalDiagnosticBlocker.BENCHMARK_HISTORY_NOT_READY,
-        TechnicalDiagnosticBlocker.SECTOR_HISTORY_NOT_READY,
-        TechnicalDiagnosticBlocker.PEER_COHORT_NOT_READY,
-    } <= set(rs.blockers)
+    assert rs.blockers == (TechnicalDiagnosticBlocker.BENCHMARK_HISTORY_NOT_READY,)
+    # Existing Rule 6 calculates/classifies from stock versus benchmark only.
+    # Sector and peers are descriptive outputs, so the readiness contract must
+    # not invent gates the evaluator does not actually consume.
     vwap = technical_diagnostic_readiness(value, 35)
     assert vwap.current_descriptive_operational is TechnicalDiagnosticReadiness.NOT_READY
     assert vwap.blockers == (TechnicalDiagnosticBlocker.NAMED_VWAP_SEMANTICS_UNAVAILABLE,)
