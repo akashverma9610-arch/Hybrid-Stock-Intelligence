@@ -17,6 +17,10 @@ from app.historical.nse_udiff_identity_promotion import (
     NseUdiffHistoricalSourceIdentityInterval,
     _fp as identity_fingerprint,
 )
+from app.historical.nse_udiff_effective_identity_coverage import (
+    NseUdiffEffectiveIdentityCoverageIndex, NseUdiffIdentityAnchor,
+    NseUdiffIdentitySourceObservation, build_effective_identity_coverage_plan,
+)
 from app.historical.security_master import CorporateActionKind, HistoricalCorporateAction
 from app.market_data.models import (
     AdjustmentStatus,
@@ -36,6 +40,7 @@ from app.market_data.nse_udiff_daily_integrity import (
     build_udiff_session_coverage_manifest,
 )
 from app.market_data.nse_udiff_daily_history import NseUdiffDailyStatus, _receipt as acquisition_receipt
+from app.market_data.nse_udiff_source_identity import source_fields
 from app.market_data.nse_udiff_daily_technical_eligibility import (
     CurrentDescriptiveDailyTechnicalState,
     DailyTechnicalEligibilityError,
@@ -146,6 +151,32 @@ def test_eq_series_selection_is_deterministic_and_current_descriptive_ready():
     assert first.eligibility is DailyTechnicalEligibilityState.READY
     assert first.series_state is DailyTechnicalSeriesSelectionState.SERIES_CONTINUITY_READY
     assert first.current_descriptive_state is CurrentDescriptiveDailyTechnicalState.READY
+
+
+def test_compact_exact_isin_identity_intervals_feed_the_existing_certifier_without_bar_receipts():
+    rows = (bar(D1), bar(D2), bar(D3))
+    facts = []
+    for item in rows:
+        fields = source_fields(item)
+        facts.append(NseUdiffIdentitySourceObservation(
+            INSTRUMENT.instrument_id, INSTRUMENT.isin, fields["FinInstrmId"], fields["TckrSymb"], fields["SctySrs"],
+            date.fromisoformat(fields["TradDt"]), fields["SsnId"], item.source_observation_identity,
+            "nse-udiff-artifact:compact-fixture", AT,
+        ))
+    plan = build_effective_identity_coverage_plan(
+        observations=facts, anchors=(NseUdiffIdentityAnchor(INSTRUMENT.instrument_id, INSTRUMENT.isin, "universe-snapshot:fixture", "sha256:" + "a" * 64),),
+        session_dates=(D1, D2, D3), session_manifest_id="nse-udiff-session-manifest:fixture", session_manifest_fingerprint="sha256:" + "b" * 64,
+    )
+    assert not hasattr(plan.intervals[0], "source_observation_ids")
+    value = receipt(bars=rows, intervals=NseUdiffEffectiveIdentityCoverageIndex(plan.intervals))
+    assert value.eligibility is DailyTechnicalEligibilityState.READY
+
+
+def test_ambiguous_identity_intervals_remain_a_fail_closed_certificate_reason():
+    rows = (bar(D1), bar(D2), bar(D3))
+    evidence = tuple(item for row in rows for item in (interval(row), interval(row)))
+    value = receipt(bars=rows, intervals=evidence)
+    assert DailyTechnicalEligibilityReason.HISTORICAL_IDENTITY_AMBIGUOUS in value.reasons
 
 
 def test_bl_is_excluded_from_ordinary_daily_technical_read():

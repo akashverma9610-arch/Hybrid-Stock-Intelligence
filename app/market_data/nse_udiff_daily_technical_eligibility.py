@@ -24,8 +24,8 @@ from app.historical.canonical_market_session_event_time import (
     CanonicalMarketSessionCalendar,
     TradingDayState,
 )
-from app.historical.nse_udiff_identity_promotion import (
-    NseUdiffHistoricalSourceIdentityInterval,
+from app.historical.nse_udiff_effective_identity_coverage import (
+    IdentityInterval, NseUdiffEffectiveIdentityCoverageIndex,
 )
 from app.historical.security_master import CorporateActionKind, HistoricalCorporateAction
 from app.market_data.models import (
@@ -342,7 +342,7 @@ def certify_daily_technical_eligibility(
     *, canonical_instrument_id: str, start_session: date, end_session: date,
     requirement: DailyTechnicalRequirement, evaluation_as_of: datetime,
     expected_sessions: Iterable[date], observed_bars: Iterable[CanonicalOHLCVBar],
-    identity_intervals: Iterable[NseUdiffHistoricalSourceIdentityInterval],
+    identity_intervals: Iterable[IdentityInterval] | NseUdiffEffectiveIdentityCoverageIndex,
     action_coverage: CorporateActionCoverageAssertion | None,
     actions: Iterable[HistoricalCorporateAction] = (),
     conflicts: Iterable[NseUdiffConflictAssessment] = (),
@@ -367,14 +367,17 @@ def certify_daily_technical_eligibility(
         raise DailyTechnicalEligibilityError("EXPECTED_SESSION_DUPLICATE")
     at = _utc(evaluation_as_of)
     bars = tuple(sorted(observed_bars, key=lambda value: (value.start_time, value.bar_id)))
-    intervals = tuple(sorted(identity_intervals, key=lambda value: value.interval_id))
+    # The caller may reuse one frozen compact index across a whole-universe
+    # audit.  Otherwise construct it once per certificate rather than scanning
+    # all identity receipts for every supplied bar.
+    identity_index = identity_intervals if isinstance(identity_intervals, NseUdiffEffectiveIdentityCoverageIndex) else NseUdiffEffectiveIdentityCoverageIndex(identity_intervals)
     action_values = tuple(sorted(actions, key=lambda value: (value.effective_date, value.action_id)))
     conflict_values = tuple(sorted(conflicts, key=lambda value: (value.trade_date, value.conflict_fingerprint)))
     reasons: list[DailyTechnicalEligibilityReason] = [DailyTechnicalEligibilityReason.HISTORICAL_SOURCE_AVAILABILITY_UNAVAILABLE]
     candidates_by_day: dict[date, list[tuple[CanonicalOHLCVBar, dict[str, str]]]] = {}
     bar_by_day: dict[date, CanonicalOHLCVBar] = {}
     source_rows: dict[date, tuple[CanonicalOHLCVBar, dict[str, str]]] = {}
-    identity_used: list[NseUdiffHistoricalSourceIdentityInterval] = []
+    identity_used: list[IdentityInterval] = []
     source_valid = True
     for bar in bars:
         try:
@@ -404,17 +407,15 @@ def certify_daily_technical_eligibility(
         bar, fields = selected[0]
         bar_by_day[day] = bar
         source_rows[day] = (bar, fields)
-        matches = tuple(
-            item for item in intervals
-            if item.canonical_instrument_id == canonical_instrument_id
-            and item.source_observation_ids.count(bar.source_observation_identity) == 1
-            and item.source_symbol == fields["TckrSymb"]
-            and item.source_series == fields["SctySrs"]
-            and item.observed_trade_start <= day <= item.observed_trade_end
+        matches = identity_index.resolve_candidates(
+            canonical_instrument_id=canonical_instrument_id, isin=fields["ISIN"],
+            fin_instrm_id=fields["FinInstrmId"], source_symbol=fields["TckrSymb"],
+            source_series=fields["SctySrs"], trade_date=day,
+            source_observation_id=bar.source_observation_identity,
         )
         if len(matches) == 1:
             identity_used.append(matches[0])
-        elif len(matches) == 0:
+        elif not matches:
             source_valid = False
             reasons.append(DailyTechnicalEligibilityReason.HISTORICAL_IDENTITY_REQUIRED)
         else:
