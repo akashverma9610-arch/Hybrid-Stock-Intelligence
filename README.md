@@ -76,6 +76,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [NSE UDiFF Historical Security Identity Continuity Promotion V1](docs/architecture/NSE_UDIFF_HISTORICAL_SECURITY_IDENTITY_CONTINUITY_PROMOTION_V1.md)
 - [NSE UDiFF Daily Technical Eligibility and Continuity Certification V1](docs/architecture/NSE_UDIFF_DAILY_TECHNICAL_ELIGIBILITY_AND_CONTINUITY_CERTIFICATION_V1.md)
 - [NSE UDiFF Effective-Dated Identity and Action-Window Coverage Completion V1](docs/architecture/NSE_UDIFF_EFFECTIVE_DATED_IDENTITY_AND_ACTION_WINDOW_COVERAGE_COMPLETION_V1.md)
+- [NSE UDiFF Daily Technical Read Activation V1](docs/architecture/NSE_UDIFF_DAILY_TECHNICAL_READ_ACTIVATION_V1.md)
 - [HSI Storage Footprint and Repository-Size Audit V1](docs/architecture/HSI_STORAGE_FOOTPRINT_AND_REPOSITORY_SIZE_AUDIT_V1.md)
 - [Canonical Filing Timestamp Timezone Provenance V1](docs/architecture/CANONICAL_FILING_TIMESTAMP_TIMEZONE_PROVENANCE_V1.md)
 - [Inflection Accounting-only Prospective Shadow V1](docs/architecture/INFLECTION_ACCOUNTING_ONLY_PROSPECTIVE_SHADOW_V1.md)
