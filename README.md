@@ -66,6 +66,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Daily/Weekly Existing Technical Diagnostics Operationalization V1](docs/architecture/DAILY_WEEKLY_EXISTING_TECHNICAL_DIAGNOSTICS_OPERATIONALIZATION_V1.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
+- [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)
 - [Canonical Daily Technical Bar Known-at and Completeness Evidence V1](docs/architecture/CANONICAL_DAILY_TECHNICAL_BAR_KNOWN_AT_AND_COMPLETENESS_EVIDENCE_V1.md)
 - [Canonical Daily Source Session and Publication Semantics V1](docs/architecture/CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1.md)
 - [Canonical Technical Price Adjustment and Corporate-Action Integrity V1](docs/architecture/CANONICAL_TECHNICAL_PRICE_ADJUSTMENT_AND_CORPORATE_ACTION_INTEGRITY_V1.md)
