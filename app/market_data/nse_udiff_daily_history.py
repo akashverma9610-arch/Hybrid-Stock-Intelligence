@@ -312,6 +312,25 @@ class NseUdiffDailyHistoryStore:
         )
         return tuple(sorted(values, key=lambda item: (item.trade_date, item.observed_at, item.artifact_id)))
 
+    def iter_artifacts(self, acquisition_id: str):
+        """Yield retained artifacts in bounded pages for large local replays.
+
+        The immutable archive corpus can be several gigabytes.  A caller that
+        only needs one source ZIP at a time must not need to deserialize the
+        entire corpus merely to preserve the same source boundary.
+        """
+        offset = 0
+        while True:
+            page = self._repository.list_snapshots(
+                CoreApiSnapshotFamily.NSE_UDIFF_DAILY_SOURCE_ARTIFACT, limit=1, offset=offset,
+            )
+            if not page:
+                return
+            offset += 1
+            value = page[0].payload
+            if isinstance(value, NseUdiffDailySourceArtifact) and value.acquisition_id == acquisition_id:
+                yield value
+
     def save_artifact(self, value: NseUdiffDailySourceArtifact) -> bool:
         existing = self.artifact(value.acquisition_id, value.trade_date)
         if existing is not None:
