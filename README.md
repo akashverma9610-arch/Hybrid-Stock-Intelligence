@@ -71,6 +71,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [NSE UDiFF Final Bhavcopy Archive and Basis Proof V1](docs/architecture/NSE_UDIFF_FINAL_BHAVCOPY_ARCHIVE_AND_BASIS_PROOF_V1.md)
 - [NSE UDiFF Canonical Daily Price-History Backfill V1](docs/architecture/NSE_UDIFF_CANONICAL_DAILY_PRICE_HISTORY_BACKFILL_V1.md)
 - [NSE UDiFF Daily History Integrity and Continuity Closure V1](docs/architecture/NSE_UDIFF_DAILY_HISTORY_INTEGRITY_AND_CONTINUITY_CLOSURE_V1.md)
+- [NSE UDiFF Identity and Conflict Semantics: Storage Repair Checkpoint](docs/architecture/NSE_UDIFF_CONFLICT_SEMANTICS_AND_HISTORICAL_SECURITY_IDENTITY_CONTINUITY_V1.md)
 - [Canonical Filing Timestamp Timezone Provenance V1](docs/architecture/CANONICAL_FILING_TIMESTAMP_TIMEZONE_PROVENANCE_V1.md)
 - [Inflection Accounting-only Prospective Shadow V1](docs/architecture/INFLECTION_ACCOUNTING_ONLY_PROSPECTIVE_SHADOW_V1.md)
 - [Multi-Funnel Discovery Contract and Registry V1](docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md)
