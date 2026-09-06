@@ -313,6 +313,47 @@ def make_native_technical_bar(
     return CanonicalTechnicalBar(*values, _bar_fingerprint_values(*values))
 
 
+def make_derived_technical_bar(
+    *, market_bar: CanonicalOHLCVBar, aggregation: "DerivedTechnicalBarAggregation",
+    receipt: TechnicalBarCompletenessReceipt, aggregation_policy_id: str,
+    aggregation_policy_version: str, corporate_action_ids: Iterable[str] = (),
+) -> CanonicalTechnicalBar:
+    """Bind a closed aggregation to its canonical market-bar representation.
+
+    This is intentionally a construction helper only: callers still supply a
+    complete, independently certified source aggregation and an immutable
+    receipt.  Keeping the binding here prevents a derived persistence adapter
+    from recreating the contract fingerprint or weakening its lineage rules.
+    """
+    aggregation.__post_init__()
+    receipt.__post_init__()
+    if (
+        market_bar.bar_id != aggregation.canonical_bar_id
+        or market_bar.timeframe is not aggregation.interval.stored_timeframe
+        or market_bar.start_time != aggregation.period.starts_at
+        or market_bar.end_time != aggregation.period.ends_at
+        or (market_bar.open, market_bar.high, market_bar.low, market_bar.close, market_bar.volume,
+            market_bar.adjustment_status)
+        != (aggregation.open, aggregation.high, aggregation.low, aggregation.close, aggregation.volume,
+            aggregation.adjustment_status)
+        or receipt.canonical_bar_id != aggregation.canonical_bar_id
+        or receipt.interval != aggregation.interval
+        or receipt.period != aggregation.period
+        or receipt.state is not TechnicalBarCompletenessState.CLOSED
+        or receipt.readiness is not TechnicalBarReadiness.READY
+        or receipt.observed_source_lineage != aggregation.source_lineage
+        or receipt.known_at != aggregation.known_at
+    ):
+        raise TechnicalBarContractError("TECHNICAL_DERIVED_BAR_BINDING_INVALID")
+    actions = tuple(sorted(set(corporate_action_ids)))
+    values = (
+        aggregation.canonical_bar_id, market_bar, aggregation.interval,
+        TechnicalBarOrigin.DERIVED_RESAMPLED_BAR, None, receipt,
+        aggregation.source_lineage, aggregation_policy_id, aggregation_policy_version, actions,
+    )
+    return CanonicalTechnicalBar(*values, _bar_fingerprint_values(*values))
+
+
 @dataclass(frozen=True, slots=True)
 class DerivedTechnicalBarAggregation:
     """Pure aggregation result.  It does not write, replace, or activate a bar."""

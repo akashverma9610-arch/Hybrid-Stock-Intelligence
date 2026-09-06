@@ -48,7 +48,7 @@ own interval code separately from canonical identity.
 | 15m / 30m / 1H | Typed future-compatible interval | No stored canonical bars or production on-demand binding. |
 | 4H | `FOUR_HOUR_SEMANTICS_UNRESOLVED` only | No native mapping, session composition or resampler.  It cannot become `CLOSED` under V1. |
 | 1D | Typed stored-compatible interval | 1,545,139 retained daily bars, but temporal readiness remains partial. |
-| 1W | Typed stored-compatible interval | No retained weekly bars; possible only as a future exact daily aggregation. |
+| 1W | Typed stored-compatible interval | Certified UDiFF Daily-derived artifacts are retained from 2024-07-08 onward; current-descriptive only, with strict historical PIT unavailable. |
 | 1M | Typed future-compatible interval | No `Timeframe` storage value or retained monthly bar. |
 
 The 4H identity exists so future evidence can be reported safely; it is not an
@@ -144,9 +144,11 @@ unavailable.
   assumption.  Existing retained daily bars lack universal session/known-at
   evidence and therefore remain `PARTIAL`, not retrospectively closed by this
   contract.
-- **1W:** may later aggregate only the exact included closed daily trading
-  sessions.  A holiday-shortened week ends at its actual final trading session;
-  a Friday holiday never creates a synthetic Friday bar or future leakage.
+- **1W:** `CANONICAL_WEEKLY_TECHNICAL_BAR_DERIVATION_V1` now aggregates only
+  exact included certified UDiFF Daily sessions.  A holiday-shortened week
+  ends at its actual final trading session; a Friday holiday never creates a
+  synthetic Friday bar or future leakage.  It is current-descriptive only and
+  does not activate diagnostics or multi-timeframe assembly.
 - **1M:** follows the same exact included-session rule through its final
   trading session.  It cannot expose month-end information mid-month.  Current
   storage has no monthly timeframe, so V1 defines semantics only.
@@ -189,7 +191,7 @@ provider, persistence, horizon mapping, or orchestration behaviour was added.
 | 1H | Defined | Contract-defined; no source evidence | Future native/on-demand only | No retained parity | `NOT_READY` |
 | 4H | Unresolved | Cannot be closed or derived in V1 | None | None | `SEMANTICS_UNRESOLVED` |
 | 1D | Defined | Existing rows have start/end but not a universal completed-session/known-at proof | Native retained | Mostly `UNKNOWN` adjustment; daily benchmark/sector partial | `PARTIAL` |
-| 1W | Defined | Exact source-session rule defined; no retained weekly bars | Future derived only | Requires daily parity first | `NOT_READY` |
+| 1W | Defined | Certified UDiFF session/receipt proof for eligible source-era weeks | Derived from certified Daily only | UDiFF-only current-descriptive subsets | `READY` for bar derivation; diagnostics remain `NOT_ACTIVE` |
 | 1M | Defined | Exact source-session rule defined; no retained monthly bars | Future derived only | Requires daily parity first | `NOT_READY` |
 
 ## Daily audit and derivation feasibility
@@ -200,10 +202,10 @@ are `RAW`; 11,279 have zero/null volume.  Nominal eligible-equity daily ID
 coverage was 2,551/2,553, not a PIT-complete claim.  NIFTY 50, NIFTY 500 and
 eight sector indices are daily-only.
 
-Weekly/monthly aggregation is mathematically possible from daily OHLC but is
-**not canonical/PIT-ready today**: universal daily closed-state/known-at,
-ordinary-session timing, adjustment/corporate-action continuity, and exact
-expected-session lineage are not retained.  The contract makes each missing
+Weekly aggregation is now canonical only for certified UDiFF Daily subsets
+with exact coverage, identity and action lineage; it remains **not strict
+historical-PIT-ready** because original source availability is unavailable.
+Monthly aggregation remains unimplemented.  The contract makes each missing
 fact explicit rather than treating arithmetic possibility as eligibility.
 
 ## Non-goals and next decision

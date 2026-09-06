@@ -359,6 +359,24 @@ def test_same_provider_conflict_blocks_without_upstox_fallback():
     assert source.provenance.provider == "nse_udiff_official"
 
 
+def test_multiple_conflict_payload_fingerprints_are_canonicalised_independently_of_conflict_identity():
+    def conflict(*, conflict_identity: str, source_identity: str) -> NseUdiffConflictAssessment:
+        values = dict(
+            conflict_fingerprint=conflict_identity, canonical_instrument_id=INSTRUMENT.instrument_id, trade_date=D2,
+            state=NseUdiffConflictState.CONFLICT_UNRESOLVED, cause=NseUdiffConflictCause.SAME_KEY_DIFFERING_OHLCV,
+            stored_provider_reference="NSE:CM:101", incoming_provider_reference="NSE:CM:101",
+            source_identity=source_identity, differing_fields=("close",),
+        )
+        return NseUdiffConflictAssessment(**values, fingerprint=conflict_fingerprint(_conflict_payload(values)))
+
+    first = conflict(conflict_identity="a" * 64, source_identity="https://fixture.example/conflict-a")
+    second = conflict(conflict_identity="b" * 64, source_identity="https://fixture.example/conflict-b")
+    value = receipt(conflicts=(second, first))
+
+    assert value.eligibility is DailyTechnicalEligibilityState.NOT_READY
+    assert value.conflict_fingerprints == tuple(sorted((first.fingerprint, second.fingerprint)))
+
+
 def test_eligible_read_returns_only_receipt_selected_udiff_bars():
     values = (bar(D1), bar(D2), bar(D3))
     value = receipt(bars=values)

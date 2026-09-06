@@ -213,6 +213,13 @@ class NseUdiffEffectiveIdentityCoverageIndex:
                    interval.source_symbol, interval.source_series)
             mapping.setdefault(key, []).append(interval)
         self._values = {key: tuple(sorted(value, key=lambda item: (item.observed_trade_start, item.observed_trade_end, item.interval_id))) for key, value in mapping.items()}
+        self._by_canonical = {
+            instrument: tuple(sorted(
+                (item for key, values in self._values.items() if key[0] == instrument for item in values),
+                key=lambda item: item.interval_id,
+            ))
+            for instrument in sorted({key[0] for key in self._values})
+        }
     def resolve_candidates(self, *, canonical_instrument_id: str, isin: str, fin_instrm_id: str, source_symbol: str, source_series: str, trade_date: date, source_observation_id: str) -> tuple[IdentityInterval, ...]:
         key = (canonical_instrument_id, isin.upper(), fin_instrm_id, source_symbol, source_series)
         values = self._values.get(key, ())
@@ -496,7 +503,10 @@ class NseUdiffActionWindowCoverage:
 def compose_action_window_coverage(*, canonical_instrument_id: str, window_start: date, window_end: date, identity_intervals: Iterable[IdentityInterval] | NseUdiffEffectiveIdentityCoverageIndex, query_receipts: Iterable[NseCorporateActionQueryReceipt], actions: Iterable[HistoricalCorporateAction], evaluation_as_of: datetime, required_sessions: Iterable[date] = ()) -> NseUdiffActionWindowCoverage:
     if not _aware(evaluation_as_of) or not _ID.fullmatch(canonical_instrument_id): raise ValueError("NSE_UDIFF_ACTION_WINDOW_INPUT_INVALID")
     index = identity_intervals if isinstance(identity_intervals, NseUdiffEffectiveIdentityCoverageIndex) else NseUdiffEffectiveIdentityCoverageIndex(identity_intervals)
-    relevant_intervals = tuple(sorted((item for values in index._values.values() for item in values if item.canonical_instrument_id == canonical_instrument_id and item.observed_trade_start <= window_end and item.observed_trade_end >= window_start), key=lambda item: item.interval_id))
+    relevant_intervals = tuple(
+        item for item in index._by_canonical.get(canonical_instrument_id, ())
+        if item.observed_trade_start <= window_end and item.observed_trade_end >= window_start
+    )
     required = tuple(required_sessions)
     if required != tuple(sorted(set(required))) or any(item < window_start or item > window_end for item in required):
         raise ValueError("NSE_UDIFF_ACTION_WINDOW_REQUIRED_SESSIONS_INVALID")

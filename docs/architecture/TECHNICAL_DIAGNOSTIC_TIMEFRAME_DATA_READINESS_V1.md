@@ -129,7 +129,7 @@ remains `INSUFFICIENT_DATA`/`UNVERIFIED`, never a fabricated neutral or pass.
 | 1H | `Timeframe.SIXTY_MINUTES` | None. | Same Global Datafeeds adapter limitation. | `CONTRACT_ONLY` |
 | 4H | No `Timeframe` member. | None. | No provider adapter mapping, session composition, resampler or close policy. | `UNAVAILABLE` |
 | 1D | `Timeframe.DAILY` | 1,545,139 bars / 2,561 instruments. | Upstox is production-bound daily only; official NSE bhavcopy is daily; all retained bars are daily. | `CANONICAL_STORED_NATIVE` |
-| 1W | `Timeframe.WEEKLY` | None. | Global Datafeeds has a code-only request map; no production binding or derived weekly series. | `CONTRACT_ONLY` |
+| 1W | `Timeframe.WEEKLY` | Certified UDiFF Daily-derived Weekly artifacts from 2024-07-08 onward. | Current-descriptive only; no native provider binding, strict historical PIT, or diagnostic assembly. | `CANONICAL_DERIVED_CURRENT_DESCRIPTIVE` |
 | 1M | No `Timeframe` member. | None. | No provider map, resampler or stored series. | `UNAVAILABLE` |
 | Dhan Live LTP | Separate `LiveMarketState`. | No historical OHLCV persistence. | Bounded in-memory current tick state only; it has no candle builder. | `LIVE_ONLY` |
 | Daily→weekly/monthly or intraday→4H | No resampling contract. | None. | No interval boundaries, partial-bar rule, session calendar join, aggregation lineage or adjustment policy. | `UNAVAILABLE` |
@@ -241,7 +241,8 @@ frozen implementation parameters, not recommended values for another interval.
 | Capability | State | Compatible frozen ownership model |
 | --- | --- | --- |
 | Broad internal daily | `PARTIAL` | Retain canonical daily bars, subject to the future closed-bar/adjustment contract. |
-| Broad internal weekly/monthly | `NOT_READY` | Intended ownership is compatible, but no stored native/derived series exists. |
+| Broad internal weekly | `PARTIAL` | Certified UDiFF Daily-derived artifacts exist for eligible source-era subsets; no diagnostics are activated. |
+| Broad internal monthly | `NOT_READY` | No stored/derived monthly series exists. |
 | Broad intraday discovery | `NOT_READY` internally | Keep external-provider assistance as a future replaceable discovery layer only. |
 | Candidate/holding/watchlist 15m–1H verification | `NOT_READY` | Desired on-demand model is compatible, but no production canonical intraday-bar path exists. |
 | Candidate 4H verification | `NOT_READY` | Deferred until 4H semantics are explicitly approved. |
@@ -268,7 +269,8 @@ provider outage may become a Brain-wide dependency.
 | `INTRADAY_BROAD_DISCOVERY` | `NOT_READY` | No external adapter is authorised or integrated. |
 | `INTRADAY_ON_DEMAND_VERIFICATION` | `NOT_READY` | No production canonical 15m/30m/1H/4H closed-bar path. |
 | `DAILY_OHLCV` | `PARTIAL` | 1.545M retained bars; stale coverage, unknown adjustments and incomplete close/known-at semantics remain. |
-| `WEEKLY_MONTHLY_OHLCV` | `NOT_READY` | No stored/derived weekly or monthly bars. |
+| `WEEKLY_OHLCV` | `PARTIAL` | Certified UDiFF source-era Daily-derived Weekly artifacts exist, current-descriptive only. |
+| `MONTHLY_OHLCV` | `NOT_READY` | No stored/derived monthly bars. |
 | `PRICE_ADJUSTMENT` | `PARTIAL` | 1,518,652 rows are `UNKNOWN`; remaining rows are RAW. |
 | `CORPORATE_ACTION_INTEGRITY` | `NOT_READY` | No market-series continuity policy links actions to technical history. |
 | `VOLUME` | `PARTIAL` | Daily volume exists, but zero/null rows and narrow turnover/trade-count coverage remain. |
@@ -344,7 +346,8 @@ data.
 | Area | Verdict |
 | --- | --- |
 | Existing daily technical inputs | `PARTIAL`: stored daily OHLCV/benchmark/sector evidence exists, but freshness, bar completeness and adjustment continuity are not universally proven. |
-| Genuine weekly / monthly technical analysis | `NOT_READY`: no stored/derived canonical series; weekly has only code-level provider vocabulary, monthly has none. |
+| Genuine weekly technical analysis | `NOT_ACTIVE`: certified current-descriptive Weekly bars exist, but no diagnostic binding or horizon policy is activated. |
+| Genuine monthly technical analysis | `NOT_READY`: no stored/derived canonical monthly series. |
 | Genuine 15m / 30m / 1H / 4H technical analysis | `NOT_READY`: no retained canonical closed bars; 4H semantics are unresolved. |
 | Multi-timeframe Rules 4 and 14 as labelled | `NOT_READY`: same snapshot is passed under daily and weekly labels. |
 | Technical discovery from an external screener | `FUTURE_DISCOVERY_ONLY`: no provider integration or canonical authority. |

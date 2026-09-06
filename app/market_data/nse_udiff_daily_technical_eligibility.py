@@ -471,7 +471,11 @@ def certify_daily_technical_eligibility(
         series_state=series_state, identity_interval_ids=tuple(item[0] for item in interval_pairs),
         identity_interval_fingerprints=tuple(item[1] for item in interval_pairs),
         source_bar_ids=tuple(item[0] for item in source_pairs), source_bar_fingerprints=tuple(item[1] for item in source_pairs),
-        conflict_fingerprints=tuple(item.fingerprint for item in relevant_conflicts),
+        # Conflict assessments are ordered by their own immutable conflict
+        # identity, but the receipt exposes their independent payload
+        # fingerprints.  Canonicalise that exposed vector separately: the two
+        # identities need not share lexical order.
+        conflict_fingerprints=tuple(sorted(item.fingerprint for item in relevant_conflicts)),
         action_coverage_fingerprint=None if action_coverage is None else action_coverage.fingerprint,
         action_ids=tuple(item[0] for item in action_pairs), action_fingerprints=tuple(item[1] for item in action_pairs),
         price_continuity=price, volume_continuity=volume,

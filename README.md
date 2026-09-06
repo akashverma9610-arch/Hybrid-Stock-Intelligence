@@ -62,6 +62,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Canonical NSE Ordinary Session Identity and Close Evidence V1](docs/architecture/CANONICAL_NSE_ORDINARY_SESSION_IDENTITY_AND_CLOSE_EVIDENCE_V1.md)
 - [Technical Diagnostic Timeframe and Data Readiness V1](docs/architecture/TECHNICAL_DIAGNOSTIC_TIMEFRAME_DATA_READINESS_V1.md)
 - [Canonical Technical Bar Timeframe and Completeness Contract V1](docs/architecture/CANONICAL_TECHNICAL_BAR_TIMEFRAME_AND_COMPLETENESS_CONTRACT_V1.md)
+- [Canonical Weekly Technical Bar Derivation V1](docs/architecture/CANONICAL_WEEKLY_TECHNICAL_BAR_DERIVATION_V1.md)
 - [Canonical Daily Technical Bar Known-at and Completeness Evidence V1](docs/architecture/CANONICAL_DAILY_TECHNICAL_BAR_KNOWN_AT_AND_COMPLETENESS_EVIDENCE_V1.md)
 - [Canonical Daily Source Session and Publication Semantics V1](docs/architecture/CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1.md)
 - [Canonical Technical Price Adjustment and Corporate-Action Integrity V1](docs/architecture/CANONICAL_TECHNICAL_PRICE_ADJUSTMENT_AND_CORPORATE_ACTION_INTEGRITY_V1.md)

@@ -143,6 +143,10 @@ class CoreApiSnapshotFamily(StrEnum):
     NSE_UDIFF_DAILY_ACQUISITION_RECEIPT = "NSE_UDIFF_DAILY_ACQUISITION_RECEIPT"
     NSE_UDIFF_DAILY_ACQUISITION_MANIFEST = "NSE_UDIFF_DAILY_ACQUISITION_MANIFEST"
     NSE_UDIFF_DAILY_SESSION_COVERAGE_MANIFEST = "NSE_UDIFF_DAILY_SESSION_COVERAGE_MANIFEST"
+    # Immutable, current-descriptive-only Weekly bars derived exclusively from
+    # certified UDiFF Daily reads.  Their complete child lineage is retained
+    # in the additive Weekly technical-bar SQLite table, not in raw evidence.
+    NSE_UDIFF_WEEKLY_TECHNICAL_BAR = "NSE_UDIFF_WEEKLY_TECHNICAL_BAR"
     # Source-date UDiFF identity evidence and its continuity decisions remain
     # separate from both the historical-security master receipt and OHLCV
     # observations.  They establish only exact-security addressability; they
