@@ -469,15 +469,22 @@ class NseUdiffDailyHistoryBackfill:
             self._evidence.save_artifact(artifact)
         return self._import_artifact(artifact)
 
-    def _import_artifact(self, artifact: NseUdiffDailySourceArtifact) -> NseUdiffDailyAcquisitionReceipt:
+    def replay_retained_artifact(self, artifact: NseUdiffDailySourceArtifact) -> NseUdiffDailyAcquisitionReceipt:
+        """Explicit storage-repair replay; no fetch and no old receipt rewrite."""
+        if artifact.acquisition_id != self._acquisition_id:
+            raise ValueError("NSE_UDIFF_REPLAY_ACQUISITION_MISMATCH")
+        artifact.__post_init__()
+        return self._import_artifact(artifact, save_receipt=False)
+
+    def _import_artifact(self, artifact: NseUdiffDailySourceArtifact, *, save_receipt: bool = True) -> NseUdiffDailyAcquisitionReceipt:
         if artifact.schema_status is not NseUdiffDailyStatus.ARTIFACT_VALID:
             receipt = _artifact_failure_receipt(artifact)
-            self._evidence.save_receipt(receipt)
+            if save_receipt:
+                self._evidence.save_receipt(receipt)
             return receipt
         parsed = _parse_valid_archive(artifact)
         bars: list[CanonicalOHLCVBar] = []
         exact = discontinuities = unresolved = invalid = zero_volume = eligible = 0
-        seen: set[tuple[str, str, str]] = set()
         for index, row in enumerate(parsed.rows):
             status, target = _resolve_target(row, self._targets)
             if status is NseUdiffIdentityStatus.OUT_OF_ELIGIBLE_UNIVERSE:
@@ -489,11 +496,6 @@ class NseUdiffDailyHistoryBackfill:
             if status is not NseUdiffIdentityStatus.EXACT_IDENTITY_RESOLVED or target is None:
                 unresolved += 1
                 continue
-            duplicate_key = (target.canonical_instrument_id, _field(row, "FinInstrmId"), _field(row, "SctySrs"))
-            if duplicate_key in seen:
-                discontinuities += 1
-                continue
-            seen.add(duplicate_key)
             try:
                 bar, has_zero_volume = _bar_from_row(artifact, parsed, index, row, target)
                 MarketDataQualityValidator.validate_bar(bar)
@@ -522,7 +524,8 @@ class NseUdiffDailyHistoryBackfill:
             duplicates=duplicates, conflicts=conflicts, error_code=None,
         )
         receipt = _receipt(**values)
-        self._evidence.save_receipt(receipt)
+        if save_receipt:
+            self._evidence.save_receipt(receipt)
         return receipt
 
 

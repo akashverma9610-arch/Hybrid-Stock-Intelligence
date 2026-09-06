@@ -14,9 +14,10 @@ import json
 import re
 
 from app.market_data.nse_udiff_daily_history import (
-    NSE_UDIFF_SOURCE_FAMILY, NSE_UDIFF_SOURCE_VERSION, NSE_UDIFF_START,
+    NSE_UDIFF_START,
     NseUdiffDailySourceArtifact, UDIFF_COLUMNS, _parse_valid_archive,
 )
+from app.market_data.nse_udiff_source_identity import source_row_id
 
 CONTRACT_VERSION = "nse-udiff-conflict-semantics-v1"
 IDENTITY_FIELDS = (
@@ -89,12 +90,7 @@ class NseUdiffSourceRowEvidence:
 
     @property
     def source_row_id(self) -> str:
-        row = dict(self.fields)
-        return "nse-udiff-source-row:" + _digest({
-            "contract": CONTRACT_VERSION, "source_family": NSE_UDIFF_SOURCE_FAMILY,
-            "source_version": NSE_UDIFF_SOURCE_VERSION,
-            "identity": tuple((key, row[key]) for key in IDENTITY_FIELDS),
-        }).removeprefix("sha256:")
+        return source_row_id(dict(self.fields))
 
     def _body(self) -> dict[str, object]:
         return {

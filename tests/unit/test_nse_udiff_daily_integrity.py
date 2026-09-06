@@ -71,6 +71,32 @@ def bar(*, provider: str, start: datetime, close: str = "102", open_: str = "100
     )
 
 
+def saved_legacy_conflict(stored, incoming):
+    """Pre-series artifact fixture: new writes must not create coarse conflicts.
+
+    Keep testing the old audit/selection behavior for retained historical
+    artifacts with absent source-observation identity, not new creation.
+    """
+    from app.market_data.historical import (
+        HistoricalBarNormalizedValues, HistoricalBarLineage,
+        _normalized_bar_fingerprint, _historical_conflict_fingerprint,
+        _conflict_differing_fields,
+    )
+    def lineage(b):
+        p = b.provenance
+        return HistoricalBarLineage(p.provider.lower(), p.schema_version or None, None,
+                                    p.normalization_version, p.source_reference,
+                                    p.provider_instrument_reference)
+    left, right = HistoricalBarNormalizedValues.from_bar(stored), HistoricalBarNormalizedValues.from_bar(incoming)
+    values = dict(canonical_instrument_id=stored.instrument.instrument_id, timeframe=stored.timeframe,
+                  start_time=stored.start_time, end_time=stored.end_time,
+                  stored_bar_fingerprint=_normalized_bar_fingerprint(stored), incoming_bar_fingerprint=_normalized_bar_fingerprint(incoming),
+                  differing_fields=_conflict_differing_fields(left, right),
+                  stored_lineage=lineage(stored), incoming_lineage=lineage(incoming))
+    return HistoricalBarConflictArtifact(**values, conflict_fingerprint=_historical_conflict_fingerprint(**values),
+                                         stored_values=left, incoming_values=right, detected_at=T, ingestion_run_id=ACQUISITION)
+
+
 def test_date_specific_nse_election_amendments_close_all_source_unavailable_dates():
     dates = (
         date(2024, 11, 20),
@@ -115,7 +141,7 @@ def test_same_source_different_provider_reference_is_an_unresolved_ingestion_key
     start = datetime(2024, 7, 7, 18, 30, tzinfo=UTC)
     stored = bar(provider="NSE_UDIFF_OFFICIAL", start=start, reference="NSE:CM:101")
     incoming = bar(provider="NSE_UDIFF_OFFICIAL", start=start, close="103", reference="NSE:CM:202")
-    artifact = HistoricalBarConflictArtifact.from_bars(stored, incoming, detected_at=T, ingestion_run_id=ACQUISITION)
+    artifact = saved_legacy_conflict(stored, incoming)
     assessment = audit_udiff_same_provider_conflicts((artifact,))[0]
     assert assessment.state is NseUdiffConflictState.CONFLICT_UNRESOLVED
     assert assessment.cause is NseUdiffConflictCause.INGESTION_KEY_COLLISION
@@ -199,8 +225,9 @@ def test_selection_uses_nse_session_date_and_never_falls_back_to_another_provide
         bar=udiff, coverage=manifest, identity=resolved, conflicts=(),
     )
     assert selected.trade_date == day
-    assert selected.state is NseUdiffDailySourceSelectionState.SELECTED_UDIFF
-    assert selected.selected_provider == "NSE_UDIFF_OFFICIAL"
+    assert selected.state is NseUdiffDailySourceSelectionState.SERIES_SELECTION_NOT_ACTIVE
+    assert selected.selected_provider is None
+    assert selected.reason == "NSE_UDIFF_TECHNICAL_SERIES_SELECTION_NOT_ACTIVE"
 
     mismatch = resolve_historical_security_identity(
         (identity,), canonical_instrument_id=INSTRUMENT.instrument_id, as_of=udiff.end_time + timedelta(seconds=1),
@@ -232,9 +259,8 @@ def test_selection_fails_closed_for_a_same_provider_conflict_without_fallback():
     resolved = resolve_historical_security_identity(
         (identity,), canonical_instrument_id=INSTRUMENT.instrument_id, as_of=udiff.end_time,
     )
-    conflict = HistoricalBarConflictArtifact.from_bars(
+    conflict = saved_legacy_conflict(
         udiff, bar(provider="NSE_UDIFF_OFFICIAL", start=start, close="103", reference="NSE:CM:202"),
-        detected_at=T, ingestion_run_id=ACQUISITION,
     )
     result = select_eligible_udiff_daily_bar(
         bar=udiff, coverage=manifest, identity=resolved,

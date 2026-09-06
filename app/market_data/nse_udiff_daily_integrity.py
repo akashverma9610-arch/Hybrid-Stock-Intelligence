@@ -97,6 +97,7 @@ class NseUdiffDailySourceSelectionState(StrEnum):
     """Era-scoped selection provenance; never a fallback or provider merge."""
 
     SELECTED_UDIFF = "SELECTED_UDIFF"
+    SERIES_SELECTION_NOT_ACTIVE = "SERIES_SELECTION_NOT_ACTIVE"
     OUT_OF_ERA = "OUT_OF_ERA"
     SOURCE_COVERAGE_UNAVAILABLE = "SOURCE_COVERAGE_UNAVAILABLE"
     CONFLICT_UNRESOLVED = "CONFLICT_UNRESOLVED"
@@ -266,6 +267,7 @@ class NseUdiffDailySourceSelection:
         selected = self.state is NseUdiffDailySourceSelectionState.SELECTED_UDIFF
         blocked_by_conflict = self.state is NseUdiffDailySourceSelectionState.CONFLICT_UNRESOLVED
         identity_unresolved = self.state is NseUdiffDailySourceSelectionState.HISTORICAL_IDENTITY_UNRESOLVED
+        series_inactive = self.state is NseUdiffDailySourceSelectionState.SERIES_SELECTION_NOT_ACTIVE
         if (
             not _ID.fullmatch(self.canonical_instrument_id)
             or not isinstance(self.trade_date, date)
@@ -274,6 +276,7 @@ class NseUdiffDailySourceSelection:
             or (selected and (self.selected_provider != NSE_UDIFF_BAR_PROVIDER or not self.bar_id or not _FP.fullmatch(self.coverage_entry_fingerprint or "") or not _FP.fullmatch(self.identity_fingerprint or "") or self.conflict_fingerprints or self.reason is not None))
             or (not selected and self.selected_provider is not None)
             or (not selected and self.bar_id is not None)
+            or (series_inactive and (not _FP.fullmatch(self.coverage_entry_fingerprint or "") or not _FP.fullmatch(self.identity_fingerprint or "") or self.conflict_fingerprints or self.reason != "NSE_UDIFF_TECHNICAL_SERIES_SELECTION_NOT_ACTIVE"))
             or (blocked_by_conflict and (not _FP.fullmatch(self.coverage_entry_fingerprint or "") or self.identity_fingerprint is not None or not self.conflict_fingerprints or self.reason != "NSE_UDIFF_SAME_PROVIDER_CONFLICT"))
             or (identity_unresolved and (not _FP.fullmatch(self.coverage_entry_fingerprint or "") or not _FP.fullmatch(self.identity_fingerprint or "") or self.conflict_fingerprints or self.reason not in {"NSE_UDIFF_EFFECTIVE_IDENTITY_REQUIRED", "NSE_UDIFF_IDENTITY_PIT_CUTOFF_REQUIRED"}))
             or (self.state in {NseUdiffDailySourceSelectionState.OUT_OF_ERA, NseUdiffDailySourceSelectionState.UDIFF_BAR_INVALID, NseUdiffDailySourceSelectionState.SOURCE_COVERAGE_UNAVAILABLE} and any(value is not None for value in (self.coverage_entry_fingerprint, self.identity_fingerprint)))
@@ -507,7 +510,10 @@ def select_eligible_udiff_daily_bar(
         return _selection(instrument_id, day, NseUdiffDailySourceSelectionState.HISTORICAL_IDENTITY_UNRESOLVED, None, None, entry.fingerprint, identity.fingerprint, (), "NSE_UDIFF_EFFECTIVE_IDENTITY_REQUIRED")
     if _utc(identity.as_of) != _utc(bar.end_time):
         return _selection(instrument_id, day, NseUdiffDailySourceSelectionState.HISTORICAL_IDENTITY_UNRESOLVED, None, None, entry.fingerprint, identity.fingerprint, (), "NSE_UDIFF_IDENTITY_PIT_CUTOFF_REQUIRED")
-    return _selection(instrument_id, day, NseUdiffDailySourceSelectionState.SELECTED_UDIFF, NSE_UDIFF_BAR_PROVIDER, bar.bar_id, entry.fingerprint, identity.fingerprint, (), None)
+    # Coverage and canonical-security identity alone do not govern EQ/BE/BL/T0
+    # eligibility. Preserve old SELECTED_UDIFF receipts as history, but create
+    # no new selection until a separate approved series policy exists.
+    return _selection(instrument_id, day, NseUdiffDailySourceSelectionState.SERIES_SELECTION_NOT_ACTIVE, None, None, entry.fingerprint, identity.fingerprint, (), "NSE_UDIFF_TECHNICAL_SERIES_SELECTION_NOT_ACTIVE")
 
 
 def _coverage_entry(

@@ -120,16 +120,19 @@ def test_existing_storage_defect_is_reproduced_without_repair(tmp_path):
     # Regression witness, not approval of this behaviour. Replacing the primary
     # key alone must not be mistaken for a complete series-aware read repair.
     block = {**row(), "SctySrs": "BL", "FinInstrmId": "777", "ClsPric": "101"}
-    service, store, _ = backfill(tmp_path, Source(result(archive((block, row())))))
-    report = service.run()
-    assert report.receipts[0].conflicts == 1
-    stored = store._connection.execute("SELECT warnings_json FROM historical_bars").fetchone()[0]
-    assert "NSE_UDIFF_SERIES:BL" in stored
-    assert len(store.list_conflict_artifacts()) == 1
-    service.run()
-    assert len(store.list_conflict_artifacts()) == 1
-    assert store._connection.execute("SELECT count(*) FROM historical_bars").fetchone()[0] == 1
-    store.close()
+    from app.market_data.historical import sqlite_provider_versioned_historical_bars_schema, _provider_bar_values
+    from app.market_data.nse_udiff_daily_history import _parse_valid_archive, _bar_from_row
+    from tests.unit.test_nse_udiff_daily_history import target
+    artifact = _artifact_from_bytes("nse-udiff-acquisition:test", result(archive((block, row()))))
+    parsed = _parse_valid_archive(artifact)
+    bars = [_bar_from_row(artifact, parsed, i, r, target())[0] for i, r in enumerate(parsed.rows)]
+    with sqlite3.connect(tmp_path / "old.db") as c:
+        c.execute(sqlite_provider_versioned_historical_bars_schema())
+        insert = "INSERT INTO historical_bars VALUES (" + ",".join("?" for _ in range(18)) + ")"
+        c.execute(insert, _provider_bar_values(bars[0], "nse_udiff_official"))
+        with pytest.raises(sqlite3.IntegrityError):
+            c.execute(insert, _provider_bar_values(bars[1], "nse_udiff_official"))
+        assert c.execute("SELECT count(*) FROM historical_bars").fetchone()[0] == 1
 
 
 def test_audit_connection_cannot_write_or_create_database(tmp_path):

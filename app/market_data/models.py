@@ -206,6 +206,11 @@ class CanonicalOHLCVBar:
         if self.end_time < self.start_time:
             raise MarketDataQualityError(ErrorCode.QUALITY_FAILURE, "Bar end time cannot precede start time.")
 
+    @property
+    def source_observation_identity(self) -> str:
+        from app.market_data.nse_udiff_source_identity import observation_key
+        return observation_key(self)
+
 
 @dataclass(frozen=True, slots=True)
 class IndexMarketObservation:

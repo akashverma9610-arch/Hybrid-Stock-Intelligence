@@ -17,6 +17,7 @@ from app.market_data.models import (
     MarketSessionObservation,
 )
 from app.storage.core_api_snapshot_repository import CoreApiSnapshot, CoreApiSnapshotFamily, CoreApiSnapshotRepository
+from app.market_data.nse_udiff_source_identity import is_udiff, observation_key
 
 
 class MarketDataStore(Protocol):
@@ -64,7 +65,8 @@ class InMemoryMarketDataStore:
         values = self._bars[value.instrument.instrument_id]
         if any(item.bar_id == value.bar_id for item in values):
             raise ValueError("Canonical bars are immutable and cannot be overwritten.")
-        if any(item.timeframe is value.timeframe and item.end_time == value.end_time for item in values):
+        if any(item.timeframe is value.timeframe and item.end_time == value.end_time
+               and not (is_udiff(item) and is_udiff(value) and observation_key(item) != observation_key(value)) for item in values):
             raise MarketDataQualityError(ErrorCode.QUALITY_FAILURE, "Duplicate bar timeframe/end timestamp.")
         values.append(value)
         values.sort(key=lambda item: (item.end_time, item.bar_id))

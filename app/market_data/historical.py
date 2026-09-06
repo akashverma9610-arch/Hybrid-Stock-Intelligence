@@ -21,6 +21,7 @@ from app.market_data.models import (
 from app.market_data.providers import MarketDataProvider
 from app.reliability import market_bar_source_priority
 from app.storage.database import DatabaseBackend, DatabaseConnectionFactory
+from app.market_data.nse_udiff_source_identity import is_udiff, observation_key
 
 
 class HistoricalCoverageStatus(StrEnum):
@@ -43,6 +44,7 @@ class MarketBarReconciliationStatus(StrEnum):
     ADJUSTMENT_BASIS_DIFFERENT = "ADJUSTMENT_BASIS_DIFFERENT"
     VALUE_MISMATCH = "VALUE_MISMATCH"
     PROVIDER_OBSERVATION_MISSING = "PROVIDER_OBSERVATION_MISSING"
+    SOURCE_SERIES_SELECTION_REQUIRED = "SOURCE_SERIES_SELECTION_REQUIRED"
 
 
 class GapStatus(StrEnum):
@@ -140,10 +142,15 @@ class HistoricalBarLineage:
     normalizer_version: str | None
     source_identity: str | None
     provider_instrument_reference: str | None
+    source_observation_identity: str | None = None
 
     def __post_init__(self) -> None:
         if not self.provider_identity.strip():
             raise ValueError("Historical conflict lineage requires provider identity.")
+        if self.source_observation_identity is not None:
+            import re
+            if self.provider_identity != "nse_udiff_official" or not re.fullmatch(r"nse-udiff-source-row:[a-f0-9]{64}", self.source_observation_identity):
+                raise ValueError("Historical conflict source observation identity is invalid.")
 
 
 @dataclass(frozen=True, slots=True)
@@ -184,6 +191,8 @@ class HistoricalBarConflictArtifact:
             raise ValueError("Historical conflict artifacts require the same provider identity.")
         if _bar_key(stored) != _bar_key(incoming):
             raise ValueError("Historical conflict artifacts require the same bar key.")
+        if (is_udiff(stored) or is_udiff(incoming)) and observation_key(stored) != observation_key(incoming):
+            raise ValueError("UDIFF_DISTINCT_SOURCE_IDENTITIES_ARE_NOT_VALUE_CONFLICTS")
         stored_values = HistoricalBarNormalizedValues.from_bar(stored)
         incoming_values = HistoricalBarNormalizedValues.from_bar(incoming)
         differing = _conflict_differing_fields(stored_values, incoming_values)
@@ -294,6 +303,14 @@ def sqlite_historical_bar_conflicts_schema(table: str = SQLITE_HISTORICAL_BAR_CO
     """
 
 
+def sqlite_series_aware_historical_bars_schema(table: str = SQLITE_HISTORICAL_BAR_TABLE) -> str:
+    return sqlite_provider_versioned_historical_bars_schema(table).replace(
+        "PRIMARY KEY (instrument_id, timeframe, start_time, end_time, provider_identity)",
+        "source_observation_identity TEXT NOT NULL DEFAULT '',\n"
+        "            PRIMARY KEY (instrument_id, timeframe, start_time, end_time, provider_identity, source_observation_identity)",
+    )
+
+
 def plan_historical_chunks(request: HistoricalBarsRequest, policy: HistoricalChunkPolicy) -> tuple[HistoricalRequestChunk, ...]:
     """Stable inclusive chunks whose next start follows the canonical timeframe."""
     step = _timeframe_delta(request.timeframe)
@@ -332,11 +349,11 @@ class HistoricalIngestionService:
                 warnings.append(f"CHUNK_{error.code.value}")
         received_count = len(received)
         accepted = duplicates = conflicts = rejected = 0
-        seen: dict[tuple[str, Timeframe, datetime, datetime], CanonicalOHLCVBar] = {}
+        seen: dict[tuple[str, Timeframe, datetime, datetime, str], CanonicalOHLCVBar] = {}
         ordered = sorted(received, key=lambda bar: (bar.start_time, bar.end_time, _bar_content_key(bar), bar.bar_id))
         previous: CanonicalOHLCVBar | None = None
         for bar in ordered:
-            key = _bar_key(bar)
+            key = (*_bar_key(bar), observation_key(bar))
             if bar.instrument.instrument_id != request.instrument.instrument_id or bar.timeframe is not request.timeframe:
                 rejected += 1; warnings.append("BAR_REQUEST_MISMATCH"); continue
             if bar.end_time > self._clock():
@@ -353,7 +370,7 @@ class HistoricalIngestionService:
                     warnings.extend(("PROVIDER_BAR_CONFLICT", "PROVIDER_REVISION_CONFLICT"))
                     self._persist_same_provider_conflict(bar, detected_at=self._clock(), ingestion_run_id=ingestion_run_id)
                 continue
-            if previous is not None and bar.start_time < previous.end_time:
+            if previous is not None and bar.start_time < previous.end_time and not (is_udiff(bar) and is_udiff(previous) and observation_key(bar) != observation_key(previous)):
                 rejected += 1; warnings.append("BAR_QUALITY_REJECTED"); continue
             seen[key] = bar
             outcome = self._store.upsert(bar)
@@ -433,13 +450,14 @@ class SQLiteHistoricalBarStore:
         self._connection.row_factory = sqlite3.Row
         self._legacy_schema = self._has_legacy_schema()
         if not self._legacy_schema:
-            self._connection.executescript(sqlite_provider_versioned_historical_bars_schema(self._TABLE))
+            self._connection.executescript(sqlite_series_aware_historical_bars_schema(self._TABLE))
             self._connection.execute(
                 "CREATE INDEX IF NOT EXISTS historical_bars_instrument_time_start_idx "
                 "ON historical_bars (instrument_id, timeframe, start_time, end_time)"
             )
         self._connection.executescript(sqlite_historical_bar_conflicts_schema())
         self._connection.commit()
+        self._series_schema = "source_observation_identity" in {str(row[1]) for row in self._connection.execute(f"PRAGMA table_info({self._TABLE})")}
 
     def _has_legacy_schema(self) -> bool:
         columns = self._connection.execute(f"PRAGMA table_info({self._TABLE})").fetchall()
@@ -482,22 +500,35 @@ class SQLiteHistoricalBarStore:
 
     def _upsert_without_commit(self, bar: CanonicalOHLCVBar) -> BarWriteOutcome:
         provider = _provider_identity(bar)
+        source_key = observation_key(bar)
+        if source_key and not self._series_schema:
+            raise RuntimeError("NSE_UDIFF_SERIES_MIGRATION_REQUIRED")
         query = f"SELECT * FROM {self._TABLE} WHERE instrument_id=? AND timeframe=? AND start_time=? AND end_time=? AND provider_identity=?"
-        existing = self._connection.execute(query, (*_key_values(_bar_key(bar)), provider)).fetchone()
+        params = (*_key_values(_bar_key(bar)), provider)
+        if self._series_schema:
+            query += " AND source_observation_identity=?"
+            params = (*params, source_key)
+        existing = self._connection.execute(query, params).fetchone()
         if existing is not None:
             return BarWriteOutcome.IDENTICAL if _same_bar_content(_bar_from_row(existing), bar) else BarWriteOutcome.CONFLICT
-        self._connection.execute(
-            f"INSERT INTO {self._TABLE} VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            _provider_bar_values(bar, provider),
-        )
+        values = _provider_bar_values(bar, provider)
+        if self._series_schema:
+            values = (*values, source_key)
+        self._connection.execute(f"INSERT INTO {self._TABLE} VALUES ({','.join('?' for _ in values)})", values)
         return BarWriteOutcome.INSERTED
 
     def same_provider_bar(self, bar: CanonicalOHLCVBar) -> CanonicalOHLCVBar | None:
         self._require_provider_versioned_schema()
         provider = _provider_identity(bar)
+        query = f"SELECT * FROM {self._TABLE} WHERE instrument_id=? AND timeframe=? AND start_time=? AND end_time=? AND provider_identity=?"
+        params = (*_key_values(_bar_key(bar)), provider)
+        if self._series_schema:
+            query += " AND source_observation_identity=?"
+            params = (*params, observation_key(bar))
+        elif is_udiff(bar):
+            raise RuntimeError("NSE_UDIFF_SERIES_MIGRATION_REQUIRED")
         row = self._connection.execute(
-            f"SELECT * FROM {self._TABLE} WHERE instrument_id=? AND timeframe=? AND start_time=? AND end_time=? AND provider_identity=?",
-            (*_key_values(_bar_key(bar)), provider),
+            query, params,
         ).fetchone()
         return _bar_from_row(row) if row is not None else None
 
@@ -569,24 +600,23 @@ class SQLiteHistoricalBarStore:
     def readiness_evidence(self, instrument_ids: tuple[str, ...], timeframe: Timeframe, *, as_of: datetime | None = None) -> Mapping[str, tuple[int, datetime | None]]:
         """Return count/latest facts in one query for stored readiness only.
 
-        Canonical selection does not alter session cardinality: multiple
-        provider observations for one session collapse to one canonical bar.
-        This avoids materialising every historical row merely to answer a
-        readiness question.
+        Count distinct eligible session ends without materialising all bars.
+        UDiFF intervals are excluded pending a governed series-selection policy,
+        including implicit fallback observations for those same intervals.
         """
         values = tuple(sorted(set(instrument_ids)))
         if not values:
             return {}
         placeholders = ",".join("?" for _ in values)
-        query = (
-            f"SELECT instrument_id,COUNT(DISTINCT end_time) AS session_count,MAX(end_time) AS latest_end "
-            f"FROM {self._TABLE} WHERE timeframe=? AND instrument_id IN ({placeholders})"
-        )
+        query = f"SELECT instrument_id,end_time FROM {self._TABLE} WHERE timeframe=? AND instrument_id IN ({placeholders})"
         params: list[object] = [timeframe.value, *values]
         if as_of is not None:
             query += " AND end_time<=? AND json_extract(provenance_json, '$.received_at')<=?"
             params.extend((_timestamp(as_of), _timestamp(as_of)))
-        query += " GROUP BY instrument_id"
+        query += " GROUP BY instrument_id,start_time,end_time"
+        if not self._legacy_schema:
+            query += " HAVING MAX(CASE WHEN provider_identity='nse_udiff_official' THEN 1 ELSE 0 END)=0"
+        query = "SELECT instrument_id,COUNT(DISTINCT end_time) AS session_count,MAX(end_time) AS latest_end FROM (" + query + ") GROUP BY instrument_id"
         rows = self._connection.execute(query, params).fetchall()
         return {str(row["instrument_id"]): (int(row["session_count"]), datetime.fromisoformat(str(row["latest_end"]))) for row in rows}
 
@@ -603,10 +633,10 @@ class PostgreSQLHistoricalBarStore:
         provider = _provider_identity(bar)
         with self._connections.transaction() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json FROM historical_bar_observations WHERE instrument_id=%s AND timeframe=%s AND start_time=%s AND end_time=%s AND provider_identity=%s", (*_key_values(_bar_key(bar)), provider))
+                cursor.execute("SELECT instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json,source_observation_identity FROM historical_bar_observations WHERE instrument_id=%s AND timeframe=%s AND start_time=%s AND end_time=%s AND provider_identity=%s AND source_observation_identity=%s", (*_key_values(_bar_key(bar)), provider, observation_key(bar)))
                 row = cursor.fetchone()
                 if row: return BarWriteOutcome.IDENTICAL if _same_bar_content(_bar_from_pg_row(row), bar) else BarWriteOutcome.CONFLICT
-                cursor.execute("""INSERT INTO historical_bar_observations (instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::jsonb,%s::jsonb,%s,%s::jsonb)""", _provider_bar_values(bar, provider, postgresql=True))
+                cursor.execute("""INSERT INTO historical_bar_observations (instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json,source_observation_identity) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::jsonb,%s::jsonb,%s,%s::jsonb,%s)""", (*_provider_bar_values(bar, provider, postgresql=True), observation_key(bar)))
         return BarWriteOutcome.INSERTED
 
     def same_provider_bar(self, bar: CanonicalOHLCVBar) -> CanonicalOHLCVBar | None:
@@ -614,8 +644,8 @@ class PostgreSQLHistoricalBarStore:
         with self._connections.transaction() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json FROM historical_bar_observations WHERE instrument_id=%s AND timeframe=%s AND start_time=%s AND end_time=%s AND provider_identity=%s",
-                    (*_key_values(_bar_key(bar)), provider),
+                    "SELECT instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json,source_observation_identity FROM historical_bar_observations WHERE instrument_id=%s AND timeframe=%s AND start_time=%s AND end_time=%s AND provider_identity=%s AND source_observation_identity=%s",
+                    (*_key_values(_bar_key(bar)), provider, observation_key(bar)),
                 )
                 row = cursor.fetchone()
         return _bar_from_pg_row(row) if row is not None else None
@@ -646,7 +676,7 @@ class PostgreSQLHistoricalBarStore:
         return bool(self.list_conflict_artifacts(instrument_id=instrument_id))
 
     def raw_range(self, instrument_id: str, timeframe: Timeframe, start: datetime, end: datetime, *, as_of: datetime | None = None) -> tuple[CanonicalOHLCVBar, ...]:
-        query="SELECT instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json FROM historical_bar_observations WHERE instrument_id=%s AND timeframe=%s AND start_time>=%s AND end_time<=%s"; params:list[object]=[instrument_id,timeframe.value,start,end]
+        query="SELECT instrument_id,timeframe,start_time,end_time,provider_identity,bar_id,open,high,low,close,volume,turnover,trade_count,adjustment_status,instrument_json,provenance_json,quality,warnings_json,source_observation_identity FROM historical_bar_observations WHERE instrument_id=%s AND timeframe=%s AND start_time>=%s AND end_time<=%s"; params:list[object]=[instrument_id,timeframe.value,start,end]
         if as_of is not None: query+=" AND end_time<=%s AND (provenance_json->>'received_at')::timestamptz<=%s";params.extend((as_of,as_of))
         with self._connections.transaction() as connection:
             with connection.cursor() as cursor: cursor.execute(query+" ORDER BY start_time,end_time,provider_identity,bar_id",params);rows=cursor.fetchall()
@@ -678,12 +708,13 @@ class PostgreSQLHistoricalBarStore:
         values = tuple(sorted(set(instrument_ids)))
         if not values:
             return {}
-        query = "SELECT instrument_id,COUNT(DISTINCT end_time),MAX(end_time) FROM historical_bar_observations WHERE timeframe=%s AND instrument_id = ANY(%s)"
+        query = "SELECT instrument_id,end_time FROM historical_bar_observations WHERE timeframe=%s AND instrument_id = ANY(%s)"
         params: list[object] = [timeframe.value, list(values)]
         if as_of is not None:
             query += " AND end_time<=%s AND (provenance_json->>'received_at')::timestamptz<=%s"
             params.extend((as_of, as_of))
-        query += " GROUP BY instrument_id"
+        query += " GROUP BY instrument_id,start_time,end_time HAVING MAX(CASE WHEN provider_identity='nse_udiff_official' THEN 1 ELSE 0 END)=0"
+        query = "SELECT instrument_id,COUNT(DISTINCT end_time),MAX(end_time) FROM (" + query + ") AS eligible GROUP BY instrument_id"
         with self._connections.transaction() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(query, params)
@@ -699,7 +730,15 @@ def _require_aware(value: datetime, field: str) -> None:
         raise ValueError(f"Historical conflict {field} must be timezone-aware.")
 def _timeframe_delta(timeframe: Timeframe) -> timedelta: return {Timeframe.ONE_MINUTE:timedelta(minutes=1),Timeframe.FIVE_MINUTES:timedelta(minutes=5),Timeframe.FIFTEEN_MINUTES:timedelta(minutes=15),Timeframe.THIRTY_MINUTES:timedelta(minutes=30),Timeframe.SIXTY_MINUTES:timedelta(hours=1),Timeframe.DAILY:timedelta(days=1),Timeframe.WEEKLY:timedelta(days=7)}[timeframe]
 def _bar_content_key(value: CanonicalOHLCVBar) -> tuple[str, ...]: return tuple(str(item) for item in (value.open,value.high,value.low,value.close,value.volume,value.turnover,value.trade_count,value.adjustment_status.value))
-def _same_bar_content(left: CanonicalOHLCVBar, right: CanonicalOHLCVBar) -> bool: return _bar_content_key(left)==_bar_content_key(right)
+def _same_bar_content(left: CanonicalOHLCVBar, right: CanonicalOHLCVBar) -> bool:
+    if is_udiff(left) or is_udiff(right):
+        return (is_udiff(left) and is_udiff(right) and observation_key(left) == observation_key(right)
+                and HistoricalBarNormalizedValues.from_bar(left) == HistoricalBarNormalizedValues.from_bar(right)
+                and left.provenance.source_reference == right.provenance.source_reference
+                and left.provenance.normalization_version == right.provenance.normalization_version
+                and tuple(w for w in left.warnings if not w.startswith("NSE_UDIFF_ARTIFACT:"))
+                == tuple(w for w in right.warnings if not w.startswith("NSE_UDIFF_ARTIFACT:")))
+    return _bar_content_key(left) == _bar_content_key(right)
 
 
 def _conflict_differing_fields(
@@ -726,6 +765,7 @@ def _bar_lineage(value: CanonicalOHLCVBar) -> HistoricalBarLineage:
         normalizer_version=value.provenance.normalization_version or None,
         source_identity=value.provenance.source_reference or value.provenance.request_reference or None,
         provider_instrument_reference=value.provenance.provider_instrument_reference or None,
+        source_observation_identity=observation_key(value) or None,
     )
 
 
@@ -738,7 +778,7 @@ def _normalized_values_payload(value: HistoricalBarNormalizedValues) -> dict[str
 
 
 def _lineage_payload(value: HistoricalBarLineage) -> dict[str, object]:
-    return {
+    payload = {
         "provider_identity": value.provider_identity,
         "provider_version": value.provider_version,
         "mapping_version": value.mapping_version,
@@ -746,6 +786,10 @@ def _lineage_payload(value: HistoricalBarLineage) -> dict[str, object]:
         "source_identity": value.source_identity,
         "provider_instrument_reference": value.provider_instrument_reference,
     }
+    # Absence preserves every legacy artifact's exact fingerprint/payload.
+    if value.source_observation_identity is not None:
+        payload["source_observation_identity"] = value.source_observation_identity
+    return payload
 
 
 def _normalized_bar_fingerprint(value: CanonicalOHLCVBar) -> str:
@@ -830,6 +874,7 @@ def _conflict_artifact_from_payload(value: str | Mapping[str, object]) -> Histor
                 str(item["normalizer_version"]) if item["normalizer_version"] is not None else None,
                 str(item["source_identity"]) if item["source_identity"] is not None else None,
                 str(item["provider_instrument_reference"]) if item["provider_instrument_reference"] is not None else None,
+                str(item["source_observation_identity"]) if item.get("source_observation_identity") is not None else None,
             )
         return HistoricalBarConflictArtifact(
             str(payload["conflict_fingerprint"]), str(payload["canonical_instrument_id"]), Timeframe(str(payload["timeframe"])),
@@ -859,7 +904,7 @@ def _provider_bar_values(bar: CanonicalOHLCVBar, provider: str, *, postgresql: b
     return (*values[:4], provider, *values[4:])
 def _bar_from_row(row: Mapping[str, object]) -> CanonicalOHLCVBar: return _bar_from_mapping(row)
 def _bar_from_pg_row(row: object) -> CanonicalOHLCVBar:
-    names=("instrument_id","timeframe","start_time","end_time","provider_identity","bar_id","open","high","low","close","volume","turnover","trade_count","adjustment_status","instrument_json","provenance_json","quality","warnings_json")
+    names=("instrument_id","timeframe","start_time","end_time","provider_identity","bar_id","open","high","low","close","volume","turnover","trade_count","adjustment_status","instrument_json","provenance_json","quality","warnings_json","source_observation_identity")
     return _bar_from_mapping(dict(zip(names,row)))
 def _bar_from_mapping(row: Mapping[str, object]) -> CanonicalOHLCVBar:
     instrument_data=_json_object(row["instrument_json"]); provenance_data=_json_object(row["provenance_json"]);
@@ -873,7 +918,10 @@ def _bar_from_mapping(row: Mapping[str, object]) -> CanonicalOHLCVBar:
     provider_identity = str(row[SQLITE_PROVIDER_IDENTITY]) if SQLITE_PROVIDER_IDENTITY in row_keys else provenance_data["provider"]
     provider = SQLITE_UNKNOWN_EXISTING_SOURCE if provider_identity == SQLITE_UNKNOWN_EXISTING_SOURCE else provenance_data["provider"]
     provenance=MarketDataProvenance(provider,provenance_data["provider_instrument_reference"],parse(provenance_data["exchange_timestamp"]),parse(provenance_data["provider_timestamp"]),parse(provenance_data["received_at"]),provenance_data["normalization_version"],provenance_data["request_reference"],provenance_data["source_reference"],provenance_data["schema_version"])
-    return CanonicalOHLCVBar(str(row["bar_id"]),instrument,Timeframe(str(row["timeframe"])),parse(row["start_time"]),parse(row["end_time"]),Decimal(str(row["open"])),Decimal(str(row["high"])),Decimal(str(row["low"])),Decimal(str(row["close"])),int(row["volume"]) if row["volume"] is not None else None,Decimal(str(row["turnover"])) if row["turnover"] is not None else None,int(row["trade_count"]) if row["trade_count"] is not None else None,AdjustmentStatus(str(row["adjustment_status"])),provenance,DataQuality(str(row["quality"])),tuple(_json_value(row["warnings_json"])))
+    bar = CanonicalOHLCVBar(str(row["bar_id"]),instrument,Timeframe(str(row["timeframe"])),parse(row["start_time"]),parse(row["end_time"]),Decimal(str(row["open"])),Decimal(str(row["high"])),Decimal(str(row["low"])),Decimal(str(row["close"])),int(row["volume"]) if row["volume"] is not None else None,Decimal(str(row["turnover"])) if row["turnover"] is not None else None,int(row["trade_count"]) if row["trade_count"] is not None else None,AdjustmentStatus(str(row["adjustment_status"])),provenance,DataQuality(str(row["quality"])),tuple(_json_value(row["warnings_json"])))
+    if "source_observation_identity" in row_keys and row["source_observation_identity"] != observation_key(bar):
+        raise ValueError("HISTORICAL_SOURCE_OBSERVATION_IDENTITY_MISMATCH")
+    return bar
 def _json_value(value: object): return value if isinstance(value,(dict,list,tuple)) else json.loads(str(value))
 def _json_object(value: object) -> dict: 
     result=_json_value(value)
@@ -894,6 +942,11 @@ def resolve_market_bar(values: Iterable[CanonicalOHLCVBar], *, require_volume: b
     are met; an index bar with no volume therefore remains eligible for a
     close-only technical consumer but not a volume-required consumer.
     """
+    values = tuple(values)
+    # There is no activated UDiFF technical-series selection policy. Returning
+    # another provider here would hide that insufficiency as an implicit fallback.
+    if any(is_udiff(value) for value in values):
+        return None
     usable: list[CanonicalOHLCVBar] = []
     for value in values:
         try:
@@ -927,6 +980,9 @@ def reconcile_market_bars(values: Iterable[CanonicalOHLCVBar]) -> tuple[MarketBa
         grouped.setdefault((value.instrument.instrument_id, value.timeframe, value.end_time), []).append(value)
     results: list[MarketBarReconciliation] = []
     for (instrument_id, timeframe, end), group in sorted(grouped.items(), key=lambda item: item[0]):
+        if any(is_udiff(item) for item in group):
+            results.append(MarketBarReconciliation(instrument_id, timeframe, end, None, None, MarketBarReconciliationStatus.SOURCE_SERIES_SELECTION_REQUIRED))
+            continue
         ordered = sorted(group, key=lambda item: (market_bar_source_priority(item.provenance.provider), item.provenance.provider.casefold(), item.bar_id))
         preferred = ordered[0] if ordered else None
         secondary = next((item for item in ordered[1:] if item.provenance.provider.casefold() != preferred.provenance.provider.casefold()), None) if preferred else None

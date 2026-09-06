@@ -30,6 +30,8 @@ def price_bar_series(snapshot: AsOfSnapshot, instrument_id: str) -> PriceBarSeri
         item for item in snapshot.observations
         if item.instrument.id == instrument_id and item.kind is ObservationKind.PRICE_BAR
     )
+    if any(item.provenance.source.strip().casefold() == "nse_udiff_official" for item in candidates):
+        return PriceBarSeries(instrument_id, (), AnalysisStatus.INSUFFICIENT_DATA, DataQuality.UNKNOWN, "NSE_UDIFF_TECHNICAL_SERIES_SELECTION_NOT_ACTIVE")
     if any(item.validation is None or not item.validation.eligible_for_analysis for item in candidates):
         return PriceBarSeries(instrument_id, (), AnalysisStatus.INVALID_DATA, DataQuality.UNKNOWN, "Snapshot contains ineligible observations.")
     if not candidates:

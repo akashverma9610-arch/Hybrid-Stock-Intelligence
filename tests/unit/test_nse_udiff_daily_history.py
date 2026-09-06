@@ -138,7 +138,7 @@ def test_zero_volume_is_preserved_not_repaired_or_rejected(tmp_path):
     source = Source(result(archive((row(volume="0"),))))
     service, store, _ = backfill(tmp_path, source)
     receipt = service.run().receipts[0]
-    bar = store.latest("NSE:INE000A01001", Timeframe.DAILY, 1)[0]
+    bar = store.raw_range("NSE:INE000A01001", Timeframe.DAILY, datetime(2024, 7, 7, tzinfo=UTC), T)[0]
     assert (receipt.inserted, receipt.zero_volume_rows, bar.volume) == (1, 1, 0)
 
 
@@ -151,7 +151,7 @@ def test_replay_uses_immutable_artifact_and_creates_no_new_bar(tmp_path):
     assert store.raw_count("NSE:INE000A01001", Timeframe.DAILY) == 1
 
 
-def test_udiff_coexists_with_upstox_without_changing_existing_canonical_selection(tmp_path):
+def test_udiff_coexists_with_upstox_without_implicit_technical_fallback(tmp_path):
     source = Source(result(archive()))
     service, store, _ = backfill(tmp_path, source)
     instrument = target().instrument
@@ -164,7 +164,9 @@ def test_udiff_coexists_with_upstox_without_changing_existing_canonical_selectio
     receipt = service.run().receipts[0]
     assert receipt.inserted == 1
     assert store.raw_count("NSE:INE000A01001", Timeframe.DAILY) == 2
-    assert store.latest("NSE:INE000A01001", Timeframe.DAILY, 1)[0].provenance.provider == "UPSTOX"
+    assert store.latest("NSE:INE000A01001", Timeframe.DAILY, 1) == ()
+    raw = store.raw_range("NSE:INE000A01001", Timeframe.DAILY, start, T)
+    assert next(b for b in raw if b.provenance.provider == "UPSTOX").adjustment_status is AdjustmentStatus.UNKNOWN
 
 
 def test_source_unavailable_is_not_inferred_as_a_holiday(tmp_path):

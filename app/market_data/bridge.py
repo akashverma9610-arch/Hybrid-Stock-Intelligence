@@ -7,6 +7,9 @@ from app.market_data.models import CanonicalOHLCVBar, IndexMarketObservation
 
 def price_bar_observation(value: CanonicalOHLCVBar) -> MarketObservation:
     """Creates an unvalidated domain fact; FoundationService remains the validator."""
+    from app.market_data.nse_udiff_source_identity import is_udiff
+    if is_udiff(value):
+        raise ValueError("NSE_UDIFF_TECHNICAL_SERIES_SELECTION_NOT_ACTIVE")
     return MarketObservation(
         id=value.bar_id,
         instrument=Instrument(value.instrument.instrument_id, value.instrument.symbol, value.instrument.exchange.value, value.instrument.isin),

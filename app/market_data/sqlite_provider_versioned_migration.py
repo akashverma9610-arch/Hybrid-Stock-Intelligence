@@ -66,8 +66,9 @@ def inspect_sqlite_historical_bars_schema(connection: sqlite3.Connection) -> SQL
 
 
 def is_provider_versioned_schema(schema: SQLiteHistoricalBarsSchema) -> bool:
-    return SQLITE_PROVIDER_IDENTITY in schema.columns and schema.primary_key == (
-        "instrument_id", "timeframe", "start_time", "end_time", SQLITE_PROVIDER_IDENTITY,
+    key = ("instrument_id", "timeframe", "start_time", "end_time", SQLITE_PROVIDER_IDENTITY)
+    return SQLITE_PROVIDER_IDENTITY in schema.columns and schema.primary_key in (
+        key, (*key, "source_observation_identity"),
     )
 
 
