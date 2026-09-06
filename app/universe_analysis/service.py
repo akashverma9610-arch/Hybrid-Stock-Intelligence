@@ -44,6 +44,7 @@ from .requirements import DIAGNOSTIC_INPUT_REQUIREMENTS
 
 if TYPE_CHECKING:
     from app.storage.governance_repository import StrategyGovernanceRepository
+    from app.universe_analysis.technical_diagnostic_input import CanonicalTechnicalDiagnosticInput
 
 
 class UniverseAnalysisError(ValueError):
@@ -69,6 +70,7 @@ class AssembledStockEvidence:
     research: ResearchSnapshot
     warnings: tuple[str, ...]
     freshness: str
+    technical_input: "CanonicalTechnicalDiagnosticInput | None" = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -87,7 +89,17 @@ class StockDiagnosticInputAssembler:
         self._source, self._guard = source, guard or BacktestLookaheadGuard()
         self._frozen_by_as_of: dict[datetime, tuple[tuple[MarketObservation, ...], int]] = {}
 
-    def assemble(self, instrument: NseEquityInstrument, as_of: datetime) -> AssembledStockEvidence:
+    def assemble(
+        self, instrument: NseEquityInstrument, as_of: datetime,
+        *, technical_input: CanonicalTechnicalDiagnosticInput | None = None,
+    ) -> AssembledStockEvidence:
+        if technical_input is not None:
+            technical_input.__post_init__()
+            if (
+                technical_input.canonical_instrument_id != instrument.instrument_id
+                or technical_input.as_of.astimezone(UTC) != as_of.astimezone(UTC)
+            ):
+                raise UniverseAnalysisError("Canonical technical input must match the instrument and as-of cutoff.")
         cached = self._frozen_by_as_of.get(as_of)
         if cached is None:
             selected: list[MarketObservation] = []
@@ -115,7 +127,7 @@ class StockDiagnosticInputAssembler:
         freshness = "FRESH" if own and all(_valid(item) for item in own) else "PARTIAL" if own else "UNAVAILABLE"
         crowd, research = _research_evidence(selected, instrument.instrument_id, as_of)
         return AssembledStockEvidence(instrument.symbol, instrument.instrument_id, instrument.sector, as_of, snapshot,
-                                      crowd, research, tuple(warnings), freshness)
+                                      crowd, research, tuple(warnings), freshness, technical_input)
 
 
 class Canonical61DiagnosticRunner:
@@ -184,25 +196,43 @@ class Canonical61DiagnosticRunner:
         crowd_rules = CrowdRules(-.2, .2, -.6, .6, .7, .4)
         synthesis_rules = SynthesisRules()
         if rule_id == 1:
+            if evidence.technical_input is not None:
+                _, reason = self._technical_snapshot(evidence, rule_id, "daily")
+                return e._missing(1, instrument, strategy, now, reason or "certified benchmark technical input is unavailable")
             cached = self._market_regime_cache.get(s.id)
             if cached is None:
                 cached = e.market_regime(s, self._benchmark, strategy, market_rules, now)
                 self._market_regime_cache[s.id] = cached
             return cached
         sector = evidence.sector_id or instrument
+        if rule_id in {2, 3, 6} and evidence.technical_input is not None:
+            _, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            return e._missing(rule_id, instrument, strategy, now, reason or "certified relative technical inputs are unavailable")
         if rule_id == 2: return e.sector_health(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
         if rule_id == 3: return e.sector_rotation(s, sector, self._benchmark, strategy, 3, .03, -.03, now)
-        if rule_id == 4: return e.primary_trend(None, s, instrument, strategy, trend_rules, now)
-        if rule_id == 5: return e.weinstein(s, instrument, strategy, WeinsteinRules(3, 2), now)
+        if rule_id == 4:
+            daily, weekly, reason = self._technical_timeframes(evidence, rule_id)
+            return e.primary_trend(weekly, daily, instrument, strategy, trend_rules, now) if reason is None else e._missing(4, instrument, strategy, now, reason)
+        if rule_id == 5:
+            weekly, reason = self._technical_snapshot(evidence, rule_id, "weekly")
+            return e.weinstein(weekly, instrument, strategy, WeinsteinRules(3, 2), now) if reason is None else e._missing(5, instrument, strategy, now, reason)
         if rule_id == 6: return e.relative_strength(s, instrument, self._benchmark, sector, (), strategy, relative_rules, now)
-        if rule_id == 7: return e.smart_money_proxies(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 8: return e.liquidity_pools(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 9: return e.wyckoff_phase(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 10: return e.market_structure(s, instrument, strategy, 1, now)
-        if rule_id == 11: return e.volume(s, instrument, strategy, 3, 1.5, .5, now)
-        if rule_id == 12: return e.ichimoku(s, instrument, strategy, 2, 3, 4, 1, now)
-        if rule_id == 13: return e.chikou(s, instrument, strategy, 2, 3, 4, 1, now)
-        if rule_id == 14: return e.mtf({"daily": s}, instrument, strategy, now)
+        if rule_id in {7, 8, 9, 10, 11, 12, 13}:
+            daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            if reason is not None:
+                return e._missing(rule_id, instrument, strategy, now, reason)
+            return {
+                7: lambda: e.smart_money_proxies(daily, instrument, strategy, liquidity_rules, now),
+                8: lambda: e.liquidity_pools(daily, instrument, strategy, liquidity_rules, now),
+                9: lambda: e.wyckoff_phase(daily, instrument, strategy, liquidity_rules, now),
+                10: lambda: e.market_structure(daily, instrument, strategy, 1, now),
+                11: lambda: e.volume(daily, instrument, strategy, 3, 1.5, .5, now),
+                12: lambda: e.ichimoku(daily, instrument, strategy, 2, 3, 4, 1, now),
+                13: lambda: e.chikou(daily, instrument, strategy, 2, 3, 4, 1, now),
+            }[rule_id]()
+        if rule_id == 14:
+            daily, weekly, reason = self._technical_timeframes(evidence, rule_id)
+            return e.mtf({"daily": daily, "weekly": weekly}, instrument, strategy, now) if reason is None else e._missing(14, instrument, strategy, now, reason)
         if rule_id == 15: return e.business_model_moat(evidence.research, instrument, strategy, now)
         if rule_id == 16: return e.financial_trend(s, instrument, strategy, fundamental_rules, now)
         if rule_id == 17: return e.return_ratios(s, instrument, strategy, fundamental_rules, now)
@@ -217,42 +247,108 @@ class Canonical61DiagnosticRunner:
         if rule_id == 26: return e.margin_trajectory(s, instrument, strategy, fundamental_rules, now)
         if rule_id == 27: return e.order_book(s, instrument, strategy, fundamental_rules, now)
         if rule_id == 28: return e.management_guidance(evidence.research, instrument, strategy, now)
-        if rule_id == 29: return e.valuation_multiples(s, s, instrument, strategy, valuation_rules, now)
+        if rule_id == 29:
+            daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            return e.valuation_multiples(daily, s, instrument, strategy, valuation_rules, now) if reason is None else e._missing(29, instrument, strategy, now, reason)
         if rule_id == 30: return e.fundamental_catalysts(evidence.research, instrument, strategy, now)
         if rule_id in {31, 32, 33, 34}:
             context = HigherOrderDiagnosticContext(now, strategy, DIAGNOSTIC_REGISTRY_VERSION, tuple(prior.values()), synthesis_rules.version)
             return {31: e.comprehensive_risk, 32: e.trading_thesis, 33: e.investment_thesis, 34: e.scenarios}[rule_id](context, instrument, strategy, synthesis_rules, now)
-        if rule_id == 35: return e.vwap(s, instrument, strategy, now)
-        if rule_id == 36: return e.obv(s, instrument, strategy, 3, now)
-        if rule_id == 37: return e.base_pattern(s, instrument, strategy, trade_rules, now)
-        if rule_id == 38: return e.pullback_quality(s, instrument, strategy, trade_rules, now)
-        if rule_id == 39: return e.indicator_layer(s, instrument, strategy, 3, 70, 30, 20, 2, now)
-        if rule_id == 40: return e.aggressive_entry(s, instrument, strategy, trade_rules, now)
-        if rule_id == 41: return e.confirmation_entry(s, instrument, strategy, trade_rules, now)
-        if rule_id == 42: return e.retest_entry(s, instrument, strategy, trade_rules, now)
-        if rule_id == 43: return e.structural_stop(s, instrument, strategy, trade_rules, now)
-        if rule_id == 44: return e.target_hierarchy(s, instrument, strategy, trade_rules, now)
+        if rule_id == 35:
+            if evidence.technical_input is not None:
+                return e._missing(35, instrument, strategy, now, "named canonical VWAP semantics are unavailable")
+            return e.vwap(s, instrument, strategy, now)
+        if rule_id in {36, 37, 38, 39, 40, 41, 42, 43, 44}:
+            daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            if reason is not None:
+                return e._missing(rule_id, instrument, strategy, now, reason)
+            return {
+                36: lambda: e.obv(daily, instrument, strategy, 3, now),
+                37: lambda: e.base_pattern(daily, instrument, strategy, trade_rules, now),
+                38: lambda: e.pullback_quality(daily, instrument, strategy, trade_rules, now),
+                39: lambda: e.indicator_layer(daily, instrument, strategy, 3, 70, 30, 20, 2, now),
+                40: lambda: e.aggressive_entry(daily, instrument, strategy, trade_rules, now),
+                41: lambda: e.confirmation_entry(daily, instrument, strategy, trade_rules, now),
+                42: lambda: e.retest_entry(daily, instrument, strategy, trade_rules, now),
+                43: lambda: e.structural_stop(daily, instrument, strategy, trade_rules, now),
+                44: lambda: e.target_hierarchy(daily, instrument, strategy, trade_rules, now),
+            }[rule_id]()
         if rule_id == 45:
             return e.risk_reward(s, instrument, strategy, trade_rules,
                                  _detail_number(prior.get(40), "entry"), _detail_number(prior.get(43), "stop"),
                                  _detail_number(prior.get(44), "t1"), now)
-        if rule_id == 46: return e.thesis_invalidation(s, instrument, strategy, trade_rules, now)
+        if rule_id == 46:
+            daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            return e.thesis_invalidation(daily, instrument, strategy, trade_rules, now) if reason is None else e._missing(46, instrument, strategy, now, reason)
         if rule_id == 47: return e.crowd_sentiment(crowd, instrument, strategy, crowd_rules, now)
         if rule_id == 48: return e.crowd_positioning(crowd, instrument, strategy, crowd_rules, now)
         if rule_id == 49: return e.crowd_data_confidence(crowd, instrument, strategy, crowd_rules, now)
-        if rule_id == 50: return e.accumulation_distribution_proxy(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 51: return e.stop_clusters(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 52: return e.liquidity_events(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 53: return e.bull_trap(s, instrument, strategy, liquidity_rules, now)
-        if rule_id == 54: return e.bear_trap(s, instrument, strategy, liquidity_rules, now)
+        if rule_id in {50, 51, 52, 53, 54}:
+            daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            if reason is not None:
+                return e._missing(rule_id, instrument, strategy, now, reason)
+            return {
+                50: lambda: e.accumulation_distribution_proxy(daily, instrument, strategy, liquidity_rules, now),
+                51: lambda: e.stop_clusters(daily, instrument, strategy, liquidity_rules, now),
+                52: lambda: e.liquidity_events(daily, instrument, strategy, liquidity_rules, now),
+                53: lambda: e.bull_trap(daily, instrument, strategy, liquidity_rules, now),
+                54: lambda: e.bear_trap(daily, instrument, strategy, liquidity_rules, now),
+            }[rule_id]()
+        if rule_id in {55, 56, 57} and evidence.technical_input is not None:
+            # A certified price series alone cannot supply the upstream crowd
+            # or event lineage these hybrid rules require.  Do not fall back
+            # to the old generic snapshot once a canonical technical input is
+            # explicitly supplied.
+            _, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            return e._missing(rule_id, instrument, strategy, now, reason or "canonical hybrid technical input is unavailable")
         if rule_id == 55: return e.crowd_trap_probability(crowd, s, instrument, strategy, crowd_rules, now)
         if rule_id == 56: return e.crowd_divergence(crowd, s, instrument, strategy, crowd_rules, now)
         if rule_id == 57: return e.post_news_reaction(crowd, s, instrument, strategy, now)
-        if rule_id == 58: return e.volume_climax(s, instrument, strategy, liquidity_rules, now)
+        if rule_id == 58:
+            daily, reason = self._technical_snapshot(evidence, rule_id, "daily")
+            return e.volume_climax(daily, instrument, strategy, liquidity_rules, now) if reason is None else e._missing(58, instrument, strategy, now, reason)
         if rule_id == 59: return e.contrarian_ichimoku(prior.get(47), prior.get(12), prior.get(13), prior.get(14), instrument, strategy, now)
         if rule_id == 60: return e.contrarian_quality(prior.get(55), prior.get(56), prior.get(59), prior.get(49), instrument, strategy, now)
         if rule_id == 61: return e.contrarian_verdict(prior.get(60), prior.get(49), instrument, strategy, now)
         raise UniverseAnalysisError(f"No evaluator wrapper configured for canonical rule {rule_id}.")
+
+    def _technical_snapshot(
+        self, evidence: AssembledStockEvidence, rule_id: int, timeframe: str,
+    ) -> tuple[AsOfSnapshot | None, str | None]:
+        """Select a supplied genuine timeframe or retain legacy generic inputs.
+
+        A technical input switches the rule to its certified canonical source;
+        it never falls back to the old generic snapshot when certification is
+        incomplete.  Existing callers that supply no technical input retain
+        their prior test-only/generic behaviour.
+        """
+        if evidence.technical_input is None:
+            return evidence.snapshot, None
+        from app.universe_analysis.technical_diagnostic_input import (
+            TechnicalDiagnosticReadiness, technical_diagnostic_readiness,
+        )
+        readiness = technical_diagnostic_readiness(evidence.technical_input, rule_id)
+        if readiness.current_descriptive_operational is not TechnicalDiagnosticReadiness.READY:
+            return None, ";".join(item.value for item in readiness.blockers)
+        snapshot = evidence.technical_input.daily_snapshot if timeframe == "daily" else evidence.technical_input.weekly_snapshot
+        if snapshot is None:
+            return None, "canonical technical timeframe input is unavailable"
+        return snapshot, None
+
+    def _technical_timeframes(
+        self, evidence: AssembledStockEvidence, rule_id: int,
+    ) -> tuple[AsOfSnapshot | None, AsOfSnapshot | None, str | None]:
+        if evidence.technical_input is None:
+            # Preserve historic fail-closed behaviour: a generic stored
+            # snapshot cannot be presented as a Weekly input.
+            return None, evidence.snapshot, "weekly and daily bars are both required"
+        from app.universe_analysis.technical_diagnostic_input import (
+            TechnicalDiagnosticReadiness, technical_diagnostic_readiness,
+        )
+        readiness = technical_diagnostic_readiness(evidence.technical_input, rule_id)
+        if readiness.current_descriptive_operational is not TechnicalDiagnosticReadiness.READY:
+            return None, None, ";".join(item.value for item in readiness.blockers)
+        return evidence.technical_input.daily_snapshot, evidence.technical_input.weekly_snapshot, None
 
 
 class CoreUniverseAnalysisStore:

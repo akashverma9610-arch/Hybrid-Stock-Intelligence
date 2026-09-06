@@ -2,6 +2,13 @@
 
 **Status: `TECHNICAL_DIAGNOSTIC_TIMEFRAME_DATA_READINESS = ACTIVE / ONE_CANONICAL_61_DIAGNOSTIC_REGISTRY = TRUE / SEPARATE_TECHNICAL_BRAIN = FALSE / HYBRID_TECHNICAL_ARCHITECTURE = FROZEN / EXTERNAL_SCREENER_AUTHORITY = DISCOVERY_ONLY / HORIZON_SPECIFIC_TECHNICAL_POLICY = NOT_ACTIVE / MULTI_TIMEFRAME_TECHNICAL_ORCHESTRATOR = NOT_ACTIVE`.**
 
+> **Historical-baseline notice.** This document records the pre-binding audit.
+> The Daily/Weekly portions that describe a duplicated generic timeframe
+> snapshot are superseded by
+> [Daily/Weekly Existing Technical Diagnostics Operationalization V1](DAILY_WEEKLY_EXISTING_TECHNICAL_DIAGNOSTICS_OPERATIONALIZATION_V1.md).
+> The canonical registry, strict-PIT, horizon, intraday and no-execution
+> boundaries in this document remain unchanged.
+
 ## Purpose and hard boundary
 
 This is a read-only architecture and evidence audit of the existing canonical
