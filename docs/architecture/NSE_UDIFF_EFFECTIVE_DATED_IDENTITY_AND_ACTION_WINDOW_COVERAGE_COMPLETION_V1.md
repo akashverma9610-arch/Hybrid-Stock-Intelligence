@@ -32,7 +32,12 @@ Successful empty query windows are meaningful: when source query coverage is com
 
 This action coverage feeds the existing `CorporateActionCoverageAssertion` contract. It does not make price or volume continuous. The existing certifier retains its separate outcomes: split/bonus adjustment required, rights/complex action non-comparable, and dividend policy unavailable. A source/session gap is an identity/lifecycle-window failure; it is never filled as a holiday.
 
-Exact action-observation mapping is restricted to exact canonical instrument, ISIN, source symbol, source series, token, and effective source date. There is no name or current-symbol fallback and no rewrite of legacy corporate-action receipts.
+Exact action-observation mapping is restricted to exact source ISIN, source symbol, source series, effective source date, and one unambiguous effective UDiFF interval. There is no name or current-symbol fallback and no rewrite of legacy corporate-action receipts.
+
+The initial retained observation audit considered 586 previously
+identity-unresolved action observations. None supplied the complete unique
+exact UDiFF identity needed for a new mapping, so all 586 remain explicitly
+`IDENTITY_UNRESOLVED`; no old receipt was changed and no action was inferred.
 
 ## Persistence and replay
 

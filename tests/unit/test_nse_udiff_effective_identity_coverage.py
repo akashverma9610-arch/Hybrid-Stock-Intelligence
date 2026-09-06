@@ -8,9 +8,14 @@ import pytest
 from app.historical.nse_udiff_effective_identity_coverage import (
     NseUdiffActionWindowCoverageState, NseUdiffEffectiveIdentityCoverageIndex,
     NseUdiffIdentityAnchor, NseUdiffIdentitySourceObservation,
-    build_effective_identity_coverage_plan, compose_action_window_coverage,
+    NseUdiffCorporateActionIdentityMappingState, build_effective_identity_coverage_plan,
+    compose_action_window_coverage, map_unresolved_corporate_action_observations_exact,
 )
-from app.historical.nse_corporate_action_coverage import NseCorporateActionQueryStatus
+from app.historical.nse_corporate_action_coverage import (
+    NseCorporateActionFamily, NseCorporateActionIdentityStatus, NseCorporateActionObservation,
+    NseCorporateActionQueryStatus, _fingerprint as action_fingerprint,
+    _observation_payload_values,
+)
 
 
 AT = datetime(2026, 9, 6, 12, tzinfo=UTC)
@@ -128,3 +133,24 @@ def test_duplicate_source_rows_are_rejected():
             observations=(observation(DAYS[0]), observation(DAYS[0])), anchors=(anchor(),), session_dates=DAYS,
             session_manifest_id="nse-udiff-session-manifest:fixture", session_manifest_fingerprint="sha256:" + "b" * 64,
         )
+
+
+def unresolved_action(*, symbol: str = "ALPHA", series: str | None = "EQ"):
+    values = dict(
+        observation_id="nse-ca-observation:fixture", acquisition_id="nse-ca-acquisition:fixture", artifact_id="nse-ca-artifact:fixture",
+        record_index=0, raw_record_fingerprint="d" * 64, symbol=symbol, isin=ISIN, series=series,
+        raw_purpose="BONUS 1:1", family=NseCorporateActionFamily.BONUS, ex_date=datetime.combine(DAYS[1], datetime.min.time(), tzinfo=UTC),
+        record_date=None, book_closure_start=None, book_closure_end=None, canonical_instrument_id=None,
+        identity_status=NseCorporateActionIdentityStatus.IDENTITY_UNRESOLVED, canonical_action_id=None,
+        adjustment_input_complete=False, warnings=(), observed_at=AT,
+    )
+    return NseCorporateActionObservation(**values, fingerprint=action_fingerprint(_observation_payload_values(values)))
+
+
+def test_unresolved_action_observation_maps_only_when_exact_identity_is_unique():
+    intervals = plan().intervals
+    result = map_unresolved_corporate_action_observations_exact(observations=(unresolved_action(),), identity_intervals=intervals)
+    assert result[0].state is NseUdiffCorporateActionIdentityMappingState.EXACT_MAPPED
+    assert result[0].canonical_instrument_id == INSTRUMENT
+    missing = map_unresolved_corporate_action_observations_exact(observations=(unresolved_action(symbol="RENAMED"),), identity_intervals=intervals)
+    assert missing[0].state is NseUdiffCorporateActionIdentityMappingState.IDENTITY_UNRESOLVED

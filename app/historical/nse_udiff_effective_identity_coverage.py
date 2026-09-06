@@ -19,6 +19,7 @@ import re
 from typing import Iterable, Protocol
 
 from app.historical.nse_corporate_action_coverage import (
+    NseCorporateActionIdentityStatus, NseCorporateActionObservation,
     NseCorporateActionQueryReceipt, NseCorporateActionQueryStatus,
 )
 from app.historical.nse_udiff_identity_promotion import NseUdiffHistoricalSourceIdentityInterval
@@ -55,6 +56,12 @@ class NseUdiffActionWindowCoverageState(StrEnum):
     IDENTITY_COVERAGE_REQUIRED = "IDENTITY_COVERAGE_REQUIRED"
     QUERY_COVERAGE_INCOMPLETE = "QUERY_COVERAGE_INCOMPLETE"
     SOURCE_KNOWN_AFTER_AS_OF = "SOURCE_KNOWN_AFTER_AS_OF"
+
+
+class NseUdiffCorporateActionIdentityMappingState(StrEnum):
+    EXACT_MAPPED = "EXACT_MAPPED"
+    IDENTITY_UNRESOLVED = "IDENTITY_UNRESOLVED"
+    IDENTITY_CONFLICT = "IDENTITY_CONFLICT"
 
 
 @dataclass(frozen=True, slots=True)
@@ -520,6 +527,74 @@ def exact_action_observation_maps_to_interval(*, canonical_instrument_id: str, i
     return NseUdiffEffectiveIdentityCoverageIndex(intervals).resolve(canonical_instrument_id=canonical_instrument_id, isin=isin, fin_instrm_id=token, source_symbol=symbol, source_series=series, trade_date=effective_date, source_observation_id="nse-udiff-source-row:action-mapping-proof") is not None
 
 
+@dataclass(frozen=True, slots=True)
+class NseUdiffCorporateActionIdentityMapping:
+    """An additive link to an old raw action observation, never an overwrite."""
+    mapping_id: str
+    observation_id: str
+    observation_fingerprint: str
+    canonical_instrument_id: str | None
+    identity_interval_ids: tuple[str, ...]
+    identity_interval_fingerprints: tuple[str, ...]
+    state: NseUdiffCorporateActionIdentityMappingState
+    blocker_codes: tuple[str, ...]
+    source_known_at: datetime
+    policy_version: str
+    fingerprint: str
+
+    def __post_init__(self) -> None:
+        pairs = tuple(zip(self.identity_interval_ids, self.identity_interval_fingerprints, strict=True))
+        mapped = self.state is NseUdiffCorporateActionIdentityMappingState.EXACT_MAPPED
+        values = _mapping_payload(self)
+        if (
+            not self.mapping_id.startswith("nse-udiff-action-identity-mapping:") or not _ID.fullmatch(self.observation_id)
+            or not _FP.fullmatch(self.observation_fingerprint) or pairs != tuple(sorted(set(pairs)))
+            or any(not _ID.fullmatch(identifier) or not _FP.fullmatch(fingerprint) for identifier, fingerprint in pairs)
+            or (mapped != (self.canonical_instrument_id is not None)) or (mapped and (len(pairs) != 1 or self.blocker_codes))
+            or (not mapped and (pairs or self.canonical_instrument_id is not None or not self.blocker_codes))
+            or self.blocker_codes != tuple(sorted(set(self.blocker_codes))) or not _aware(self.source_known_at)
+            or self.policy_version != POLICY_VERSION or self.fingerprint != _fp(values)
+        ): raise ValueError("NSE_UDIFF_CORPORATE_ACTION_IDENTITY_MAPPING_INVALID")
+
+
+def map_unresolved_corporate_action_observations_exact(*, observations: Iterable[NseCorporateActionObservation], identity_intervals: Iterable[IdentityInterval] | NseUdiffEffectiveIdentityCoverageIndex) -> tuple[NseUdiffCorporateActionIdentityMapping, ...]:
+    """Resolve only exact retained action fields; missing token is never guessed.
+
+    The official action source does not expose the UDiFF token.  Therefore a
+    mapping is permitted only when ISIN, source symbol, series, effective date,
+    and the interval chronology identify exactly one interval.  Multiple token
+    intervals remain a typed conflict rather than a current-symbol fallback.
+    """
+    index = identity_intervals if isinstance(identity_intervals, NseUdiffEffectiveIdentityCoverageIndex) else NseUdiffEffectiveIdentityCoverageIndex(identity_intervals)
+    results: list[NseUdiffCorporateActionIdentityMapping] = []
+    for observation in sorted(observations, key=lambda item: item.observation_id):
+        if observation.identity_status is not NseCorporateActionIdentityStatus.IDENTITY_UNRESOLVED: continue
+        candidates: tuple[IdentityInterval, ...] = ()
+        if observation.isin and observation.series and observation.ex_date:
+            candidates = tuple(sorted(
+                (interval for values in index._values.values() for interval in values
+                 if interval.isin.upper() == observation.isin.upper()
+                 and interval.source_symbol == observation.symbol
+                 and interval.source_series == observation.series
+                 and interval.observed_trade_start <= observation.ex_date.date() <= interval.observed_trade_end),
+                key=lambda item: item.interval_id,
+            ))
+        if len(candidates) == 1:
+            state, canonical, blockers = NseUdiffCorporateActionIdentityMappingState.EXACT_MAPPED, candidates[0].canonical_instrument_id, ()
+        elif len(candidates) > 1:
+            state, canonical, blockers = NseUdiffCorporateActionIdentityMappingState.IDENTITY_CONFLICT, None, ("NSE_UDIFF_ACTION_IDENTITY_AMBIGUOUS",)
+        else:
+            state, canonical, blockers = NseUdiffCorporateActionIdentityMappingState.IDENTITY_UNRESOLVED, None, ("NSE_UDIFF_ACTION_EXACT_IDENTITY_REQUIRED",)
+        pairs = tuple((item.interval_id, item.fingerprint) for item in candidates) if state is NseUdiffCorporateActionIdentityMappingState.EXACT_MAPPED else ()
+        observation_fp = observation.fingerprint if observation.fingerprint.startswith("sha256:") else "sha256:" + observation.fingerprint
+        values = dict(observation_id=observation.observation_id, observation_fingerprint=observation_fp,
+            canonical_instrument_id=canonical, identity_interval_ids=tuple(item[0] for item in pairs), identity_interval_fingerprints=tuple(item[1] for item in pairs),
+            state=state, blocker_codes=blockers, source_known_at=observation.observed_at, policy_version=POLICY_VERSION)
+        fp = _fp(values)
+        results.append(NseUdiffCorporateActionIdentityMapping("nse-udiff-action-identity-mapping:" + fp.removeprefix("sha256:")[:32], **values, fingerprint=fp))
+    return tuple(results)
+
+
 def _dates_covered(start: date, end: date, windows: tuple[tuple[date, date], ...]) -> bool:
     cursor = start
     for low, high in sorted(windows):
@@ -533,6 +608,7 @@ def _dates_covered(start: date, end: date, windows: tuple[tuple[date, date], ...
 def _interval_payload(value: NseUdiffEffectiveIdentityInterval) -> dict[str, object]: return {name: getattr(value, name) for name in value.__dataclass_fields__ if name not in {"interval_id", "fingerprint"}}
 def _receipt_payload(value: NseUdiffEffectiveIdentityCoverageReceipt) -> dict[str, object]: return {name: getattr(value, name) for name in value.__dataclass_fields__ if name not in {"receipt_id", "fingerprint"}}
 def _action_payload(value: NseUdiffActionWindowCoverage) -> dict[str, object]: return {name: getattr(value, name) for name in value.__dataclass_fields__ if name != "fingerprint"}
+def _mapping_payload(value: NseUdiffCorporateActionIdentityMapping) -> dict[str, object]: return {name: getattr(value, name) for name in value.__dataclass_fields__ if name not in {"mapping_id", "fingerprint"}}
 def _action_fp(value: HistoricalCorporateAction) -> str: return _fp({"id": value.action_id, "instrument": value.canonical_instrument_id, "kind": value.kind.value, "effective": value.effective_date.isoformat(), "as_of": value.as_of.isoformat(), "revision": value.revision})
 def _isin(value: str) -> bool: return bool(re.fullmatch(r"[A-Za-z0-9]{12}", value or ""))
 def _aware(value: object) -> bool: return isinstance(value, datetime) and value.tzinfo is not None and value.utcoffset() is not None
@@ -548,5 +624,5 @@ def _fp(value: object) -> str: return "sha256:" + sha256(json.dumps(_normal(valu
 
 __all__ = (
     "ACTION_POLICY_ID", "CONTRACT_ID", "CONTRACT_VERSION", "IDENTITY_POLICY_ID", "POLICY_VERSION",
-    "IdentityInterval", "NseUdiffActionWindowCoverage", "NseUdiffActionWindowCoverageState", "NseUdiffEffectiveIdentityCoverageIndex", "NseUdiffEffectiveIdentityCoveragePlan", "NseUdiffEffectiveIdentityCoverageReceipt", "NseUdiffEffectiveIdentityCoverageReport", "NseUdiffEffectiveIdentityCoverageService", "NseUdiffEffectiveIdentityCoverageState", "NseUdiffEffectiveIdentityCoverageStore", "NseUdiffEffectiveIdentityInterval", "NseUdiffIdentityAnchor", "NseUdiffIdentitySourceObservation", "build_effective_identity_coverage_plan", "build_local_nse_udiff_effective_identity_coverage", "compose_action_window_coverage", "exact_action_observation_maps_to_interval",
+    "IdentityInterval", "NseUdiffActionWindowCoverage", "NseUdiffActionWindowCoverageState", "NseUdiffCorporateActionIdentityMapping", "NseUdiffCorporateActionIdentityMappingState", "NseUdiffEffectiveIdentityCoverageIndex", "NseUdiffEffectiveIdentityCoveragePlan", "NseUdiffEffectiveIdentityCoverageReceipt", "NseUdiffEffectiveIdentityCoverageReport", "NseUdiffEffectiveIdentityCoverageService", "NseUdiffEffectiveIdentityCoverageState", "NseUdiffEffectiveIdentityCoverageStore", "NseUdiffEffectiveIdentityInterval", "NseUdiffIdentityAnchor", "NseUdiffIdentitySourceObservation", "build_effective_identity_coverage_plan", "build_local_nse_udiff_effective_identity_coverage", "compose_action_window_coverage", "exact_action_observation_maps_to_interval", "map_unresolved_corporate_action_observations_exact",
 )
