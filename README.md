@@ -70,6 +70,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Canonical Security-to-Sector-Index Mapping Coverage Governance V1](docs/architecture/CANONICAL_SECURITY_TO_SECTOR_INDEX_MAPPING_COVERAGE_GOVERNANCE_V1.md)
 - [Canonical Security Taxonomy Coverage, Source, and Identity V1](docs/architecture/CANONICAL_SECURITY_TAXONOMY_COVERAGE_SOURCE_AND_IDENTITY_V1.md)
 - [NSE All-Listed Security Taxonomy Source Feasibility and Acquisition Policy V1](docs/architecture/NSE_ALL_LISTED_SECURITY_TAXONOMY_SOURCE_FEASIBILITY_AND_ACQUISITION_POLICY_V1.md)
+- [NSE First-Party Quote Taxonomy Access and Schema Proof V1](docs/architecture/NSE_FIRST_PARTY_QUOTE_TAXONOMY_ACCESS_AND_SCHEMA_PROOF_V1.md)
 - [Canonical Daily Technical Bar Known-at and Completeness Evidence V1](docs/architecture/CANONICAL_DAILY_TECHNICAL_BAR_KNOWN_AT_AND_COMPLETENESS_EVIDENCE_V1.md)
 - [Canonical Daily Source Session and Publication Semantics V1](docs/architecture/CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1.md)
 - [Canonical Technical Price Adjustment and Corporate-Action Integrity V1](docs/architecture/CANONICAL_TECHNICAL_PRICE_ADJUSTMENT_AND_CORPORATE_ACTION_INTEGRITY_V1.md)
