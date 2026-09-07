@@ -45,6 +45,34 @@ def test_official_description_evidence_maps_only_exact_sector_and_retains_consti
     assert len(repository.list_snapshots(CoreApiSnapshotFamily.NSE_SECTOR_INDEX_CONSTITUENT, limit=100)) == 1
 
 
+def test_visible_nifty_info_description_supports_exact_information_technology_mapping(tmp_path):
+    _source(
+        tmp_path,
+        (("nifty-it", "Nifty IT"),),
+        {
+            "nifty-it": (
+                '<img title="Nifty IT" />'
+                '<div class="NiftyInfoCont"><h2>Information Technology (IT) industry</h2>'
+                '<p>Nifty IT provides an appropriate benchmark that captures the performance '
+                'of the IT segment of the market in India.</p></div></div>'
+            ),
+        },
+        {},
+    )
+    report = NseSectorIndexImporter(SQLiteCoreApiSnapshotRepository(tmp_path / "db.sqlite")).import_files(
+        sectoral_page=tmp_path / "sectoral_indices_page.html",
+        individual_pages=tuple((tmp_path / "pages").glob("*.html")),
+        hierarchy=_hierarchy("Information Technology"),
+        fetched_at=T,
+        dry_run=True,
+    )
+
+    mapping = report.mappings[0]
+    assert mapping.status is SectorIndexMappingStatus.EXACT_OFFICIAL
+    assert mapping.official_index_name == "Nifty IT"
+    assert "information technology" in " ".join(mapping.evidence).casefold()
+
+
 def test_financial_subindices_are_ambiguous_without_the_broad_official_index(tmp_path):
     _source(tmp_path, (("nifty-bank", "Nifty Bank"), ("nifty-private-bank", "Nifty Private Bank")), {}, {})
     report = NseSectorIndexImporter(SQLiteCoreApiSnapshotRepository(tmp_path / "db.sqlite")).import_files(

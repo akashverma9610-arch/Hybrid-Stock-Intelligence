@@ -115,6 +115,10 @@ _EXACT_DESCRIPTION_RULES: dict[str, tuple[str, tuple[str, ...]]] = {
     "Financial Services": ("Nifty Financial Services", ("financial institutions", "other financial services companies")),
     "Fast Moving Consumer Goods": ("Nifty FMCG", ("fast moving consumer goods",)),
     "Healthcare": ("Nifty Healthcare", ("healthcare companies",)),
+    "Information Technology": (
+        "Nifty IT",
+        ("information technology", "it segment of the market"),
+    ),
     "Media, Entertainment & Publication": ("Nifty Media", ("media & entertainment sector", "printing and publishing")),
     "Metals & Mining": ("Nifty Metal", ("metals sector including mining",)),
     "Power": ("Nifty Power", ("power sector",)),
@@ -275,7 +279,13 @@ def _title(source: str) -> str | None:
 
 def _description(source: str) -> str | None:
     marker = re.search(r'(?is)(The\s+Nifty.{0,800}?designed\s+to\s+reflect.{0,1000}?)(?:<div|<h[1-6]|Highlights)', source)
-    return _text(marker.group(1)) if marker else None
+    if marker:
+        return _text(marker.group(1))
+    # NSE Indices' visible ``NiftyInfoCont`` block is the authoritative
+    # dedicated-page description for a few products whose prose does not use
+    # the otherwise common "The Nifty ... designed to reflect" wording.
+    info = re.search(r'(?is)<div[^>]+class="[^"]*\bNiftyInfoCont\b[^"]*"[^>]*>(?P<value>.*?)</div>\s*</div>', source)
+    return _text(info.group("value")) if info else None
 
 
 def _constituent_href(source: str) -> str | None:
