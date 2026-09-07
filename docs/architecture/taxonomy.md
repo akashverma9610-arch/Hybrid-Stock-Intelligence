@@ -72,6 +72,14 @@ The audited source-universe and exact-identity boundary is recorded in
 It explains why the retained constituent source safely classifies 711
 securities but cannot be treated as an all-listed-security assignment corpus.
 
+The completed [NSE All-Listed Security Taxonomy Source Feasibility and
+Acquisition Policy V1](NSE_ALL_LISTED_SECURITY_TAXONOMY_SOURCE_FEASIBILITY_AND_ACQUISITION_POLICY_V1.md)
+found a first-party per-security quote candidate and a broader all-equities
+identity inventory, but no verified all-listed assignment artifact or
+host-accessible machine quote receipt. Its result remains
+`FIRST_PARTY_TAXONOMY_SOURCE_PARTIAL`; it authorises neither a backfill nor a
+new taxonomy persistence path.
+
 ## Historical assignment acquisition boundary
 
 Historical taxonomy **structure** is not a historical company assignment. The
