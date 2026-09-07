@@ -67,6 +67,11 @@ classification cannot appear before its local observed timestamp. This means a
 newly imported classification may be used by forward/current composition but
 cannot alter an earlier frozen trial or backtest.
 
+The audited source-universe and exact-identity boundary is recorded in
+[Canonical Security Taxonomy Coverage, Source, and Identity V1](CANONICAL_SECURITY_TAXONOMY_COVERAGE_SOURCE_AND_IDENTITY_V1.md).
+It explains why the retained constituent source safely classifies 711
+securities but cannot be treated as an all-listed-security assignment corpus.
+
 ## Historical assignment acquisition boundary
 
 Historical taxonomy **structure** is not a historical company assignment. The

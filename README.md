@@ -68,6 +68,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)
 - [Canonical Security-to-Sector-Index Mapping Coverage Governance V1](docs/architecture/CANONICAL_SECURITY_TO_SECTOR_INDEX_MAPPING_COVERAGE_GOVERNANCE_V1.md)
+- [Canonical Security Taxonomy Coverage, Source, and Identity V1](docs/architecture/CANONICAL_SECURITY_TAXONOMY_COVERAGE_SOURCE_AND_IDENTITY_V1.md)
 - [Canonical Daily Technical Bar Known-at and Completeness Evidence V1](docs/architecture/CANONICAL_DAILY_TECHNICAL_BAR_KNOWN_AT_AND_COMPLETENESS_EVIDENCE_V1.md)
 - [Canonical Daily Source Session and Publication Semantics V1](docs/architecture/CANONICAL_DAILY_SOURCE_SESSION_AND_PUBLICATION_SEMANTICS_V1.md)
 - [Canonical Technical Price Adjustment and Corporate-Action Integrity V1](docs/architecture/CANONICAL_TECHNICAL_PRICE_ADJUSTMENT_AND_CORPORATE_ACTION_INTEGRITY_V1.md)
@@ -299,6 +300,8 @@ data. The append-only taxonomy import is ISIN-first and local-file-only;
 gaps without contacting a provider or scanning the universe. See
 [taxonomy](docs/architecture/taxonomy.md) and
 [data coverage](docs/architecture/data_coverage.md).
+The first-party source and exact-identity coverage boundary is recorded in
+[Canonical Security Taxonomy Coverage, Source, and Identity V1](docs/architecture/CANONICAL_SECURITY_TAXONOMY_COVERAGE_SOURCE_AND_IDENTITY_V1.md).
 
 ### Historical security integrity
 
