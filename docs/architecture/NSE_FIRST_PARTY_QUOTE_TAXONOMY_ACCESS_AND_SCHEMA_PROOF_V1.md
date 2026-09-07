@@ -140,13 +140,15 @@ outcomes. It was not executed at market scale.
 
 ## Exact next continuation
 
-Because the result is `QUOTE_TAXONOMY_SOURCE_PARTIAL`, the only bounded
-follow-up is **`NSE_QUOTE_TAXONOMY_PUBLISHED_MACHINE_CONTRACT_PROOF_V1`**:
-inspect official NSE-published documentation or downloadable source material
-for a normally accessible, documented quote taxonomy schema. It must not
-reverse-engineer a browser call, broaden probing, or create a parser. If no
-published normal-access contract exists, taxonomy archaeology stops and the
-existing coverage limitation remains authoritative.
+Because the result is `QUOTE_TAXONOMY_SOURCE_PARTIAL`, the bounded follow-up was
+`NSE_QUOTE_TAXONOMY_PUBLISHED_MACHINE_CONTRACT_PROOF_V1`.
+
+That proof completed with authoritative Result `D:
+NO_PUBLISHED_NORMAL_ACCESS_MACHINE_TAXONOMY_CONTRACT_FOUND`; taxonomy archaeology is now
+`CLOSED` and the existing coverage limitation remains authoritative.
+
+No full backfill, persistence, provider merge, sector-index repair, rule
+changes, or any portfolio/policy/strategy action is part of this result.
 
 No full backfill, persistence, provider merge, technical-rule change, sector
 index repair, portfolio action, signal, UI, or execution capability is part of

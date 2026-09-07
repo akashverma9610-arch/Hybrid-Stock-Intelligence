@@ -80,6 +80,11 @@ host-accessible machine quote receipt. Its result remains
 `FIRST_PARTY_TAXONOMY_SOURCE_PARTIAL`; it authorises neither a backfill nor a
 new taxonomy persistence path.
 
+The follow-up [NSE Quote Taxonomy Published Machine Contract Proof V1](NSE_QUOTE_TAXONOMY_PUBLISHED_MACHINE_CONTRACT_PROOF_V1.md)
+completed with Result `D`:
+`NO_PUBLISHED_NORMAL_ACCESS_MACHINE_TAXONOMY_CONTRACT_FOUND`, and therefore
+`NSE_TAXONOMY_SOURCE_ARCHAEOLOGY = CLOSED`.
+
 ## Historical assignment acquisition boundary
 
 Historical taxonomy **structure** is not a historical company assignment. The
