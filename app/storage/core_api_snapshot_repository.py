@@ -198,6 +198,11 @@ class CoreApiSnapshotFamily(StrEnum):
     # their later accounting-only outcomes.  This is deliberately distinct
     # from signals, candidates, qualification, and market-reaction evidence.
     INFLECTION_ACCOUNTING_PROSPECTIVE_SHADOW = "INFLECTION_ACCOUNTING_PROSPECTIVE_SHADOW"
+    # Prospective Dhan quote-derived one-minute evidence is an append-only
+    # pre-canonical capture receipt.  It is separate from provider-versioned
+    # historical OHLCV and does not activate intraday technical readers.
+    PROSPECTIVE_DHAN_ONE_MINUTE_BAR = "PROSPECTIVE_DHAN_ONE_MINUTE_BAR"
+    PROSPECTIVE_DHAN_ONE_MINUTE_CONFLICT = "PROSPECTIVE_DHAN_ONE_MINUTE_CONFLICT"
 
 
 @dataclass(frozen=True, slots=True)

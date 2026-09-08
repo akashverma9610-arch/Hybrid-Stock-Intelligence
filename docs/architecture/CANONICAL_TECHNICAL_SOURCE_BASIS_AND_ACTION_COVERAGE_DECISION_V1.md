@@ -34,10 +34,10 @@ Dhan's official support documentation says its **Daily Historical Data** is adju
     DHAN_DAILY_HISTORICAL_BASIS = PROVIDER_ADJUSTED_UNKNOWN_METHOD
     DHAN_DAILY_HISTORICAL_TECHNICAL_CONTINUITY = PARTIAL / NOT_CANONICALLY_READY
 
-Dhan documents its live market feed as real-time WebSocket data and its data API as including live feeds and historical OHLCV. [Dhan live-feed support](https://dhan.co/support/platforms/dhanhq-api/how-can-i-access-live-market-data-through-dhan/) The current HSI DhanLiveFeedService is a bounded in-memory latest-LTP state; it does not retain session-complete immutable OHLCV bars. A future exact provider/session-aware capture can preserve observed values and HSI observed_at prospectively, but it must retain SOURCE_BASIS_UNKNOWN unless Dhan supplies an authoritative live-basis statement. It is a feasible future path, not an implemented bar-builder.
+Dhan documents its live market feed as real-time WebSocket data and its data API as including live feeds and historical OHLCV. [Dhan live-feed support](https://dhan.co/support/platforms/dhanhq-api/how-can-i-access-live-market-data-through-dhan/) The current HSI `DhanLiveFeedService` remains a bounded in-memory latest-LTP state. The separate [Prospective Dhan Live-Bar Foundation V1](PROSPECTIVE_DHAN_LIVE_BAR_FOUNDATION_V1.md) now defines a Quote-mode, calendar-bound, immutable one-minute capture receipt, but it is not wired to a production capture job or technical reader and no live captured-session claim is made here. Any future exact provider/session-aware capture must retain `SOURCE_BASIS_UNKNOWN` unless Dhan supplies an authoritative live-basis statement.
 
     DHAN_FORWARD_BASIS_READINESS = PARTIAL
-    PROSPECTIVE_IMMUTABLE_SESSION_BAR_CAPTURE = NOT_IMPLEMENTED
+    PROSPECTIVE_IMMUTABLE_SESSION_BAR_CAPTURE = FOUNDATION_IMPLEMENTED / LIVE_CAPTURE_NOT_CLAIMED
 
 ### NSE bhavcopy and indices
 
@@ -171,7 +171,7 @@ It would never backdate historical truth. A later provider revision would be a d
 | J. BENCHMARK_BASIS | NOT_READY | Retained index basis is source-specific/unknown. |
 | K. SECTOR_BASIS | NOT_READY | Same index-specific/unknown limitation. |
 | L. HISTORICAL_TECHNICAL_CONTINUITY | NOT_READY | Source basis, timing and action completeness are not jointly certified. |
-| M. PROSPECTIVE_TECHNICAL_CONTINUITY | PARTIAL | Sound future architecture; no immutable session-bar implementation yet. |
+| M. PROSPECTIVE_TECHNICAL_CONTINUITY | PARTIAL | Immutable prospective capture foundation exists, but live capture, source-basis proof, action coverage, and reader activation remain unavailable. |
 | N. WEEKLY_DERIVATION_GATE | NOT_READY | Daily source basis, timing, action continuity and volume parity are not ready. |
 | O. MONTHLY_DERIVATION_GATE | NOT_READY | Same missing daily prerequisites as weekly. |
 
