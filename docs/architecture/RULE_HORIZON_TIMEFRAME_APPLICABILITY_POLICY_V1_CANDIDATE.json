@@ -1,0 +1,148 @@
+{
+  "policy_id": "rule-horizon-timeframe-applicability-policy",
+  "version": "v1-candidate",
+  "status": "CANDIDATE_NOT_ACTIVE",
+  "fingerprint_scheme": "sha256:utf8:canonical-json-v1",
+  "policy_fingerprint": "sha256:bc1f7548b372738d69b72c2e54afdc34c9f10929aee9a10d834ce99cb8d43d8a",
+  "canonical_registry_version": "diagnostic-registry-v1",
+  "canonical_horizons": ["SHORT_TERM", "POSITIONAL", "LONG_TERM"],
+  "timeframes": ["15m", "30m", "1H", "4H", "1D", "1W", "1M"],
+  "horizon_duration_boundaries": "UNSET",
+  "current_descriptive_only": true,
+  "strict_historical_pit": "NOT_READY",
+  "rule_horizon_rows": [
+    {"rule_id":1,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":"BENCHMARK_SECTOR_DAILY"},
+    {"rule_id":2,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":"BENCHMARK_SECTOR_DAILY"},
+    {"rule_id":3,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"BENCHMARK_SECTOR_DAILY"},
+    {"rule_id":4,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"TREND_DAILY_WEEKLY"},
+    {"rule_id":5,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"WEEKLY_STRUCTURE"},
+    {"rule_id":6,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"RELATIVE_STRENGTH_DAILY"},
+    {"rule_id":7,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":8,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":9,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":10,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE"},
+    {"rule_id":11,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":12,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE"},
+    {"rule_id":13,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE"},
+    {"rule_id":14,"short_term":"POLICY_UNSET","positional":"POLICY_UNSET","long_term":"POLICY_UNSET","technical_profile":"MTF_ROLES_UNSET"},
+    {"rule_id":15,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":16,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":17,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":18,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":19,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":20,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":21,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":22,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":23,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":24,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":25,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":26,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":27,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":28,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":29,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":"VALUATION_PRICE_CONTEXT"},
+    {"rule_id":30,"short_term":"CONTEXT","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":31,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":"UPSTREAM_SYNTHESIS"},
+    {"rule_id":32,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"UPSTREAM_SYNTHESIS"},
+    {"rule_id":33,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"APPLICABLE","technical_profile":null},
+    {"rule_id":34,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":"UPSTREAM_SYNTHESIS"},
+    {"rule_id":35,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"NOT_APPLICABLE","technical_profile":"NAMED_VWAP_UNAVAILABLE"},
+    {"rule_id":36,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":37,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":38,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":39,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE"},
+    {"rule_id":40,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"POLICY_UNSET","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":41,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"POLICY_UNSET","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":42,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"POLICY_UNSET","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":43,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":44,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"POLICY_UNSET","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":45,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"POLICY_UNSET","technical_profile":"UPSTREAM_SYNTHESIS"},
+    {"rule_id":46,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"APPLICABLE","technical_profile":"DAILY_EXECUTION_CONTEXT"},
+    {"rule_id":47,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":null},
+    {"rule_id":48,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":null},
+    {"rule_id":49,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":null},
+    {"rule_id":50,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":51,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":52,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":53,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":54,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":55,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":"CROWD_PRICE_CONTEXT"},
+    {"rule_id":56,"short_term":"CONTEXT","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":"CROWD_PRICE_CONTEXT"},
+    {"rule_id":57,"short_term":"APPLICABLE","positional":"CONTEXT","long_term":"CONTEXT","technical_profile":"EVENT_REACTION_UNAVAILABLE"},
+    {"rule_id":58,"short_term":"APPLICABLE","positional":"APPLICABLE","long_term":"CONTEXT","technical_profile":"DAILY_PRICE_VOLUME"},
+    {"rule_id":59,"short_term":"POLICY_UNSET","positional":"POLICY_UNSET","long_term":"NOT_APPLICABLE","technical_profile":"CONTRARIAN_MTF_UNAVAILABLE"},
+    {"rule_id":60,"short_term":"POLICY_UNSET","positional":"POLICY_UNSET","long_term":"NOT_APPLICABLE","technical_profile":"CONTRARIAN_MTF_UNAVAILABLE"},
+    {"rule_id":61,"short_term":"POLICY_UNSET","positional":"POLICY_UNSET","long_term":"NOT_APPLICABLE","technical_profile":"CONTRARIAN_MTF_UNAVAILABLE"}
+  ],
+  "technical_profiles": {
+    "BENCHMARK_SECTOR_DAILY": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"CONTEXT","1W":"NOT_USED","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"PRIMARY","1W":"CONTEXT","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"CONTEXT","1M":"DATA_NOT_READY"}
+    },
+    "TREND_DAILY_WEEKLY": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"CONTEXT","1W":"CONTEXT","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"POLICY_UNSET","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONFIRMING","1W":"PRIMARY","1M":"DATA_NOT_READY"}
+    },
+    "WEEKLY_STRUCTURE": {
+      "SHORT_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"CONTEXT","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"PRIMARY","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONFIRMING","1W":"PRIMARY","1M":"DATA_NOT_READY"}
+    },
+    "RELATIVE_STRENGTH_DAILY": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"CONTEXT","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"PRIMARY","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"}
+    },
+    "DAILY_PRICE": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"CONTEXT","1W":"NOT_USED","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"PRIMARY","1W":"CONTEXT","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"CONTEXT","1M":"DATA_NOT_READY"}
+    },
+    "DAILY_PRICE_VOLUME": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"CONTEXT","1W":"NOT_USED","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"PRIMARY","1W":"CONTEXT","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"CONTEXT","1M":"DATA_NOT_READY"}
+    },
+    "MTF_ROLES_UNSET": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"POLICY_UNSET","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"POLICY_UNSET","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"POLICY_UNSET","1W":"POLICY_UNSET","1M":"DATA_NOT_READY"}
+    },
+    "VALUATION_PRICE_CONTEXT": {
+      "SHORT_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"}
+    },
+    "UPSTREAM_SYNTHESIS": {
+      "SHORT_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"NOT_USED","1W":"NOT_USED","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"NOT_USED","1W":"NOT_USED","1M":"NOT_USED"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"NOT_USED","1W":"NOT_USED","1M":"NOT_USED"}
+    },
+    "NAMED_VWAP_UNAVAILABLE": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"DATA_NOT_READY","1W":"NOT_USED","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"DATA_NOT_READY","1W":"NOT_USED","1M":"NOT_USED"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"NOT_USED","1W":"NOT_USED","1M":"NOT_USED"}
+    },
+    "DAILY_EXECUTION_CONTEXT": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"PRIMARY","1W":"CONTEXT","1M":"DATA_NOT_READY"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"CONTEXT","1M":"DATA_NOT_READY"}
+    },
+    "CROWD_PRICE_CONTEXT": {
+      "SHORT_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"}
+    },
+    "EVENT_REACTION_UNAVAILABLE": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"DATA_NOT_READY","1W":"NOT_USED","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"DATA_NOT_READY","1W":"NOT_USED","1M":"NOT_USED"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"CONTEXT","1W":"NOT_USED","1M":"NOT_USED"}
+    },
+    "CONTRARIAN_MTF_UNAVAILABLE": {
+      "SHORT_TERM":{"15m":"DATA_NOT_READY","30m":"DATA_NOT_READY","1H":"DATA_NOT_READY","4H":"DATA_NOT_READY","1D":"POLICY_UNSET","1W":"POLICY_UNSET","1M":"NOT_USED"},
+      "POSITIONAL":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"DATA_NOT_READY","1D":"POLICY_UNSET","1W":"POLICY_UNSET","1M":"NOT_USED"},
+      "LONG_TERM":{"15m":"NOT_USED","30m":"NOT_USED","1H":"NOT_USED","4H":"NOT_USED","1D":"NOT_USED","1W":"NOT_USED","1M":"NOT_USED"}
+    }
+  }
+}

@@ -217,9 +217,11 @@ STRICT_HISTORICAL_PIT_PEER_POLICY = NOT_READY
 
 No narrow already-retained canonical source supplies authoritative Basic
 Industry or Industry peer membership, so no bounded peer-membership
-implementation is proposed. The exact next dominant solvable internal blocker
-is `RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1`; the Rule 6 peer leg
-remains fail-closed/partial, while the external taxonomy block stays parked.
+implementation is proposed. The separately recorded
+[Rule Horizon / Timeframe Applicability Policy V1 candidate]
+(RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1.md) does not change that
+conclusion: the Rule 6 peer leg remains fail-closed/partial, while the external
+taxonomy block stays parked.
 
 ## Validation and safety boundary
 
