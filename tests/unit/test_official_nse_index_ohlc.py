@@ -14,8 +14,10 @@ from app.market_data.official_nse_index_ohlc import (
     CoreSnapshotOfficialIndexOhlcStore,
     IndexOhlcWriteOutcome,
     NseIndicesOfficialOhlcClient,
+    OfficialIndexOhlcActivationResult,
     OfficialIndexOhlcRetrievalArtifact,
     OfficialIndexOhlcTarget,
+    OfficialIndexOhlcTargetRun,
     OfficialNseIndexOhlcSeriesRefresh,
     parse_official_nse_index_ohlc_response,
 )
@@ -250,3 +252,36 @@ def test_multi_target_refresh_uses_a_bounded_injected_request_interval(tmp_path)
         sleeper=pauses.append,
     ).run_twice()
     assert pauses == [1.0, 1.0]
+
+
+def test_remainder_cli_selects_only_the_injected_exact_it_refresh() -> None:
+    """The remainder command cannot fall through to the broad refresh path."""
+    from app.runtime.cli import main
+
+    run = OfficialIndexOhlcTargetRun(
+        "NSE_SECTOR_INDEX:INFORMATION_TECHNOLOGY", "Nifty IT",
+        0, 1, datetime(2026, 8, 31, 10, tzinfo=UTC), datetime(2026, 8, 31, 10, tzinfo=UTC),
+        1, 0, 0, "f" * 64,
+    )
+    result = OfficialIndexOhlcActivationResult(T, T, (run,), (run,))
+    calls: list[str] = []
+
+    class Service:
+        def run_twice(self):
+            calls.append("run_twice")
+            return result
+
+    class Repository:
+        def close(self):
+            calls.append("close")
+
+    output: list[str] = []
+    assert main(
+        ["ingest-official-nse-sector-index-remainder-ohlc"],
+        official_index_ohlc_remainder_refresh_factory=lambda: (Service(), Repository()),
+        official_index_ohlc_refresh_factory=lambda: (_ for _ in ()).throw(AssertionError("broad factory used")),
+        official_index_ohlc_alias_refresh_factory=lambda: (_ for _ in ()).throw(AssertionError("alias factory used")),
+        output=output.append,
+    ) == 0
+    assert calls == ["run_twice", "close"]
+    assert len(output) == 3 and all("NSE_SECTOR_INDEX:INFORMATION_TECHNOLOGY" in line for line in output[1:])
