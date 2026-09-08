@@ -146,7 +146,7 @@ not a license to invent a mapping or history.
 | H. Rule 2 sector-health input | `PARTIAL` | 318 → 354 source-ready mappings |
 | I. Rule 3 sector-rotation input | `PARTIAL` | 318 → 354 source-ready mappings |
 | J. Rule 6 sector-context input | `PARTIAL` | 318 → 354 source-ready mappings |
-| K. Rule 6 full readiness | `NOT_APPLICABLE` | peer policy is outside this closure; benchmark/equity alignment remains separate |
+| K. Rule 6 full readiness | `PARTIAL` | Rule 6 is applicable. `354` securities retain valid sector context, but authoritative business-peer membership and the full peer comparison policy were not assembled; benchmark/equity alignment remains separate. |
 | L. Current NSE security classification coverage | `PARTIAL` | externally blocked; 1,827 all-listed classifications remain missing |
 | M. Next dominant solvable internal blocker | `NOT_READY` | `TECHNICAL_PEER_COHORT_POLICY_V1`; remaining sector-OHLC gaps are first-party source limitations |
 
@@ -172,3 +172,20 @@ not a license to invent a mapping or history.
 This completes the bounded remainder identity/OHLC closure. It does not close
 the five first-party source-data gaps, establish peer cohorts, activate horizon
 semantics, widen classification coverage, or authorize a portfolio action.
+
+## Subsequent reporting-semantics correction
+
+The five unavailable exact-index probes returned a first-party source response.
+`SOURCE_RESPONSE_AVAILABLE` is therefore distinct from
+`FULL_OHLC_CONTRACT_NOT_SATISFIED`: the former records a received, exact
+official response; the latter records that its fields cannot satisfy the
+existing canonical Daily OHLC contract. Neither state means that the source or
+index identity is absent.
+
+Likewise, the adapter-local `PeerCohortState.NOT_APPLICABLE` records that the
+current Rule 6 evaluator does not yet consume a peer series; it is not a
+global applicability verdict for canonical Rule 6. The policy/readiness
+interpretation is recorded in
+[Technical Peer Cohort Policy V1](TECHNICAL_PEER_COHORT_POLICY_V1.md), where
+full Rule 6 readiness is `PARTIAL` rather than `NOT_APPLICABLE` while its
+business-peer leg remains unassembled.
