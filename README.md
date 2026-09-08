@@ -67,6 +67,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)
+- [Canonical Sector-Index Identity and Close Lineage Completion V1](docs/architecture/CANONICAL_SECTOR_INDEX_IDENTITY_AND_CLOSE_LINEAGE_COMPLETION_V1.md)
 - [Canonical Security-to-Sector-Index Mapping Coverage Governance V1](docs/architecture/CANONICAL_SECURITY_TO_SECTOR_INDEX_MAPPING_COVERAGE_GOVERNANCE_V1.md)
 - [Canonical Security Taxonomy Coverage, Source, and Identity V1](docs/architecture/CANONICAL_SECURITY_TAXONOMY_COVERAGE_SOURCE_AND_IDENTITY_V1.md)
 - [NSE All-Listed Security Taxonomy Source Feasibility and Acquisition Policy V1](docs/architecture/NSE_ALL_LISTED_SECURITY_TAXONOMY_SOURCE_FEASIBILITY_AND_ACQUISITION_POLICY_V1.md)

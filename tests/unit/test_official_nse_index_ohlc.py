@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -13,15 +13,32 @@ from app.market_data.official_nse_index_ohlc import (
     CanonicalOfficialIndexOhlcObservation,
     CoreSnapshotOfficialIndexOhlcStore,
     IndexOhlcWriteOutcome,
+    NseIndicesOfficialOhlcClient,
     OfficialIndexOhlcRetrievalArtifact,
+    OfficialIndexOhlcTarget,
     OfficialNseIndexOhlcSeriesRefresh,
     parse_official_nse_index_ohlc_response,
 )
+from app.market_data.official_nse_index_ohlc_reconciliation import (
+    resolve_official_nse_index_source_query,
+)
 from app.storage.sqlite_core_api_snapshot_repository import SQLiteCoreApiSnapshotRepository
+from app.taxonomy.nse_sector_indices import NseSectorIndexMapping, SectorIndexMappingStatus
 
 
 T = datetime(2026, 9, 1, 12, tzinfo=UTC)
 INDEX = "NIFTY_50"
+
+
+def _alias_resolution(*, sector: str, official_index_name: str, canonical_index_id: str):
+    return resolve_official_nse_index_source_query(
+        mapping=NseSectorIndexMapping(
+            "nse-sector-index-mapping:test", sector, official_index_name,
+            "https://www.niftyindices.com/", SectorIndexMappingStatus.EXACT_OFFICIAL,
+            ("NSE_INDICES_SECTORAL_CATALOGUE",), "a" * 64, T,
+        ),
+        canonical_index_id=canonical_index_id,
+    )
 
 
 def _raw(*, close: str = "24175.65", index: str = "Nifty 50") -> bytes:
@@ -103,6 +120,100 @@ def test_two_run_refresh_is_idempotent_without_provider_merge_or_upstox(tmp_path
     assert result.first_run[0].inserted_count == 1
     assert result.second_run[0].duplicate_count == 1
     assert result.second_run[0].conflict_count == 0
+
+
+def test_explicit_first_party_query_alias_retains_canonical_identity_and_replays_idempotently(tmp_path) -> None:
+    repository = SQLiteCoreApiSnapshotRepository(tmp_path / "core.sqlite")
+    store = CoreSnapshotOfficialIndexOhlcStore(repository)
+    resolution = _alias_resolution(
+        sector="Consumer Durables", official_index_name="Nifty Consumer Durables Index",
+        canonical_index_id="NSE_SECTOR_INDEX:CONSUMER_DURABLES",
+    )
+    target = OfficialIndexOhlcTarget(
+        resolution.canonical_index_id, resolution.canonical_mapping_name,
+        resolution.source_query_name, resolution,
+    )
+
+    def alias_values(retrieved_at: datetime):
+        session, open_value, high, low, close = parse_official_nse_index_ohlc_response(
+            _raw(index="Nifty Consumer Durables"), target.source_query_name,
+        )[0]
+        observation = CanonicalOfficialIndexOhlcObservation.create(
+            canonical_index_id=target.canonical_index_id,
+            official_index_name=target.official_index_name, session=session,
+            open=open_value, high=high, low=low, close=close,
+            retrieved_at=retrieved_at, raw_artifact_sha256="e" * 64,
+            source_reference="https://www.niftyindices.com/reports/historical-data#source-query-alias-sha256=" + resolution.fingerprint,
+        )
+        artifact = OfficialIndexOhlcRetrievalArtifact(
+            artifact_id="official-index-ohlc-artifact:" + "e" * 64,
+            canonical_index_id=target.canonical_index_id,
+            official_index_name=target.official_index_name,
+            source_url="https://official.example/historical", requested_start="2025-09-01",
+            requested_end="2026-09-01", retrieved_at=retrieved_at,
+            raw_artifact_sha256="e" * 64, row_count=1, earliest_session=session,
+            latest_session=session, parser_version="nse-indices-historical-ohlc-v1",
+            index_level_basis=INDEX_LEVEL_BASIS, index_return_family=INDEX_RETURN_FAMILY,
+            local_path="data/official_sources/nse_index_ohlc_series/consumer.json",
+            source_query_name=target.source_query_name,
+            source_query_alias_fingerprint=resolution.fingerprint,
+        )
+        return artifact, (observation,)
+
+    class Client:
+        def fetch(self, *, source_query_resolution, retrieved_at, **values):
+            assert values["canonical_index_id"] == target.canonical_index_id
+            assert values["official_index_name"] == target.official_index_name
+            assert source_query_resolution == resolution
+            return alias_values(retrieved_at)
+
+    result = OfficialNseIndexOhlcSeriesRefresh(
+        store=store, targets=(target,), artifact_directory=tmp_path / "archive",
+        client=Client(), clock=lambda: T,
+    ).run_twice()
+    first = result.first_run[0]
+    second = result.second_run[0]
+    values = store.range(target.canonical_index_id, datetime(2026, 8, 1, tzinfo=UTC), T, as_of=T)
+    assert (first.inserted_count, second.duplicate_count, second.conflict_count) == (1, 1, 0)
+    assert values[0].official_index_name == target.official_index_name
+    assert values[0].source_reference.endswith("source-query-alias-sha256=" + resolution.fingerprint)
+
+
+def test_client_uses_only_the_proven_query_alias_and_records_its_lineage(tmp_path) -> None:
+    resolution = _alias_resolution(
+        sector="Healthcare", official_index_name="Nifty Healthcare Index",
+        canonical_index_id="NSE_SECTOR_INDEX:HEALTHCARE",
+    )
+    target = OfficialIndexOhlcTarget(
+        resolution.canonical_index_id, resolution.canonical_mapping_name,
+        resolution.source_query_name, resolution,
+    )
+
+    class Response:
+        content = _raw(index="Nifty Healthcare")
+
+        def raise_for_status(self) -> None:
+            return None
+
+    class Session:
+        def post(self, url, *, json, timeout, headers):
+            assert "NIFTY HEALTHCARE" in json["cinfo"]
+            assert "Nifty Healthcare Index" not in json["cinfo"]
+            assert timeout == 45 and headers["Accept"] == "application/json"
+            return Response()
+
+    artifact, observations = NseIndicesOfficialOhlcClient(session=Session()).fetch(
+        canonical_index_id=target.canonical_index_id, official_index_name=target.official_index_name,
+        source_query_resolution=resolution,
+        requested_start=date(2025, 9, 1), requested_end=date(2026, 9, 1),
+        retrieved_at=T, artifact_directory=tmp_path,
+    )
+    assert artifact.source_query_name == target.source_query_name
+    assert artifact.source_query_alias_fingerprint == target.source_query_alias_fingerprint
+    assert observations[0].official_index_name == target.official_index_name
+    assert observations[0].source_reference.endswith("source-query-alias-sha256=" + resolution.fingerprint)
+    with pytest.raises(ValueError, match="TARGET_INVALID"):
+        OfficialIndexOhlcTarget(target.canonical_index_id, target.official_index_name, target.source_query_name)
 
 
 def test_one_official_close_only_target_is_retained_as_a_fail_closed_per_index_blocker(tmp_path) -> None:

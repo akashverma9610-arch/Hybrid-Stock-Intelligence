@@ -27,6 +27,10 @@ from app.market_data.index_close_series import (
     NSE_INDICES_HISTORICAL_URL,
     NSE_INDICES_OFFICIAL,
 )
+from app.market_data.official_nse_index_ohlc_reconciliation import (
+    OfficialIndexSourceQueryResolution,
+    OfficialIndexSourceQueryResolutionStatus,
+)
 from app.storage.core_api_snapshot_repository import (
     CoreApiSnapshot,
     CoreApiSnapshotFamily,
@@ -146,6 +150,12 @@ class OfficialIndexOhlcRetrievalArtifact:
     index_level_basis: str
     index_return_family: str
     local_path: str
+    # A first-party historical-report parameter can differ from the current
+    # canonical display name only when an immutable, independently verified
+    # alias resolution authorizes it.  These fields are optional solely so
+    # previously retained v1 artifacts remain readable.
+    source_query_name: str | None = None
+    source_query_alias_fingerprint: str | None = None
 
     def __post_init__(self) -> None:
         if not all((
@@ -160,8 +170,58 @@ class OfficialIndexOhlcRetrievalArtifact:
             len(self.raw_artifact_sha256) != 64
             or any(char not in "0123456789abcdef" for char in self.raw_artifact_sha256)
             or self.artifact_id != f"official-index-ohlc-artifact:{self.raw_artifact_sha256}"
+            or (self.source_query_name is None) != (self.source_query_alias_fingerprint is None)
+            or (self.source_query_name is not None and (
+                not self.source_query_name.strip()
+                or self.source_query_name == self.official_index_name
+            ))
+            or (self.source_query_alias_fingerprint is not None and (
+                len(self.source_query_alias_fingerprint) != 64
+                or any(char not in "0123456789abcdef" for char in self.source_query_alias_fingerprint)
+            ))
         ):
             raise ValueError("OFFICIAL_INDEX_OHLC_ARTIFACT_IDENTITY_INVALID")
+
+
+@dataclass(frozen=True, slots=True)
+class OfficialIndexOhlcTarget:
+    """One deterministic canonical identity/source-query pair.
+
+    The ordinary case queries the canonical display name.  An alternate
+    historical-report parameter is deliberately impossible without the
+    first-party identity-resolution fingerprint supplied by the pure
+    reconciliation contract.
+    """
+
+    canonical_index_id: str
+    official_index_name: str
+    source_query_name: str
+    source_query_resolution: OfficialIndexSourceQueryResolution | None = None
+
+    def __post_init__(self) -> None:
+        is_alias = self.source_query_name != self.official_index_name
+        if (
+            not all(isinstance(value, str) and value.strip() for value in (
+                self.canonical_index_id, self.official_index_name, self.source_query_name,
+            ))
+            or not (
+                self.canonical_index_id == "NIFTY_50"
+                or self.canonical_index_id.startswith("NSE_SECTOR_INDEX:")
+            )
+            or (is_alias and not (
+                isinstance(self.source_query_resolution, OfficialIndexSourceQueryResolution)
+                and self.source_query_resolution.status is OfficialIndexSourceQueryResolutionStatus.SOURCE_QUERY_ALIAS_PROVEN
+                and self.source_query_resolution.canonical_index_id == self.canonical_index_id
+                and self.source_query_resolution.canonical_mapping_name == self.official_index_name
+                and self.source_query_resolution.source_query_name == self.source_query_name
+            ))
+            or (not is_alias and self.source_query_resolution is not None)
+        ):
+            raise ValueError("OFFICIAL_INDEX_OHLC_TARGET_INVALID")
+
+    @property
+    def source_query_alias_fingerprint(self) -> str | None:
+        return None if self.source_query_resolution is None else self.source_query_resolution.fingerprint
 
 
 @dataclass(frozen=True, slots=True)
@@ -265,12 +325,28 @@ class NseIndicesOfficialOhlcClient:
         self, *, canonical_index_id: str, official_index_name: str,
         requested_start: date, requested_end: date, retrieved_at: datetime,
         artifact_directory: Path,
+        source_query_resolution: OfficialIndexSourceQueryResolution | None = None,
     ) -> tuple[OfficialIndexOhlcRetrievalArtifact, tuple[CanonicalOfficialIndexOhlcObservation, ...]]:
         if (requested_end - requested_start).days > 365:
             raise ValueError("NSE_INDICES_HISTORICAL_MAXIMUM_RANGE_EXCEEDED")
+        query_name = (
+            official_index_name if source_query_resolution is None
+            else source_query_resolution.source_query_name
+        )
+        is_alias = query_name != official_index_name
+        if (
+            (is_alias and not (
+                isinstance(source_query_resolution, OfficialIndexSourceQueryResolution)
+                and source_query_resolution.status is OfficialIndexSourceQueryResolutionStatus.SOURCE_QUERY_ALIAS_PROVEN
+                and source_query_resolution.canonical_index_id == canonical_index_id
+                and source_query_resolution.canonical_mapping_name == official_index_name
+            ))
+            or (not is_alias and source_query_resolution is not None)
+        ):
+            raise ValueError("NSE_INDICES_HISTORICAL_SOURCE_QUERY_ALIAS_INVALID")
         cinfo = "{'name':'%s','startDate':'%s','endDate':'%s','indexName':'%s'}" % (
-            official_index_name.upper(), requested_start.isoformat(),
-            requested_end.isoformat(), official_index_name,
+            query_name.upper(), requested_start.isoformat(),
+            requested_end.isoformat(), query_name,
         )
         response = self._session.post(
             NSE_INDICES_HISTORICAL_URL, json={"cinfo": cinfo}, timeout=self._timeout,
@@ -279,7 +355,7 @@ class NseIndicesOfficialOhlcClient:
         response.raise_for_status()
         raw = response.content
         raw_hash = sha256(raw).hexdigest()
-        rows = parse_official_nse_index_ohlc_response(raw, official_index_name)
+        rows = parse_official_nse_index_ohlc_response(raw, query_name)
         artifact_path = _archive_raw_response(artifact_directory, canonical_index_id, raw_hash, raw)
         artifact = OfficialIndexOhlcRetrievalArtifact(
             f"official-index-ohlc-artifact:{raw_hash}", canonical_index_id,
@@ -289,11 +365,17 @@ class NseIndicesOfficialOhlcClient:
             rows[0][0] if rows else None, rows[-1][0] if rows else None,
             PARSER_VERSION, INDEX_LEVEL_BASIS, INDEX_RETURN_FAMILY,
             str(artifact_path),
+            query_name if is_alias else None,
+            None if source_query_resolution is None else source_query_resolution.fingerprint,
+        )
+        source_reference = _source_reference(
+            None if source_query_resolution is None else source_query_resolution.fingerprint,
         )
         observations = tuple(CanonicalOfficialIndexOhlcObservation.create(
             canonical_index_id=canonical_index_id, official_index_name=official_index_name,
             session=session, open=open_value, high=high, low=low, close=close,
             retrieved_at=retrieved_at, raw_artifact_sha256=raw_hash,
+            source_reference=source_reference,
         ) for session, open_value, high, low, close in rows)
         return artifact, observations
 
@@ -303,14 +385,18 @@ class OfficialNseIndexOhlcSeriesRefresh:
 
     def __init__(
         self, *, store: OfficialIndexOhlcStore,
-        targets: Sequence[tuple[str, str]], artifact_directory: Path,
+        targets: Sequence[OfficialIndexOhlcTarget | tuple[str, str]], artifact_directory: Path,
         client: NseIndicesOfficialOhlcClient | None = None,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
         request_interval_seconds: float = 1.0,
         sleeper: Callable[[float], None] = sleep,
     ) -> None:
-        targets = tuple(targets)
-        if not targets or targets != tuple(sorted(set(targets))):
+        targets = tuple(_target(value) for value in targets)
+        if (
+            not targets
+            or targets != tuple(sorted(targets, key=_target_sort_key))
+            or len({item.canonical_index_id for item in targets}) != len(targets)
+        ):
             raise ValueError("OFFICIAL_INDEX_OHLC_TARGETS_MUST_BE_DETERMINISTIC")
         if request_interval_seconds < 0:
             raise ValueError("OFFICIAL_INDEX_OHLC_REQUEST_INTERVAL_INVALID")
@@ -332,7 +418,8 @@ class OfficialNseIndexOhlcSeriesRefresh:
         )
         start = latest_completed - timedelta(days=365)
         result: list[OfficialIndexOhlcTargetRun] = []
-        for target_number, (canonical_index_id, official_index_name) in enumerate(self._targets):
+        for target_number, target in enumerate(self._targets):
+            canonical_index_id, official_index_name = target.canonical_index_id, target.official_index_name
             if target_number:
                 # A bounded first-party acquisition must remain polite even
                 # when a prior exact target was close-only or unavailable.
@@ -342,12 +429,15 @@ class OfficialNseIndexOhlcSeriesRefresh:
                 retrieved_at, as_of=retrieved_at,
             ))
             try:
-                artifact, observations = self._client.fetch(
+                fetch_args = dict(
                     canonical_index_id=canonical_index_id,
                     official_index_name=official_index_name,
                     requested_start=start, requested_end=latest_completed,
                     retrieved_at=retrieved_at, artifact_directory=self._directory,
                 )
+                if target.source_query_name != target.official_index_name:
+                    fetch_args["source_query_resolution"] = target.source_query_resolution
+                artifact, observations = self._client.fetch(**fetch_args)
             except ValueError as error:
                 # An official close-only/empty response is a per-index data
                 # limitation, not a license to synthesize OHLC or discard the
@@ -434,6 +524,36 @@ def _archive_raw_response(directory: Path, canonical_index_id: str, raw_hash: st
     return path
 
 
+def _source_reference(source_query_alias_fingerprint: str | None) -> str:
+    """Keep the canonical query-alias proof in observation lineage.
+
+    The official page remains the source.  The fragment is an HSI immutable
+    provenance locator, not a provider URL parameter and never changes the
+    request made to NSE Indices.
+    """
+    if source_query_alias_fingerprint is None:
+        return NSE_INDICES_HISTORICAL_PAGE
+    return NSE_INDICES_HISTORICAL_PAGE + "#source-query-alias-sha256=" + source_query_alias_fingerprint
+
+
+def _target(value: OfficialIndexOhlcTarget | tuple[str, str]) -> OfficialIndexOhlcTarget:
+    if isinstance(value, OfficialIndexOhlcTarget):
+        return value
+    if not isinstance(value, tuple) or len(value) != 2:
+        raise ValueError("OFFICIAL_INDEX_OHLC_TARGET_INVALID")
+    canonical_index_id, official_index_name = value
+    return OfficialIndexOhlcTarget(canonical_index_id, official_index_name, official_index_name)
+
+
+def _target_sort_key(value: OfficialIndexOhlcTarget) -> tuple[str, str, str, str]:
+    return (
+        value.canonical_index_id,
+        value.official_index_name,
+        value.source_query_name,
+        value.source_query_alias_fingerprint or "",
+    )
+
+
 def _observation_values(
     canonical_index_id: str, official_index_name: str, session: datetime,
     open_value: Decimal, high: Decimal, low: Decimal, close: Decimal,
@@ -478,6 +598,8 @@ def _same_artifact(
         and left.parser_version == right.parser_version
         and left.index_level_basis == right.index_level_basis
         and left.index_return_family == right.index_return_family
+        and left.source_query_name == right.source_query_name
+        and left.source_query_alias_fingerprint == right.source_query_alias_fingerprint
     )
 
 
@@ -496,6 +618,7 @@ __all__ = (
     "CoreSnapshotOfficialIndexOhlcStore",
     "INDEX_LEVEL_BASIS", "INDEX_RETURN_FAMILY", "IndexOhlcWriteOutcome",
     "NseIndicesOfficialOhlcClient", "OfficialIndexOhlcActivationResult",
-    "OfficialIndexOhlcRetrievalArtifact", "OfficialNseIndexOhlcSeriesRefresh",
+    "OfficialIndexOhlcRetrievalArtifact", "OfficialIndexOhlcTarget",
+    "OfficialNseIndexOhlcSeriesRefresh",
     "parse_official_nse_index_ohlc_response",
 )

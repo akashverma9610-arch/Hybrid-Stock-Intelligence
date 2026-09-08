@@ -14,9 +14,11 @@ from hashlib import sha256
 from typing import Iterable
 
 from app.market_data.official_nse_index_ohlc_feasibility import OfficialIndexReturnFamily
+from app.taxonomy.nse_sector_indices import NseSectorIndexMapping, SectorIndexMappingStatus
 
 
 RECONCILIATION_VERSION = "official-nse-index-ohlc-source-name-reconciliation-v1"
+SOURCE_QUERY_ALIAS_VERSION = "official-nse-index-source-query-alias-v1"
 
 
 class OfficialIndexIdentityReconciliationStatus(StrEnum):
@@ -25,6 +27,11 @@ class OfficialIndexIdentityReconciliationStatus(StrEnum):
     IDENTITY_NOT_RECONCILED = "IDENTITY_NOT_RECONCILED"
     SOURCE_PARAMETER_ALIAS_REJECTED = "SOURCE_PARAMETER_ALIAS_REJECTED"
     IDENTITY_AMBIGUOUS = "IDENTITY_AMBIGUOUS"
+
+
+class OfficialIndexSourceQueryResolutionStatus(StrEnum):
+    EXACT_CANONICAL_SOURCE_QUERY = "EXACT_CANONICAL_SOURCE_QUERY"
+    SOURCE_QUERY_ALIAS_PROVEN = "SOURCE_QUERY_ALIAS_PROVEN"
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,6 +64,52 @@ class OfficialNseIndexSourceNameTarget:
             raise ValueError("OFFICIAL_INDEX_RECONCILIATION_TARGET_INVALID")
 
 
+@dataclass(frozen=True, slots=True)
+class OfficialIndexSourceQueryResolution:
+    """One exact, first-party source-query choice for a stable HSI index ID.
+
+    It authorizes an initial current-descriptive canonicalization only.  It
+    does not replace the stricter close-lineage comparison retained below for
+    later source-to-source reconciliation.
+    """
+
+    canonical_index_id: str
+    canonical_mapping_name: str
+    source_query_name: str
+    return_family: OfficialIndexReturnFamily
+    status: OfficialIndexSourceQueryResolutionStatus
+    evidence_references: tuple[str, ...]
+    fingerprint: str
+
+    def __post_init__(self) -> None:
+        references = tuple(sorted(set(self.evidence_references)))
+        is_alias = self.source_query_name != self.canonical_mapping_name
+        values = _source_query_resolution_values(self, include_fingerprint=False)
+        if (
+            not self.canonical_index_id.startswith("NSE_SECTOR_INDEX:")
+            or not all(isinstance(value, str) and value.strip() for value in (
+                self.canonical_mapping_name, self.source_query_name,
+            ))
+            or not isinstance(self.return_family, OfficialIndexReturnFamily)
+            or self.return_family is not OfficialIndexReturnFamily.PRICE_RETURN_INDEX
+            or not isinstance(self.status, OfficialIndexSourceQueryResolutionStatus)
+            or self.evidence_references != references
+            or not all(isinstance(value, str) and value.strip() for value in references)
+            or (is_alias and (
+                self.status is not OfficialIndexSourceQueryResolutionStatus.SOURCE_QUERY_ALIAS_PROVEN
+                or not references
+            ))
+            or (not is_alias and (
+                self.status is not OfficialIndexSourceQueryResolutionStatus.EXACT_CANONICAL_SOURCE_QUERY
+                or references
+            ))
+            or len(self.fingerprint) != 64
+            or any(value not in "0123456789abcdef" for value in self.fingerprint)
+            or self.fingerprint != _fingerprint(values)
+        ):
+            raise ValueError("OFFICIAL_INDEX_SOURCE_QUERY_RESOLUTION_INVALID")
+
+
 CONSUMER_DURABLES_TARGET = OfficialNseIndexSourceNameTarget(
     canonical_index_id="NSE_SECTOR_INDEX:CONSUMER_DURABLES",
     canonical_mapping_name="Nifty Consumer Durables Index",
@@ -78,6 +131,77 @@ HEALTHCARE_TARGET = OfficialNseIndexSourceNameTarget(
     distinct_product_names=("Nifty MidSmall Healthcare", "Nifty500 Healthcare"),
     affected_security_count=70,
 )
+
+
+_ALIAS_TARGETS = {
+    CONSUMER_DURABLES_TARGET.canonical_index_id: CONSUMER_DURABLES_TARGET,
+    HEALTHCARE_TARGET.canonical_index_id: HEALTHCARE_TARGET,
+}
+_ALIAS_EVIDENCE_REFERENCES = (
+    "NSE_INDICES_DEDICATED_INDEX_PAGE",
+    "NSE_INDICES_EQUITY_INDEX_METHODOLOGY",
+    "NSE_INDICES_FACTSHEET",
+    "NSE_INDICES_HISTORICAL_DATA_REPORT",
+    "NSE_INDICES_SECTORAL_CATALOGUE",
+)
+
+
+def resolve_official_nse_index_source_query(
+    *, mapping: NseSectorIndexMapping, canonical_index_id: str,
+) -> OfficialIndexSourceQueryResolution:
+    """Resolve an exact first-party report parameter without changing index ID.
+
+    The two aliases below are explicit product-identity facts, not a string
+    normalizer.  A mapping that does not exactly match the retained official
+    relation fails closed instead of receiving a similar-looking parameter.
+    """
+    if (
+        not isinstance(mapping, NseSectorIndexMapping)
+        or mapping.status is not SectorIndexMappingStatus.EXACT_OFFICIAL
+        or not mapping.official_index_name
+        or canonical_index_id != _canonical_index_id(mapping.canonical_sector)
+    ):
+        raise ValueError("OFFICIAL_INDEX_SOURCE_QUERY_MAPPING_INVALID")
+    target = _ALIAS_TARGETS.get(canonical_index_id)
+    if target is None:
+        values = {
+            "canonical_index_id": canonical_index_id,
+            "canonical_mapping_name": mapping.official_index_name,
+            "source_query_name": mapping.official_index_name,
+            "return_family": OfficialIndexReturnFamily.PRICE_RETURN_INDEX,
+            "status": OfficialIndexSourceQueryResolutionStatus.EXACT_CANONICAL_SOURCE_QUERY,
+            "evidence_references": (),
+        }
+        return OfficialIndexSourceQueryResolution(
+            **values,
+            fingerprint=_fingerprint(_source_query_resolution_values_from(values)),
+        )
+    if mapping.official_index_name != target.canonical_mapping_name:
+        raise ValueError("OFFICIAL_INDEX_SOURCE_QUERY_ALIAS_MAPPING_NAME_MISMATCH")
+    evidence = OfficialNseIndexIdentityEvidence(
+        canonical_index_id=target.canonical_index_id,
+        catalogue_name=target.catalogue_name,
+        dedicated_page_name=target.dedicated_page_name,
+        factsheet_name=target.factsheet_name,
+        historical_parameter=target.historical_parameter,
+        historical_observed_name=target.historical_parameter,
+        return_family=OfficialIndexReturnFamily.PRICE_RETURN_INDEX,
+        evidence_references=_ALIAS_EVIDENCE_REFERENCES,
+    )
+    if _identity_reason_codes(target, evidence):  # Defensive against a future static-data edit.
+        raise ValueError("OFFICIAL_INDEX_SOURCE_QUERY_ALIAS_EVIDENCE_INVALID")
+    values = {
+        "canonical_index_id": canonical_index_id,
+        "canonical_mapping_name": mapping.official_index_name,
+        "source_query_name": target.historical_parameter,
+        "return_family": OfficialIndexReturnFamily.PRICE_RETURN_INDEX,
+        "status": OfficialIndexSourceQueryResolutionStatus.SOURCE_QUERY_ALIAS_PROVEN,
+        "evidence_references": _ALIAS_EVIDENCE_REFERENCES,
+    }
+    return OfficialIndexSourceQueryResolution(
+        **values,
+        fingerprint=_fingerprint(_source_query_resolution_values_from(values)),
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -340,6 +464,41 @@ def _target_values(value: OfficialNseIndexSourceNameTarget) -> dict[str, object]
     }
 
 
+def _source_query_resolution_values(
+    value: OfficialIndexSourceQueryResolution, *, include_fingerprint: bool,
+) -> dict[str, object]:
+    values = _source_query_resolution_values_from({
+        "canonical_index_id": value.canonical_index_id,
+        "canonical_mapping_name": value.canonical_mapping_name,
+        "source_query_name": value.source_query_name,
+        "return_family": value.return_family,
+        "status": value.status,
+        "evidence_references": value.evidence_references,
+    })
+    return values | ({"fingerprint": value.fingerprint} if include_fingerprint else {})
+
+
+def _source_query_resolution_values_from(values: dict[str, object]) -> dict[str, object]:
+    return {
+        "canonical_index_id": values["canonical_index_id"],
+        "canonical_mapping_name": values["canonical_mapping_name"],
+        "source_query_name": values["source_query_name"],
+        "return_family": values["return_family"].value,
+        "status": values["status"].value,
+        "evidence_references": values["evidence_references"],
+        "version": SOURCE_QUERY_ALIAS_VERSION,
+    }
+
+
+def _canonical_index_id(sector: str) -> str:
+    token = "".join(character if character.isalnum() else "_" for character in sector.upper()).strip("_")
+    if not token:
+        raise ValueError("OFFICIAL_INDEX_SOURCE_QUERY_CANONICAL_SECTOR_REQUIRED")
+    while "__" in token:
+        token = token.replace("__", "_")
+    return "NSE_SECTOR_INDEX:" + token
+
+
 def _evidence_values(value: OfficialNseIndexIdentityEvidence) -> dict[str, object]:
     return {
         "canonical_index_id": value.canonical_index_id,
@@ -363,8 +522,10 @@ def _fingerprint(values: object) -> str:
 
 __all__ = (
     "CONSUMER_DURABLES_TARGET", "HEALTHCARE_TARGET", "OfficialIndexCloseLineagePoint",
-    "OfficialIndexIdentityReconciliationStatus", "OfficialNseIndexIdentityEvidence",
+    "OfficialIndexIdentityReconciliationStatus", "OfficialIndexSourceQueryResolution",
+    "OfficialIndexSourceQueryResolutionStatus", "OfficialNseIndexIdentityEvidence",
     "OfficialNseIndexSourceNameReconciliationResult", "OfficialNseIndexSourceNameTarget",
-    "RECONCILIATION_VERSION", "reconcile_official_nse_index_source_name",
+    "RECONCILIATION_VERSION", "SOURCE_QUERY_ALIAS_VERSION",
+    "reconcile_official_nse_index_source_name", "resolve_official_nse_index_source_query",
     "serialize_official_nse_index_source_name_reconciliation",
 )

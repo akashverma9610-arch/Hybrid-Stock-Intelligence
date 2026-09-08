@@ -13,11 +13,15 @@ from app.market_data.official_nse_index_ohlc_reconciliation import (
     HEALTHCARE_TARGET,
     OfficialIndexCloseLineagePoint,
     OfficialIndexIdentityReconciliationStatus,
+    OfficialIndexSourceQueryResolution,
+    OfficialIndexSourceQueryResolutionStatus,
     OfficialNseIndexIdentityEvidence,
     OfficialNseIndexSourceNameTarget,
     reconcile_official_nse_index_source_name,
+    resolve_official_nse_index_source_query,
     serialize_official_nse_index_source_name_reconciliation,
 )
+from app.taxonomy.nse_sector_indices import NseSectorIndexMapping, SectorIndexMappingStatus
 
 
 SESSIONS = (date(2026, 9, 3), date(2026, 9, 4))
@@ -48,6 +52,16 @@ def _reconcile(*, target=CONSUMER_DURABLES_TARGET, evidence: OfficialNseIndexIde
         evidence=evidence or _evidence(target),
         canonical_close_points=_points("100.00", "101.00") if canonical is None else canonical,
         alternate_close_points=_points("100", "101.0") if alternate is None else alternate,
+    )
+
+
+def _mapping(*, sector: str, official_name: str) -> NseSectorIndexMapping:
+    return NseSectorIndexMapping(
+        mapping_id="nse-sector-index-mapping:test", canonical_sector=sector,
+        official_index_name=official_name, official_page="https://www.niftyindices.com/",
+        status=SectorIndexMappingStatus.EXACT_OFFICIAL,
+        evidence=("NSE_INDICES_SECTORAL_CATALOGUE",), source_artifact_sha256="a" * 64,
+        fetched_at_utc=datetime(2026, 9, 7, tzinfo=timezone.utc),
     )
 
 
@@ -129,6 +143,53 @@ def test_evidence_references_must_be_nonempty_sorted_and_unique() -> None:
         _evidence(evidence_references=("NSE_INDICES_CATALOGUE", "NSE_INDICES_CATALOGUE"))
     with pytest.raises(ValueError, match="EVIDENCE_INVALID"):
         _evidence(evidence_references=("",))
+
+
+@pytest.mark.parametrize(("target", "sector"), (
+    (CONSUMER_DURABLES_TARGET, "Consumer Durables"),
+    (HEALTHCARE_TARGET, "Healthcare"),
+))
+def test_retained_first_party_source_query_aliases_are_deterministic_and_exact(target, sector: str) -> None:
+    mapping = _mapping(sector=sector, official_name=target.canonical_mapping_name)
+    first = resolve_official_nse_index_source_query(
+        mapping=mapping, canonical_index_id=target.canonical_index_id,
+    )
+    second = resolve_official_nse_index_source_query(
+        mapping=mapping, canonical_index_id=target.canonical_index_id,
+    )
+    assert first == second
+    assert first.status is OfficialIndexSourceQueryResolutionStatus.SOURCE_QUERY_ALIAS_PROVEN
+    assert first.canonical_mapping_name == target.canonical_mapping_name
+    assert first.source_query_name == target.historical_parameter
+    assert first.evidence_references
+    with pytest.raises(ValueError, match="SOURCE_QUERY_RESOLUTION_INVALID"):
+        OfficialIndexSourceQueryResolution(
+            first.canonical_index_id, first.canonical_mapping_name, first.source_query_name,
+            first.return_family, first.status, first.evidence_references, "0" * 64,
+        )
+
+
+def test_unlisted_or_mismatched_names_cannot_receive_a_fuzzy_source_query_alias() -> None:
+    with pytest.raises(ValueError, match="ALIAS_MAPPING_NAME_MISMATCH"):
+        resolve_official_nse_index_source_query(
+            mapping=_mapping(sector="Consumer Durables", official_name="Nifty Consumer Durables"),
+            canonical_index_id=CONSUMER_DURABLES_TARGET.canonical_index_id,
+        )
+    with pytest.raises(ValueError, match="MAPPING_INVALID"):
+        resolve_official_nse_index_source_query(
+            mapping=_mapping(sector="Healthcare", official_name="Nifty Healthcare Index"),
+            canonical_index_id=CONSUMER_DURABLES_TARGET.canonical_index_id,
+        )
+
+
+def test_non_alias_exact_sector_mapping_uses_its_exact_canonical_name_only() -> None:
+    resolution = resolve_official_nse_index_source_query(
+        mapping=_mapping(sector="Capital Goods", official_name="Nifty Capital Goods"),
+        canonical_index_id="NSE_SECTOR_INDEX:CAPITAL_GOODS",
+    )
+    assert resolution.status is OfficialIndexSourceQueryResolutionStatus.EXACT_CANONICAL_SOURCE_QUERY
+    assert resolution.source_query_name == "Nifty Capital Goods"
+    assert resolution.evidence_references == ()
 
 
 def test_close_lineage_requires_date_only_session_and_typed_points() -> None:

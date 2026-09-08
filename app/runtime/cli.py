@@ -790,6 +790,71 @@ def build_official_nse_index_ohlc_series_refresh():
     ), repository
 
 
+def build_official_nse_sector_index_alias_ohlc_lineage_refresh():
+    """Compose only retained, exact source-query alias OHLC targets.
+
+    This is intentionally narrower than the broad sector-index refresh: it
+    permits current-descriptive canonicalization only for the two catalogued
+    first-party aliases whose static identity evidence has been reviewed.
+    """
+    from app.market_data.official_nse_index_ohlc import (
+        CoreSnapshotOfficialIndexOhlcStore,
+        OfficialIndexOhlcTarget,
+        OfficialNseIndexOhlcSeriesRefresh,
+    )
+    from app.market_data.official_nse_index_ohlc_reconciliation import (
+        OfficialIndexSourceQueryResolutionStatus,
+        resolve_official_nse_index_source_query,
+    )
+    from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily
+    from app.storage.database import DatabaseSettings
+    from app.storage.repository_factory import create_core_api_snapshot_repository
+    from app.taxonomy.nse_sector_indices import NseSectorIndexMapping, SectorIndexMappingStatus
+    from app.universe_analysis.benchmark_sector_technical_input import canonical_sector_index_id
+
+    settings = DatabaseSettings.local_runtime()
+    if settings.url.endswith(":memory:"):
+        raise RuntimeCompositionError("OFFICIAL_NSE_INDEX_OHLC_SERIES_REQUIRES_PERSISTENT_STORE")
+    repository = create_core_api_snapshot_repository(settings)
+    mappings = []
+    offset = 0
+    while True:
+        page = repository.list_snapshots(CoreApiSnapshotFamily.NSE_SECTOR_INDEX_MAPPING, limit=100, offset=offset)
+        mappings.extend(item.payload for item in page if isinstance(item.payload, NseSectorIndexMapping))
+        if len(page) < 100:
+            break
+        offset += len(page)
+    target_ids = {
+        "NSE_SECTOR_INDEX:CONSUMER_DURABLES",
+        "NSE_SECTOR_INDEX:HEALTHCARE",
+    }
+    exact = tuple(sorted(
+        (item for item in mappings if item.status is SectorIndexMappingStatus.EXACT_OFFICIAL and item.official_index_name),
+        key=lambda item: item.canonical_sector,
+    ))
+    targets = []
+    for mapping in exact:
+        canonical_index_id = canonical_sector_index_id(mapping.canonical_sector)
+        if canonical_index_id not in target_ids:
+            continue
+        resolution = resolve_official_nse_index_source_query(
+            mapping=mapping, canonical_index_id=canonical_index_id,
+        )
+        if resolution.status is not OfficialIndexSourceQueryResolutionStatus.SOURCE_QUERY_ALIAS_PROVEN:
+            raise RuntimeCompositionError("OFFICIAL_NSE_INDEX_SOURCE_QUERY_ALIAS_REQUIRED")
+        targets.append(OfficialIndexOhlcTarget(
+            resolution.canonical_index_id, resolution.canonical_mapping_name,
+            resolution.source_query_name, resolution,
+        ))
+    if {item.canonical_index_id for item in targets} != target_ids:
+        raise RuntimeCompositionError("OFFICIAL_NSE_INDEX_SOURCE_QUERY_ALIAS_TARGETS_REQUIRED")
+    root = Path(__file__).resolve().parents[2] / "data" / "official_sources" / "nse_index_ohlc_series"
+    return OfficialNseIndexOhlcSeriesRefresh(
+        store=CoreSnapshotOfficialIndexOhlcStore(repository),
+        targets=tuple(sorted(targets, key=lambda item: item.canonical_index_id)), artifact_directory=root,
+    ), repository
+
+
 def build_current_sector_constituent_backfill_service():
     """Compose the explicit live U07 backfill; it performs no request itself."""
     from app.market_data.current_sector_rotation import CurrentSectorConstituentBackfillService
@@ -1246,6 +1311,10 @@ def parser() -> argparse.ArgumentParser:
         "ingest-official-nse-index-ohlc-series",
         help="Acquire active Rule 1--3/6 exact official NSE Indices price-return Daily OHLC evidence",
     )
+    commands.add_parser(
+        "ingest-official-nse-sector-index-alias-ohlc",
+        help="Acquire only the retained Consumer Durables and Healthcare first-party source-query aliases",
+    )
     current_prebreakout = commands.add_parser("current-prebreakout-status", help="Stored-only current Top-3 official NSE delivery gate and Pre-Breakout readiness")
     current_prebreakout.add_argument("--report-dir", default="reports")
     governed_setup_source = commands.add_parser("run-governed-executable-setup-source", help="Explicit stored-only governed Pre-Breakout assessment and executable-setup persistence; never starts paper trading")
@@ -1306,6 +1375,7 @@ def main(
     current_sector_rotation_factory: Callable[[], object] = build_current_sector_rotation_service,
     official_index_close_refresh_factory: Callable[[], object] = build_official_nse_index_close_series_refresh,
     official_index_ohlc_refresh_factory: Callable[[], object] = build_official_nse_index_ohlc_series_refresh,
+    official_index_ohlc_alias_refresh_factory: Callable[[], object] = build_official_nse_sector_index_alias_ohlc_lineage_refresh,
     current_prebreakout_factory: Callable[[], object] = build_current_prebreakout_service,
     governed_executable_setup_source_factory: Callable[..., object] = build_governed_executable_setup_source_service,
     current_sector_constituent_backfill_factory: Callable[[], object] = build_current_sector_constituent_backfill_service,
@@ -1968,8 +2038,13 @@ def main(
                         f"artifact_sha256={item.raw_artifact_sha256}", f"blocker={item.blocker or 'NONE'}",
                     )))
             return 0 if not any(item.conflict_count for item in (*result.first_run, *result.second_run)) else 2
-        if arguments.command == "ingest-official-nse-index-ohlc-series":
-            service, repository = official_index_ohlc_refresh_factory()
+        if arguments.command in {"ingest-official-nse-index-ohlc-series", "ingest-official-nse-sector-index-alias-ohlc"}:
+            factory = (
+                official_index_ohlc_alias_refresh_factory
+                if arguments.command == "ingest-official-nse-sector-index-alias-ohlc"
+                else official_index_ohlc_refresh_factory
+            )
+            service, repository = factory()
             try:
                 result = service.run_twice()
             finally:
