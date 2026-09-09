@@ -81,6 +81,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Canonical Technical Price Adjustment and Corporate-Action Integrity V1](docs/architecture/CANONICAL_TECHNICAL_PRICE_ADJUSTMENT_AND_CORPORATE_ACTION_INTEGRITY_V1.md)
 - [Canonical Technical Source-Basis and Action-Coverage Decision V1](docs/architecture/CANONICAL_TECHNICAL_SOURCE_BASIS_AND_ACTION_COVERAGE_DECISION_V1.md)
 - [Prospective Dhan Live-Bar Foundation V1](docs/architecture/PROSPECTIVE_DHAN_LIVE_BAR_FOUNDATION_V1.md)
+- [Canonical Intraday Timeframe Derivation Policy V1 candidate](docs/architecture/CANONICAL_INTRADAY_TIMEFRAME_DERIVATION_POLICY_V1.md)
 - [NSE Canonical Corporate-Action Coverage Backfill V1](docs/architecture/NSE_CANONICAL_CORPORATE_ACTION_COVERAGE_BACKFILL_V1.md)
 - [NSE Canonical Daily Price-History Source Feasibility V1](docs/architecture/NSE_CANONICAL_DAILY_PRICE_HISTORY_SOURCE_FEASIBILITY_V1.md)
 - [NSE UDiFF Final Bhavcopy Archive and Basis Proof V1](docs/architecture/NSE_UDIFF_FINAL_BHAVCOPY_ARCHIVE_AND_BASIS_PROOF_V1.md)
