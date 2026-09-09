@@ -203,6 +203,10 @@ class CoreApiSnapshotFamily(StrEnum):
     # historical OHLCV and does not activate intraday technical readers.
     PROSPECTIVE_DHAN_ONE_MINUTE_BAR = "PROSPECTIVE_DHAN_ONE_MINUTE_BAR"
     PROSPECTIVE_DHAN_ONE_MINUTE_CONFLICT = "PROSPECTIVE_DHAN_ONE_MINUTE_CONFLICT"
+    # Canonical prospective 15m receipts are bounded, derived technical
+    # evidence.  They retain no raw tick archive and do not activate a reader.
+    PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_BAR = "PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_BAR"
+    PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_CONFLICT = "PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_CONFLICT"
 
 
 @dataclass(frozen=True, slots=True)
