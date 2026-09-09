@@ -20,6 +20,12 @@ class SQLiteCoreApiSnapshotRepository:
             record_type TEXT NOT NULL, fingerprint TEXT NOT NULL, created_at TEXT NOT NULL,
             payload_json TEXT NOT NULL, UNIQUE(family, fingerprint))""")
         self._connection.execute("CREATE INDEX IF NOT EXISTS core_api_snapshots_family_created_idx ON core_api_snapshots(family, created_at, snapshot_id)")
+        # The prospective canonical 15m reader must never scan every security's
+        # snapshots to serve one exact canonical security.  These expressions
+        # address only the existing immutable receipt payload fields; they do
+        # not change snapshot content, identity, or retention semantics.
+        self._connection.execute("CREATE INDEX IF NOT EXISTS core_api_snapshots_15m_security_interval_idx ON core_api_snapshots(family, json_extract(payload_json, '$.payload.fields.canonical_security_id'), json_extract(payload_json, '$.payload.fields.partition.fields.interval_start.value'), snapshot_id)")
+        self._connection.execute("CREATE INDEX IF NOT EXISTS core_api_snapshots_15m_conflict_receipt_idx ON core_api_snapshots(family, json_extract(payload_json, '$.payload.fields.receipt_id'), snapshot_id)")
         self._connection.commit()
     def close(self) -> None: self._connection.close()
     def save_snapshot(self, value: CoreApiSnapshot) -> None:
@@ -34,4 +40,25 @@ class SQLiteCoreApiSnapshotRepository:
     def list_snapshots(self, family: CoreApiSnapshotFamily, *, limit: int=100, offset: int=0) -> tuple[CoreApiSnapshot,...]:
         if not 1 <= limit <= 100 or offset < 0: raise ValueError("Snapshot pagination is invalid.")
         rows=self._connection.execute("SELECT payload_json FROM core_api_snapshots WHERE family=? ORDER BY created_at,snapshot_id LIMIT ? OFFSET ?", (family.value,limit,offset)).fetchall()
+        return tuple(snapshot_json_from(row["payload_json"]) for row in rows)
+    def list_canonical_prospective_fifteen_minute_snapshots(self, canonical_security_id: str, *, known_at_lte: str | None, limit: int) -> tuple[CoreApiSnapshot,...]:
+        if not canonical_security_id or not 1 <= limit <= 100: raise ValueError("Prospective 15m snapshot query is invalid.")
+        query = "SELECT payload_json FROM core_api_snapshots WHERE family=? AND json_extract(payload_json, '$.payload.fields.canonical_security_id')=?"
+        parameters: list[object] = [CoreApiSnapshotFamily.PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_BAR.value, canonical_security_id]
+        if known_at_lte is not None:
+            query += " AND json_extract(payload_json, '$.payload.fields.known_at.value')<=?"
+            parameters.append(known_at_lte)
+        query += " ORDER BY json_extract(payload_json, '$.payload.fields.partition.fields.interval_start.value') DESC, snapshot_id DESC LIMIT ?"
+        parameters.append(limit)
+        rows=self._connection.execute(query, tuple(parameters)).fetchall()
+        return tuple(snapshot_json_from(row["payload_json"]) for row in rows)
+    def list_canonical_prospective_fifteen_minute_conflicts(self, receipt_ids: tuple[str, ...], *, detected_at_lte: str | None) -> tuple[CoreApiSnapshot,...]:
+        if not receipt_ids or len(receipt_ids) > 100 or any(not value for value in receipt_ids): return ()
+        placeholders = ",".join("?" for _ in receipt_ids)
+        query = f"SELECT payload_json FROM core_api_snapshots WHERE family=? AND json_extract(payload_json, '$.payload.fields.receipt_id') IN ({placeholders})"
+        parameters: list[object] = [CoreApiSnapshotFamily.PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_CONFLICT.value, *receipt_ids]
+        if detected_at_lte is not None:
+            query += " AND json_extract(payload_json, '$.payload.fields.detected_at.value')<=?"
+            parameters.append(detected_at_lte)
+        rows=self._connection.execute(query + " ORDER BY snapshot_id", tuple(parameters)).fetchall()
         return tuple(snapshot_json_from(row["payload_json"]) for row in rows)

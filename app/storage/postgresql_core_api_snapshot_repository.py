@@ -28,3 +28,23 @@ class PostgreSQLCoreApiSnapshotRepository:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT payload_json FROM core_api_snapshots WHERE family=%s ORDER BY created_at,snapshot_id LIMIT %s OFFSET %s",(family.value,limit,offset));rows=cursor.fetchall()
         return tuple(snapshot_json_from(row[0]) for row in rows)
+    def list_canonical_prospective_fifteen_minute_snapshots(self,canonical_security_id:str,*,known_at_lte:str|None,limit:int)->tuple[CoreApiSnapshot,...]:
+        if not canonical_security_id or not 1<=limit<=100: raise ValueError("Prospective 15m snapshot query is invalid.")
+        query="SELECT payload_json FROM core_api_snapshots WHERE family=%s AND payload_json->'payload'->'fields'->>'canonical_security_id'=%s"
+        parameters:list[object]=[CoreApiSnapshotFamily.PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_BAR.value,canonical_security_id]
+        if known_at_lte is not None:
+            query+=" AND payload_json->'payload'->'fields'->'known_at'->>'value'<=%s";parameters.append(known_at_lte)
+        query+=" ORDER BY payload_json->'payload'->'fields'->'partition'->'fields'->'interval_start'->>'value' DESC,snapshot_id DESC LIMIT %s";parameters.append(limit)
+        with self._connections.transaction() as connection:
+            with connection.cursor() as cursor: cursor.execute(query,tuple(parameters));rows=cursor.fetchall()
+        return tuple(snapshot_json_from(row[0]) for row in rows)
+    def list_canonical_prospective_fifteen_minute_conflicts(self,receipt_ids:tuple[str,...],*,detected_at_lte:str|None)->tuple[CoreApiSnapshot,...]:
+        if not receipt_ids or len(receipt_ids)>100 or any(not value for value in receipt_ids): return ()
+        query="SELECT payload_json FROM core_api_snapshots WHERE family=%s AND payload_json->'payload'->'fields'->>'receipt_id'=ANY(%s)"
+        parameters:list[object]=[CoreApiSnapshotFamily.PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_CONFLICT.value,list(receipt_ids)]
+        if detected_at_lte is not None:
+            query+=" AND payload_json->'payload'->'fields'->'detected_at'->>'value'<=%s";parameters.append(detected_at_lte)
+        with self._connections.transaction() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query+" ORDER BY snapshot_id",tuple(parameters));rows=cursor.fetchall()
+        return tuple(snapshot_json_from(row[0]) for row in rows)
