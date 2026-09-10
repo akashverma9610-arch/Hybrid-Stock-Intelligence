@@ -43,6 +43,7 @@ from .models import (
 from .requirements import DIAGNOSTIC_INPUT_REQUIREMENTS
 
 if TYPE_CHECKING:
+    from app.fundamentals.diagnostic_input import CanonicalFinancialDiagnosticInput
     from app.storage.governance_repository import StrategyGovernanceRepository
     from app.universe_analysis.benchmark_sector_technical_input import CanonicalBenchmarkSectorTechnicalInput
     from app.universe_analysis.technical_diagnostic_input import CanonicalTechnicalDiagnosticInput
@@ -73,6 +74,7 @@ class AssembledStockEvidence:
     freshness: str
     technical_input: "CanonicalTechnicalDiagnosticInput | None" = None
     benchmark_sector_input: "CanonicalBenchmarkSectorTechnicalInput | None" = None
+    financial_input: "CanonicalFinancialDiagnosticInput | None" = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -95,7 +97,14 @@ class StockDiagnosticInputAssembler:
         self, instrument: NseEquityInstrument, as_of: datetime,
         *, technical_input: CanonicalTechnicalDiagnosticInput | None = None,
         benchmark_sector_input: CanonicalBenchmarkSectorTechnicalInput | None = None,
+        financial_input: CanonicalFinancialDiagnosticInput | None = None,
     ) -> AssembledStockEvidence:
+        if financial_input is None and hasattr(self._source, "financial_diagnostic_input"):
+            financial_input = self._source.financial_diagnostic_input(instrument.instrument_id, as_of)
+        if financial_input is not None:
+            financial_input.__post_init__()
+            if financial_input.canonical_instrument_id != instrument.instrument_id or financial_input.as_of != as_of:
+                raise UniverseAnalysisError("Canonical financial input must match instrument and as-of.")
         if technical_input is not None:
             technical_input.__post_init__()
             if (
@@ -144,7 +153,7 @@ class StockDiagnosticInputAssembler:
         freshness = "FRESH" if own and all(_valid(item) for item in own) else "PARTIAL" if own else "UNAVAILABLE"
         crowd, research = _research_evidence(selected, instrument.instrument_id, as_of)
         return AssembledStockEvidence(instrument.symbol, instrument.instrument_id, instrument.sector, as_of, snapshot,
-                                      crowd, research, tuple(warnings), freshness, technical_input, benchmark_sector_input)
+                                      crowd, research, tuple(warnings), freshness, technical_input, benchmark_sector_input, financial_input)
 
 
 class Canonical61DiagnosticRunner:
@@ -212,6 +221,22 @@ class Canonical61DiagnosticRunner:
         liquidity_rules = __import__("app.analysis.liquidity", fromlist=["LiquidityRules"]).LiquidityRules(.01, 2, 1.5, 1.5)
         crowd_rules = CrowdRules(-.2, .2, -.6, .6, .7, .4)
         synthesis_rules = SynthesisRules()
+        if rule_id in {16, 17, 18, 19, 20, 24, 25, 26, 29}:
+            if evidence.financial_input is not None:
+                evidence.financial_input.__post_init__()
+                if evidence.financial_input.canonical_instrument_id != instrument or evidence.financial_input.as_of != now:
+                    return e._missing(rule_id, instrument, strategy, now, "FINANCIAL_COMPARABILITY_IDENTITY_OR_PIT_MISMATCH")
+                market = self._technical_snapshot(evidence, rule_id, "daily")[0] if rule_id == 29 else None
+                financial = evidence.financial_input.rule_input(rule_id, market)
+                if financial.snapshot is None:
+                    if financial.state.value == "EVIDENCE_CONFLICTED":
+                        return e._record(rule_id, instrument, strategy, now, now, "EVIDENCE_CONFLICTED", None,
+                            financial.fact_ids, (), EvaluationEligibility.INELIGIBLE_INVALID_DATA,
+                            (("reason", ",".join(financial.reasons)), ("financial_input_fingerprint", financial.source_fingerprint)))
+                    return e._missing(rule_id, instrument, strategy, now, financial.state.value + ":" + ",".join(financial.reasons))
+                s = financial.snapshot
+            elif any(o.id.startswith("canonical-financial-observation:") for o in s.observations if o.instrument.id == instrument):
+                return e._missing(rule_id, instrument, strategy, now, "CANONICAL_FINANCIAL_COMPARABILITY_REQUIRED")
         if rule_id == 1:
             if evidence.benchmark_sector_input is not None:
                 snapshot, reason, _ = evidence.benchmark_sector_input.rule_input(1)

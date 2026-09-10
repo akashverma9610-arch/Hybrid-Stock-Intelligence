@@ -44,6 +44,17 @@ class FundamentalEngineInput:
 class FundamentalsEngineAdapter:
     """Builds only the historical input the already-existing diagnostics consume."""
     def __init__(self, facts: FinancialFactStore, filings: CorporateFilingsStore) -> None: self._facts,self._filings=facts,filings
+    def diagnostic_input(self, instrument_id: str, *, as_of: datetime):
+        """Certify the approved nine rules without changing legacy consumers."""
+        from collections import Counter
+        from app.fundamentals.diagnostic_comparability import assemble_financial_comparability
+        from app.fundamentals.diagnostic_input import CanonicalFinancialDiagnosticInput
+        facts = self._facts.facts(instrument_id, as_of=as_of, limit=500)
+        filings = self._filings.list(instrument_id=instrument_id, as_of=as_of, limit=500)
+        complete = all(count < 500 for count in Counter(f.metric for f in facts).values())
+        return CanonicalFinancialDiagnosticInput(assemble_financial_comparability(
+            facts, filings, canonical_instrument_id=instrument_id, as_of=as_of, complete_input=complete))
+
     def build(self, instrument_id: str, *, as_of: datetime, preferred_scope: StatementScope = StatementScope.CONSOLIDATED) -> FundamentalEngineInput:
         if as_of.tzinfo is None: raise ValueError("Fundamental engine input requires a timezone-aware as_of timestamp.")
         reported=tuple(f for f in self._facts.facts(instrument_id,as_of=as_of,limit=500) if f.fact_kind is FundamentalFactKind.REPORTED)

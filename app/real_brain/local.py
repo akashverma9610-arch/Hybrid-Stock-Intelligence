@@ -29,6 +29,7 @@ class StoredTrialObservationSource:
     canonical_stored_only = True
 
     def __init__(self, *, historical, instrument_ids: tuple[str, ...], as_of, fundamentals: FundamentalsEngineAdapter | None = None) -> None:
+        self._fundamentals = fundamentals
         # These are existing canonical market-context records, never provider
         # requests.  NIFTY 500 is retained when present for stock-relative
         # strength; NIFTY 50 remains the wider market-regime input.
@@ -54,6 +55,9 @@ class StoredTrialObservationSource:
 
     def observations_as_of(self, at):
         return tuple(item for item in self._values if item.provenance.market_timestamp <= at and item.provenance.retrieved_timestamp <= at)
+
+    def financial_diagnostic_input(self, instrument_id, as_of):
+        return self._fundamentals.diagnostic_input(instrument_id, as_of=as_of) if self._fundamentals is not None else None
 
 
 class LocalRealBrainTrialService:
