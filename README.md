@@ -85,6 +85,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Canonical Prospective 15m Bar Derivation V1](docs/architecture/CANONICAL_PROSPECTIVE_15M_BAR_DERIVATION_V1.md)
 - [Prospective Market-Data Runtime Orchestrator V1](docs/architecture/PROSPECTIVE_MARKET_DATA_RUNTIME_ORCHESTRATOR_V1.md)
 - [Canonical 15m Technical Reader Activation V1](docs/architecture/CANONICAL_15M_TECHNICAL_READER_ACTIVATION_V1.md)
+- [HSI Internal Technical Radar V1](docs/architecture/HSI_INTERNAL_TECHNICAL_RADAR_V1.md)
 - [NSE Canonical Corporate-Action Coverage Backfill V1](docs/architecture/NSE_CANONICAL_CORPORATE_ACTION_COVERAGE_BACKFILL_V1.md)
 - [NSE Canonical Daily Price-History Source Feasibility V1](docs/architecture/NSE_CANONICAL_DAILY_PRICE_HISTORY_SOURCE_FEASIBILITY_V1.md)
 - [NSE UDiFF Final Bhavcopy Archive and Basis Proof V1](docs/architecture/NSE_UDIFF_FINAL_BHAVCOPY_ARCHIVE_AND_BASIS_PROOF_V1.md)
