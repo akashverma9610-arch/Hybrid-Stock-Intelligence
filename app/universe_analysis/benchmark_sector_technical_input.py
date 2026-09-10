@@ -218,6 +218,13 @@ def assemble_current_descriptive_benchmark_sector_input(
         mapping_id = sector_mapping.mapping_id
         index_id = canonical_sector_index_id(canonical_sector)
         sector = _canonical_observations(supplied_sector_observations, index_id, cutoff)
+        # The benchmark owns the comparative endpoint. A newer sector fetch
+        # must not hide an already available matching window, or compare a
+        # newer sector close against an older benchmark close. Validate all
+        # supplied lineage above before selecting this exact existing prefix;
+        # never fill a missing session or move the benchmark endpoint back.
+        if benchmark:
+            sector = tuple(item for item in sector if item.session.date() <= benchmark[-1].session.date())
     benchmark_state = BenchmarkSectorTechnicalState.READY if len(benchmark) >= 4 else BenchmarkSectorTechnicalState.NOT_READY
     sector_state = (
         BenchmarkSectorTechnicalState.NOT_READY if index_id is None

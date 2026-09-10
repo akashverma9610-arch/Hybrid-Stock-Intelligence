@@ -25,8 +25,9 @@ def test_crowd_score_positioning_and_confidence_keep_duplicate_and_sample_limits
 
 def test_low_confidence_extreme_sentiment_cannot_create_strong_quality_or_executable_action():
     e,_,_,(_,conf,_,_,_,q)=upstream(); verdict=e.contrarian_verdict(q,conf,"stock",STRATEGY_REFERENCE,ANALYSIS_TIME)
-    assert q.record.result!="STRONG" and verdict.record.result in {"WAIT","AVOID","HOLD"}
-    assert "non-executable" in repr(verdict)
+    # The fixture deliberately supplies duplicate Daily/Weekly inputs to Rule
+    # 14. Its insufficiency must propagate through Rules 59 -> 60 -> 61.
+    assert q.record.result == verdict.record.result == "INSUFFICIENT_DATA"
 
 def test_post_news_uses_only_bars_after_publication_and_fails_closed_without_them():
     e,c,m,_=upstream(); assert e.post_news_reaction(c,m,"stock",STRATEGY_REFERENCE,ANALYSIS_TIME).record.result in {"NEGATIVE_ACCEPTANCE","SELL_THE_NEWS","BUY_THE_BAD_NEWS","POSITIVE_ACCEPTANCE"}
@@ -44,3 +45,25 @@ def test_all_nine_crowd_rules_are_deterministic_and_future_observations_do_not_e
 def test_no_crowd_data_or_unsupported_upstream_evidence_fails_closed():
     e=DeterministicDiagnosticEvaluators(); empty=CrowdSnapshot(ANALYSIS_TIME,())
     assert e.crowd_sentiment(empty,"stock",STRATEGY_REFERENCE,RULES,ANALYSIS_TIME).record.result=="INSUFFICIENT_DATA"
+
+
+@pytest.mark.parametrize("missing_index", range(4))
+def test_rule_59_requires_each_upstream_diagnostic_to_be_eligible(missing_index):
+    from app.crowd.engine import ichimoku_confluence
+    from app.analysis.models import AnalysisStatus
+    e=DeterministicDiagnosticEvaluators()
+    valid=e.crowd_sentiment(crowd(),"stock",STRATEGY_REFERENCE,RULES,ANALYSIS_TIME)
+    values=[valid]*4
+    values[missing_index]=e._missing((47,12,13,14)[missing_index],"stock",STRATEGY_REFERENCE,ANALYSIS_TIME,"source unavailable")
+    result=ichimoku_confluence(*values)
+    assert result.status is AnalysisStatus.INSUFFICIENT_DATA
+    assert result.state == "INSUFFICIENT_DATA" and result.confidence is None
+
+
+def test_rule_59_preserves_real_disagreement_when_all_upstreams_are_eligible():
+    from app.crowd.engine import ichimoku_confluence
+    from app.analysis.models import AnalysisStatus
+    e=DeterministicDiagnosticEvaluators()
+    valid=e.crowd_sentiment(crowd(),"stock",STRATEGY_REFERENCE,RULES,ANALYSIS_TIME)
+    result=ichimoku_confluence(valid,valid,valid,valid)
+    assert result.status is AnalysisStatus.VALID and result.state == "CONFLICTING"

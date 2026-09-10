@@ -136,9 +136,13 @@ def test_rich_stored_fixture_reaches_all_61_without_private_api_exposure() -> No
     evidence = StockDiagnosticInputAssembler(StoredFacts(rich_observations())).assemble(_instrument(), T)
     result = Canonical61DiagnosticRunner().run(evidence)
     assert len(result.evaluations) == 61
-    assert result.evaluated == 59, [(item.canonical_rule_id, item.record.result) for item in result.evaluations if item.eligibility.value != "eligible"]
-    assert {item.canonical_rule_id for item in result.evaluations if item.eligibility.value != "eligible"} == {4, 14}
-    assert result.missing == 2 and result.completeness is DiagnosticCompleteness.PARTIAL
+    # This generic fixture contains no genuine Weekly input. Rules 4/14 stay
+    # unavailable and Rule14's missing state must propagate through 59/60/61,
+    # not become a valid CONFLICTING confluence and a downstream verdict.
+    assert result.evaluated == 56, [(item.canonical_rule_id, item.record.result) for item in result.evaluations if item.eligibility.value != "eligible"]
+    assert {item.canonical_rule_id for item in result.evaluations if item.eligibility.value != "eligible"} == {4, 14, 59, 60, 61}
+    assert all(item.record.result == "INSUFFICIENT_DATA" for item in result.evaluations if item.canonical_rule_id in {4,14,59,60,61})
+    assert result.missing == 5 and result.completeness is DiagnosticCompleteness.PARTIAL
 
 
 def test_coverage_preflight_is_persisted_and_missing_required_history_is_not_neutral(tmp_path) -> None:

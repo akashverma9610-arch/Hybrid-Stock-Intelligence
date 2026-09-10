@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from pathlib import Path
 
@@ -127,4 +127,47 @@ def test_context_rejects_future_or_duplicate_index_lineage() -> None:
         assemble_current_descriptive_benchmark_sector_input(
             canonical_instrument_id=_instrument().instrument_id, as_of=AT, technical_input=technical,
             benchmark_observations=(*benchmark, benchmark[-1]), sector_mapping=None,
+        )
+
+
+def test_newer_sector_tail_selects_exact_benchmark_endpoint_without_rewriting_history():
+    technical = _input()
+    benchmark = _index_rows("NIFTY_50", "Nifty 50", technical)
+    sector = _index_rows(canonical_sector_index_id("Capital Goods"), "Nifty Capital Goods", technical)
+    newer = CanonicalOfficialIndexOhlcObservation.create(
+        canonical_index_id=sector[-1].canonical_index_id, official_index_name="Nifty Capital Goods",
+        session=sector[-1].session + timedelta(days=1),
+        open=Decimal(999), high=Decimal(1001), low=Decimal(998), close=Decimal(1000),
+        retrieved_at=AT, raw_artifact_sha256="c" * 64,
+    )
+    supplied = (*sector, newer)
+    context = assemble_current_descriptive_benchmark_sector_input(
+        canonical_instrument_id=_instrument().instrument_id, as_of=AT, technical_input=technical,
+        benchmark_observations=benchmark, sector_mapping=_mapping(), sector_observations=supplied,
+    )
+    assert context.sector_state is BenchmarkSectorTechnicalState.READY
+    assert context.sector_observations == sector and supplied[-1] is newer
+    assert context.fingerprint == _context().fingerprint
+    assert all(context.rule_input(rule)[1] is None for rule in (2,3))
+    assert newer.observation_id not in {o.id for o in context.combined_snapshot.observations}
+
+
+def test_alignment_does_not_backfill_missing_sector_session_or_hide_future_lineage():
+    technical = _input()
+    benchmark = _index_rows("NIFTY_50", "Nifty 50", technical)
+    sector = _index_rows(canonical_sector_index_id("Capital Goods"), "Nifty Capital Goods", technical)
+    context = assemble_current_descriptive_benchmark_sector_input(
+        canonical_instrument_id=_instrument().instrument_id, as_of=AT, technical_input=technical,
+        benchmark_observations=benchmark, sector_mapping=_mapping(), sector_observations=sector[:-2]+sector[-1:],
+    )
+    assert context.rule_input(2)[1] == "SECTOR_HISTORY_NOT_READY"
+    future = CanonicalOfficialIndexOhlcObservation.create(
+        canonical_index_id=sector[-1].canonical_index_id, official_index_name="Nifty Capital Goods",
+        session=AT + timedelta(days=1), open=Decimal(100), high=Decimal(102), low=Decimal(99), close=Decimal(101),
+        retrieved_at=AT + timedelta(days=2), raw_artifact_sha256="c" * 64,
+    )
+    with pytest.raises(BenchmarkSectorTechnicalInputError, match="LINEAGE_INVALID"):
+        assemble_current_descriptive_benchmark_sector_input(
+            canonical_instrument_id=_instrument().instrument_id, as_of=AT, technical_input=technical,
+            benchmark_observations=benchmark, sector_mapping=_mapping(), sector_observations=(*sector,future),
         )

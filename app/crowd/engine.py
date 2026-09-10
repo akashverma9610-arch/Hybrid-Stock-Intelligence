@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from app.analysis.models import AnalysisStatus
 from app.analysis.series import closes, price_bar_series
 from app.crowd.models import CrowdCategory, CrowdSnapshot
+from app.diagnostics.models import EvaluationEligibility
 
 @dataclass(frozen=True, slots=True)
 class CrowdRules:
@@ -56,7 +57,12 @@ def trap_probability(crowd,market,instrument,rules):
     state="VERY_HIGH" if score>=4 and c.state in {"HIGH","MEDIUM"} else "HIGH" if score>=3 and c.state!="VERY_LOW" else "MODERATE" if score else "LOW"
     return CrowdAnalysis(state,(("model_score",str(score)),("label","ESTIMATED_TRAP_PROBABILITY"),("crowd_confidence",c.state)),s.input_ids+d.input_ids,AnalysisStatus.VALID,c.confidence)
 def ichimoku_confluence(sentiment_result,ichimoku_result,chikou_result,mtf_result):
-    if not all((sentiment_result,ichimoku_result,chikou_result,mtf_result)):return _bad()
+    # Missing/invalid upstream diagnostics are evidence gaps, not disagreement.
+    # A rejected duplicate-timeframe Rule 14 must not become a valid Rule 59
+    # merely because an immutable missing-result object exists.
+    if any(x is None or x.eligibility is not EvaluationEligibility.ELIGIBLE
+           for x in (sentiment_result,ichimoku_result,chikou_result,mtf_result)):
+        return _bad()
     bear=sentiment_result.record.result in {"BEARISH","EXTREME_BEARISH"}; bull=sentiment_result.record.result in {"BULLISH","EXTREME_BULLISH"}; cloud=ichimoku_result.record.result; chikou=chikou_result.record.result; mtf=mtf_result.record.result
     state="STRONG_BULLISH_CONTRARIAN_CONFLUENCE" if bear and "BULL" in cloud and "BULL" in chikou and "BULL" in mtf else "STRONG_BEARISH_CONTRARIAN_CONFLUENCE" if bull and "BEAR" in cloud and "BEAR" in chikou and "BEAR" in mtf else "CONFLICTING"
     return CrowdAnalysis(state,(("reuse","rules 12/13/14 outputs"),),sentiment_result.record.input_observation_ids+ichimoku_result.record.input_observation_ids+chikou_result.record.input_observation_ids+mtf_result.record.input_observation_ids,AnalysisStatus.VALID,.8)
