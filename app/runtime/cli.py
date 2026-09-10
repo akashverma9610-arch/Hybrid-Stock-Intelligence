@@ -201,6 +201,7 @@ def build_nifty500_bse_financial_acquisition_orchestrator():
 def build_real_portfolio_intelligence_refresh_service():
     """Compose the existing five-holding diagnostics/Brain chain, stored-only."""
     from app.api.repository_query_services import RepositoryPortfolioQueryService
+    from app.data_operations.financial_period_identity_repair import FinancialPeriodIdentityCorrectionStore, FinancialPeriodIdentityProjection
     from app.filings.store import SQLiteCorporateFilingsStore
     from app.fundamentals.store import SQLiteFinancialFactStore
     from app.fundamentals.adapter import FundamentalsEngineAdapter
@@ -232,7 +233,7 @@ def build_real_portfolio_intelligence_refresh_service():
         evidence_assembler=StoredSharedBrainEvidenceAssembler(SQLiteFinancialFactStore(path), historical, filings=SQLiteCorporateFilingsStore(path), ownership_observations=OwnershipObservationStore(repository), historical_security_master=HistoricalSecurityMasterStore(repository), taxonomy=TaxonomySnapshotStore(repository), sector_rankings=CurrentSectorRankingStore(repository), macro_evidence_source=MacroEvidenceStore(repository), news=SQLiteNewsEvidenceStore(path), market_technical_artifacts=SharedBrainMarketTechnicalArtifactEvidenceSource(SharedBrainMarketTechnicalArtifactStore(repository)), reliability_integrity_observations=ReliabilityIntegrityObservationStore(repository), decision_scores=governance, setup_assessments=governance, setup_opportunities=CanonicalSetupOpportunityStore(repository)),
     )
     snapshot = RepositoryPortfolioQueryService(repository).get_snapshot()
-    source = StoredTrialObservationSource(historical=historical, instrument_ids=("NSE:INE372A01015", "NSE:INE0FHS01024", "NSE:INE955D01029", "NSE:INE068V01023", "NSE:INE090A01021"), as_of=datetime.now(UTC), fundamentals=FundamentalsEngineAdapter(SQLiteFinancialFactStore(path), SQLiteCorporateFilingsStore(path)))
+    source = StoredTrialObservationSource(historical=historical, instrument_ids=("NSE:INE372A01015", "NSE:INE0FHS01024", "NSE:INE955D01029", "NSE:INE068V01023", "NSE:INE090A01021"), as_of=datetime.now(UTC), fundamentals=FundamentalsEngineAdapter(SQLiteFinancialFactStore(path), SQLiteCorporateFilingsStore(path), FinancialPeriodIdentityProjection(FinancialPeriodIdentityCorrectionStore(repository))))
     service = CanonicalPortfolioDiagnosticsOrchestrator(universe=universe, assembler=StockDiagnosticInputAssembler(source), runner=Canonical61DiagnosticRunner(), governance=governance, shared_brain=brain)
     return service, snapshot, repository, historical, governance
 
@@ -1295,6 +1296,10 @@ def parser() -> argparse.ArgumentParser:
         help="Append-only correction for only the five pre-fix NSE Reg31 XBRL publication timestamps",
     )
     commands.add_parser(
+        "repair-canonical-financial-period-identities",
+        help="Audit retained BSE XBRL contexts and append only source-proven financial-period correction projections",
+    )
+    commands.add_parser(
         "materialize-real-portfolio-nse-reg31-ownership",
         help="Materialize direct ownership observations from only the five corrected official NSE Reg31 XBRLs",
     )
@@ -1741,6 +1746,41 @@ def main(
                 )
                 for item in service.apply():
                     output(f"instrument={item.canonical_instrument_id} correction_id={item.correction_id} corrected_filing_id={item.corrected_filing_id} status={item.status}")
+                return 0
+            finally:
+                if hasattr(repository, "close"):
+                    repository.close()
+        if arguments.command == "repair-canonical-financial-period-identities":
+            from app.data_operations.financial_period_identity_repair import (
+                FinancialPeriodIdentityCorrectionStore,
+                FinancialPeriodIdentityRepairService,
+            )
+            from app.filings.store import SQLiteCorporateFilingsStore
+            from app.fundamentals.store import SQLiteFinancialFactStore
+            from app.storage.database import DatabaseBackend, DatabaseSettings
+            from app.storage.repository_factory import create_core_api_snapshot_repository
+            database = DatabaseSettings.local_runtime()
+            if database.backend is not DatabaseBackend.SQLITE or database.url.endswith(":memory:"):
+                raise RuntimeCompositionError("FINANCIAL_PERIOD_IDENTITY_REPAIR_REQUIRES_PERSISTENT_SQLITE")
+            path = database.url.removeprefix("sqlite:///")
+            repository = create_core_api_snapshot_repository(database)
+            try:
+                facts = SQLiteFinancialFactStore(path)
+                result = FinancialPeriodIdentityRepairService(
+                    facts=facts,
+                    filings=SQLiteCorporateFilingsStore(path),
+                    corrections=FinancialPeriodIdentityCorrectionStore(repository),
+                    source_directory=Path(__file__).resolve().parents[2] / "data" / "official_sources" / "bse_financial_results" / "collector",
+                ).audit_and_apply(facts.instrument_ids())
+                output(" ".join((
+                    f"audit_id={result.audit.audit_id}", f"audit_written={result.audit_written}",
+                    f"candidates={len(result.audit.observations)}", f"new_corrections={result.new_corrections}",
+                    f"existing_corrections={result.existing_corrections}",
+                )))
+                for disposition, count in result.audit.disposition_counts:
+                    output(f"disposition={disposition.value} count={count}")
+                for item in result.outcomes:
+                    output(f"fact_id={item.fact_id} correction_id={item.correction_id or '-'} status={item.status.value}")
                 return 0
             finally:
                 if hasattr(repository, "close"):

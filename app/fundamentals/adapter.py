@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Iterable
+from typing import Iterable, Protocol
 
 from app.data_sources.models import FundamentalFactKind
 from app.domain.models import (AsOfSnapshot, DataQuality, FinancialObservation, FinancialPeriodType as LegacyPeriodType, Freshness, FreshnessStatus, Instrument, ObservationKind, Provenance, ValidationResult, ValidationStatus)
@@ -41,15 +41,25 @@ class FundamentalEngineInput:
     warnings: tuple[str, ...]
 
 
+class FinancialPeriodIdentityProjector(Protocol):
+    """Read-only correction projection used solely by diagnostic comparability."""
+
+    def project(self, facts: tuple[FinancialFact, ...], *, as_of: datetime) -> tuple[FinancialFact, ...]: ...
+
+
 class FundamentalsEngineAdapter:
     """Builds only the historical input the already-existing diagnostics consume."""
-    def __init__(self, facts: FinancialFactStore, filings: CorporateFilingsStore) -> None: self._facts,self._filings=facts,filings
+    def __init__(self, facts: FinancialFactStore, filings: CorporateFilingsStore,
+                 period_identity_projector: FinancialPeriodIdentityProjector | None = None) -> None:
+        self._facts,self._filings,self._period_identity_projector=facts,filings,period_identity_projector
     def diagnostic_input(self, instrument_id: str, *, as_of: datetime):
         """Certify the approved nine rules without changing legacy consumers."""
         from collections import Counter
         from app.fundamentals.diagnostic_comparability import assemble_financial_comparability
         from app.fundamentals.diagnostic_input import CanonicalFinancialDiagnosticInput
         facts = self._facts.facts(instrument_id, as_of=as_of, limit=500)
+        if self._period_identity_projector is not None:
+            facts = self._period_identity_projector.project(facts, as_of=as_of)
         filings = self._filings.list(instrument_id=instrument_id, as_of=as_of, limit=500)
         complete = all(count < 500 for count in Counter(f.metric for f in facts).values())
         return CanonicalFinancialDiagnosticInput(assemble_financial_comparability(

@@ -4,6 +4,10 @@ from __future__ import annotations
 from dataclasses import replace
 from app.data_coverage.local import compose_coverage_records
 from datetime import timedelta
+from app.data_operations.financial_period_identity_repair import (
+    FinancialPeriodIdentityCorrectionStore,
+    FinancialPeriodIdentityProjection,
+)
 from app.config.freshness import FreshnessPolicyConfig
 from app.domain.models import ObservationKind
 from app.historical.security_master import HistoricalIntegrityStatus, HistoricalPriceIntegrityService, HistoricalSecurityMasterStore, PriceAdjustmentBasis
@@ -109,7 +113,11 @@ class LocalRealBrainTrialService:
                     )
             source = StoredTrialObservationSource(
                 historical=historical, instrument_ids=tuple(item.instrument_id for item in selection.instruments),
-                as_of=snapshot.as_of, fundamentals=FundamentalsEngineAdapter(facts, filings),
+                as_of=snapshot.as_of,
+                fundamentals=FundamentalsEngineAdapter(
+                    facts, filings,
+                    FinancialPeriodIdentityProjection(FinancialPeriodIdentityCorrectionStore(repository)),
+                ),
             )
             # Relative strength for the bounded real-data trial is explicitly
             # stock-vs-NIFTY 500.  If that exact stored benchmark is not

@@ -19,6 +19,7 @@ class FinancialFactStore(Protocol):
     def get(self, fact_id: str) -> FinancialFact | None: ...
     def series(self, instrument_id: str, metric: FinancialMetric, *, period_type: FinancialPeriodType | None = None, scope: StatementScope | None = None, fact_kind: FundamentalFactKind | None = None, start: datetime | None = None, end: datetime | None = None, as_of: datetime | None = None, limit: int = 100) -> tuple[FinancialFact, ...]: ...
     def facts(self, instrument_id: str, **kwargs) -> tuple[FinancialFact, ...]: ...
+    def instrument_ids(self) -> tuple[str, ...]: ...
 
 
 class SQLiteFinancialFactStore:
@@ -54,6 +55,8 @@ class SQLiteFinancialFactStore:
         rows=self._connection.execute("SELECT payload_json FROM financial_facts WHERE "+" AND ".join(clauses)+" ORDER BY period_end, published_at, fact_id LIMIT ?",(*values,limit)).fetchall();return tuple(_fact(json.loads(row[0])) for row in rows)
     def facts(self,instrument_id:str,**kwargs)->tuple[FinancialFact,...]:
         return tuple(fact for metric in FinancialMetric for fact in self.series(instrument_id,metric,**kwargs))
+    def instrument_ids(self)->tuple[str,...]:
+        return tuple(row[0] for row in self._connection.execute("SELECT DISTINCT instrument_id FROM financial_facts ORDER BY instrument_id"))
     def latest_reported_period(self,instrument_id:str,metric:FinancialMetric,**kwargs)->FinancialFact|None:
         values=self.series(instrument_id,metric,fact_kind=FundamentalFactKind.REPORTED,**kwargs);return values[-1] if values else None
     def latest_quarters(self,instrument_id:str,metric:FinancialMetric,count:int,**kwargs)->tuple[FinancialFact,...]:
@@ -84,6 +87,12 @@ class PostgreSQLFinancialFactStore:
         values=tuple(_fact(row[0] if isinstance(row[0],dict) else json.loads(row[0])) for row in rows); return _filter(values,**kwargs)
     def facts(self,instrument_id:str,**kwargs)->tuple[FinancialFact,...]:
         return tuple(fact for metric in FinancialMetric for fact in self.series(instrument_id,metric,**kwargs))
+    def instrument_ids(self)->tuple[str,...]:
+        with self._connections.transaction() as c:
+            with c.cursor() as cur:
+                cur.execute("SELECT DISTINCT instrument_id FROM financial_facts ORDER BY instrument_id")
+                rows=cur.fetchall()
+        return tuple(row[0] for row in rows)
 
 
 def _filter(values:tuple[FinancialFact,...],**kwargs)->tuple[FinancialFact,...]:
