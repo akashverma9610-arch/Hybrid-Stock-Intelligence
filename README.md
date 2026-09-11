@@ -66,6 +66,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Daily/Weekly Existing Technical Diagnostics Operationalization V1](docs/architecture/DAILY_WEEKLY_EXISTING_TECHNICAL_DIAGNOSTICS_OPERATIONALIZATION_V1.md)
 - [Canonical 61 Diagnostic Operational Coverage Closure V1](docs/architecture/DIAGNOSTIC_61_OPERATIONAL_COVERAGE_CLOSURE_V1.md)
 - [Canonical Financial Diagnostic Input Comparability Closure V1 — Rules 16–20, 24–26, 29](docs/architecture/CANONICAL_FINANCIAL_DIAGNOSTIC_INPUT_COMPARABILITY_CLOSURE_V1.md)
+- [Canonical EBITDA / EBIT Source Audit and Annual-History Acquisition V1](docs/architecture/CANONICAL_EBITDA_EBIT_AND_ANNUAL_HISTORY_ACQUISITION_V1.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)
