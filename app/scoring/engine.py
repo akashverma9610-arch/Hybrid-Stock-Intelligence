@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from decimal import Decimal
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
+from app.diagnostics.downstream import CROSS_REGISTRY, classify_score_input, ScoreInputState
 
 @dataclass(frozen=True, slots=True)
 class ComponentConfig:
@@ -18,11 +19,28 @@ COMPONENTS=(
  ComponentConfig("earnings_acceleration","Earnings Acceleration",Decimal(".15"),(24,),(25,26,16,27,28),BASE_STATE_SCORES),ComponentConfig("market_regime","Market Regime",Decimal(".10"),(1,),(),BASE_STATE_SCORES),ComponentConfig("sector_rotation","Sector Rotation",Decimal(".10"),(2,),(3,),BASE_STATE_SCORES),ComponentConfig("smart_money_evidence","Smart Money Evidence",Decimal(".10"),(7,),(9,50,58,22),BASE_STATE_SCORES),ComponentConfig("relative_strength","Relative Strength",Decimal(".10"),(6,),(),BASE_STATE_SCORES),ComponentConfig("price_structure","Price Structure",Decimal(".10"),(10,),(4,5,37,38,40,41,42,46),BASE_STATE_SCORES),ComponentConfig("volume_obv_vwap","Volume / OBV / VWAP",Decimal(".10"),(11,),(35,36,58),BASE_STATE_SCORES),ComponentConfig("ichimoku_mtf","Ichimoku & MTF",Decimal(".10"),(12,),(13,14,59),BASE_STATE_SCORES),ComponentConfig("valuation_risk_reward","Valuation & Risk/Reward",Decimal(".10"),(29,45),(43,44,31),BASE_STATE_SCORES),ComponentConfig("liquidity_smc_traps","Liquidity & SMC Traps",Decimal(".05"),(8,),(51,52,53,54,55,56,57,60,61),BASE_STATE_SCORES),)
 assert sum(x.weight for x in COMPONENTS)==Decimal("1.00")
 def build_scorecard(*,instrument_id,strategy_version,registry_version,as_of_timestamp,evaluated_at,diagnostics:tuple[EvaluatedDiagnostic,...],configuration_version="decision-score-v1"):
-    eligible={x.canonical_rule_id:x for x in diagnostics if x.eligibility is EvaluationEligibility.ELIGIBLE and x.record.as_of_timestamp<=as_of_timestamp}; components=[]; warnings=[]
+    eligible={}; rejected={}; contributions={}; components=[]; warnings=[]
+    for item in diagnostics:
+        if (isinstance(item, EvaluatedDiagnostic) and item.registry_version==registry_version
+                and item.record.as_of_timestamp>as_of_timestamp):
+            continue
+        admission=classify_score_input(item,registry_version=registry_version,state_scores=BASE_STATE_SCORES)
+        if admission.state is not ScoreInputState.SCORE_ELIGIBLE_EXPLICIT_STATE:
+            warnings.append(admission.reason)
+            if isinstance(item, EvaluatedDiagnostic): rejected[item.canonical_rule_id]=admission.reason
+            continue
+        key=item.canonical_rule_id
+        if key in eligible and eligible[key]!=item:
+            rejected[key]='DIAGNOSTIC_PROVENANCE_CONFLICTED'; warnings.append('DIAGNOSTIC_PROVENANCE_CONFLICTED')
+        eligible[key]=item; contributions[key]=admission.value
+    for key in rejected: eligible.pop(key,None)
+    if any(reason in {CROSS_REGISTRY,'V2_SHADOW_SCORE_FORBIDDEN','DIAGNOSTIC_INPUT_UNVERIFIED'} for reason in warnings):
+        eligible.clear()  # Never fall back to co-present V1 evidence across versions.
+    warnings=list(sorted(set(warnings)))
     for cfg in COMPONENTS:
         missing=tuple(x for x in cfg.mandatory if x not in eligible); available=tuple(x for x in cfg.mandatory+cfg.optional if x in eligible); records=tuple(eligible[x] for x in available)
         if missing: components.append(ScoredComponent(cfg.component_id,"INELIGIBLE",None,cfg.weight,None,available,missing,tuple(x.record.id for x in records),tuple(y for x in records for y in x.record.evidence_ids),None,())); continue
-        values=tuple(cfg.state_scores.get(x.record.result,Decimal("5")) for x in records); score=sum(values)/len(values); status="COMPLETE" if not tuple(x for x in cfg.optional if x not in eligible) else "PARTIAL"; confidence=sum((x.record.confidence or 0) for x in records)/len(records); contradictions=tuple(x.record.id for x in records if x.record.result in {"MIXED","WEAK","BROKEN","SEVERE_CONCERN","TRIGGERED"})
+        values=tuple(contributions[x.canonical_rule_id] for x in records); score=sum(values)/len(values); status="COMPLETE" if not tuple(x for x in cfg.optional if x not in eligible) else "PARTIAL"; confidence=sum((x.record.confidence or 0) for x in records)/len(records); contradictions=tuple(x.record.id for x in records if x.record.result in {"MIXED","WEAK","BROKEN","SEVERE_CONCERN","TRIGGERED"})
         components.append(ScoredComponent(cfg.component_id,status,score,cfg.weight,score*cfg.weight,available,(),tuple(x.record.id for x in records),tuple(y for x in records for y in x.record.evidence_ids),confidence,contradictions))
         if any(x.record.result in {"SEVERE_CONCERN","TRIGGERED","BROKEN","STRESSED"} for x in records):warnings.append(f"ANALYTICAL_WARNING:{cfg.component_id}")
     complete=all(x.status!="INELIGIBLE" for x in components); final=sum((x.weighted_contribution or Decimal("0")) for x in components) if complete else None; known=[x.confidence for x in components if x.confidence is not None]; confidence=sum(known)/len(known) if known else None

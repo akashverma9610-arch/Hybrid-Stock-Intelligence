@@ -1,0 +1,2574 @@
+{
+  "baseline_commit": "c2b47b4473b79bc9444a39812eac2bd6d0e33930",
+  "components": [
+    {
+      "id": "earnings_acceleration",
+      "mandatory": [
+        24
+      ],
+      "optional": [
+        25,
+        26,
+        16,
+        27,
+        28
+      ],
+      "weight": "0.15"
+    },
+    {
+      "id": "market_regime",
+      "mandatory": [
+        1
+      ],
+      "optional": [],
+      "weight": "0.10"
+    },
+    {
+      "id": "sector_rotation",
+      "mandatory": [
+        2
+      ],
+      "optional": [
+        3
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "smart_money_evidence",
+      "mandatory": [
+        7
+      ],
+      "optional": [
+        9,
+        50,
+        58,
+        22
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "relative_strength",
+      "mandatory": [
+        6
+      ],
+      "optional": [],
+      "weight": "0.10"
+    },
+    {
+      "id": "price_structure",
+      "mandatory": [
+        10
+      ],
+      "optional": [
+        4,
+        5,
+        37,
+        38,
+        40,
+        41,
+        42,
+        46
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "volume_obv_vwap",
+      "mandatory": [
+        11
+      ],
+      "optional": [
+        35,
+        36,
+        58
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "ichimoku_mtf",
+      "mandatory": [
+        12
+      ],
+      "optional": [
+        13,
+        14,
+        59
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "valuation_risk_reward",
+      "mandatory": [
+        29,
+        45
+      ],
+      "optional": [
+        43,
+        44,
+        31
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "liquidity_smc_traps",
+      "mandatory": [
+        8
+      ],
+      "optional": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        60,
+        61
+      ],
+      "weight": "0.05"
+    }
+  ],
+  "insufficient_sentinel_exception": "Legacy dictionary 0 is retained; contradictory ELIGIBLE+INSUFFICIENT_DATA must now be ineligible, never zero-filled.",
+  "numeric_mapping": {
+    "ACCELERATING": "9",
+    "ACCEPTABLE": "7",
+    "ACCUMULATION": "8",
+    "ATTRACTIVE": "8",
+    "BALANCED": "5",
+    "BEAR": "2",
+    "BEARISH": "2",
+    "BELOW_THRESHOLD": "2",
+    "BROKEN": "0",
+    "BULL": "8",
+    "CANDIDATE": "7",
+    "CLEAN": "8",
+    "CONFIRMED": "8",
+    "DISTRIBUTION": "2",
+    "EXPANDING": "8",
+    "HEALTHY": "7",
+    "INSUFFICIENT_DATA": "0",
+    "INVALIDATED": "0",
+    "MARKDOWN": "2",
+    "MARKUP": "8",
+    "MIXED": "5",
+    "NEUTRAL": "5",
+    "PARTIAL": "5",
+    "REASONABLE": "6",
+    "SEVERE_CONCERN": "0",
+    "STRESSED": "1",
+    "STRONG": "9",
+    "STRONG_BULL": "10",
+    "TRIGGERED": "0",
+    "VALID": "7",
+    "WEAK": "3"
+  },
+  "scorecards": {
+    "ACCELERATING": "sha256:291ceb64ec0cc80f7a2b2d0f9e4ad735daf498f2dd476eea1537205b078cb3e4",
+    "ACCEPTABLE": "sha256:6adf966016f47769faa660d234c2ed56db20fad64fdae94e06e80eecc0554bf0",
+    "ACCUMULATION": "sha256:e154eebfaa7c473b03b7c4055f4f8915e2d3f1ed5b4be7dc1216e6c123d40624",
+    "ATTRACTIVE": "sha256:4dcc46f2ce9bcd862d037f4986a1ebf3432314e216557d9a95e8b296a0dc1485",
+    "BALANCED": "sha256:d621a7699bcef6ebe1500fe9dbb8900ccd36a4ccae7b0d36b806902d33e664f0",
+    "BEAR": "sha256:6ef1493e6511e49627702ec7375488d66f23796cc3c8ecbc989e407118412855",
+    "BEARISH": "sha256:74855cff471e255e3b0cf4ac3452e07c30c67790aa5059aafd3e9bfa5682188b",
+    "BELOW_THRESHOLD": "sha256:a2ed1f5e53f1e5fb308e40dbcdc5c65242e1d09bf9f5509e831e7b626ee82be4",
+    "BROKEN": "sha256:c5d5b0bbde050a397e9c7fdd0063e1d82aad879749f2864790c08207f3756995",
+    "BULL": "sha256:fd8e0199200e26622b6ced133f459499409e9979b7a12ab073df21ab5d709b67",
+    "CANDIDATE": "sha256:e35452130e6e894c48b5568d4339503bda6a677d0d6449cda303ff35f3ca3ca1",
+    "CLEAN": "sha256:b02aed24016b5d8252f02de1a0bd087257799726179d4e6a3e416916f7d96c3b",
+    "CONFIRMED": "sha256:b9ab81994fb6d08392344fc1c129bd902f2ead0b02b4df0c65c55dddce287962",
+    "DISTRIBUTION": "sha256:49b07c62980fd9d08fb56634d5f155e0c1321495b17a8322d323ebd573a8e3b0",
+    "EXPANDING": "sha256:510855268da0c2e44fef6107ac5a61f2bda5c2fa77c5dbf253b542439acf4521",
+    "HEALTHY": "sha256:0752d38b124fc310823c9af3a7a01b1d888b45e8200f950bd26dadb463a38639",
+    "INVALIDATED": "sha256:765b6ec15bef2ccd447039d3aa89ef94c758ad7ba2b047def724dbed5f3ab1b9",
+    "MARKDOWN": "sha256:34c422aa458082aa99ef896cca8f94b64eb3395415c2cd72d2219f9509984a90",
+    "MARKUP": "sha256:e4556dfcb27debb27d5a7e3c7de4b8dadb60cf85aeba864617c9a7ded988951d",
+    "MIXED": "sha256:e5d74c5d7398754cf5aac5aafac1e11895f1153a69f1578670943098eb14f27a",
+    "NEUTRAL": "sha256:988eefb0559b38a4fef9b54a99277604a131a2d87535a02df17c530bdbfd1cf3",
+    "PARTIAL": "sha256:47ca3ef3f2efe1cdb3d21cbbf6f068ff1c17f5b0b788881ed4151314adf23b08",
+    "REASONABLE": "sha256:bff6597558dcc53b64c81a0b777ea3e506974126175028c56ffdec6bb42e180c",
+    "SEVERE_CONCERN": "sha256:73506b78818d780b3c7c7934141585c294e8b45ee546f79739dbcc028a1594d0",
+    "STRESSED": "sha256:8037abbee6bbe60cbc828d84e6b912cc1fa8591b848572c6a8d199cc96de3455",
+    "STRONG": "sha256:43e054241f38fe50126e9156087a65e1981c5e8ed560d417d54ed68afe77ac03",
+    "STRONG_BULL": "sha256:0f4f56711ef77ed429a5ff7b8d2a257189cca894889044ee5dab07bf70f6140c",
+    "TRIGGERED": "sha256:ef08a4a127750a85c03acfa409b24d27facfd3b31fa6cd2e2f06869c511963df",
+    "VALID": "sha256:f32815726366bc26163255e5ce829d881157a2a1386ec01aca84e44342a5b806",
+    "WEAK": "sha256:a2ee3201e0c539c08b0c52066d6d17e5fcb075244802122184c74055f7b03447"
+  },
+  "source_sha256": {
+    "app/__init__.py": "3f8e7ef0a884737c5240a6597b9f9b330a52f7b9794db951d45b31cdad93cd50",
+    "app/ai_containment.py": "b2a2346e855025c2ff26f5e7c0b3d2b5137bd2badf55af74072e92b9ea9ef59d",
+    "app/analysis/__init__.py": "68a43a3d07f1b25700ca18195b86aea04208631ac893c6632e0bcdabbd71c91a",
+    "app/analysis/audit.py": "514c425bec485dc88bb28e4c627e93d7e17f8bf1147fa9e0e34e41424e5369a2",
+    "app/analysis/evidence.py": "0f2813f92d19f54e7e03db794fafcc06795e73b4935852886ac2d94299bd2926",
+    "app/analysis/fundamentals.py": "df6a40297548cf5304021a2b8b0c93aad4a33c2f90f01f72a6cf4e65a5892c61",
+    "app/analysis/liquidity.py": "562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/models.py": "c9d31c4e64138949d513583bc881306c8a2f2d5f0179f52131194675fc4a9a44",
+    "app/analysis/relative_strength.py": "4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/sector_volume_ichimoku.py": "f6b1c63610e78885e721dea4658f1dddce2c990f8318c7904a712c8a8aa80999",
+    "app/analysis/series.py": "85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/trend.py": "af7fb058d5daf2b5e2a8f61ec0092666c2edd25dbcc969015db31a40743e492d",
+    "app/analysis/valuation_trade.py": "4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/api/__init__.py": "0299b55f7013022a84b1a88996a8dcacfaafabb76656ba36cf6a43c02a281596",
+    "app/api/capital_rotation_query.py": "dd359527ffd541fe688fa699d4a0a4ee9ac010979d3e9fe0e9ca3160e3fa8687",
+    "app/api/dependencies.py": "db33d92c888bf5310d29c017c261689080348b4271c13221e6a0f9b787a01f0b",
+    "app/api/errors.py": "c50bc1dc6eb8107e8e39699e2b524016c489decfc9460ee0bbbb76237a129c2d",
+    "app/api/filings_query.py": "26fe3d5ed723366006d9a86f73c05c5fb76064eabb97cc97192fc3b2817e7804",
+    "app/api/fundamentals_query.py": "1083c31deb04fd50040737d31853ca195680ff2c7fca5017ea45cc86688ddb8c",
+    "app/api/intelligence_auth.py": "1cc254d41da498bbd2f4b7dc46f427ba46853b359c9e60072463130b5b3585be",
+    "app/api/local_runtime_readiness.py": "9da3195db9ac513bbe034a35139a0f2ac466ef14e9368aab20a2aef7fc1f08da",
+    "app/api/main.py": "99a5cd38d2dc613fe8e9f810e5362bed21482880c66e08c947a47f51186a52a5",
+    "app/api/market_context_query.py": "a9e16c3f021006a38784381197398f0b78234f4ff4318a57cc72a965e905e939",
+    "app/api/market_query.py": "18c7e7b259e730b9ccfbdbc9466cb61a54dab43b2a4f1ebe6a3107aaa5d6e12b",
+    "app/api/middleware.py": "c7c2ae2cb4676764fbf662d477fa8dbcd8a18987ef12ad6e2f9873f20debb271",
+    "app/api/news_query.py": "3bc97a0bde92c8e1d59fc49112e9412c0384c8a2e0087ec1c1257af14d60fbd8",
+    "app/api/performance_governance_query.py": "5958c8e798a9641165458c3410e89c05662daaba2ad925ff5f7f1916d67d446b",
+    "app/api/portfolio_query.py": "310a5fcc1c6c4eaa996a401383df9c2c93d4496612107d232afafa04ad31ec29",
+    "app/api/primary_market_query.py": "1a2628f89c0322bdf5e079887249346ef339722aba32df6af06daae63562db5e",
+    "app/api/repository_query_services.py": "28ad6ae5d28937cf0311ecc2caf30a363e2ff9cac6a943ee282f1f8dff991ef6",
+    "app/api/routes/__init__.py": "3e97c8ef9c56f61f57a1d1d92637dd1f935518d4ee1ad53f13ef638c9e603b0f",
+    "app/api/routes/capital_rotation.py": "9684fe69606dae25e0a8bd930a0a7217e5e1bdc67272c8322eb9702939d19bae",
+    "app/api/routes/connection_setup.py": "9a165c4b4ff864c0abeedd1faa17effd9aba53628e18b7c8ce8cf314981b6c54",
+    "app/api/routes/connections.py": "6542d519dc452457a751424a8d86ce09ecf700568e71724125a7960ae15272ca",
+    "app/api/routes/data_operations.py": "d5f7a6fa66c2b8102d275c249955f7d92fd1418ac7ba8fc4667a9092a795a405",
+    "app/api/routes/data_sources.py": "13bf1699402001d62de15fe67893858dc7db379727319e037dae77e327e335c4",
+    "app/api/routes/dhan_live.py": "93995c97f4bfdec574afa3c6895b6acb313c868767745611c8d34e58347866a8",
+    "app/api/routes/filings.py": "058c13e481d02489c7f759de88c9f2e7a2e30c29bb97415ffaaa706daefce572",
+    "app/api/routes/fundamentals.py": "88aee629b155cf51ffa76421dcfa973e8ef57e543cd3239351f98c1c30cf6ab6",
+    "app/api/routes/intelligence.py": "4173dc413f53b80156f49a3fec7966687cb16f22318b64e7db84ec664428f4b2",
+    "app/api/routes/market.py": "a92deca41307a44a6c2b661d567c0929393e7920b70566537bd224d195b7c18c",
+    "app/api/routes/market_wide_watch.py": "a9ee9c11d6d1682352fff70183e03e93731cc83bce061ba388a973e82fea45df",
+    "app/api/routes/news.py": "52e332b9ccfd7571e648163b3cd643c88c6df69db09cae56773367dfcc5c9611",
+    "app/api/routes/opportunities.py": "76ac7f3d2be1e88fcbbac93f5914d96168816486d9660eaaeaa06a4215c51365",
+    "app/api/routes/performance_governance.py": "3cf00782f6b27b023b0eff0873d6612019301f1d0b2ae4b944648b03fdb1adcb",
+    "app/api/routes/portfolio.py": "3b4a2ea9b0340e892b37916b0bd13d5eb13f64c1bb02df0b95a351eabaee147b",
+    "app/api/routes/portfolio_analysis.py": "58d2f59da7cb187630ed7ea25bf0c1cdb5d4b0d806977b661158aad71e3248d1",
+    "app/api/routes/portfolio_import.py": "9f6c678edd1b1f01dceb38acfca86469c3b469980a5a22450c4672cad5b658d1",
+    "app/api/routes/primary_market.py": "2607fa1ebd061b229ecfb4de34e579df0374dd624d109e68f19e5d6ea0ede5b4",
+    "app/api/routes/runtime.py": "46af5926a7519d3af9010f6d53b6c971a40ade9b8f53154324221a563ef478c9",
+    "app/api/routes/signals.py": "e055c788fda2c79d422d6f5f3c7d3f8eaabbd1e14b96fd6a212e37a554c05561",
+    "app/api/routes/stocks.py": "a27f3d3eaab40d7a87503a3897e05626d6bce1cbe12e2736f72bd3b7bb1e9e64",
+    "app/api/routes/system.py": "c769b431513d5be74072772d005678b4e11eecfcb44ad3d1fb9204587f0d3416",
+    "app/api/schemas/__init__.py": "545a9662272f6247cbacc1025aa33656976be017916249bdb92c5ec051540e04",
+    "app/api/schemas/capital_rotation.py": "dded7f508098a9dc41d231caa59d1fab4017b44e3c08a506e1ff0727070be3f7",
+    "app/api/schemas/connections.py": "07dcf122fbff8160ca336ed5bf8fe4a33b62ee4dc66eb512b11cbf177be900cb",
+    "app/api/schemas/data_operations.py": "c4f0cdc417426ccf4dbc67895efa86fa70f04b068d5a9835a918503a380b5563",
+    "app/api/schemas/data_sources.py": "571c22a6dd581793153079d4ae1402cf54b32a422c3f0dbf9dd90daeb88e8216",
+    "app/api/schemas/decision_trust.py": "2259997a1c206acd0aabcaf3c38ba73bb627c3aba408c2fa3440f322780e914e",
+    "app/api/schemas/dhan_live.py": "132c35722de4680d187dbaa0dc4fce4482a7e27e83a883709685d90cf9487181",
+    "app/api/schemas/errors.py": "4e7774cf29139e3790dc9118d3d5c7f305fe49662ad5d215b87f0c414cb09457",
+    "app/api/schemas/filings.py": "50f873871dfed7bd0f67af1d3f04b169a90ce2e195d70cd64270e17ff7f49fff",
+    "app/api/schemas/fundamentals.py": "b541c88fa5f15a002705adaebcbcb772d8fe6f42e2a9be6cebca4870a8b18cd8",
+    "app/api/schemas/intelligence.py": "233140a017d48716f02118f064db757158203c683ea9b5f406b1e8c9b7163acf",
+    "app/api/schemas/market.py": "8548464a10828ee06c8b242c1d5c29aae7f990b25309b9b5713b40b9d0bce56a",
+    "app/api/schemas/market_wide_watch.py": "677a00981286efd2fed533c788de42f024eea8a62d9084f80a06b9c9b244e0e5",
+    "app/api/schemas/news.py": "409e0e1d9dd62ff40035e9baface5fdf44e85c650f63fe8f0cb96efd9130a4d3",
+    "app/api/schemas/opportunities.py": "fae9578a088c6dea33b89933949fbe2e03e5ebace4a9b7a3a5c07042a5cab24b",
+    "app/api/schemas/performance_governance.py": "045137c54de947bc8c422dd8de5c3edecdbc3bedd737ab53c02015c54064fae2",
+    "app/api/schemas/portfolio.py": "0ca23530486093f62ce9c9fa339e5979fd76bcca2d8924e697948a3bafd4840e",
+    "app/api/schemas/portfolio_analysis.py": "242723fb92b17b86b01b0802f0f3c5d486aaaaf924a56d970f2935f41197cdc5",
+    "app/api/schemas/portfolio_import.py": "29b0b98455824ef34e27c35abcd09639d9c13ccc797967fc9842ceaf32a71cb0",
+    "app/api/schemas/runtime.py": "f4728386d7421cf3c7b6ad6b871f38bcdcd6c1c14d7e8abc828dcdaad56e6b97",
+    "app/api/schemas/sell_side.py": "3058c0867da0fbfc68ef345d762760c20a18fdc5befc6e0919c422afaa141bc8",
+    "app/api/schemas/shared_brain.py": "3cf08b0581c9d196138f8ef33671e0a65fc0117c2366c9ab88dd09c8e5c0f701",
+    "app/api/schemas/signals.py": "2cc9b5ec55bd14a5e8009fe905ee2d37c7d05aa638610906a2891913e7575283",
+    "app/api/schemas/stocks.py": "bbece6ec03085ed43257241108c87cc65dd0dfd8caad893bb16e97fbf439d6a4",
+    "app/api/schemas/system.py": "dff1b9739cdc19b2171c3efb27c9a7700ab8c582e0a00010e0208de76091a658",
+    "app/api/settings.py": "c5f9eccf20ca31bc26d0c00255c9fa2b08581d6a21300ee0300dd060773076da",
+    "app/api/shared_brain_query.py": "b89a3f6d9064d2e005fb6bc02f0715ce99761efb99c3e986c096b06954d162ef",
+    "app/api/signal_paper_query.py": "489a5f3b6d0722ce08f775a834c6f64172a094f5e532c9061ba2ec5630f728dc",
+    "app/api/stock_query.py": "e6379b78fd6c23f176cda0f52723fe08f8e2a8211e30fdad051f0cce46a2791c",
+    "app/api/universe_opportunity_query.py": "54f01b52a321d7a0eb20f07284ef572a06c843738342e081efea094df1dbd09f",
+    "app/audit/__init__.py": "09520fcc7495779cd56f2d782e89d183c0859d6d39d480e69f2314ee05ba5410",
+    "app/audit/decision.py": "3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/__init__.py": "8c25a31ef9d4c7351807792d17b680077980a75da6895b8b592a624048af7fdd",
+    "app/backtest/analytical.py": "ae48ae2deaea8ee36ebeaf77ab8b2c9c1a884520fe7dcaff3174dea2e3725dc0",
+    "app/backtest/capital_allocation.py": "aa17e8572b653b78a439403a9e0fa38b275c653d0dbe595c582bf205d64ee83f",
+    "app/backtest/engine.py": "e0ac98c3aae87356907bf5a1a50d83412e34275d340e230387ecbd810dd48bce",
+    "app/backtest/equity_series.py": "fe00f357ccbc7fe0287493864aa71f068a6f93dab3f31d5b6b79b44f86de69d5",
+    "app/backtest/execution_timing.py": "6458427134df4e1959ac4b3b2d048036be696bfb6df662eba03be50c496f6e5a",
+    "app/backtest/experiments.py": "4a46a5e624888cd705512157a70a95f53cc3bcb154ba38836a55c16839ef6c2e",
+    "app/backtest/experiments_serialization.py": "8b8b7dc0d787a761646e6bdc515d70c2ab57dac401398d84c8b54d836b84e2c8",
+    "app/backtest/models.py": "c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/oos_aggregation_serialization.py": "925e0a52276c276722a86c6e6b005b7f65b80ebf4f96c54b81b302bf5eddf20e",
+    "app/backtest/performance.py": "aa3f2859ab43e8d8b1a92ddf1d5879cdb8ba9fd9fdec35b525757fd8276a22e5",
+    "app/backtest/portfolio.py": "e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/portfolio_gates.py": "bb4b17cfa441970e6c8038fffb6af3803fa7e90e636ce9be88d4385abe3d670d",
+    "app/backtest/promotion.py": "0754c4b2399a41798b7f88f8c7b069af2d28ea465ac5bdf014c757ae67f0f166",
+    "app/backtest/promotion_serialization.py": "698c3c037a7b2958239c5c90aa88460353cc625b8e4c3d11b8073b852825c5f7",
+    "app/backtest/rotation.py": "be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/serialization.py": "a2f4b3b1ecf1610e14b8c5f7e8a6e51a6cd174fd7e57a7f7ce74e0ec8d1ddee9",
+    "app/backtest/signal_paper.py": "217f1605cd21af9556386f2ec2004f2594356b51c7330db8c05a87db9399467e",
+    "app/backtest/walk_forward.py": "4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/backtest/walk_forward_serialization.py": "7fb43a4c2393834931206a78374105cf3c90936ba13ea15ffc21513ce6fe1c1b",
+    "app/brain_output_requirement_policy.py": "8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/__init__.py": "4ff5efa4e25313bbd26850a4797df076f62ae7df116c27aadaaf8f69e0836fba",
+    "app/calibration/service.py": "5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/config/__init__.py": "54238b6ef51698db8bb84ef91b17b30fb361f81624e136c88b51ccb4e7305024",
+    "app/config/freshness.py": "8fdbf74a4b9b710ad283fd4e9b8d038e2a77ea6318864defa9ce85e89110f8c0",
+    "app/connections/__init__.py": "26125aa0358d92bfcc3e0c520d51d473135e27356d7203e80c88b1879b09d95b",
+    "app/connections/credentials.py": "6757994a1e8ffa2081f5a3572185a50305be5d051856b959ad7a9580030979f6",
+    "app/connections/models.py": "dbfbaca3ab95f1451595741d8ea7a2298d20e5fd94365526dc351ede2c5ca65b",
+    "app/connections/repository.py": "b523782eb259f188e74176b5397014fdc5566ca74bda1471b458b5042f8d976b",
+    "app/connections/service.py": "58e9c0ddd6e9d03ab0fceb4634b40e7b8ff668b737501fe4b9f2de96825d6744",
+    "app/crisis/__init__.py": "cdb303b2d2353a3978fd755b3d6f2b835cb88db0db4f6c8ab1255c12e3d2373c",
+    "app/crisis/engine.py": "122223ff38c7de265170c78686f6fc159fddfdb5a818e0190e4b77551b165e57",
+    "app/crisis/extremes.py": "7f9e6da5d5b2fa04aea1e9fbb48df9eea473032bd7825338dcadc4238643a517",
+    "app/crisis/models.py": "f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/crowd/__init__.py": "3adbeb2279b05272ff9ba6ea4c6e8713e20d7c7497cc36de9d36dfc2a23775fc",
+    "app/crowd/engine.py": "18279aac174dd0497b958fb474c747a837090e41a1e09e35ec73ce0d68b07851",
+    "app/crowd/models.py": "fc501504a4862b2c5533d4c39867d963a7e607f3cec73272ae093f5d12683932",
+    "app/data_coverage/__init__.py": "acaa0f78f7d13c2c506ebca84471808f66ec7f2e07cd3bb5e4163e8a3ac153f4",
+    "app/data_coverage/local.py": "923d4227c282bbabeeca1044fc3756ccf6fa717f2d216f70c43886edd992a1a6",
+    "app/data_coverage/models.py": "a1b7e82f0bdab593e8c18a386833edf2d1322a44befc81cdf3a5a85ebed357d8",
+    "app/data_coverage/service.py": "9c395634daef16707d511b3b73119df41b2c0bff3e31b74ea97b5da04adf57de",
+    "app/data_coverage/store.py": "20e32b76c608c99116c37b6890f1448c69dd8a8a9b3c0e988167d419e8f4edf2",
+    "app/data_operations/__init__.py": "5bfc27b0a9324d501bf98b094ee1ffc65c74f603479ec399fda166da26e2f5f9",
+    "app/data_operations/backend_local_upstox.py": "aad9ed838d05b530cdb94fd0449e60986859df12af657a1f3155b3c765222db0",
+    "app/data_operations/files.py": "57b9767574a0bffd9232b96d7c7c80cbf11ab1a895e49c5208a745a4bb083a05",
+    "app/data_operations/financial_period_identity_repair.py": "13fd45c9826a6be54a5db43cc0d845d52d5c195e264c731c7301227ddf2d031e",
+    "app/data_operations/models.py": "877d61e406d020d9e8da99702c3bbd98da4417e1b33959dac365581dd8e1f8ad",
+    "app/data_operations/nse_news.py": "7c0ecab1d2b8aaa4f026b9cb768c442a433543dcf76f735df8da897742492e03",
+    "app/data_operations/nse_reference.py": "7c5a1caa8ff6e8399b2deacccb7756013b93ea00c3aca134549571cc01de1671",
+    "app/data_operations/nse_reg31_identity.py": "a07d41d7fb15e84c4a60d40d5e2c44a56d9299baf6c0560f57180efa3a53cb28",
+    "app/data_operations/nse_reg31_pit_correction.py": "292a384a6fa36852bd4490addf9744d7c115f0b089e5f57fa954132a01746095",
+    "app/data_operations/nse_shareholding_acquisition.py": "8f9cc44d9e936ea0fe2082da88bfa849d28d3d44411903e001a513ccc1e93f29",
+    "app/data_operations/official_financials.py": "ae71e4c759b7215a16a4103328e36da9602b2c59ae682c908187e0c4fd0a2df5",
+    "app/data_operations/rbi_macro.py": "a02a7cb2a63744bf26d0c4bb96894aa53d3330af0f80e50f91ca241dbaa02d9d",
+    "app/data_operations/service.py": "8171be3736cf989213192e7bf56048e1f5315af482c307045d175bc1a693cdc8",
+    "app/data_operations/store.py": "1f7afc4fe67b2afb4a3db2c2540de5ada57f08ee1f588dd9a59e8ae143411813",
+    "app/data_operations/upstox.py": "a06f896a5019f1a610e526f03074a1287c2996976d49b452b9d64c0a676fc279",
+    "app/data_quality/__init__.py": "5c0bbbe3ba5aa2e0bb4d1867de5ebadd0efc6c222d085d8c56394b5ea83b095d",
+    "app/data_quality/reconciliation/__init__.py": "c066393842747ce897d3b2e5dda0599431803aa8bf6c450f21288fe720ea4867",
+    "app/data_quality/reconciliation/service.py": "077ec96ce30dc2ca9be6ba181282e6e3f8b4b88544dacb01f683892e70a8e7e9",
+    "app/data_sources/__init__.py": "adce5ff7f05885f5fdb5374a708c3734ed53812588fd173c9b4b3313671774d8",
+    "app/data_sources/models.py": "8c4b9f54d41711e85ac2c0be1c3916a18aa0001ddc60e9d336c206be2e0e4abe",
+    "app/data_sources/service.py": "889e6e98e2c052a365a3ccb89b2f026ee90a790a21fa1c4c5c6f8e23865efb5d",
+    "app/diagnostics/__init__.py": "b8e3d4ec73f9b0abe1e7485c8065a0e5c81e0d38536aa30869e43023e7b6c5bd",
+    "app/diagnostics/evaluators.py": "b7aa1ad59b49a5b44f180bc3f4d96c65356a9bf3872d019639bd88caee5dfb6c",
+    "app/diagnostics/models.py": "414518258ffdae09fad22b3fd0ef8aa9966f5d1b54173def6039ffca5478a811",
+    "app/diagnostics/synthesis.py": "d0473c78f8ef38070c68cf7b9d7cc0ceb36fc653b011bb269b95092226ec7f41",
+    "app/domain/__init__.py": "9ba9bf9f6e83c7faa62399761d8a7686fb40c04cd3b6c949be11c8bff691ec29",
+    "app/domain/canonical_diagnostic_strategy.py": "dd2bb62f086fb101ffbb22253185a1ec63d5ffe350e52f584d9679a62894c038",
+    "app/domain/models.py": "cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/evidence_coverage.py": "ac9767aadd7f451fe9fe531ab7a7ff8be4bd9225eb45fe753305a5902f93f167",
+    "app/execution_simulation/__init__.py": "a2821777b0e68dbf1e4cb3a74cb6a855953a19aecf5a127c2b5b0f54af6b9cc9",
+    "app/execution_simulation/service.py": "d9f84ffab554332b2bc1d21c29e61dc5f3bd7328d9953dd063cd24fd49dffc18",
+    "app/feature_settings.py": "bc6763fbaf999d08d252d7c7af354595091bcab635844b477ee9b8f44b70d413",
+    "app/filings/__init__.py": "20bafae0efcbdf594599665962e5af1af09a3feb7b022921a5cfa2a2be75ba45",
+    "app/filings/models.py": "1f4a797671b7064c924c0cd720abfe2a65457fca84498c320c07d76f05ef7b00",
+    "app/filings/providers.py": "f55860177f02a5e3e62fd7ec77c730d58413e00d10997e0b890da4d9760b3ac4",
+    "app/filings/service.py": "2dd4a2079f7f7c51b77d55a8bf8b6041930e07a2c4853c96f76876633694297f",
+    "app/filings/store.py": "658888cdf33d367b8a73b5c99a6f53007fe6ee97aef8ca77d3c434a931aad292",
+    "app/forward_paper/__init__.py": "e4e61b3ca56246d6498c8a2c49c72e9af9f4e912148c3be84b6f488c0536185a",
+    "app/forward_paper/composition.py": "15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/__init__.py": "0ccf673f428362daaaf47ce986820631140f6584c7b1ac60128d047e1135dfb5",
+    "app/fundamentals/adapter.py": "ce0b68fbb1755a4f53d0e72ba7ebcd8ec2c08180718cfa092b868301a5924518",
+    "app/fundamentals/bse_annual_history.py": "5b9ed859d31e8e4b0d0723b2cddc11bc22558e3f65a78c4e106fde60467c1cea",
+    "app/fundamentals/bse_collector.py": "e9604acf0084bd08d8cd32c642c3a160cbf80443549e232ad0ddb3d6e79b4f20",
+    "app/fundamentals/bse_nifty500_acquisition.py": "59d21f1406e2204cb7de957ffaebdc9fa0f286fe74908615b807fa323f9a363b",
+    "app/fundamentals/bse_official.py": "aeb1febf11cbb61bf6f931be5c2cea23400640f28a9ce54ca8e4676e22912404",
+    "app/fundamentals/bse_staged_annual_backfill.py": "d43918333bc506c715fef2033c42c3c90edf587cd5582a15c54c5102fa60a686",
+    "app/fundamentals/compounder_canonical_annual_facts.py": "24b9819b939ae4edc93e5eaaac0064efec00a54ab6bbd5ea6249985917acd157",
+    "app/fundamentals/compounder_testable_derived_metrics.py": "9acbd4a5d9a46e8b221f400a4047146647d0f080d8059dd5e98111df8604b556",
+    "app/fundamentals/diagnostic_comparability.py": "029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/fundamentals/diagnostic_input.py": "010657914997d61141969c25e88ef907b45f7148c20dc04aed06653c0797090d",
+    "app/fundamentals/diagnostic_v2_shadow.py": "9a6f9358281a8ea3183005c1ebe2eb4b3b372786119438e8335b5c3f27daa182",
+    "app/fundamentals/financial_fact_vintage_selection_policy.py": "6a22ec069810985989f2f5a86913865086234800ad26f6e4a5b2d1b4fe52bc09",
+    "app/fundamentals/financial_fact_vintage_selector.py": "ba9316286a36c7e485b054931601ff972fd6f69449de4c4b5582446407314f41",
+    "app/fundamentals/financial_metric_observation_materializer.py": "b60988ede47562f30d660094047f4632d3860f80a88464dfc12ce2d73a97ead8",
+    "app/fundamentals/financial_metric_observation_schema.py": "26a60c48b0168dd7c619f942995cc98d9841f11046ccdcd3be14376be4d2f05b",
+    "app/fundamentals/financial_metric_trajectory.py": "369bfca238a094042f4f5ee78fac3eecd5593b177178f87069f482b1ed77b804",
+    "app/fundamentals/financial_metric_trajectory_policy.py": "35d64cd10125101ca1392e16688107df5223a8024b777f2244ba8621a422a109",
+    "app/fundamentals/financial_research_observation_bundle_builder.py": "47afab642663bc0447a3caa715f9aa2a101a502983045a6e33f167fad0ecb4c4",
+    "app/fundamentals/financial_research_observation_bundle_schema.py": "5f61ca7e15c87b02a414d064a67b6e2fbbdcf6d06b7dd3c5df4f6df940024a41",
+    "app/fundamentals/financial_research_observation_wrapper.py": "7a434b09ef5d798cfdc5daa4e17c71d9ce4150d7fb673c7dce0ba6799997765e",
+    "app/fundamentals/financial_research_observation_wrapper_schema.py": "ff3e30551342ee98df0c5256272067e57cab27626d10de5edef7008e6bbae041",
+    "app/fundamentals/models.py": "2e42c641a091e0d858353b5a6f08e1f092c9f967c9130fb13266ab660ad61582",
+    "app/fundamentals/service.py": "cf6d7f400167647ed8ac878380fbad596bae0815e231f7aa6333b7bdfbd14b29",
+    "app/fundamentals/store.py": "9839f07ca11eae73c6bdb8dd8591f24aa041903b9a9290bdc066deac7529790f",
+    "app/gates/__init__.py": "d73abc16f318fe38b41e9368fa36c694641cc3d68abb8b8d18f06678e64740d9",
+    "app/gates/engine.py": "4d5d6d95f6a07fe9ef398c55dadce8b98ba9b1337dd0a798150a0a3bb69abaf6",
+    "app/gates/production_policy.py": "6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/governance/__init__.py": "928b93921debf79180628edc887a6e10b83a0db493f2f268efcbb2509e80a892",
+    "app/governance/drift.py": "13c0615552c91dac9edc95ffa882e2b357a57e1f538beea0916786c769dff14e",
+    "app/historical/__init__.py": "547ed462720fcd62aa76fecf463cc26e857bd193899b8d9c1b95ba76478dd184",
+    "app/historical/brsr_issuer_anchor_backfill.py": "81a306b60f4af48373a1acc39e576d97b1b6eb34c9657977339122066912dcf2",
+    "app/historical/brsr_issuer_identifier_acquisition.py": "2ef51e39aee5cda16e696415f2a1be9dd833291f14b438ff91e56612a8fc29d5",
+    "app/historical/bse_lifecycle.py": "e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/filing_timestamp_timezone_provenance.py": "22acbbba19acbde5ff951eab7217164b7a9a077cc1fd21bcbd5a4916ea85cb3a",
+    "app/historical/guard.py": "7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/historical_regulator_evidence_acquisition.py": "86a4caedead927b3a77db7048c6bff30aadbc28e031c1be1ec6485fcfb525e90",
+    "app/historical/isin_issuer_bridge_continuity.py": "c6923b2c6fdcbd01e6f26934589f44494758a6fdd62e2f24698618aea798bfed",
+    "app/historical/issuer_identifier_acquisition.py": "d59d8745af80ee6a3fab02d4b26c223c9c51fa684f5115cd8ff1b0b51b0c2438",
+    "app/historical/issuer_security_identity.py": "cab91edfcb68975b90cf16e0c9661d829ddb594907064e054a257b1f66651843",
+    "app/historical/models.py": "858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_capital_market_session_evidence_2022_2026.py": "ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+    "app/historical/nse_corporate_action_coverage.py": "3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/nse_mii_security_master.py": "b8c7f1963a6237632ea2c57281dd2f4420e6315670acc565e6d2381cd7be1214",
+    "app/historical/nse_mii_session_knownness.py": "640d7c00fb6b30905b1e7eaf9d0b1e73757a186e76afb17b780d153b00588b80",
+    "app/historical/nse_session_identity.py": "4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+    "app/historical/nse_taxonomy_company_type_map_activation.py": "17c71994a26e7e12d7560387f8238a4c42c06996b2d6da7aaecb36ce6cfc764a",
+    "app/historical/nse_udiff_effective_identity_coverage.py": "6b7f9bade63984a32e767b1d5c283c40552bc14aa6f1bd1466f268f2e23614de",
+    "app/historical/nse_udiff_identity_promotion.py": "73253b5120606ede28882dbe674323a19fddaa8c94911944479209de027f8fb0",
+    "app/historical/pit_company_type_classification_activation.py": "4aefa5304337f1ec606f309e0e6a56b6a0b3405b86d79d67e2aa451b645ecf22",
+    "app/historical/regulator_company_type_evidence.py": "6f3696c334713a7ea91b37cc204a726d574f1831bdc89d16561db6c5dca996d7",
+    "app/historical/regulator_issuer_raw_exact_linkage.py": "cb0daf3cef43a035522c77275c111ff78332c07e84eaeca857acc3206b9b41a5",
+    "app/historical/security_identity_selector.py": "68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+    "app/historical/security_master.py": "7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/historical_integrity/__init__.py": "c3fed08ab4da1b9a7c92343658dda126fd9a86fd5f9b24bc7cc98be31fe297f4",
+    "app/historical_integrity/models.py": "60d0ac0758531af583efbbc761944961ebe20ca3b2d587923cabe9c752cd2fc2",
+    "app/historical_integrity/service.py": "cb0e48fa29b7fbbe1087236518dbea8e8a5909a87604182f14cb8fa6420a51c9",
+    "app/intelligence/__init__.py": "a2cdd1bf2c5614e57d862efce380b9002220d13d3cd80b7b0f27071160e43f88",
+    "app/intelligence/batch1_calibration_readiness.py": "bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/brain_research_comparability_policy.py": "88d08088cf985e650d93719e0e9dec9b5d2162f3013277b3b665dfc491c922ca",
+    "app/intelligence/brain_research_comparison_state.py": "f9ca2b69135cfa20c347998cd09164de529b987600c93e15fd810f7f09c502a4",
+    "app/intelligence/brain_research_comparison_state_v2.py": "239da9ff6dcde0998c22b0701ed07d77a99d2c7592ddcef98a165e842e754b7b",
+    "app/intelligence/brain_research_comparison_state_v2_schema.py": "89f5f3d7e0e654a7766239049534d997e2df4d232c864e62ca974532108cc80e",
+    "app/intelligence/catalysts/__init__.py": "c32fb3b22eaa4a3a81b4c011e3ae09ac00ac2286a574e5aa3249f0f105ea3234",
+    "app/intelligence/catalysts/service.py": "c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_evidence.py": "c24697c02d37620c39139810bbc62203aef35bc85c8c0e2e95378dbde8cd53fb",
+    "app/intelligence/company_sensitivity/__init__.py": "0167ed70ac3342e2fbb4cb079e68ad60900e91a2e8094690d43a5011f89455ea",
+    "app/intelligence/company_sensitivity/service.py": "0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/decision_score_evidence.py": "e299d0495e9f2b0b50462ef0d0a358467cc73db0df21ad5f1931b7de19fb6f37",
+    "app/intelligence/decision_trust_envelope.py": "d503ea0834cc97b6877360b1bee8070039e215f5dc1966f844e5634451344417",
+    "app/intelligence/discovery_recall_audit.py": "51a45c42a0103724c6713d0e282dc7db686d5bdaefa142665221923c54f3592f",
+    "app/intelligence/discovery_recall_per_security_trace.py": "589c6a3e9ed3cdaeb5a8107fc1f2047fc67819f224a506b2fc9cf591ae7a8b52",
+    "app/intelligence/discovery_recall_reference_matching.py": "a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/external_intelligence.py": "78988de32622a80329a89389d0d6ce8e914593f122e756ba0023f375a706ebc6",
+    "app/intelligence/external_intelligence_application.py": "c180e7046975ab71e18c0a0101e36c404459f48e5ce7998102fd16cc71726bda",
+    "app/intelligence/external_intelligence_live_connector.py": "285f7326e53e383c55d7fc060db553b15465cf12a0bd41fa98af2c48013d82ad",
+    "app/intelligence/external_intelligence_news_projection.py": "31b9ad1f1728f1be0be454f54c529c01ee60102a7780ffff57b59758f64a6f27",
+    "app/intelligence/external_intelligence_reevaluation.py": "a009553c769f17c92749e2888b4c6678020117d94454d367a1d9ed7bd9dda693",
+    "app/intelligence/external_intelligence_serialization.py": "d062f5b9a58030f986aff8886155d322c964a61b8642402ff0b911b66b00a62b",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/fundamental_compounder_research_shadow.py": "4465d45d76d488f7e61763f3dc31b98cdd8031a20ca225eace6248d108778e6f",
+    "app/intelligence/fundamental_inflection_research_shadow.py": "91719ca034c4f8519f65a06b65204f2b5571dc4b7e910612cb967322d1cb93bf",
+    "app/intelligence/governed_setup_evidence.py": "4cc4c168202b7600bfca70b8807a3e5f7ace81bdcf36a8cbdce3fd1200aa8b2b",
+    "app/intelligence/hsi_signal.py": "85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/hsi_signal_projection.py": "f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/inflection_accounting_prospective_shadow.py": "7ad0e828545c57c9702f44c3884ccf75d4bc335b87a4b5909d5cef307e12c168",
+    "app/intelligence/inflection_testable_derived_metrics_and_event_alignment.py": "930315a7c7574a254c7f77f468199e36bdbdfc7456f6755e03e4c58b3979b187",
+    "app/intelligence/intelligence_delta.py": "5ee3ca035d546dba9e005abc4a68c49726aaa8589aa095cdcdce54e02a369e9e",
+    "app/intelligence/intelligence_delta_interpretation.py": "6085efb36827214ab73ec65f2f232623c30046df7ef729ce0575ba01251853d1",
+    "app/intelligence/intelligence_delta_interpretation_policy.py": "11652a9a51eda4af0852a72b8e0f44cdcf703faa7341bb88829df1f08a1aa2e8",
+    "app/intelligence/intelligence_delta_projection.py": "eba85944dd2fbda42f891fb75e6da5ebe484d44729c059dbd57a1accdfddf347",
+    "app/intelligence/intelligence_delta_serialization.py": "0eb06f6086acf88e23fa7f369f5f4ffcfa73f8ba1256e8843ad6d6856b4b9a58",
+    "app/intelligence/internal_technical_radar.py": "60a56a526b9335f14d0b6c2bef06062ab211dbbeffb4fa271dc7caf2d558b4ec",
+    "app/intelligence/local_openai_worker.py": "25a80966cc2bf876fa8028a3de5c81de606319c30eff22c98ef3476face1bab3",
+    "app/intelligence/long_term_policy_transmission_research_shadow.py": "28aacdca241d6ef700d98d53a1c801e906ce73c84749da04e592860d1b28955d",
+    "app/intelligence/long_term_portfolio_observation_research_shadow.py": "9446bb9dd59864814f335acae21951aa36c4c25a26e70fa8ab726e347eca4d95",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro/__init__.py": "646ee56ae68ccea4523a8ec6e696ac851b3b3fd183030fdb9cf2ae9c521d885f",
+    "app/intelligence/macro/service.py": "290f4af9db3dd708443fec6cc5d0f2752d64abe9e8212e315b450645ec92230b",
+    "app/intelligence/macro/store.py": "31c33ee15dc0c3bb73ef818828936565f3f6d8d992c87d5040f5d9eaec6de3aa",
+    "app/intelligence/macro_news_evidence.py": "ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_extremes_assurance_projection.py": "636692e3316f08efc1a9f8f2cf5dd913e8d4232ce4e9eb7950d8d4b91d68f710",
+    "app/intelligence/market_technical_artifact.py": "2573c5a24880826e59436dbcc73f4e6f040383f502c093008f06d3642261096f",
+    "app/intelligence/market_wide_evidence_readiness.py": "95e98af0c1c772cbacb56b4ea78c2f82aa9b1b8b42ccf46ad5b7f661fd0c10b0",
+    "app/intelligence/market_wide_watch.py": "4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_candidate_union.py": "2b9cc59af6b9ee9bbf55d53da3c879a22f33d0eef2db30dcc9d7839110ed4585",
+    "app/intelligence/multi_funnel_discovery.py": "cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/multi_funnel_orchestration.py": "afd143eaa28e1414a75f0e6d52a1bd4d0e747d32e04e13a61535838c84c0f174",
+    "app/intelligence/news/__init__.py": "1a22ef2a155d8c97b0f3c5b54e0732aaf56ae54485b143e481703514b590f2a6",
+    "app/intelligence/non_company_evidence.py": "547eb2c5f00a63b6c3fca64390f62c1966b08659a34495ce45101268e56aa618",
+    "app/intelligence/nse_taxonomy_company_type_map_proposal.py": "606db5028e14ae91a1968c857006b940bafac7b29b987ed2cc9c92fa2b6d8495",
+    "app/intelligence/opportunity_archetypes.py": "3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/output_evaluation_context.py": "ac9374fda76686a8fe2589cff97e3256a5dc08dffc1a890c3ccba26a3379389e",
+    "app/intelligence/output_projection.py": "4abe41906f7819cb3b74d0531501506552db2385ec2d3af89a3f51f65fd5b551",
+    "app/intelligence/pit_company_type_classification.py": "8e30f1320745fe170e4c078bd77966cfc760ad71d20ab8aa105aed0ce0f02c70",
+    "app/intelligence/profit_harvesting_review.py": "2c8dd836b2eb99453020e238f0291408f67353d66bb7e68c23c0cedc24e8c308",
+    "app/intelligence/quality_fair_value_research_shadow.py": "e1e408322c54d2cfa46eb412bf8c7187abf93e1db0a82b0e2b16c5009a87451f",
+    "app/intelligence/radar_diagnostic_orchestration.py": "69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/research_diagnostic_evidence.py": "59085d4c3b4425c482c6caa965b33a515ec603c7340faff6b1b5de1f5b5a0996",
+    "app/intelligence/research_metric_directionality.py": "bcc3e46db98de67a7700f17ca50c950c53be3cb49203fdd77529df98ae8a0106",
+    "app/intelligence/research_metric_directionality_policy.py": "017579c635b067af1671ac5f59daae2c8d8e5410ed41fca1ff825098ff0dfa72",
+    "app/intelligence/research_semantic_materiality_policy.py": "9916f9bc7478a8e918aeee41e1bfa03d69f511d1e60772a29a35dcc6e8c01949",
+    "app/intelligence/research_state_delta.py": "c67964591814051fd1caf2b5ad94c2f5f369d6b14fedf655e50635bceeb2831f",
+    "app/intelligence/sector_economics/__init__.py": "719bbb6b64601c1878a8ce825692dde87a2f0c854e9c99a4d9808a484ce9d72a",
+    "app/intelligence/sector_economics/service.py": "5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/sell_risk_review_policy.py": "d0bb816af9aea317ca6ad554a53d9f6e5ab71971c99a8b20f04a9fcf29f8bc9b",
+    "app/intelligence/shared_brain_application.py": "ea7bc1badb29d6cdad64907f4572f9f8431771f84ec3ec2f8e5954f692691f9b",
+    "app/intelligence/shared_brain_production.py": "c8668020345fc8ce95c9cff046bbc043498a619d63d4479f83cdfb01c4a211f1",
+    "app/intelligence/six_gates_evidence.py": "796ee39fa993d3911bdf9476107804d0bf22dcc85c645b44e7fc63820248f1b7",
+    "app/intelligence/store.py": "8a4fab295594ad9670cf43b91753a310028cdd865c8121a394301c716df4d21b",
+    "app/intelligence/supabase_inbox_bridge.py": "e16dfbb69684745e1a2a257a07ec2fb572a221e87636f37c1accbb7804fe9ccb",
+    "app/intelligence/unified_state.py": "2aa60683a1fe4ca60066fa29ca99e592e6c1a00f862c920c61fc932ddffaaa10",
+    "app/intelligence/unified_state_builder.py": "3d852d3ca4b9dcf724fb54b0ffd737e780ca8808e063e918daf9ae84329ec10f",
+    "app/live_readiness/__init__.py": "f265dda7a28006a2f063788e5ace77081446d49a4b3179aad14bb59608fc633f",
+    "app/live_readiness/propagation.py": "14eb7b89206a848999cd3f5cdb4c12188328454a2151a6bb8ac3ef1453261208",
+    "app/live_readiness/safety.py": "6da6328b854ee51283920f1271057bc0ce26dd384784e0af6ec61023ce4bd325",
+    "app/live_readiness/store.py": "1324d306988af5d186437494a8bc26e6f76c08e7bec9675351beef3129ca095d",
+    "app/market_data/__init__.py": "e65cc3ffd787adb44c30235fa21ed35106089c3ccdfc6445725f62c19f29533b",
+    "app/market_data/aggregation.py": "f9711538660953795bf09faef13613aa3be230bd622b9b506a15f06d4c3549a7",
+    "app/market_data/bridge.py": "e1d05d0bac82d9ece9252271dd95994e600877bf7b72ba8df1a093ffd5ebd707",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/current_prebreakout.py": "b2b5a4c81ce79e429fe033f9a427f560ac757167afd9d2bf2037c71ac02dbc92",
+    "app/market_data/current_sector_rotation.py": "7fb72c6412f613b9924c009537dd9177aba2420db1f86294cb576b65f0632e33",
+    "app/market_data/daily_source_temporal_semantics.py": "ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/daily_technical_bar_temporal_evidence.py": "58d76bdf1bcf37e246c8a669cf604b8eb986a5c1ea53d21337b79f7304bdadc9",
+    "app/market_data/dhan.py": "541093d2f01c0b12b6a2d8592b030036bf363488531ad3c999c3d846faf07267",
+    "app/market_data/dhan_live.py": "6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/dhan_live_bar.py": "6280a96219d815d9fd5e6913e1eb06246d3b1365bad78890653dc2a3a7552bb6",
+    "app/market_data/dhan_live_runtime.py": "fefb0df067feb7c36810679bcaa6e7dc5e8f759d42aee2477104db32f423e59a",
+    "app/market_data/dhan_mapping.py": "a265b27179438d732fb47111e3ebae5955383f789f020ff219ff53538f5c7c69",
+    "app/market_data/global_datafeeds.py": "30759dfddd84678e97d71dfaf862f5f66ad13eeee24bf2cca14f50cce3324c9c",
+    "app/market_data/historical.py": "98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/kotak_neo.py": "b6f01152abbce8f59f42c9a4549d2df851534ecb9148a39de8e27c114f42e8a2",
+    "app/market_data/kotak_neo_streaming.py": "b9989916f706d1d240c62d06e642bf27be252550a4256bf6723c2bc7e6e9bd11",
+    "app/market_data/models.py": "d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/normalization.py": "24899a77aa4d0bf95173460b353162cfc93ee7517b66b2274bbd9f3e7f1f337d",
+    "app/market_data/nse_delivery.py": "d3084fddb63a7f7ff0fcc914432dd36e812ab651dc5700a4afb233ac9fee80e0",
+    "app/market_data/nse_full_bhavcopy.py": "c24efeeb2cfd9fa6285edacd66321affb2055ff5789cebee43a4b579076419f9",
+    "app/market_data/nse_udiff_archive_verification.py": "d027617c512d35d2983b41a3d501e2ab3026009dac6cc5ec5aa05549fe7867a7",
+    "app/market_data/nse_udiff_conflict_resolution.py": "4897baf9b6fc6110834b40ed6f59b7cb9b720d9655956dcc962cadf6f4247e6c",
+    "app/market_data/nse_udiff_conflict_semantics.py": "1fe3d588fc3bef8f2bab9eeb722724b33c1ba78cc0c6e5bf6fd896a737bb92f3",
+    "app/market_data/nse_udiff_daily_history.py": "e75c6e621512973cb245031feada74ac6dfa9845a4c678484fd5c69a65d9f8f6",
+    "app/market_data/nse_udiff_daily_integrity.py": "0120cf46ab160450d13f6c3821d4983c8af34caf8fb2f5a2c0a6c084e5f18eb1",
+    "app/market_data/nse_udiff_daily_technical_eligibility.py": "570b9223c1fdb4af7db1ccfddd0697fe796b2c6ec8a4e67b0a3e94fa54ca2fa8",
+    "app/market_data/nse_udiff_daily_technical_read.py": "0e20adf00bdb2a271a2dc84b677f8a5f538ad91e1fbe8d3b57c0a23628fab4fc",
+    "app/market_data/nse_udiff_source_identity.py": "e06bb9b9ed140a2a1e5402dfa935df7ec6eb3f6a4aa5e75351ddd20a618d71e2",
+    "app/market_data/nse_udiff_weekly_technical_bar.py": "b67f4f1d727fee89a79b8723ccded60de68377cafbc2fe28026d56c18effffa1",
+    "app/market_data/official_nse_index_ohlc.py": "6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/official_nse_index_ohlc_feasibility.py": "a7791f70d61a3733589cf6e6bca6fa53f48f85ec4063c989db88df566e7b2649",
+    "app/market_data/official_nse_index_ohlc_reconciliation.py": "5417a2908decca07b03dc212e94a9618ea2c53250de8a9dac1973a4485c511cf",
+    "app/market_data/ohlcv_readiness.py": "6051b2ce538ef65a8e97c2ab50e24d63e840d7bdbd30d779278e065bab72a34d",
+    "app/market_data/prospective_fifteen_minute_bar.py": "91f32e2215c2edc64205bb44647c828ddfba33497e952aba5548e59f35a34db8",
+    "app/market_data/prospective_market_data_runtime.py": "eaeb8720b2600cf47199ccc74509e55eaedaef494387a0703f1a5b8fa176615b",
+    "app/market_data/providers.py": "eb8bf60fe92892509d61ad98991ce8216a7210573715cd4db1829622e1631c65",
+    "app/market_data/reference_data/__init__.py": "7eea920f8f66a35cb23427ae1230e4dee3973d4c0145d4b2cb24a33c28963337",
+    "app/market_data/reference_data/nse_master.py": "b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/reference_data/nse_rule_derived_tick.py": "533b9d60f08ffca669a9ccc38520df26791c175e35c28585453f60d3bf3bcc0f",
+    "app/market_data/reference_data/repository.py": "420e8c4f7cb1dd7f229d983951730d3f90cfc14b0fc873263544c09de55e1de3",
+    "app/market_data/reference_data/resolver.py": "8f36b56916956776bd94ec65c8118b183b1904233c0a6f602a81b237d045e160",
+    "app/market_data/reference_data/sqlite_repository.py": "2da31b197559296ba3bc8b0b710fe45775de5be6bb4944c0597d8ddba80c7796",
+    "app/market_data/reference_data/tick_size.py": "9c7960ba60238289ad2486ff358a23058885be80c27406bbf0e045f5f6e1c4bb",
+    "app/market_data/reference_data/tick_size_serialization.py": "879c976ab1669dc517e3330c81d267858fb312798f05fe7382bcd0442b3baf79",
+    "app/market_data/settings.py": "333493513ab4855f8fe5dac807a105b56721805018fce7e443efbeb1d8038340",
+    "app/market_data/sqlite_provider_versioned_migration.py": "225ef725af0187b22d936ecbd2fb0a886dfb4f3401e84da20fccd004699c4414",
+    "app/market_data/sqlite_udiff_series_migration.py": "73c2a99103796349a2b08578fb722747e2457d51be5454ca6a1c864f4d1b731e",
+    "app/market_data/store.py": "9d964e03e35b84967144471bdef1a18d512f890d65842a50b43d4a554c78c236",
+    "app/market_data/streaming.py": "ff5ea77e0512c1608492807f2893e6c6e0c2fd1af12b6221a2b64869442e8083",
+    "app/market_data/technical_bar_contract.py": "6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/market_data/technical_source_basis_action_coverage.py": "65ee1a12e44d761ea9809d0b1acf79a87df6815fa8e0f7b01b68853418a4bd0f",
+    "app/market_data/upstox.py": "e5469bc7ff5c63a6e028d7faed830a20ebe2f2f35a6583437cef77ca30fe6740",
+    "app/market_data/upstox_analytics.py": "b4ec6367ce2f912b4c7ef616d85aba6611f90ab456fa5b29c306fdb6596ba153",
+    "app/market_data/upstox_forensics.py": "4e0111b25988eec46f7e3a9a1feda7ac01485c186c4d870b73c9fd4ab73df280",
+    "app/market_data/upstox_population.py": "3459778055bebe2758105db36abb91572db935c91a577bdc55e53b283650e012",
+    "app/market_data/upstox_sector_indices.py": "f7b5ddde99d4cac3fba283189805055a3a9961ce4f238d5beb24c2753403abae",
+    "app/market_data/yahoo_enrichment.py": "05971a3ece93d3263fcef9ea758387d55e49300ed64947365159331427051ef6",
+    "app/market_data/yfinance.py": "08e95bcafa4c5b580b900ed59c1b63ec659620731e7c2775026ea5606d6a17bf",
+    "app/market_data/yfinance_population.py": "5bc20e9aa1e41e30b54875ca65665cac80a211153fd5abd63648150cecfece05",
+    "app/news/__init__.py": "c387238c6f6add6c2e16fc1686d96ba6a1e7c090d62f976cbe7908b2a1315c9e",
+    "app/news/hardening.py": "b4a710b2bca3366ec9bc47fdc6974c8530b28f805ca51820792d8222a51f096e",
+    "app/news/live_validation.py": "15c6d2fa80a922b20cbfbd9825c3119fe41e414ce408b4f68dce37af22e7f17a",
+    "app/news/models.py": "e667b5f9d5f4b25db574d349204dcd1428a9c260e30ba74b871ea7a096d35642",
+    "app/news/nse_official.py": "0cf85b491770e3fe3a9369601dc5920c91482693589bf2ddecc2e1006247f08f",
+    "app/news/providers.py": "405f4192bf02e45e2c2188b849708b43d9408b73e6e8cdd84f2edf12721dea75",
+    "app/news/service.py": "485a6d6323e6cbc4032ec99eaf08ae32d33c3dd1818ae7fadc59238b29c0df05",
+    "app/news/store.py": "0b42346a871ad6be2c23ee2de7a112944b200de4d56affff1d30c8b6bf959c85",
+    "app/nse_import/__init__.py": "1ce2bb27e60772160ce0612e119bb0820daf44087517d4981e1d123f8a15214a",
+    "app/nse_import/service.py": "c498cf8bbc6d417a2ba71a545851eada2b57f2c0bb3c58e74373af75d2110378",
+    "app/ownership/__init__.py": "b4a8bfc60683c8c1c90fadd85c9cd2257b1ed42caaab9f2619a4ec277f53eda8",
+    "app/ownership/models.py": "2733f4532dffa3d620dd8bc80019f612aff26bac0463c84244b3779c57ead568",
+    "app/ownership/nse_reg31_projection.py": "05217cebb8c3be648e5f5162c808faa851e263653b122d85411ff02dcb7c1b7a",
+    "app/ownership/store.py": "46b6f652be1660a6ea0fbd85ddf9f06f52a353384848e4ab8734b36a11ce2d53",
+    "app/paper/__init__.py": "5d8ab6bca1e82695a6e59b2a4446752355d16235779ae24b3213978655394289",
+    "app/paper/engine.py": "2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/paper/serialization.py": "488fd34aa7a4770268d4882d63a1fdcb75ede75c7859e8c5252ac1ce8bb46bf0",
+    "app/performance/__init__.py": "f360639bd349251323ca525fe9a3012af8ae2d357ee64dea79db8db2e44adbf3",
+    "app/performance/benchmarks.py": "10c27a45d9d546a63b26b775077022c3f88c58d4b53152a519c94ad879f2c4c7",
+    "app/performance/comparability.py": "0a615923f09437f90106c9ea4f690003a003f75098f847b2de2727d9334fc201",
+    "app/performance/efficiency.py": "ea4901872f7f5fd4c157183803106a07223aa15aca9e6b16b630d4f01c892f8e",
+    "app/performance/engine.py": "1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/performance/models.py": "3fd5f22f93f161f6ef041181f581ef3903528523398994522f309a645feca5c5",
+    "app/performance/reporting.py": "698ea92a16b27dc2c739748f9450dced1a591b0736d6c2848ef856caa13e951c",
+    "app/performance/serialization.py": "9236a495ea09ce29c11be554b6d5ea0719c8c19ca85f32e59822b20bb9452c72",
+    "app/portfolio/__init__.py": "1e215c3d2336dc7ffee8b18f8e336a93e5def42259ec3ab6ad93f12901997380",
+    "app/portfolio/canonical_decision_score.py": "805ae30bb2225c9c3aaa9b24fc55c1718ca44e5ee44b678da71ab74e2b4cbe36",
+    "app/portfolio/canonical_decision_score_activation.py": "3d47a430f420adc8962780d6643c2cf14e76d4835c6d77cc4bfbc80292661418",
+    "app/portfolio/canonical_diagnostics_orchestration.py": "07db5bf1b7167c91fb35ba64e97bd28df9b0cbbae57220ed337ea7e16c2078ba",
+    "app/portfolio/canonical_six_gates.py": "b1e11e7d08f8dfc5815fdbcec0fff49f53346e022450248332132da07c63435e",
+    "app/portfolio/canonical_six_gates_activation.py": "2bbe0fd99ddf79bf6e5bd4684db4f644e98148244fa094a2747637126e2a94a4",
+    "app/portfolio/engine.py": "d5fe858a01f21abd83f51edcfa151613090d4d1b03bccbd8b1f751e4dd6543af",
+    "app/portfolio/holding_intelligence.py": "1181483585c8797c48d32f15d0ceb7ba630e82969d0f897ddc80a053b2c84ce1",
+    "app/portfolio/models.py": "685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/portfolio/sell_side_policy.py": "4d29e14ae9220ffa379832df1d7973c290bb59001314439be2677cc76af5b84b",
+    "app/portfolio/sell_side_runtime.py": "c75c5711d5fa6a04341d97d0b4b9ae5b80e8dc6e7aaa688a6b6e579831480b48",
+    "app/portfolio/serialization.py": "9fa42f6880818cda63b4e934edea9d8f02565f919b7de894f88e1c0256096b4c",
+    "app/portfolio_analysis/__init__.py": "58229973bc188b585803a6426e668129404f639921b8b643190850b3b8ac05a6",
+    "app/portfolio_analysis/audit.py": "b968606ad9532b6c4845ceff469209802d0c9ea08e551495be96ac7ed13a09be",
+    "app/portfolio_analysis/models.py": "d4f728aa671b61225687a7dd76e4f85195b927024c96cd74731fdcf85bd5877f",
+    "app/portfolio_analysis/service.py": "a5e783862701b0919007b316e160cc66e0b156f57688e7d2c5c22dccc2f23c44",
+    "app/portfolio_import/__init__.py": "f6b30f93bb741e3c300acb037175fdfe023cfcbc293762d2560890d306b0c19d",
+    "app/portfolio_import/models.py": "b32cee46363e21991207ec63d1f581d0dc55c18ec7d9aaf2af4fbb00370ba0ef",
+    "app/portfolio_import/service.py": "cd518e18812d57d6fb9c82142143214991995902d34b3b29a33aaf4206f79425",
+    "app/primary_market/__init__.py": "a988b74f958d1891fb674122b7288612efc45dae6baec9cc85d667d269bcab61",
+    "app/primary_market/importer.py": "871c2106227e443f72254534ebb0d0eefa252219b2172f2cbdb7ce284dde2d36",
+    "app/primary_market/models.py": "33f568aa747cc0939db8d50c3e8fd9270476a6d8eefd7c1b9fb7845f2f25874d",
+    "app/primary_market/providers.py": "ec7d5bd59a80c143a0ffcf250f2bfc375aaa8b511564c3a2bd2e74dbd4ad1293",
+    "app/primary_market/service.py": "f404c83912debc2c232535f46856db1b202e359d7e575e31b8684c23ead66c06",
+    "app/primary_market/store.py": "6b6db41d0fc81ea5076df34b3ce00a6584f7e49470a65832b0b89d9ddbdb1b0e",
+    "app/production_v1/__init__.py": "c2257f90592fa721857f3a1f74d464943afae6326886b49d1ad309569a800d52",
+    "app/production_v1/canonical_setup.py": "8cbb8b5392096ba54e26804a2a6a2aeaa494660b1e5b38d5b4b4dd121c73229e",
+    "app/production_v1/canonical_setup_activation.py": "01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/controlled_cycle.py": "73e6a82e392d6968fec9ad0cd703555ce200ef19657fe80b2b55f7e96abca022",
+    "app/production_v1/governed_setup_source.py": "b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/production_v1/local.py": "81533d0170812f333a25fb52c62a47e1c92f49420995f90ef11f35b668552000",
+    "app/production_v1/models.py": "710060f0e8cd7407107a5a3e811be745f43918e4e141b9a521c02fb95e915779",
+    "app/production_v1/sector_universe_coverage.py": "596b813d271fb8e7e1fb88e2398ee20e8b41a862d564ca0ff8e77957093f097a",
+    "app/production_v1/service.py": "b53a7a3e4a74ccf78261aa915c38b2cc5b7e6a20cfaaf2c44b8c051a159d6a8e",
+    "app/production_v1/top3_opportunity_finder.py": "b0b88c858aa4b234996a87aea7a0c529e92f79fef80b6211482dd1628988b4af",
+    "app/real_brain/__init__.py": "4cce9659a3e74528a88e5576ba869a9f80a58ff3ef568d21446b297e078cc75a",
+    "app/real_brain/fundamental_probe.py": "2fd618267437b85334194b6cc01c21d64e01e68ed295606bce9ee705b0d1018b",
+    "app/real_brain/local.py": "3c736b37309f3d84df199f2f14e4b51f3a63e8b562064fb5b1adfb40d07dd6c6",
+    "app/real_brain/models.py": "202cfbfcf1a81959b8506b1066cc13a10dd3baaff18ca96d6aa9a4be573965c5",
+    "app/real_brain/service.py": "80338351a9bda86eb6cf2a31d9e36f09bf4dc64f067f656f898c2f9da7d76939",
+    "app/registry/__init__.py": "ea906131200d756b07547222a9519f811dd8e86ab2c48b95779e65f68de454d3",
+    "app/registry/canonical.py": "f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/registry/models.py": "1cfc3b840aaf8736459de42220b259d07b100ce493c6b554d65754c302b57e4d",
+    "app/registry/versioned.py": "f6676a3b95844a99f2c9445ccbcf446c1e538b3a6343f9ec4a8868b7bc02dbdb",
+    "app/reliability/__init__.py": "bd146ec86a9e8bc928574cd6011c7042ddf2361253848dbd7df6b89a5e58b7b1",
+    "app/reliability/integrity.py": "7395a8d0d28664bb7b4d3a4c59bc1d501db7b8316dd56bc91186f9a8b17f3930",
+    "app/reliability/models.py": "a46d4fbcd526ec19bf0306ada5e157ba1efd710a9287482db6c2c3229ae43b05",
+    "app/reliability/serialization.py": "d7c70f02640b756cc4577eddbed7d610368bb11cf92f34c953974dcb2ce553e7",
+    "app/reliability/service.py": "3b943dd5be47eb90308d892c765a126439a54e6ae40435ac32cae5ec3f20ece7",
+    "app/research/__init__.py": "df453cb25c2029330555a590eba514e7e547f7c3618d9e85a30e845be6be9b69",
+    "app/research/compounder_prospective_runtime.py": "7f6d07a07f193718c5c9ba3441a25c9674abe26d7760d2eebc11f78b3f25a2c9",
+    "app/research/engine.py": "50946ac62fcedd75c376dae6945fcea7f9ed975bcb16159f26aada23c609ca10",
+    "app/research/handoff.py": "57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/research/handoff_serialization.py": "1017826fe4c0140c603b6dd39ccc51f4295203cc06f9d04f1995411e7bbc24ec",
+    "app/research/inflection_accounting_prospective_runtime.py": "e9c88c9ab5d1cfcbd55bdd5f7fd0054dc74bc7b852006098d56d57698bb5a71f",
+    "app/research/intake.py": "24fdbafcca094b5d17eca92754e1c61ef45ca7ffc435b85abd47ca067d4ae3f1",
+    "app/research/models.py": "7b8c467d14210fa07b9fe6091cb423439059db2559afcf04a7fdf0e09fd10cd0",
+    "app/rotation/__init__.py": "afa6da19f323d98b6ac05327dd12c886d1a7ac1c5275d9cea84ecd224707d992",
+    "app/rotation/engine.py": "4e6cc019b6f8e1fe532199ab6f94d66cced4f04aff3cc29e3aa83d048585fbb5",
+    "app/rotation/models.py": "bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/rotation/serialization.py": "8cd582e032e115bf537dc14c749812a481def8e3f427e18b7d9776fe1c8d78a0",
+    "app/runtime/__init__.py": "883a8703936a0c4c08ff1e65f863dd0b45243468841fb96f229a8cccfb9ef7c3",
+    "app/runtime/__main__.py": "c9d167a3892c870f283f12d02fba9e816a0bdf3395637eb8584c4ab663069e01",
+    "app/runtime/cli.py": "78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/runtime/cycle.py": "4e648c019525174ee6ee79ada77fbbd62aed99471927e02dfaafbd0f1d22c15d",
+    "app/runtime/data_readiness.py": "4e94478bfef2ef69e8cea908900822ed9174857ec48e776b85e8a658873eac42",
+    "app/runtime/local_runtime.py": "a378189558425b8896f7848f1a2cba8ab5be0a6bfe887a8191008f94f7aadfce",
+    "app/runtime/scheduler.py": "a57cde0438410e332d022a922fad97d8c24c424eb65bde0cafdbef6a9b939bcc",
+    "app/scanning.py": "6140d6c39da941ae1f7cd952b1901df64c262a8bd49c38af9b8660525dbee871",
+    "app/scoring/__init__.py": "47d90afcaa6e5f3a79976fc3c882d4de7d5b70b618d643a864d304e03bebaf89",
+    "app/scoring/engine.py": "f924984b3bdedc390ffb6a3b60a982a8683755217c87b8ae7e1ed56adb686ee3",
+    "app/self_improvement/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app/self_improvement/attribution.py": "d66721d4f588370306fac56406e0c5890dec77af959cc588c2ffdb56c4bcc3cc",
+    "app/self_improvement/automated_research.py": "7c921cbd17f4eb819a208cc56ecdf379aa08206108e3841bdcb867814c653a5e",
+    "app/self_improvement/experiment_bridge.py": "2511991fb51cbad7ba462444e9c312d394db9f2418cde35832990289132d6b73",
+    "app/self_improvement/future_oos.py": "6bebc532fcf274f30c7139dc0f2fb10626d06399cbdce16976bd827cdb854f8a",
+    "app/self_improvement/hypotheses.py": "76aca4ffb8a026374afe07c4dfd8cf84605499005c5000324877e482df0ac6e2",
+    "app/self_improvement/models.py": "588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/self_improvement/oos_evidence.py": "070a9c62e3b88b4618103f8d328144c2f5304d0f425ce6dd775a81e8c5f5d783",
+    "app/self_improvement/serialization.py": "a776356a07e588f227851a862be73ec1235fdb2c18b3f0a4276634c1e5c27e1e",
+    "app/services/__init__.py": "d9ba9e0a49e7438edc277a9232acb3a3f1ef7699f7d9cf9ce95cf3f97d0e190c",
+    "app/services/audit_reconstruction_service.py": "48e79d0ef72d009f1e6cabc9eebebf64ed144388ee65580d8a262def0ce7adb4",
+    "app/services/foundation_service.py": "436e33ef45e3cd4db3616b00bba4d7e293de78a797b08ebc5506df3af8665d95",
+    "app/services/strategy_governance_service.py": "b9a31fa55491ed4726a3e095d53d1187a1adb78cd413174c69025b1f9c9cfa7b",
+    "app/signals/__init__.py": "981bbafcc505101af0d1cfe81fd288662acbeeff35fe411584ae9e3f89f4578e",
+    "app/signals/engine.py": "f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/signals/serialization.py": "975b62bf2f19b0712d6da46ecd60944bedb961903ec00db358a54f37309f3831",
+    "app/storage/__init__.py": "419f2ff1b18503287da181830374c29a021ee495557830e5b52aa82430eafc58",
+    "app/storage/approved_strategy_version_repository.py": "b030cbe31bcf55aa26e06e57072a352c23611cfd99e9d8c18645da1dbb5bcea7",
+    "app/storage/core_api_snapshot_repository.py": "5b3816b6a40c9bf265c6a6aacd9f3fd1459af3c69107d3c70e709ff821eb3852",
+    "app/storage/database.py": "25266d17b122661b62d79be99c125c508afd83a93f99604848fcae279b73095f",
+    "app/storage/governance_repository.py": "0f53dab6b3f0d9f95636ac4683dabaa1c694013c4a654f752930b4a62d63d599",
+    "app/storage/postgresql_approved_strategy_version_repository.py": "6d88c57515010c6b6fe537e116057885b7861766e8dd2338ae6cc421bf6595ad",
+    "app/storage/postgresql_core_api_snapshot_repository.py": "6eceb97a780ab48869233b9eafd3445e9c9ef06447d50a2f176423def1d0c38b",
+    "app/storage/repository.py": "18b5351cc23464e79ba3968679949bc0eb929509f83c180c664e213dfc50b1f8",
+    "app/storage/repository_factory.py": "c8cd6702f0826989a39bc40bc33509c5db135162d6811473310a695c6653145f",
+    "app/storage/sqlite_core_api_snapshot_repository.py": "dfa36a3768a60f5da6ab8221b7ab660964a572b223146d3e5b13592fbcfb64ea",
+    "app/storage/sqlite_external_intelligence_repository.py": "c13760c899d44b54c619efe766e3b0f6f91adf772441d1b6adf399314da3a15e",
+    "app/storage/sqlite_governance_repository.py": "0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/storage/sqlite_repository.py": "dfbc3abef762de476d7115527937048cbd7e8cca1f5af65af6739c1916a11019",
+    "app/strategies/__init__.py": "dc1c360e4315ed5f720cd4c4d29c6b8797c9495d4d5ae788523dd5256c037600",
+    "app/strategies/common/__init__.py": "207544a356f59e17c3b81060e8b0c52476b37819498843b86e1bc489145e385d",
+    "app/strategies/common/models.py": "9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/common/store.py": "e7c2752a2ee216191b13aebbb0404cf2d24042b5878d6cafebff3af50cce64b9",
+    "app/strategies/inflection/__init__.py": "3cfaae2e725cbff0de94a626269808af427e2300cfa2ab4738b23507a0a704f8",
+    "app/strategies/inflection/service.py": "23ec41d8ada2d4878de099c82f6f4dc40e46bcafaad9122aaff7971bc78bff60",
+    "app/strategies/pre_breakout/__init__.py": "698d3a739df77e0d385e82fb3b1afd506baa5dcb748b4ee9d0bb1e179b5697b1",
+    "app/strategies/pre_breakout/candidate_assembly.py": "ba3f57657b65acf011f831afb48d0c6990e5ada5713e4c98fcc5fb608d9e4e34",
+    "app/strategies/pre_breakout/governance.py": "eb4b7ecb3bdd4c3726e0dcc0de39b472c65b65c8a3d50f37de1739a695fd698a",
+    "app/strategies/pre_breakout/governance_commands.py": "df6ab92a6af5061ae1482474cb5a2abb767b183d6751d908bcc529834d53d057",
+    "app/strategies/pre_breakout/materialization.py": "d9ee29e957719ed07c797ca69eff57a4c88027aff0f1ea217e9cab53c6afa8f5",
+    "app/strategies/pre_breakout/policy.py": "896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+    "app/strategies/pre_breakout/policy_serialization.py": "7ca04d980bf56405e8e883e5cb1a5c985628a3d975a35cb67a41308b3b5795f7",
+    "app/strategies/pre_breakout/research_handoff.py": "48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/strategies/pre_breakout/service.py": "f99a3eba78b456757a83d6bf0031daa5c78c77dc501dfcadec0f5b3d5722548b",
+    "app/strategies/pre_breakout/setup_assessment.py": "4808aa4a880867e63990da2c83cfb44b27a995ea4103f21d4a9e3da1eaa74bee",
+    "app/strategies/pre_breakout/setup_assessment_serialization.py": "3f39aec09efb341e721d0fd455b74a9cf6e4c3e84084d3a4469ab37e16a710cc",
+    "app/taxonomy/__init__.py": "61941678c9de44d13ac90422bfc486a5ed052fac247ac385746ef2dfe8da044e",
+    "app/taxonomy/models.py": "edc9b471d9ce2d43e6a81e01a5d3762d65bea949fd2c8140cce6d8d1d7aa2e2e",
+    "app/taxonomy/nse_all_listed_security_taxonomy_source.py": "10bbc60379428106167a52fcf425e69e9fc3d497e5d9019a4b2b22de1b11f6b4",
+    "app/taxonomy/nse_indices.py": "9ec6589c37a525cd41a0a0e4517fa8a02b7acd0e5c07ece807bd1df34e6ba9e5",
+    "app/taxonomy/nse_quote_taxonomy_source.py": "a4516648f8b4efe832a90f470795e292dd7e587058ed229214c016b932b9bf09",
+    "app/taxonomy/nse_sector_indices.py": "5088d67e39d2e294094d5366335029c2f173820089166b3ebfe4ed8644e677b4",
+    "app/taxonomy/security_sector_index_mapping_coverage.py": "6db8935378e2726f506a5479a6d2f30047e7fd23f783e0231358f52ccf1ca074",
+    "app/taxonomy/security_taxonomy_coverage.py": "129de0150b8834f0f6429f6ec477f02716b404448a1f92636e1e7405efc603b1",
+    "app/taxonomy/service.py": "98f5175591c2dd936dc507ee688f37fe25cbf35b0d23f696deb50cfb885c5c65",
+    "app/testing/__init__.py": "aa78c8b601ba624ff109b30093247e6f3ca7fbd87a38c9643459aa017a2aa785",
+    "app/testing/foundation_demo.py": "c53aaf3cefba45342d2affab21cf2d017bfe04bb37c9ba50fecd5601bf92e0d8",
+    "app/universe_analysis/__init__.py": "b141187dd5638aca19dead480346fdcb6bcb1706ed2730e1800ee2a398cccc9f",
+    "app/universe_analysis/benchmark_sector_technical_input.py": "9a407b9e5bf2afa828b1e0be18b94a5979e8e121f3e33d780ec31e53af04cbad",
+    "app/universe_analysis/importer.py": "d95ab1236e6c686da32630cfc07a2c3be1c77e07b72d13d702fa0a684cef2e10",
+    "app/universe_analysis/models.py": "53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "app/universe_analysis/readiness.py": "4ad644c7c2ece6ef5349c4b6a45da8afcc900769ed333cc766b9719222c9d57f",
+    "app/universe_analysis/requirements.py": "17331a043b052f6afb99a57dfc031ea492fe8e9e8ed6f25ccd34f500112ed1d2",
+    "app/universe_analysis/service.py": "0e2354906ebd7121f85f068068ff3954739093622bd1f4a3fa198e150d950b78",
+    "app/universe_analysis/technical_diagnostic_input.py": "95c5e8656cc343543903f1163ee5e8cec6b2b1d61d132ca12c0b349cb007c365",
+    "app/validation/__init__.py": "1bc3118ec60bba6531258132e2ba247d9abd7672922f9c66069f941767992fde",
+    "app/validation/freshness.py": "6dafd183c33d3d81bc131b06fa8e974ce2ad48b3a100f329f45c7a3b8a6726e3",
+    "app/validation/observation_validator.py": "cd4385a562596727944e41cb45edd5b0db6df84d4a83cd5d7250f69f18d15365"
+  },
+  "synthesis_matrix": [
+    [
+      "ACCELERATING",
+      "investment_thesis",
+      "sha256:71bea0edf21a7c7899a2a25e062fdce2efb23225e8b630aa8b9cf03af022393a"
+    ],
+    [
+      "ACCELERATING",
+      "risk",
+      "sha256:5ef445b5132f0ed3eb0e798e8475d7344a1d7bae632810815c03254702abf68b"
+    ],
+    [
+      "ACCELERATING",
+      "scenarios",
+      "sha256:3a38b0dec8671a734f75d22a776f01e90e1ee934dd40e5715de46c624238ff69"
+    ],
+    [
+      "ACCELERATING",
+      "trading_thesis",
+      "sha256:9e4abc73bd30365bb718361cf7453af4acfaf02cd4c84f7b8723dd765afcdf77"
+    ],
+    [
+      "ACCEPTABLE",
+      "investment_thesis",
+      "sha256:0ced22ffdda4105691e105b154243f1e3f89f47d7e9da2417fc35eb9223643ac"
+    ],
+    [
+      "ACCEPTABLE",
+      "risk",
+      "sha256:47d441665dcecbf1ebec4a2bcb99217f564534e0a349ce054584355f0507726e"
+    ],
+    [
+      "ACCEPTABLE",
+      "scenarios",
+      "sha256:2c056c125c51b719badd84cba837de4ee8a5abe67000687fb86304b573d051b2"
+    ],
+    [
+      "ACCEPTABLE",
+      "trading_thesis",
+      "sha256:3425119c1bdf9f2d7ca43c9310f984f6036c50ffda3ecc29b2a37d83ad8aca04"
+    ],
+    [
+      "ACCUMULATION",
+      "investment_thesis",
+      "sha256:3a28a8ea972fb5bef35ac6500647889803796abf8f614c103338cd111fa0bcc9"
+    ],
+    [
+      "ACCUMULATION",
+      "risk",
+      "sha256:a12fcd9c301b62820e4b9984bb9bbac2fe50ea8c54278b72a4a319597d64869d"
+    ],
+    [
+      "ACCUMULATION",
+      "scenarios",
+      "sha256:ca0d02809243da4c99a3990a42db5a7d587c41807b500b98e0f2f729afd8414c"
+    ],
+    [
+      "ACCUMULATION",
+      "trading_thesis",
+      "sha256:3a6375881b10393ac4a679d5df98efbd4d451890426815ae4c21fe6c68d5f43d"
+    ],
+    [
+      "ACTIVE_CATALYST",
+      "investment_thesis",
+      "sha256:ab1f629bb6b02eecef53a84e53718030af6ecc7562654cfcc9ac38e9df1b3158"
+    ],
+    [
+      "ACTIVE_CATALYST",
+      "risk",
+      "sha256:2010f931a9fd6e367b697abd0b82304e24a4e232239d02b744f666e36a8ee50d"
+    ],
+    [
+      "ACTIVE_CATALYST",
+      "scenarios",
+      "sha256:dfdd80c309cfab823bc0e9b0c217ae828d3acd8872064f1c1c18de20554bcf30"
+    ],
+    [
+      "ACTIVE_CATALYST",
+      "trading_thesis",
+      "sha256:9f9bfd1c4c1c1676b92b4be0177573c964de601b01661d5179d4f688ded1625e"
+    ],
+    [
+      "ASCENDING_BASE",
+      "investment_thesis",
+      "sha256:65b87961378139d5462bc9989416940c4a54214b7cf9cf7ff19f79902732a042"
+    ],
+    [
+      "ASCENDING_BASE",
+      "risk",
+      "sha256:a0ab0b4a80827e8977f76c98e44f58a1179d05784282b93e7f217929e878c203"
+    ],
+    [
+      "ASCENDING_BASE",
+      "scenarios",
+      "sha256:081d46a9370eb893cfacba598ca7e30943bc8a185219852397347581910881a0"
+    ],
+    [
+      "ASCENDING_BASE",
+      "trading_thesis",
+      "sha256:06c8669051315798617fb9f15e036edbacfad94720d8c8e1799dd141256c86ad"
+    ],
+    [
+      "ATTRACTIVE",
+      "investment_thesis",
+      "sha256:3fe3337a03d112db1d7b5d54aa33d661a64533015870453675b520c46fea95e2"
+    ],
+    [
+      "ATTRACTIVE",
+      "risk",
+      "sha256:4a11a550e7f283b767a8de9269db2f79c9af91a3cfb3475f4fcfd9c3dafbe881"
+    ],
+    [
+      "ATTRACTIVE",
+      "scenarios",
+      "sha256:85ed0e7299b621d47690ca5b263bb99362851e48aedf2f90d400ae8f39d3dd8a"
+    ],
+    [
+      "ATTRACTIVE",
+      "trading_thesis",
+      "sha256:68e37af9dc6dd654c4d992a30441910ec22e8ddaba4f59999ceef1d767df7798"
+    ],
+    [
+      "average",
+      "investment_thesis",
+      "sha256:18396c67733237dd8b7728f71d19b2d057e73d941ecf0c7ce68894f92bb2088c"
+    ],
+    [
+      "average",
+      "risk",
+      "sha256:f62216b9c80e93fb78c376b82ecef668b23f938f147b2764ef08bf186304d263"
+    ],
+    [
+      "average",
+      "scenarios",
+      "sha256:4c5ca092953ba36d8ed1289d74b957cdc3f326b352c2be3c00ccabd73340f3d1"
+    ],
+    [
+      "average",
+      "trading_thesis",
+      "sha256:5dd8a71a9c074562693058cdb88cae189fa26b679915f98da50d038485cb6a38"
+    ],
+    [
+      "BALANCED",
+      "investment_thesis",
+      "sha256:c907d84bcdc62d2ac9ca6130236c623775557e8f2f4e600c353e619cf8c67bba"
+    ],
+    [
+      "BALANCED",
+      "risk",
+      "sha256:2ff59dc66beaaea9c3facec64aaf6d632398e449c67d9d7be8c40681476d92fa"
+    ],
+    [
+      "BALANCED",
+      "scenarios",
+      "sha256:781821a01ed580b0046d54044cd7c503c60e3d2dee695f307b0121cfe7e9c463"
+    ],
+    [
+      "BALANCED",
+      "trading_thesis",
+      "sha256:f86946d173aa5bfb6f0218b0c6a8f9734c120843f5da2e0fc5e1d491f4aa66a0"
+    ],
+    [
+      "bear",
+      "investment_thesis",
+      "sha256:6e380e4a6b9f677569e80a95b64c1cf2f7346dd7ebb5008b9eefcf425b513e13"
+    ],
+    [
+      "BEAR",
+      "investment_thesis",
+      "sha256:f2e416be72d388481d61f25629ef403d4f7a663345f8ee147bb521011268c18b"
+    ],
+    [
+      "bear",
+      "risk",
+      "sha256:9ebb07e4d26fdd1994a7277aed61a459e536cfe7e9f8c9d3043dbf46572548ce"
+    ],
+    [
+      "BEAR",
+      "risk",
+      "sha256:c068268dc690dc221005920211b318daf9dfa6463f859e4e0faeb026f113df68"
+    ],
+    [
+      "BEAR",
+      "scenarios",
+      "sha256:2e8f75d55bc7331235e1f4c809e71afdc54872499a3b9ef89494348710b49d0d"
+    ],
+    [
+      "bear",
+      "scenarios",
+      "sha256:6d09aae207cc0fad3f6ff3a29b753cb498b894b3e22c12659cf470b3d785cf31"
+    ],
+    [
+      "BEAR",
+      "trading_thesis",
+      "sha256:179a762c34d26627b74eba2eba8306ce1f860b0e5b57b5a958a488a00fcc0019"
+    ],
+    [
+      "bear",
+      "trading_thesis",
+      "sha256:b2699af61ab2e3cb986428100e3d1ed69bd9cfc8d2af98e996f475f4ca1b718a"
+    ],
+    [
+      "BEARISH_CONFIRMATION",
+      "investment_thesis",
+      "sha256:970678bb881f12ffc26502b5dc212718476a9b8720ad6a9a673e10f7739cbe8d"
+    ],
+    [
+      "BEARISH_CONFIRMATION",
+      "risk",
+      "sha256:6fc1f618be6ce5de0d493fdd1e6402188c54d7769a52ac1d9ee66d390e670ff6"
+    ],
+    [
+      "BEARISH_CONFIRMATION",
+      "scenarios",
+      "sha256:f7234141c2d0923b260f9f626970437294755395f0a55dbf0d3c35ada1b722db"
+    ],
+    [
+      "BEARISH_CONFIRMATION",
+      "trading_thesis",
+      "sha256:5441505d86d00a148d13a830f315714bccc6e0f9d185b57aff6d2f36c7ec0401"
+    ],
+    [
+      "BEARISH_DIVERGENCE",
+      "investment_thesis",
+      "sha256:f61e6af9f5662447cb456416e37d0418652b117dd7a3c24e607dfc3912ad1300"
+    ],
+    [
+      "BEARISH_DIVERGENCE",
+      "risk",
+      "sha256:8394136b3554dc84d155f3a0de579e0fbbf4349128c567b3daa35fc0b4b95d45"
+    ],
+    [
+      "BEARISH_DIVERGENCE",
+      "scenarios",
+      "sha256:2de04f79b2c947c5838540155291bb93e69113a5f28332eb9a2dc103827a3b36"
+    ],
+    [
+      "BEARISH_DIVERGENCE",
+      "trading_thesis",
+      "sha256:082a0edcf9cb8dfea98d8aadcc7927f4664c4d9fb93f13dde994474331917673"
+    ],
+    [
+      "BEARISH",
+      "investment_thesis",
+      "sha256:30e4c15ea981919d6f431cd160dda439ebf0259e502b625a65508e510a9e1de6"
+    ],
+    [
+      "BEARISH",
+      "risk",
+      "sha256:b975ea08edf283033fa41f02ba8235163430c9f1d319f51aa6b802408865c910"
+    ],
+    [
+      "BEARISH",
+      "scenarios",
+      "sha256:e512221f1ff81de1919ab3973871daf15d267dcf7e1e7b675ce70620b8d29e99"
+    ],
+    [
+      "BEARISH",
+      "trading_thesis",
+      "sha256:65028ff6d8879d0efaba9cca1613b7eef0b6739f97b0bf8929ee4133bd57e6f8"
+    ],
+    [
+      "BELOW_THRESHOLD",
+      "investment_thesis",
+      "sha256:b96d092d00b063ddcea5baa04e09c610a7fb8c4687fdf63e5a19de0b01f31b74"
+    ],
+    [
+      "BELOW_THRESHOLD",
+      "risk",
+      "sha256:534dad9bd95bdbf594516759edb5fe3723f8e462adb9babe13311c4944111fbf"
+    ],
+    [
+      "BELOW_THRESHOLD",
+      "scenarios",
+      "sha256:1b28839714833e18e3a0e051cf9223d87da4debe47828c6da94d6eb4c358dbcc"
+    ],
+    [
+      "BELOW_THRESHOLD",
+      "trading_thesis",
+      "sha256:04c1abe5f0566d0a784aefa0baf44e88b339db87cd54c3ac3941c4d8e2009635"
+    ],
+    [
+      "BROKEN",
+      "investment_thesis",
+      "sha256:d4c12488e30c8e0508b01f8f10227bd356a6c86e9c64afd80c75cdd0be3533c8"
+    ],
+    [
+      "BROKEN",
+      "risk",
+      "sha256:99d20e5b0203888d45f4c7256afe05e9a91a32826ff03091cd8a215193c26176"
+    ],
+    [
+      "BROKEN",
+      "scenarios",
+      "sha256:27ac183d945156ecd8a73578ec745919fa9c3ebf61221067186af8e1d04e0eaa"
+    ],
+    [
+      "BROKEN",
+      "trading_thesis",
+      "sha256:9200fd5712a7a074d025d492e0c426091f2d16cb45e4895a8e79df2707cae2e4"
+    ],
+    [
+      "BULL",
+      "investment_thesis",
+      "sha256:496fcbf220a3baf7268c57674bc5418bc02eeb76a014087a1c37ad1d56e37dd0"
+    ],
+    [
+      "bull",
+      "investment_thesis",
+      "sha256:c76c34829a7f12057c2f134953b96fc0c501d83e255624c6a4f219908bc5c223"
+    ],
+    [
+      "BULL",
+      "risk",
+      "sha256:a5cb2a8045c253dd6d2cadf917c8ee80229fcdda02c7898098ec2870786c926d"
+    ],
+    [
+      "bull",
+      "risk",
+      "sha256:dc30c287ec3fb26f448b39692d1e1e05754ace1c2b6127da967bbbe7b82f9a59"
+    ],
+    [
+      "bull",
+      "scenarios",
+      "sha256:3d3b6891914507d5b047d60de86ac8bd275cb7411b64e49f8e26d3d038b7b84c"
+    ],
+    [
+      "BULL",
+      "scenarios",
+      "sha256:5f7de789194691aac51da575f90fef987ee4dcdd4434a70e6bfa28f4a69d8da0"
+    ],
+    [
+      "bull",
+      "trading_thesis",
+      "sha256:3811936cad65c6dcc6bb3f85afe1a7264b0b68423da578915e05c8e2c8d96946"
+    ],
+    [
+      "BULL",
+      "trading_thesis",
+      "sha256:d5bffae9e5d7443f9f562a30b97bb7c9af8bd5d3bfddadcab50a36c3ad87db5a"
+    ],
+    [
+      "BULLISH_CONFIRMATION",
+      "investment_thesis",
+      "sha256:55d48bf2c77511a5e92ac5fe06e31c2654f7084abc7c8e9d01862e6bf0f85470"
+    ],
+    [
+      "BULLISH_CONFIRMATION",
+      "risk",
+      "sha256:0aaa0c046f68be181c33ab0198196b31666ccbca31e22c1f92547c964ed2d0bf"
+    ],
+    [
+      "BULLISH_CONFIRMATION",
+      "scenarios",
+      "sha256:d171e32d74054a8143b3d812c54a35beb1f43312e0efe29e5a1b8b7b131360aa"
+    ],
+    [
+      "BULLISH_CONFIRMATION",
+      "trading_thesis",
+      "sha256:93b965adecc7957562cd9c600460ee7289845f1f756dda43ed55aaead12f6cd7"
+    ],
+    [
+      "BULLISH_DIVERGENCE",
+      "investment_thesis",
+      "sha256:67273b688e7e527fdd20fae2a1d5a0e23d1d36835e85886942e90f46a6fe6dc3"
+    ],
+    [
+      "BULLISH_DIVERGENCE",
+      "risk",
+      "sha256:f1755076a487d487b7c7138e4cfdc2925b8cffbf66e233917aea3c1b4e8fa8f7"
+    ],
+    [
+      "BULLISH_DIVERGENCE",
+      "scenarios",
+      "sha256:97e3189687c64bc306ec79d9b4105da1a8fa1acbc7d25e3d7f6ec25f6cc5afcb"
+    ],
+    [
+      "BULLISH_DIVERGENCE",
+      "trading_thesis",
+      "sha256:d790578b9de402a328b18f573f948e23ef90ef355ff3ce01e87423470cc9ed44"
+    ],
+    [
+      "BULLISH",
+      "investment_thesis",
+      "sha256:cf41a94c8b7d684c9b574f15da89b200043f950677c02d30a9bcff3093b2c977"
+    ],
+    [
+      "BULLISH",
+      "risk",
+      "sha256:d8c05f66b99c804b83ae757028ce912e5e2fe0f25b6cdf808f4e0464509e7855"
+    ],
+    [
+      "BULLISH",
+      "scenarios",
+      "sha256:4f9eb6cf0023fa808652a42b771e60d3117164cc6ababd5ba2cb48f8ed6383f9"
+    ],
+    [
+      "BULLISH",
+      "trading_thesis",
+      "sha256:950c0ebd8fa97f43716cd41b56c5ff971cdbeac5f05d7a761700830482ce2230"
+    ],
+    [
+      "CANDIDATE",
+      "investment_thesis",
+      "sha256:f975c5e4c77127dfa30e0cab34f3f9d10c2f08d0ac59ef489e405b161890f511"
+    ],
+    [
+      "CANDIDATE",
+      "risk",
+      "sha256:2b614f7029b6e2d9585eda089858eee1ea7c77c7f5833be6d60392b4aec54b47"
+    ],
+    [
+      "CANDIDATE",
+      "scenarios",
+      "sha256:db0172a8b7b7bfe39b817fc5bdbf9b0ccc38f10775832bd8c23b2cefd47cad33"
+    ],
+    [
+      "CANDIDATE",
+      "trading_thesis",
+      "sha256:f1a13bd48b42bc3d381dccf1c0681d9864353d36112d04ed9a8d1d58c7206ff6"
+    ],
+    [
+      "CLEAN",
+      "investment_thesis",
+      "sha256:773a680f5485bb080034ca73443820503a1ee9776aad45b85f67c196737f635d"
+    ],
+    [
+      "CLEAN",
+      "risk",
+      "sha256:1b838645e18ae904dd6bc3c00b295a54ba362666e01ea60cddb032f8f251c0c7"
+    ],
+    [
+      "CLEAN",
+      "scenarios",
+      "sha256:25c860f2586ae3916c1357abdc2041a2c6e966783da932cb674ab5666b069615"
+    ],
+    [
+      "CLEAN",
+      "trading_thesis",
+      "sha256:9b2b2550175f504f1c19485259fbf87cbee839294966bd7231304cdf85f7672a"
+    ],
+    [
+      "CONCERN",
+      "investment_thesis",
+      "sha256:79a44a4ce1e3a6fe97c89652a8339d8640299969cb51004ed8a409a6fc30f663"
+    ],
+    [
+      "CONCERN",
+      "risk",
+      "sha256:8f760049a7788247dade9a61ba477404627f868eb1d8e190e7ff1ab3f7db04d0"
+    ],
+    [
+      "CONCERN",
+      "scenarios",
+      "sha256:4194d1a3682c4a89d90694cf271bea6bb53ea6a717480df2c686784eff610346"
+    ],
+    [
+      "CONCERN",
+      "trading_thesis",
+      "sha256:d6cdc898e3ca87829bddade7a8c4904baedc7b13be7939defbb997bc200f697a"
+    ],
+    [
+      "CONFIRMED",
+      "investment_thesis",
+      "sha256:cb1330df0176f1de030ef8de316b1053497a3fa6bc8bae588455485c6ef56162"
+    ],
+    [
+      "CONFIRMED",
+      "risk",
+      "sha256:8174e428145312b1911ce589886cc4e2e88cb22b300bd5d09dfaa1ba33473066"
+    ],
+    [
+      "CONFIRMED",
+      "scenarios",
+      "sha256:de6931795a69ded98f488346069335b51be35d7c1b4070323b9fdfce2ca0a3f1"
+    ],
+    [
+      "CONFIRMED",
+      "trading_thesis",
+      "sha256:5dee8caf78bad98e1a45cac94991df46a929f2374fafefaa51fcd87a8ec42ec5"
+    ],
+    [
+      "CONTRACTING",
+      "investment_thesis",
+      "sha256:03e273f2e58a01a591cee756f255a7e8cfceb99514e8a97b751002c4cb445a85"
+    ],
+    [
+      "CONTRACTING",
+      "risk",
+      "sha256:a266df1ebfabbfed0d3ae1b6f5aa74ccfb615b498019b44146fc0e72fad27c2e"
+    ],
+    [
+      "CONTRACTING",
+      "scenarios",
+      "sha256:01f543c929705f22bda3de065b69974a13d0eb3f8683b956acb7f5106be4d1ed"
+    ],
+    [
+      "CONTRACTING",
+      "trading_thesis",
+      "sha256:d1c3963f2421dc5eecf4106edc2884bce1c0c5dc6126bd3a9e657a8595a415f5"
+    ],
+    [
+      "CONTRACTION",
+      "investment_thesis",
+      "sha256:e7572251435c9a9aa9eae4f6c7dd9809664053a5a657aac3976eae6bba3902ee"
+    ],
+    [
+      "CONTRACTION",
+      "risk",
+      "sha256:a375f1716bc6b09249a9ed56f0115cac76fb57303bef7930124d185bd5639a41"
+    ],
+    [
+      "CONTRACTION",
+      "scenarios",
+      "sha256:5fc39f838bd579188f668040ff8676d7268f67747869b691709bae11955e69ba"
+    ],
+    [
+      "CONTRACTION",
+      "trading_thesis",
+      "sha256:81d39c5700746a1e7923398f8908071f52506b7362bb606c2dfbd9c20dea1e0c"
+    ],
+    [
+      "CUP_AND_HANDLE",
+      "investment_thesis",
+      "sha256:ddbcb0e5a5985249da8cae04b097e9bc7564a50d067916bb890a41d7ceefda36"
+    ],
+    [
+      "CUP_AND_HANDLE",
+      "risk",
+      "sha256:00bbdc9d69fa123f767f9e3441ac2f7dc50ffb3ab252ac536de4ef0894c8e2a6"
+    ],
+    [
+      "CUP_AND_HANDLE",
+      "scenarios",
+      "sha256:9610b7fc2328dfd3ef4e70f01978e4f3ac99c6970679c410df0440d0fe33f659"
+    ],
+    [
+      "CUP_AND_HANDLE",
+      "trading_thesis",
+      "sha256:da07742144388744a79a479bc7d82c5771637680d4a37ffc85d1ff8814b0facc"
+    ],
+    [
+      "DECLINING",
+      "investment_thesis",
+      "sha256:fcf05c384805de64c0e6db43475291b954638d7d017dc2a901a1cec92a53694f"
+    ],
+    [
+      "DECLINING",
+      "risk",
+      "sha256:97f19285dcc73a65e4850895407c7f497918194d398b8c18e940d799f8c81290"
+    ],
+    [
+      "DECLINING",
+      "scenarios",
+      "sha256:920135e48100b4a20d866182dd0530cf7ba418efa8e92d8c53349a9b6888f863"
+    ],
+    [
+      "DECLINING",
+      "trading_thesis",
+      "sha256:2c137a397eebbc3c72c38893920c3663aa5b6fe800e775dff236fb8bb40660e0"
+    ],
+    [
+      "DETERIORATING",
+      "investment_thesis",
+      "sha256:f0bc4e2b3fd5036c428825d01e9a6cf80bb7e999329c0307adb69af3c40a3b90"
+    ],
+    [
+      "DETERIORATING",
+      "risk",
+      "sha256:b9f5180a4a32a7db8e77741345c8dea1967f27f79402462adf44bf31914646eb"
+    ],
+    [
+      "DETERIORATING",
+      "scenarios",
+      "sha256:e94952c854edeac3c41fdf94070a9c7973b00a3b548219ac81e0df539659f3f5"
+    ],
+    [
+      "DETERIORATING",
+      "trading_thesis",
+      "sha256:22c76fd1cf91cdeaec7dd4bef8c4487d0f5bc6918ade147a0eb2453ad06958a4"
+    ],
+    [
+      "DISTRIBUTION",
+      "investment_thesis",
+      "sha256:854678140e410958cd0c4eda9047818afc8347d55c66ca005d26230d6a7fad96"
+    ],
+    [
+      "DISTRIBUTION",
+      "risk",
+      "sha256:e98659241a6f76a2c1d37e6c718dfed5abe3a07acbbaab844a8f4316c0e0ee1b"
+    ],
+    [
+      "DISTRIBUTION",
+      "scenarios",
+      "sha256:5ec8eed2784be85ae872e61fb5739346f372b5acf539b3404f67286a0c932902"
+    ],
+    [
+      "DISTRIBUTION",
+      "trading_thesis",
+      "sha256:27a8869cd870e531020f9d0d367c4fc29a57fc00fe109fcaeec60c5f9c4290ef"
+    ],
+    [
+      "downtrend",
+      "investment_thesis",
+      "sha256:6210ae2255fc5b6b6518cbf0a6a038b4e3ba0045aaee2585febf89c007d3328f"
+    ],
+    [
+      "downtrend",
+      "risk",
+      "sha256:e22922e19f39458b6a99105ae7bd6437bc77edc7b01c3fcf7164007c0a68060d"
+    ],
+    [
+      "downtrend",
+      "scenarios",
+      "sha256:f3ef4cf1be59e4e36f63e31c7338f981ed8078cf7fbf52823aa69d3f924e6975"
+    ],
+    [
+      "downtrend",
+      "trading_thesis",
+      "sha256:d8410629f8914844bdfd7bc0fbd856289d0ae78ef705c1d28f60a4891cdc1ffe"
+    ],
+    [
+      "ELEVATED_RISK",
+      "investment_thesis",
+      "sha256:4211f0bfe5566816d91b2e633f3ab529fe6c774809cbb51990630c4729239a29"
+    ],
+    [
+      "ELEVATED_RISK",
+      "risk",
+      "sha256:37b5a2099189946c1349880b4c9c507c56e2443ce44d9ed16f7833502e669a5d"
+    ],
+    [
+      "ELEVATED_RISK",
+      "scenarios",
+      "sha256:59a6bd726bff65a76669d0029cdae8b5d3677c0c27d68a30a262f09e7e005a71"
+    ],
+    [
+      "ELEVATED_RISK",
+      "trading_thesis",
+      "sha256:50fc185a499b05f123d6db3cd84ad7f3cbf05e0c93072e9820b41a0176db0976"
+    ],
+    [
+      "ELEVATED",
+      "investment_thesis",
+      "sha256:bae4e9b6087d8bb71d8a836aa9b633c692fa5f9f2f3348ffc415f8c2354fd141"
+    ],
+    [
+      "ELEVATED",
+      "risk",
+      "sha256:665c674797294fa6057311e6e1f8640c5e45128c91ea1255e1254f8669338c03"
+    ],
+    [
+      "ELEVATED",
+      "scenarios",
+      "sha256:0ac6827ac84f25f77db848c36b6dbfe48e96964df5114aaeb3c0a2e7f8f3e2d2"
+    ],
+    [
+      "ELEVATED",
+      "trading_thesis",
+      "sha256:e1aee8cc252c30a129d1b82e9c474d5b26053f9c9566552524c241b35bffc519"
+    ],
+    [
+      "emerging_leader",
+      "investment_thesis",
+      "sha256:fb51978b978528263ffa6ecf861c8e39c9c406e62967b9ce8987693b6504a70b"
+    ],
+    [
+      "emerging_leader",
+      "risk",
+      "sha256:2af3e0df75121732f01b2f4442ec02ccc9303888372291cb5650edc6e0206052"
+    ],
+    [
+      "emerging_leader",
+      "scenarios",
+      "sha256:2106bf87bf794ee2256c9d5e49d5e234b8065ba20b8163625b0d7c9f435df120"
+    ],
+    [
+      "emerging_leader",
+      "trading_thesis",
+      "sha256:c174fa4e544fc16472c32bdf965e06881d49ecb18294e7fa170388aeb8bde015"
+    ],
+    [
+      "EXPANDING",
+      "investment_thesis",
+      "sha256:827360f3c943c9d0633582bb20b1b5777306c3f7932de3dbd0b44f8b8ce4c825"
+    ],
+    [
+      "EXPANDING",
+      "risk",
+      "sha256:431fcd4215082992e28126d84f5e2cdaa585d9610aaaca44b9e94a588527d469"
+    ],
+    [
+      "EXPANDING",
+      "scenarios",
+      "sha256:654514fc0b10f6607afcd674ef8bf64c6863ec6c2bf839e418b55ec6fa23e56b"
+    ],
+    [
+      "EXPANDING",
+      "trading_thesis",
+      "sha256:73bdf0aa63bc5d4de73127997e891159672e9f8661764765f85faa020da14fec"
+    ],
+    [
+      "EXPANSION",
+      "investment_thesis",
+      "sha256:6a28e3bc045e896cc6b5f725905cbc42d1766ab0ce935a16c8c211ba38037f22"
+    ],
+    [
+      "EXPANSION",
+      "risk",
+      "sha256:32e3aedd26f7ef86b079617811eb38fbe349bc5bafdba23ee3d7618b99b186af"
+    ],
+    [
+      "EXPANSION",
+      "scenarios",
+      "sha256:8def900840304856ce2622e2fa7828bb80e6da0922831ba44f7bdb9e74e6485e"
+    ],
+    [
+      "EXPANSION",
+      "trading_thesis",
+      "sha256:906acd08b4ec5187377f1d62db65d8bd4b6ce5a0c0506cc79d4c53bd18e3ed7b"
+    ],
+    [
+      "EXPENSIVE",
+      "investment_thesis",
+      "sha256:ccada6a0edb723ba155f4c16300c357a0ff3053893666bd4f7cd49f9c02cd1f6"
+    ],
+    [
+      "EXPENSIVE",
+      "risk",
+      "sha256:cbd5ad741f553d2981589e88c256690636c3145ad2ff8b287a721b3d22de0194"
+    ],
+    [
+      "EXPENSIVE",
+      "scenarios",
+      "sha256:733fe7eaabf1f9d9418fe14c5af538e17c7313776e218c78f7e3b2b9831ebbfc"
+    ],
+    [
+      "EXPENSIVE",
+      "trading_thesis",
+      "sha256:5f160743d4979a94be744e5caf746db0fd4de3b935843ad0ad69b322c0959cd0"
+    ],
+    [
+      "FLAT_BASE",
+      "investment_thesis",
+      "sha256:5d7a64075bbda2371575e07ccf720019b7e45bdf5d7d705ea9a1ac8e3da65ab9"
+    ],
+    [
+      "FLAT_BASE",
+      "risk",
+      "sha256:83db3e027f3d3d5daf7e2b305e2aef727313e4bce966767fc9a9dbd77f381882"
+    ],
+    [
+      "FLAT_BASE",
+      "scenarios",
+      "sha256:c4dff3de73cd1b554b1b8a35d3dc28ad968a5a5ffbbfe236c57b665efe6b0393"
+    ],
+    [
+      "FLAT_BASE",
+      "trading_thesis",
+      "sha256:555be87452261933108f54338e27d94584fe4c9da88f8369c4d6dfc0e7605faf"
+    ],
+    [
+      "GROWING",
+      "investment_thesis",
+      "sha256:3fab2799efe64fade4164fdb9eb05da0fb5e5c2fae9df7d802a851e818b5a005"
+    ],
+    [
+      "GROWING",
+      "risk",
+      "sha256:236e6613c5eab1e52af3ab96a1618826c270d9d3626fa46515ad16ff03bb3684"
+    ],
+    [
+      "GROWING",
+      "scenarios",
+      "sha256:401ec723fb63e9bec4a7b381c1a187feae8ade00175e34c9d099bdd72790700c"
+    ],
+    [
+      "GROWING",
+      "trading_thesis",
+      "sha256:db442785eaf88f3e7558d25ba3971651c2f4e84951a34397dfd75ea4029e5b19"
+    ],
+    [
+      "HEALTHY",
+      "investment_thesis",
+      "sha256:2b38c4e27823788bd1038a9fa6a7d48cc86551322cb009e52e2f494fa97a3bb7"
+    ],
+    [
+      "HEALTHY",
+      "risk",
+      "sha256:4900e2d9f2307a54b0a5496a46a762fc9152088a19b9049e0e3a88e5725ecaac"
+    ],
+    [
+      "HEALTHY",
+      "scenarios",
+      "sha256:384a050b153a89c3e633464282d8217cda3bff8fc9742ebe05cc431c628b47da"
+    ],
+    [
+      "HEALTHY",
+      "trading_thesis",
+      "sha256:e25f86446cc1b20209589d46139f57c329d2775d625262d2791e9d1d0a5aaed8"
+    ],
+    [
+      "HH_HL_BULLISH",
+      "investment_thesis",
+      "sha256:2b5709a61c6849f02ba0f8db5b4000de854194427e550f4866ac0f90f6a061c6"
+    ],
+    [
+      "HH_HL_BULLISH",
+      "risk",
+      "sha256:815e3395b7db947e6da2c4158ce6fd9877f6d5433ce8fd1d2424dd43751f1f20"
+    ],
+    [
+      "HH_HL_BULLISH",
+      "scenarios",
+      "sha256:e3fd0f0e336b00ea1f14d578ca4753b09ec7d6939ff5f3bd48fb9ec5923ae4b1"
+    ],
+    [
+      "HH_HL_BULLISH",
+      "trading_thesis",
+      "sha256:d16c08229d82e172a9718b40b8818168a050474018b6cf7f5c08ff513ede7713"
+    ],
+    [
+      "HIGH_QUALITY",
+      "investment_thesis",
+      "sha256:41efc92454a4ba223c54c4facf7ef33d522fd3667630c9794ae2448bab3503c4"
+    ],
+    [
+      "HIGH_QUALITY",
+      "risk",
+      "sha256:650cb02defb0ef7a83a7f198ccca4ee092caf0a12fa73dca622f6b2168431dac"
+    ],
+    [
+      "HIGH_QUALITY",
+      "scenarios",
+      "sha256:96145d4ca8100285f4f6bb81749be9985976e35b0f3fed381ba3c0d5e219fa3f"
+    ],
+    [
+      "HIGH_QUALITY",
+      "trading_thesis",
+      "sha256:152f8d37dae6123d2b0341297768dc565b5326d1e66b16462ab499532fb6783c"
+    ],
+    [
+      "HIGH_RISK",
+      "investment_thesis",
+      "sha256:4f0fa8f2c20eabfbc7e3bbcccf2b94152dd6ad6df2db6ad72823de1246e692f1"
+    ],
+    [
+      "HIGH_RISK",
+      "risk",
+      "sha256:2489cf85b01628040f4f3aa00a74a30dc23761b13cf88f1eae3a9a72b7ac24b0"
+    ],
+    [
+      "HIGH_RISK",
+      "scenarios",
+      "sha256:10f50e0bfa4aa00374eab16af73e81868ed7237d5c5383bfc9492cd07ecd13b1"
+    ],
+    [
+      "HIGH_RISK",
+      "trading_thesis",
+      "sha256:3c4fe2e0719dd15ea90c4fe7176281420264beaa11b6c7dea60a83cd4a3ae336"
+    ],
+    [
+      "HIGH",
+      "investment_thesis",
+      "sha256:6f96e512ebf14871065042a62318c3a5de098b6e792fb7a90dbf30b00cae9d76"
+    ],
+    [
+      "HIGH",
+      "risk",
+      "sha256:37e56582c942bcf65572b60bacdea871b10d90ada912a3d50c8c7cdd03e7009e"
+    ],
+    [
+      "HIGH",
+      "scenarios",
+      "sha256:e5643a791b3b11758ea1f28b09a9a049f76747d4ddfeca9548a3a63e05ebf49e"
+    ],
+    [
+      "HIGH",
+      "trading_thesis",
+      "sha256:07622d089830272f0e1fb5fcc0858238d87d5a57a2d29e12fa9eaf96d4afd576"
+    ],
+    [
+      "INVALIDATED",
+      "investment_thesis",
+      "sha256:607cb296f86241c0ecbd0f937a371f5535012012328d4b77706d5b14d03b1128"
+    ],
+    [
+      "INVALIDATED",
+      "risk",
+      "sha256:16d6b7c31ff4c55fe59154330edd66be1494696b2589ff1f7c63f040c0abe58a"
+    ],
+    [
+      "INVALIDATED",
+      "scenarios",
+      "sha256:e56393a89d532114d7e076f0530d0367bab7ff0e61a14e66dc6306f0f279c6aa"
+    ],
+    [
+      "INVALIDATED",
+      "trading_thesis",
+      "sha256:540f5856a5bdc6be1fa7908675ccfc1359f1e9ecfa1deb7be3aa52dc4ffcafe4"
+    ],
+    [
+      "laggard",
+      "investment_thesis",
+      "sha256:b40121dc20c68e39cd7e8ea4827f8dad8f369623de6790efdef1ac4b19dedbbe"
+    ],
+    [
+      "laggard",
+      "risk",
+      "sha256:8346bcbaa0f09f1407c94761f5fe2251a714b2344cf41034416e591903458c96"
+    ],
+    [
+      "laggard",
+      "scenarios",
+      "sha256:4cd3f1d16fd97026d413af306cd02158ee2b055a04b8e149aacc9fb531075dce"
+    ],
+    [
+      "laggard",
+      "trading_thesis",
+      "sha256:199501e24b2c62bb24a39b525b12c8e15995d43760d9f21b4b0fb727995a7528"
+    ],
+    [
+      "leader",
+      "investment_thesis",
+      "sha256:c23e9fe41697b6d7b9ef10737a4859d658e60dc7218ba26f331e420f1fe88990"
+    ],
+    [
+      "leader",
+      "risk",
+      "sha256:b73bdee5a704e984b79e7b6678390a56aa939d4b3a7aae86091fdcb87edd3476"
+    ],
+    [
+      "leader",
+      "scenarios",
+      "sha256:873c2eed8833b86e5a318c6b368c33eecf19dafe71ccd65f8f069f4afa25fb07"
+    ],
+    [
+      "leader",
+      "trading_thesis",
+      "sha256:8045201356b52e2a037a3a118043718217a062a35f94090d745baa5e91b68769"
+    ],
+    [
+      "LH_LL_BEARISH",
+      "investment_thesis",
+      "sha256:599315a987b67c31e9b759fae68dc87a3d025202e1023e9f0a82332f51e71ea4"
+    ],
+    [
+      "LH_LL_BEARISH",
+      "risk",
+      "sha256:37889e5ad4a911374186f3373054d29df7affd75b112493d4e824b6334a1c10a"
+    ],
+    [
+      "LH_LL_BEARISH",
+      "scenarios",
+      "sha256:b65dd36e98a7bac224bf35b719407634b691e03a32acdcb32872aa2849dd6d91"
+    ],
+    [
+      "LH_LL_BEARISH",
+      "trading_thesis",
+      "sha256:039c101219dbc84b32f2b70e2b26fed796ada0af3fd54c632e26ce17fe6142c1"
+    ],
+    [
+      "LOW",
+      "investment_thesis",
+      "sha256:6f7b3c686393364a24c9caba8b9221e6ea39738bfd433d70b05f0792438787b9"
+    ],
+    [
+      "LOW",
+      "risk",
+      "sha256:a3db9605c89fc71d624981e7e4924254ebd51834ee2809572b5f7f60fbdb18b3"
+    ],
+    [
+      "LOW",
+      "scenarios",
+      "sha256:263b4e5001b77cd81e62863cd86f6c80dfe455936b678d2fe4b82a4103a04e0d"
+    ],
+    [
+      "LOW",
+      "trading_thesis",
+      "sha256:780afadfdc346153a41a929e6015324bc025be0425799e2da8234879832b9f3e"
+    ],
+    [
+      "MARKDOWN",
+      "investment_thesis",
+      "sha256:e9ad8064c54a472dc7540903b478d1883443fd09b6ed2a31a2cbd2fd6bae13ee"
+    ],
+    [
+      "MARKDOWN",
+      "risk",
+      "sha256:f0fe16e1fe6cebeb17ebf5293116251003355f6a6f8eeca50c3adcce13b694f5"
+    ],
+    [
+      "MARKDOWN",
+      "scenarios",
+      "sha256:19c0a80d69bccd16e641e83712bb7fbaed2c49b5a0104b657da5f1141aec7c7a"
+    ],
+    [
+      "MARKDOWN",
+      "trading_thesis",
+      "sha256:2ae835bc4a186b45d7e8cc906298b461d13839aa6f0f0b532b6e5cce85198c91"
+    ],
+    [
+      "MARKUP",
+      "investment_thesis",
+      "sha256:7ea1d38ec02bb4099c1a4bab2c77bb5a0f9391d341d0768d321462d4a778c70c"
+    ],
+    [
+      "MARKUP",
+      "risk",
+      "sha256:f7b814fc988b9326c21ff654ff06caf8a78c8500970f044e7366a5b9b8ddb227"
+    ],
+    [
+      "MARKUP",
+      "scenarios",
+      "sha256:39248c7420d6f778fba75ec8007f18f4f7e3567eb7c89297607c7c97113f8b95"
+    ],
+    [
+      "MARKUP",
+      "trading_thesis",
+      "sha256:45f82c7731de7cc4af63df0c0439be68e01e00e2a03d9eacc5e62d43cdecf68a"
+    ],
+    [
+      "MIXED",
+      "investment_thesis",
+      "sha256:1c5aa44f1794814eeb6f2e749b993810f85b6856acc2bfe39ad9f8d5a1cf3ae2"
+    ],
+    [
+      "MIXED",
+      "risk",
+      "sha256:ac52fb923ecf78c336f81751237c6bce6750b0f23929cfde467388c75047616a"
+    ],
+    [
+      "MIXED",
+      "scenarios",
+      "sha256:54f305d1b7da76676be322ad0f98616328c625c1f731eb6b51077277049c1bda"
+    ],
+    [
+      "MIXED",
+      "trading_thesis",
+      "sha256:9a89243caf94fc6bcc1756ac1f6689ecf801109e4b43dc5dcb5bae8232ea0200"
+    ],
+    [
+      "MODERATE_RISK",
+      "investment_thesis",
+      "sha256:a34fc7806603b9f3af7952d177a021e1443aa287a2ec479bfc8e4026fc03494f"
+    ],
+    [
+      "MODERATE_RISK",
+      "risk",
+      "sha256:ad70be69e092e63aa5e8e2da86ce358d38445f3a6311f5464159b361da513348"
+    ],
+    [
+      "MODERATE_RISK",
+      "scenarios",
+      "sha256:2736ee050bab6fba6445de9dc8199d225a03ce32b0bbab26cada3343e04ed2eb"
+    ],
+    [
+      "MODERATE_RISK",
+      "trading_thesis",
+      "sha256:870185755c16ae4fd3f674ae1e2f5258c8cd7debe2eeffda55423f9a7e09bede"
+    ],
+    [
+      "MODERATE",
+      "investment_thesis",
+      "sha256:4f4ee237470939660e203b519879ffb702cd1ed658f3e4a3700f72c8be8ed457"
+    ],
+    [
+      "MODERATE",
+      "risk",
+      "sha256:b4a6c7a8be38c94c3932dba9677f4a256355e269be7ccde34510cfafeb44b743"
+    ],
+    [
+      "MODERATE",
+      "scenarios",
+      "sha256:8eeb772496ac6c786503b0a627c692875ea751adbc3ac062001a446d8f1cb26b"
+    ],
+    [
+      "MODERATE",
+      "trading_thesis",
+      "sha256:266e0a96ce3b84730e46a9067260b5aa4770734c5a33fc45d0f7d292f8c47dba"
+    ],
+    [
+      "NEUTRAL",
+      "investment_thesis",
+      "sha256:b8b8740b01d18bb0fd9f2dadef0f56b13c20d9a77040eca51a4ccf3c25f555db"
+    ],
+    [
+      "neutral",
+      "investment_thesis",
+      "sha256:ef933ba4004c54e1c4f234c8a480ebda75cff32b484c85f47d62106a51566d9c"
+    ],
+    [
+      "NEUTRAL",
+      "risk",
+      "sha256:0fe0f66d42195938a1be790371e51e3ae0a9eb20fb8b20144d8641e5fa576a51"
+    ],
+    [
+      "neutral",
+      "risk",
+      "sha256:ec3350f3cdb324a71e816fa0d4f00d4e50a7b6f89f04c558ca72547a3ca12680"
+    ],
+    [
+      "NEUTRAL",
+      "scenarios",
+      "sha256:2f04dc03ff612b86bc230bf9541b7e38384e66bc8bb570893c6422f86735c571"
+    ],
+    [
+      "neutral",
+      "scenarios",
+      "sha256:c2a79944289568acc60dd1c0f9d3d3a0b3c146df0a170e057eeeb11246bb3de7"
+    ],
+    [
+      "NEUTRAL",
+      "trading_thesis",
+      "sha256:c10303e997dae9488f9d820daabd5127f8ea71a2eca6626dd36694144a9d8e7d"
+    ],
+    [
+      "neutral",
+      "trading_thesis",
+      "sha256:cb1f75d1407985d4b5087264f4d84baaffa3584d67500fcf8b5248a659ddc1cb"
+    ],
+    [
+      "NO_VALID_BASE",
+      "investment_thesis",
+      "sha256:648edf93cdcd28de2d2aa5e6c6398e428775a0ac4e460c6b605df31e13b5ad5d"
+    ],
+    [
+      "NO_VALID_BASE",
+      "risk",
+      "sha256:d541b1a7191294f320c7bbfa58fbba6bcbdc5d470a47955be0c5e38019c4560f"
+    ],
+    [
+      "NO_VALID_BASE",
+      "scenarios",
+      "sha256:4894986b24c7a67e072d24b9abe059da8ad193ed929ea4e9b88ba932fe5bfc9e"
+    ],
+    [
+      "NO_VALID_BASE",
+      "trading_thesis",
+      "sha256:137c83be3061d63982e7cd28ac3266862e3ba4acc810c68625fcae40943dc91a"
+    ],
+    [
+      "NO_VALID_ENTRY",
+      "investment_thesis",
+      "sha256:724e2f694479acd3b138db0f697f5c95c357e451e6c8e7cf42600c6fbe15bab2"
+    ],
+    [
+      "NO_VALID_ENTRY",
+      "risk",
+      "sha256:b1ef1fee5c8e6006134585d5d3ae71816e2ceeb3951710fc769327b64967bbe7"
+    ],
+    [
+      "NO_VALID_ENTRY",
+      "scenarios",
+      "sha256:b59928837e772cc508d57eb762a5116810246676e637379ba35bb9b0bd0c674d"
+    ],
+    [
+      "NO_VALID_ENTRY",
+      "trading_thesis",
+      "sha256:c7d9bbd9ec70c8004b4013194fc0000890696e7763ced0dda3200315727da3c6"
+    ],
+    [
+      "NORMAL",
+      "investment_thesis",
+      "sha256:8614393a93537a72e716c0b8f2177b045484d7f4d524485d7349f8a36dd61afb"
+    ],
+    [
+      "NORMAL",
+      "risk",
+      "sha256:4ca7889153ad27f0905aef28c82fbfb2d6bea93c4aad409c98244bcf60c4dd9b"
+    ],
+    [
+      "NORMAL",
+      "scenarios",
+      "sha256:a08abb3292d9b375dcb9a75941bb9fd60687b136f83792293dcab508e6f348b1"
+    ],
+    [
+      "NORMAL",
+      "trading_thesis",
+      "sha256:71aebd2fdb36536fe861504db61ad791370473e6b2e5f48e9d6b2a8cce380b02"
+    ],
+    [
+      "OCCURRED",
+      "investment_thesis",
+      "sha256:505ec0f416d598945c9909c8b3a07e07eb6a7ce660451f01ef48e6245de6d5ab"
+    ],
+    [
+      "OCCURRED",
+      "risk",
+      "sha256:2d71b7a50eb8797e0c1ab9e4a37f3f6aa342494930e2e0ee09bf3a0100af34a9"
+    ],
+    [
+      "OCCURRED",
+      "scenarios",
+      "sha256:44f89e9950a081c1cfa06cb93a7a7260b187c25a8bdcee675f25eb424a2173c2"
+    ],
+    [
+      "OCCURRED",
+      "trading_thesis",
+      "sha256:1efa19ec442decca55eb22007657bd88f6361616c86681671922b925d301b5c3"
+    ],
+    [
+      "panic",
+      "investment_thesis",
+      "sha256:79bc9a6702e0daa02f37bb56a1062967420efe1b23d76dd3aaf1f0e553816968"
+    ],
+    [
+      "panic",
+      "risk",
+      "sha256:f406f39b4b15d6378686e43f6027a2824227371b79aa875a3c3644489798d030"
+    ],
+    [
+      "panic",
+      "scenarios",
+      "sha256:6c566b6b39300d68d7a3b1da8222836a06a3a804b99954709b065ae43ae4702c"
+    ],
+    [
+      "panic",
+      "trading_thesis",
+      "sha256:c64e2a1de968ec6c136645a2d0724df4e6b8833e799403fde5cb147cc4ca380d"
+    ],
+    [
+      "PARTIAL",
+      "investment_thesis",
+      "sha256:634c63bb2d6ce6b29912343c3b252802fc5a27684ba1d10cc9e28968ba133f8d"
+    ],
+    [
+      "PARTIAL",
+      "risk",
+      "sha256:8f85d81c5c671e72956329317bd56072c712eff5db04f7ca27c6e86c7a99c9a2"
+    ],
+    [
+      "PARTIAL",
+      "scenarios",
+      "sha256:3bbfd6f971cda8c0003925db71a499012605220cccf0b1f4fdbecd214b9d8a41"
+    ],
+    [
+      "PARTIAL",
+      "trading_thesis",
+      "sha256:67c144d36ec701009edc92458eba89e755847fc89247102b60376829f4c59c00"
+    ],
+    [
+      "PRICE_STRUCTURE_INVALIDATION",
+      "investment_thesis",
+      "sha256:9fd5dcea356e66bf538ae0a698ec1fc8c9a821f38c0790853e1b5c7107b3f2b8"
+    ],
+    [
+      "PRICE_STRUCTURE_INVALIDATION",
+      "risk",
+      "sha256:a27948a133d80b9aca44843579dfc018f5e87e8bfe5316f9b0ea6ef28bd05adb"
+    ],
+    [
+      "PRICE_STRUCTURE_INVALIDATION",
+      "scenarios",
+      "sha256:c11359fa57c1ed1548ba8190c0c09e4f690f966f49e2d5a6a6a722260750cef6"
+    ],
+    [
+      "PRICE_STRUCTURE_INVALIDATION",
+      "trading_thesis",
+      "sha256:077b16bc12654383b06dc246445efe112ece4dbffc8bea13f4bc9bc204d055d3"
+    ],
+    [
+      "REASONABLE",
+      "investment_thesis",
+      "sha256:66e6a3913899aebd639a7edc5bf6957fc0505e0886e159da95017b24dd83dc19"
+    ],
+    [
+      "REASONABLE",
+      "risk",
+      "sha256:e8707bbbaa3d1b3eae9c2f2936b47bbd6f2f33f34a51c70bd4a390c017128e05"
+    ],
+    [
+      "REASONABLE",
+      "scenarios",
+      "sha256:78063cfd1a2432f2960709188b80c1c99a622cfd9e9dfd7b3598b97c54f68c70"
+    ],
+    [
+      "REASONABLE",
+      "trading_thesis",
+      "sha256:99bce4bec13a869c3b7d5e0fad140c1b159eeac4ec9eeca1ad61f76bc257d973"
+    ],
+    [
+      "REPORTED",
+      "investment_thesis",
+      "sha256:5befba4ffee509d6f5b68b3b9d72b639ce59daa1313993835805c5f440815537"
+    ],
+    [
+      "REPORTED",
+      "risk",
+      "sha256:2c06e6df6933467fb21c49e0eabcbf6deb68dafa0a3de950399aaab920fce222"
+    ],
+    [
+      "REPORTED",
+      "scenarios",
+      "sha256:e3fad41245c9d93977ff7baf6f0a9deb975d1a739c853cb420a912cf6c935feb"
+    ],
+    [
+      "REPORTED",
+      "trading_thesis",
+      "sha256:2150a422fff64fa4898ad04d4006ed3db91ccd0b4f2c4b6c021d42662f339572"
+    ],
+    [
+      "selective_bear",
+      "investment_thesis",
+      "sha256:5dc5f3c2c4b8705a061351bc023dff100b3cf1c0c4f7de615853d028b1b352ae"
+    ],
+    [
+      "selective_bear",
+      "risk",
+      "sha256:4ca4f893d88136c44c0b3b0f3987883371ec1e06457a0537fd36258611980eae"
+    ],
+    [
+      "selective_bear",
+      "scenarios",
+      "sha256:6feca97b53e7cf9d334dda5beefa2732f5113aaf79c0af2c46fc9048fcf844d7"
+    ],
+    [
+      "selective_bear",
+      "trading_thesis",
+      "sha256:3a28aedc887ad649382d40a168be3d64f9e4da13786e7501c847cdbbc24af1c7"
+    ],
+    [
+      "selective_bull",
+      "investment_thesis",
+      "sha256:3dd076d73b3deb8836cb3e0f5b654094c92c546f33f5dedfa93abdb6341fb2a2"
+    ],
+    [
+      "selective_bull",
+      "risk",
+      "sha256:fcb6eafd5b92e1988e98d8b8efbeaf06d65d745ea9deabaab414ba0cd1e9f4d6"
+    ],
+    [
+      "selective_bull",
+      "scenarios",
+      "sha256:ec860add6f30783337f78f0f22adfbab9787cd95d82faa3f2b7d9f68163b709a"
+    ],
+    [
+      "selective_bull",
+      "trading_thesis",
+      "sha256:e8595732a334342737ef0f7392315e48502c9e300cfe28203a682ee6bbe6894a"
+    ],
+    [
+      "SEVERE_CONCERN",
+      "investment_thesis",
+      "sha256:07124ce0b33d9fafe449b91566e90695b33829ecaa4193c99217602b3e715410"
+    ],
+    [
+      "SEVERE_CONCERN",
+      "risk",
+      "sha256:5d15b17983e3d3c636aad3416ef131ab0994957778ee93e997d7b4974ad1a156"
+    ],
+    [
+      "SEVERE_CONCERN",
+      "scenarios",
+      "sha256:6c1a0c207e96b2602e4789359f13125ec649f4470d68270d88fcf466ff263a6a"
+    ],
+    [
+      "SEVERE_CONCERN",
+      "trading_thesis",
+      "sha256:10821a0d926248447ccf6fbab7436662c3d2a5ea80d748601bd348286391f31d"
+    ],
+    [
+      "SEVERE_RISK",
+      "investment_thesis",
+      "sha256:cea52dd4af1d16f0bb60b49a47ebe8351bfccbe129d2185cbe8d32cbfb9d5a33"
+    ],
+    [
+      "SEVERE_RISK",
+      "risk",
+      "sha256:a5146d9344440759714bed6fcaa38d1ac6349f06a6af4b0b22641b6659bbcc0e"
+    ],
+    [
+      "SEVERE_RISK",
+      "scenarios",
+      "sha256:078651bace7b00bf32f61db31a2ebf50958d90916e83c7e35131b8fc8715fc0a"
+    ],
+    [
+      "SEVERE_RISK",
+      "trading_thesis",
+      "sha256:5c1ba8f5d3d6ef5c7cac8d4f236c77ecdd7b8d8615e07389f7c79ec934982c9b"
+    ],
+    [
+      "SIDEWAYS",
+      "investment_thesis",
+      "sha256:77d905b291b5051beff64e2a68ab0df9097146183e1102deec8b02a8ba84fc3d"
+    ],
+    [
+      "sideways",
+      "investment_thesis",
+      "sha256:d7a19cf1e3b0fbe669b54af90a6537ce9dc15036d7f0dfa4a1a21aadcaada4bd"
+    ],
+    [
+      "sideways",
+      "risk",
+      "sha256:ae650d2f56259c0eaa9ef7c84c55f15ea9bfadbdaafa5551ad0d096829cbba48"
+    ],
+    [
+      "SIDEWAYS",
+      "risk",
+      "sha256:ed91da66b3b7d5e82bff13c3899c4208122e6c82a6cf88ec1118407e9e991f06"
+    ],
+    [
+      "SIDEWAYS",
+      "scenarios",
+      "sha256:405111fe58c8c0d36b714b38baae50db3a8539e65e74f5bb23f5d42a5574b1b5"
+    ],
+    [
+      "sideways",
+      "scenarios",
+      "sha256:b93cb486f77ba1edb39ffe873692060b80db8a1c83c5af12ba0032392693f71f"
+    ],
+    [
+      "sideways",
+      "trading_thesis",
+      "sha256:12b88bd5d3328e55ca26bd8dad2907baeb16064e36475398c024962af046e6ad"
+    ],
+    [
+      "SIDEWAYS",
+      "trading_thesis",
+      "sha256:19eac2ae5c15eea3a50edbba07d03217cdfb61cded57ff81e527135e9e78702e"
+    ],
+    [
+      "STABLE",
+      "investment_thesis",
+      "sha256:b91f4a0ad5ab462270e830fb53023aea4e9c1f8f94fb71db7f4ca3ddbf25f34a"
+    ],
+    [
+      "STABLE",
+      "risk",
+      "sha256:cb858170bf75d892d8f866221f35ddd699c9d695d22004d21beb768d10d6e083"
+    ],
+    [
+      "STABLE",
+      "scenarios",
+      "sha256:1c0bb1f8eb1fa30aa44d04be3543282c3c47e753dae5e4084c44422a2a147502"
+    ],
+    [
+      "STABLE",
+      "trading_thesis",
+      "sha256:87f71761402195bd696ad473cd7d32f7c6efb0c6dcaeee051ce57654609e1099"
+    ],
+    [
+      "STRESSED",
+      "investment_thesis",
+      "sha256:b6daf004c18f5c61e5fb0a16a116aa7859547a062013b0d80f78a9516c0f9f82"
+    ],
+    [
+      "STRESSED",
+      "risk",
+      "sha256:827b7d9d73caf497968d109f1e7a9ddbf29f644d7298a1272da48eaea67c9518"
+    ],
+    [
+      "STRESSED",
+      "scenarios",
+      "sha256:72fef33338722bf8a90319ccd7f84abf3602fb46ce8e709ee7d77c3a9cdbc823"
+    ],
+    [
+      "STRESSED",
+      "trading_thesis",
+      "sha256:0eb125664acc60dfe676d1f7a29f60d667ca7b6e5dc1c889870312a15cfa418f"
+    ],
+    [
+      "STRONG_BEARISH",
+      "investment_thesis",
+      "sha256:0fb66227603917ac77cee9afdf81d0abd29899ef87af6756e54ec98239e75077"
+    ],
+    [
+      "STRONG_BEARISH",
+      "risk",
+      "sha256:9aeba3927ae950a148244797c604bcba43cc49b9345a4fc0d90acab9041103a7"
+    ],
+    [
+      "STRONG_BEARISH",
+      "scenarios",
+      "sha256:b68885fa87a3b4e189e8817ec2bf33550929716fc6c147b97ee02a6b48f85cb4"
+    ],
+    [
+      "STRONG_BEARISH",
+      "trading_thesis",
+      "sha256:564a55a0e56c6996cf108c01f8c59039b2fe9a77070036f64590b211a52cf632"
+    ],
+    [
+      "strong_bull",
+      "investment_thesis",
+      "sha256:4c199797461d6d53e30f8da8fac0a5ccd7faccd82ece2e175c36277622510e71"
+    ],
+    [
+      "STRONG_BULL",
+      "investment_thesis",
+      "sha256:c19322ce37e8d95ae7329c4c2054635f8f4385b9755efeb444996976a1417673"
+    ],
+    [
+      "STRONG_BULL",
+      "risk",
+      "sha256:dc48b9722a8245bdf8ced904e71487263df0313e8b65cd436fd8bac4310c03bd"
+    ],
+    [
+      "strong_bull",
+      "risk",
+      "sha256:fe1ea3437af0dc5ffa2aafd7581a6e9eca4c3ee7a7d4b5afa293c4023a6765c6"
+    ],
+    [
+      "strong_bull",
+      "scenarios",
+      "sha256:36477b81426db1a4b259e6a0d736121c17f6fcdb1900b5c728d9a1231a63f3be"
+    ],
+    [
+      "STRONG_BULL",
+      "scenarios",
+      "sha256:daa0235b1b91e2daba988ec93b0ba57efcc556aea1a594ab42bb59c9dfb786bc"
+    ],
+    [
+      "strong_bull",
+      "trading_thesis",
+      "sha256:130ee095813475ad89b7f424e9a75baf247629437db481666b83eb7377d69eb5"
+    ],
+    [
+      "STRONG_BULL",
+      "trading_thesis",
+      "sha256:b57964b8fd3d6b4862aef203f6dbb455b881ee0aca16af7188b34abaff69764b"
+    ],
+    [
+      "STRONG_BULLISH",
+      "investment_thesis",
+      "sha256:f8295fd4a840d29dd7561b0af96c1b5183875d6fb1b2a099712c7a4385264df0"
+    ],
+    [
+      "STRONG_BULLISH",
+      "risk",
+      "sha256:772b94d90205e14d2321a91d909c13ec18dc3b641e80b393698c06ac9d423195"
+    ],
+    [
+      "STRONG_BULLISH",
+      "scenarios",
+      "sha256:94962a304c453b50db8747d454c6eacdc77dfa7426f73a315ba2f9498bf93544"
+    ],
+    [
+      "STRONG_BULLISH",
+      "trading_thesis",
+      "sha256:df41fde17e6aed44dad1187214325fab1441299edbceafca3f6b022570e01b42"
+    ],
+    [
+      "STRONG",
+      "investment_thesis",
+      "sha256:2e87c9e36242f110a5b637b2491a7774ab10b61cfdd2ec6bb2ce16383463c861"
+    ],
+    [
+      "STRONG",
+      "risk",
+      "sha256:ad48082cb9889a7dc89dc22d1f4a6bf849536ef249960e44d405b912dd64ef7d"
+    ],
+    [
+      "STRONG",
+      "scenarios",
+      "sha256:bd06e1f9385754c44812b4d2243cd0418c10cd1bf40388ea2c7b9340b60696a5"
+    ],
+    [
+      "STRONG",
+      "trading_thesis",
+      "sha256:f35ade8797fcdae2e192ee4727bd115be221a6fa815d0a2a20600543b10bb3cc"
+    ],
+    [
+      "TRIGGERED",
+      "investment_thesis",
+      "sha256:b103bb6d0913a79e25bd64a9fcdf6adb973836eeed0a2bbd18d88d7304b1527b"
+    ],
+    [
+      "TRIGGERED",
+      "risk",
+      "sha256:d906daf619cb61868bd5cd53954c25d700c403fbaed6875cfe7a97fba251480f"
+    ],
+    [
+      "TRIGGERED",
+      "scenarios",
+      "sha256:df9be381bd5e8065d6230185be04af9063b7a10a37e56a1f04d7ec9ec45e9a73"
+    ],
+    [
+      "TRIGGERED",
+      "trading_thesis",
+      "sha256:f4d734d67801016bdcae18a3acc79bab7776370ede43be41e50dd097f99ed858"
+    ],
+    [
+      "UNCLEAR",
+      "investment_thesis",
+      "sha256:1a50f6bcddea944fd76e89415bcea182440f056beb6e0718b3b54203fa4bb6d1"
+    ],
+    [
+      "UNCLEAR",
+      "risk",
+      "sha256:cea9fc9338e2519de8a4a83cf37373407e62e283952adfbd8d83447b107cfdba"
+    ],
+    [
+      "UNCLEAR",
+      "scenarios",
+      "sha256:fa45e59d62b69b48cc7ebe079635de299cddac23d2acc1823e2da996b2ba2890"
+    ],
+    [
+      "UNCLEAR",
+      "trading_thesis",
+      "sha256:f6bc79eef3bee6ed3dc78b2c4ae7649de09a507a174cebad442b9d2e2b939f8d"
+    ],
+    [
+      "UNINTERPRETABLE",
+      "investment_thesis",
+      "sha256:2df25fe6165605a809c3b6660e80631f7c68f43e2ef29eb9b6739878c8c41d2b"
+    ],
+    [
+      "UNINTERPRETABLE",
+      "risk",
+      "sha256:3a2daf9638999b76a43021cb9ef0488d53173e1a9902595121c2c8f7c0380108"
+    ],
+    [
+      "UNINTERPRETABLE",
+      "scenarios",
+      "sha256:57a66d01e3cb593bd1feddebe05db5040240010c3bc76831af75105e5b60742f"
+    ],
+    [
+      "UNINTERPRETABLE",
+      "trading_thesis",
+      "sha256:2a94181ec8d10ddc3267fac089f467a304f47d84a6fb528791543b422860e3da"
+    ],
+    [
+      "uptrend",
+      "investment_thesis",
+      "sha256:964ba51ce9c437cdf4242f098db6603f3d0334cf6b7bd1c7e21699421566a21b"
+    ],
+    [
+      "uptrend",
+      "risk",
+      "sha256:1b5c9102f51a29925b3e201ff1232117bf503c59c49983889cc8b3317b2394bc"
+    ],
+    [
+      "uptrend",
+      "scenarios",
+      "sha256:88bc663be33a5f8b2f4ad476b07c6e1f5bcf1c95f94f47f019550c964756604f"
+    ],
+    [
+      "uptrend",
+      "trading_thesis",
+      "sha256:083d4f1e099b06ae3f68013a77641a6d84e9d121a69950274df003653d5eed8a"
+    ],
+    [
+      "VALID",
+      "investment_thesis",
+      "sha256:39ac6ff85f3d227384dd244d70e971ce2338e78ff8e3e078229029c2072d608d"
+    ],
+    [
+      "VALID",
+      "risk",
+      "sha256:590c0f17bd958d51aaa289522f85c27b458aca4bdbcc3fc5e1b43f7a619d574e"
+    ],
+    [
+      "VALID",
+      "scenarios",
+      "sha256:10c52a144e3151a90be73b0c2772dff129f3a07e9ffc192dfdff861722d35ee2"
+    ],
+    [
+      "VALID",
+      "trading_thesis",
+      "sha256:e4de133e8872a101f53e5bfb4cb7e113d2c1120d62d743c157b2f82384634ad0"
+    ],
+    [
+      "VCP",
+      "investment_thesis",
+      "sha256:9ac33c5dee8e3de86c54811a101dad783e002b670c3ed2bd7ed5f2040d6fbfbc"
+    ],
+    [
+      "VCP",
+      "risk",
+      "sha256:e7c445c901bcc4942026311cfd58fc5b22013bd81e4b90a3522af754c54b6e1f"
+    ],
+    [
+      "VCP",
+      "scenarios",
+      "sha256:065256ee77b4b541ee575593db86a7429189fe7750701b420afa3aa26ff451ed"
+    ],
+    [
+      "VCP",
+      "trading_thesis",
+      "sha256:a9a2cc362b741bf0b679f6e9e427eb28d9a4117a14c39310850bd6c8bc1d7567"
+    ],
+    [
+      "WATCH",
+      "investment_thesis",
+      "sha256:fe94fca08a89cc859d9a24645253fd8e383c132217821192752a9492442d1d2c"
+    ],
+    [
+      "WATCH",
+      "risk",
+      "sha256:e39009b6a3998202ea306f96e2940504e2a33616a7032c9946acc8b447687c71"
+    ],
+    [
+      "WATCH",
+      "scenarios",
+      "sha256:03f5fce323409f0322392a2029a502070e00a62d93707ef82a0e51102b515687"
+    ],
+    [
+      "WATCH",
+      "trading_thesis",
+      "sha256:16f9ecba855c305048a7028e58d97fa867b9569cc0dfb0a7a08b414ce047c909"
+    ],
+    [
+      "WEAK",
+      "investment_thesis",
+      "sha256:2aadcf593fe8569b5fd714c7462e73cc3af8a9502d8e384f105e1d56246dbc1e"
+    ],
+    [
+      "WEAK",
+      "risk",
+      "sha256:b552229d2008cbee144d3eaab075fd726ffc59de9d4da021a63dfb15bda10ceb"
+    ],
+    [
+      "WEAK",
+      "scenarios",
+      "sha256:ef6b6ac37f7305b80a46ae9d64b4461e2e13294641ec7ce84a880cd5ac8c6200"
+    ],
+    [
+      "WEAK",
+      "trading_thesis",
+      "sha256:f762963283c4b2bbf90f050ab72143edcae37d5b47caf3c14bbe0a544847d8c2"
+    ],
+    [
+      "WEAKENING",
+      "investment_thesis",
+      "sha256:b705c7ba714ddf6c9ff445f1d7d8de87f76e24facf5e80e1cdf5257309a64aa4"
+    ],
+    [
+      "WEAKENING",
+      "risk",
+      "sha256:74b02aa9a786a76de644077643e527975551c4379ac6a7053b130dda7167120d"
+    ],
+    [
+      "WEAKENING",
+      "scenarios",
+      "sha256:b2d78608558b41a26e8ba69eeace420dd6cb544e9ca10f6c4a829a85597d4d6c"
+    ],
+    [
+      "WEAKENING",
+      "trading_thesis",
+      "sha256:975808b60c2dadcf3e944c793e239e98d1f8e738fb907ae573fa8cd2c6301d3b"
+    ]
+  ],
+  "synthesis_states": [
+    "ACCELERATING",
+    "ACCEPTABLE",
+    "ACCUMULATION",
+    "ACTIVE_CATALYST",
+    "ASCENDING_BASE",
+    "ATTRACTIVE",
+    "BALANCED",
+    "BEAR",
+    "BEARISH",
+    "BEARISH_CONFIRMATION",
+    "BEARISH_DIVERGENCE",
+    "BELOW_THRESHOLD",
+    "BROKEN",
+    "BULL",
+    "BULLISH",
+    "BULLISH_CONFIRMATION",
+    "BULLISH_DIVERGENCE",
+    "CANDIDATE",
+    "CLEAN",
+    "CONCERN",
+    "CONFIRMED",
+    "CONTRACTING",
+    "CONTRACTION",
+    "CUP_AND_HANDLE",
+    "DECLINING",
+    "DETERIORATING",
+    "DISTRIBUTION",
+    "ELEVATED",
+    "ELEVATED_RISK",
+    "EXPANDING",
+    "EXPANSION",
+    "EXPENSIVE",
+    "FLAT_BASE",
+    "GROWING",
+    "HEALTHY",
+    "HH_HL_BULLISH",
+    "HIGH",
+    "HIGH_QUALITY",
+    "HIGH_RISK",
+    "INVALIDATED",
+    "LH_LL_BEARISH",
+    "LOW",
+    "MARKDOWN",
+    "MARKUP",
+    "MIXED",
+    "MODERATE",
+    "MODERATE_RISK",
+    "NEUTRAL",
+    "NORMAL",
+    "NO_VALID_BASE",
+    "NO_VALID_ENTRY",
+    "OCCURRED",
+    "PARTIAL",
+    "PRICE_STRUCTURE_INVALIDATION",
+    "REASONABLE",
+    "REPORTED",
+    "SEVERE_CONCERN",
+    "SEVERE_RISK",
+    "SIDEWAYS",
+    "STABLE",
+    "STRESSED",
+    "STRONG",
+    "STRONG_BEARISH",
+    "STRONG_BULL",
+    "STRONG_BULLISH",
+    "TRIGGERED",
+    "UNCLEAR",
+    "UNINTERPRETABLE",
+    "VALID",
+    "VCP",
+    "WATCH",
+    "WEAK",
+    "WEAKENING",
+    "average",
+    "bear",
+    "bull",
+    "downtrend",
+    "emerging_leader",
+    "laggard",
+    "leader",
+    "neutral",
+    "panic",
+    "selective_bear",
+    "selective_bull",
+    "sideways",
+    "strong_bull",
+    "uptrend"
+  ]
+}

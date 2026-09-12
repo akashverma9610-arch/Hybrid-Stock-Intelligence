@@ -1,0 +1,197 @@
+{
+  "schema_version": "fundamental-v2-downstream-inventory/v1",
+  "baseline_commit": "c2b47b4473b79bc9444a39812eac2bd6d0e33930",
+  "columns": [
+    "file",
+    "consumer",
+    "dependencies",
+    "before",
+    "after_or_boundary",
+    "scope"
+  ],
+  "sites": [
+    [
+      "app/scoring/engine.py",
+      "build_scorecard",
+      "mandatory29/45; optional16/25/26; ten components",
+      "state_scores.get(result,5); unknown=5; no version gate",
+      "typed no-number rejection; unchanged explicit values/weights",
+      "FIX"
+    ],
+    [
+      "app/diagnostics/synthesis.py",
+      "31 risk",
+      "1,2,19,23,29,30,46,55",
+      "unknown -> MODERATE_RISK",
+      "finite state / version guard",
+      "FIX"
+    ],
+    [
+      "app/diagnostics/synthesis.py",
+      "32 trading_thesis",
+      "required43,45,46; support4,6,10,37,38,41,45",
+      "not in exclusion list -> support",
+      "finite state / version guard",
+      "FIX"
+    ],
+    [
+      "app/diagnostics/synthesis.py",
+      "33 investment_thesis",
+      "required16,17,18,19,23;15/20 labels only",
+      "not in weak list -> STRONG",
+      "finite state / version guard",
+      "FIX"
+    ],
+    [
+      "app/diagnostics/synthesis.py",
+      "34 scenarios",
+      "31,32,33; indirect16,17,19,29;25/26 lineage only",
+      "unknown -> default30/50/20; object truthiness",
+      "finite state / version guard",
+      "FIX"
+    ],
+    [
+      "app/diagnostics/evaluators.py",
+      "_simple/_record/ComponentEligibilityService",
+      "all61",
+      "AnalysisStatus.VALID -> ELIGIBLE; global registry",
+      "central downstream guards; no producer change",
+      "UNCHANGED"
+    ],
+    [
+      "app/universe_analysis/service.py",
+      "runner / score / _supportive / _state",
+      "31-34 and score",
+      "central consumers; support requires exactSTRONG/HEALTHY",
+      "inherits repair; no Watch/setup change",
+      "UNCHANGED"
+    ],
+    [
+      "app/real_brain/service.py",
+      "score",
+      "score components",
+      "central scorer",
+      "inherits repair",
+      "UNCHANGED"
+    ],
+    [
+      "app/real_brain/fundamental_probe.py",
+      "before/after score",
+      "score components",
+      "central scorer",
+      "inherits repair; no probe run",
+      "UNCHANGED"
+    ],
+    [
+      "app/backtest/analytical.py",
+      "score reconstruction",
+      "score components",
+      "central scorer",
+      "inherits repair",
+      "UNCHANGED"
+    ],
+    [
+      "app/services/audit_reconstruction_service.py",
+      "score replay",
+      "score components",
+      "stored result wrappers; version propagation incomplete",
+      "B07; no migration",
+      "DEFERRED"
+    ],
+    [
+      "app/portfolio/canonical_decision_score_activation.py",
+      "activate",
+      "29/45 mandatory;16/25/26 optional",
+      "central scorer / rehydration",
+      "inherits repair; no activation run",
+      "UNCHANGED"
+    ],
+    [
+      "app/portfolio/canonical_diagnostics_orchestration.py",
+      "rehydration",
+      "all61",
+      "non-INSUFFICIENT_DATA eligible; global V1 stamp",
+      "B07; V2 not persisted/registered",
+      "DEFERRED"
+    ],
+    [
+      "app/portfolio/holding_intelligence.py",
+      "composition",
+      "31/32/33/46",
+      "common synthesis; prefilter record; insuff becomes unavailable",
+      "inherits guard; raw V2 tripwire; B07",
+      "DEFERRED"
+    ],
+    [
+      "app/portfolio/canonical_six_gates_activation.py",
+      "activate",
+      "scorecard",
+      "latest eligible canonical score/version",
+      "B08; no run/change",
+      "DEFERRED"
+    ],
+    [
+      "app/gates/engine.py",
+      "SixGatesEngine",
+      "raw_decision_score",
+      "None insufficient; configured comparisons",
+      "B08 unchanged",
+      "UNCHANGED"
+    ],
+    [
+      "app/crowd/engine.py",
+      "59/60/61",
+      "12,13,14,47,49,55,56,59,60; none of six changed rules",
+      "eligibility/substrings/finite exclusions; unknown can conflict/moderate/hold",
+      "raw V2 tripwire; separate legacy non-financial issue not closed globally",
+      "DEFERRED"
+    ],
+    [
+      "app/crowd/engine.py",
+      "sentiment/confidence/trap_probability",
+      "raw CrowdObservation",
+      "confidence or .5; ordinal conditional model",
+      "not diagnostic text numeric mapper; unchanged",
+      "UNCHANGED"
+    ],
+    [
+      "app/research/engine.py",
+      "moat/governance/guidance/catalysts",
+      "research claims",
+      "categorical models produce VALID, not scoring authority",
+      "unchanged; downstream finite-state gate",
+      "UNCHANGED"
+    ],
+    [
+      "app/intelligence/radar_diagnostic_orchestration.py",
+      "diagnostic projection",
+      "all61",
+      "explicit conflict/policy/NA branches; availability != support",
+      "unchanged; no V2 activation",
+      "UNCHANGED"
+    ],
+    [
+      "app/intelligence/unified_state.py",
+      "shared evidence manifest",
+      "domain references",
+      "identity only; no text->numeric mapping",
+      "B07 future propagation",
+      "UNCHANGED"
+    ],
+    [
+      "app/registry/models.py",
+      "MissingDataPolicy.score_eligibility",
+      "typed DiagnosticState map",
+      "only insufficient/unverified cause ineligibility; no numeric value; no production caller found",
+      "declarative V1 contract unchanged; actual scoring uses explicit new guard",
+      "UNCHANGED"
+    ]
+  ],
+  "missing_conflict_behavior": "Score omits ineligible inputs; mandatory missing -> SCORE_INCOMPLETE/no renormalization. Synthesis omits ineligible inputs; required missing -> INSUFFICIENT_DATA. Eligible conflict/unknown previously unrecognized; now rejected.",
+  "version_behavior": "EvaluatedDiagnostic carries registry version but score/synthesis did not check it. Stored V1 reconstruction globally stamps V1; B07 remains.",
+  "baseline_tests": [
+    "test_decision_score.py",
+    "test_higher_order_diagnostics.py",
+    "test_fundamental_diagnostic_v2_shadow.py"
+  ]
+}

@@ -1,0 +1,413 @@
+{
+  "adapter_source_sha256": "52dd92a52f1f4345cff64178137fbcca3af4c6ed8d0d43f7eb4abe78e366c0d3",
+  "b04_scope": "Diagnostic-to-Decision-Score unknown numeric fallback removed; not a claim that unrelated raw-evidence/crowd models are calibrated.",
+  "baseline_commit": "c2b47b4473b79bc9444a39812eac2bd6d0e33930",
+  "blockers": {
+    "B03": "PARTIALLY_CLOSED",
+    "B04": "CLOSED_FOR_ACTIVATION_SAFETY",
+    "B05": "PARTIALLY_CLOSED",
+    "B06": "PARTIALLY_CLOSED",
+    "B07": "STILL_BLOCKING_ACTIVATION",
+    "B08": "STILL_BLOCKING_ACTIVATION",
+    "B09": "STILL_BLOCKING_ACTIVATION",
+    "B14": "STILL_BLOCKING_ACTIVATION"
+  },
+  "cross_registry_reason": "CROSS_REGISTRY_DIAGNOSTIC_CONSUMPTION_FORBIDDEN",
+  "explicit_values_equal": true,
+  "fingerprint": "sha256:99f348dc513695a2c319a9b43ecb5196a4052daa0be9f5ca984e8b84c959bd23",
+  "fixture_fingerprint": "sha256:04e8deb2b5eff8389635e29e0cf577171b9b261cc40425a3229d440401d09110",
+  "insufficient_sentinel": "Legacy dictionary 0 is retained; contradictory ELIGIBLE+INSUFFICIENT_DATA must now be ineligible, never zero-filled.",
+  "inventory_fingerprint": "sha256:aef278cf96ab175d5d29317d65d6f5c52abf01837250369aacf3faab81104d85",
+  "modified_sources": {
+    "app/diagnostics/synthesis.py": {
+      "after": "c47dae1a5773f324a49bea3e5d41910d7f5626d19f81be2bd1991391cac493a0",
+      "before": "d0473c78f8ef38070c68cf7b9d7cc0ceb36fc653b011bb269b95092226ec7f41"
+    },
+    "app/scoring/engine.py": {
+      "after": "e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+      "before": "f924984b3bdedc390ffb6a3b60a982a8683755217c87b8ae7e1ed56adb686ee3"
+    }
+  },
+  "next_continuation": "FUNDAMENTAL_V2_BRAIN_PORTFOLIO_VERSION_PROPAGATION_V1",
+  "numeric_mapping": {
+    "ACCELERATING": "9",
+    "ACCEPTABLE": "7",
+    "ACCUMULATION": "8",
+    "ATTRACTIVE": "8",
+    "BALANCED": "5",
+    "BEAR": "2",
+    "BEARISH": "2",
+    "BELOW_THRESHOLD": "2",
+    "BROKEN": "0",
+    "BULL": "8",
+    "CANDIDATE": "7",
+    "CLEAN": "8",
+    "CONFIRMED": "8",
+    "DISTRIBUTION": "2",
+    "EXPANDING": "8",
+    "HEALTHY": "7",
+    "INSUFFICIENT_DATA": "0",
+    "INVALIDATED": "0",
+    "MARKDOWN": "2",
+    "MARKUP": "8",
+    "MIXED": "5",
+    "NEUTRAL": "5",
+    "PARTIAL": "5",
+    "REASONABLE": "6",
+    "SEVERE_CONCERN": "0",
+    "STRESSED": "1",
+    "STRONG": "9",
+    "STRONG_BULL": "10",
+    "TRIGGERED": "0",
+    "VALID": "7",
+    "WEAK": "3"
+  },
+  "numeric_scorecard_replays": 30,
+  "preserved_app_files": 543,
+  "preserved_source_fingerprint": "sha256:ea1a49f6b88abf4fb366ca14391ae584d85696b06410a74324a97ad9e3086299",
+  "production_work_performed": false,
+  "schema_version": "fundamental-v2-downstream-safety-receipt/v1",
+  "score_activation": false,
+  "scorecard_equality": true,
+  "shadow_rejections": [
+    {
+      "components": [
+        [
+          "EPS_BASIC_CAGR",
+          "READY"
+        ],
+        [
+          "HSI_STANDARDIZED_OPERATING_EARNINGS",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "ISSUER_REPORTED_EBITDA",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "PAT_CAGR",
+          "READY"
+        ],
+        [
+          "REVENUE_CAGR",
+          "READY"
+        ]
+      ],
+      "core_state": "READY",
+      "envelope_fingerprint": "sha256:c628079e8b1a32344c90973a481fe713c15e2b49949bff815bd2b438f6aa26fd",
+      "reason": "V2_SHADOW_SCORE_FORBIDDEN",
+      "rule_id": 16,
+      "score": null,
+      "source_result_fingerprint": "sha256:22eaa03888349c3672e7cc5c1248937b33dff49cad69ee4a693f6f3ee5521549",
+      "thesis_rejections": {
+        "investment_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "risk": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "scenarios": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "trading_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156"
+      }
+    },
+    {
+      "components": [
+        [
+          "ISSUER_REPORTED_ROE_ROCE",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "ROCE",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "ROE",
+          "READY"
+        ]
+      ],
+      "core_state": "READY",
+      "envelope_fingerprint": "sha256:e646cdbb758a77c2fe8c05b53b64da28e9bc37317be08cd2cdea4349c02bb89f",
+      "reason": "V2_SHADOW_SCORE_FORBIDDEN",
+      "rule_id": 17,
+      "score": null,
+      "source_result_fingerprint": "sha256:6a06b14aeb019bc75383dff15c3dc382fdbd11c7bcc2a3760075ff017359dc1e",
+      "thesis_rejections": {
+        "investment_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "risk": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "scenarios": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "trading_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156"
+      }
+    },
+    {
+      "components": [
+        [
+          "DEBT_EQUITY",
+          "READY"
+        ],
+        [
+          "INTEREST_COVERAGE",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "ISSUER_REPORTED_DEBT_EQUITY",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "NET_DEBT",
+          "POLICY_BLOCKED"
+        ]
+      ],
+      "core_state": "READY",
+      "envelope_fingerprint": "sha256:c8532e5af747bc8d22089fcf17b680b7b6e8a43c57d3a43deccdf91a6138c7a3",
+      "reason": "V2_SHADOW_SCORE_FORBIDDEN",
+      "rule_id": 19,
+      "score": null,
+      "source_result_fingerprint": "sha256:3a03e2a676a3df4d4abf8295adf8194cf9b1f6c004dd774164b471d9bb432fa3",
+      "thesis_rejections": {
+        "investment_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "risk": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "scenarios": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "trading_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156"
+      }
+    },
+    {
+      "components": [
+        [
+          "EPS_BASIC_YOY_QOQ",
+          "READY"
+        ],
+        [
+          "HSI_STANDARDIZED_OPERATING_EARNINGS",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "ISSUER_REPORTED_EBITDA",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "PAT_YOY_QOQ",
+          "READY"
+        ],
+        [
+          "REVENUE_YOY_QOQ",
+          "READY"
+        ]
+      ],
+      "core_state": "READY",
+      "envelope_fingerprint": "sha256:28a57e357c185c1e8945af8071306c8a4dca88b3032348e3c2d3c5e6b355f25d",
+      "reason": "V2_SHADOW_SCORE_FORBIDDEN",
+      "rule_id": 25,
+      "score": null,
+      "source_result_fingerprint": "sha256:da27db337aeb75f50d2434d992fb0ad0119c411289a354e3e94f56273edcc2dd",
+      "thesis_rejections": {
+        "investment_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "risk": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "scenarios": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "trading_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156"
+      }
+    },
+    {
+      "components": [
+        [
+          "GROSS_MARGIN",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "ISSUER_EBITDA_MARGIN",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "NET_PROFIT_MARGIN",
+          "READY"
+        ],
+        [
+          "OPERATING_MARGIN",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "PBT_MARGIN",
+          "INSUFFICIENT_DATA"
+        ]
+      ],
+      "core_state": "READY",
+      "envelope_fingerprint": "sha256:a319a24da175e19751abeba730ee11584124bfe9124f444a626e2388497bcef0",
+      "reason": "V2_SHADOW_SCORE_FORBIDDEN",
+      "rule_id": 26,
+      "score": null,
+      "source_result_fingerprint": "sha256:f6c954efdb5075c79f5fc8e64c4eee8f96f77528cc938b15c014e2a5b48f4d76",
+      "thesis_rejections": {
+        "investment_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "risk": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "scenarios": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "trading_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156"
+      }
+    },
+    {
+      "components": [
+        [
+          "EV_EBITDA",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "FORWARD_PE",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "PB",
+          "POLICY_BLOCKED"
+        ],
+        [
+          "PE",
+          "READY"
+        ],
+        [
+          "PEG",
+          "POLICY_BLOCKED"
+        ]
+      ],
+      "core_state": "READY",
+      "envelope_fingerprint": "sha256:717a403800afd5997dda394fa34754a98b25ebf2c6f97c7ca7d12af71d46113d",
+      "reason": "V2_SHADOW_SCORE_FORBIDDEN",
+      "rule_id": 29,
+      "score": null,
+      "source_result_fingerprint": "sha256:7f9ce338f4242ad156579c49056dccf89775811b2aa1729a8403f67580e69c0f",
+      "thesis_rejections": {
+        "investment_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "risk": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "scenarios": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156",
+        "trading_thesis": "sha256:5d3d62c6eff0b81e14e8f049eca21fbb8bda08859fc340c0af5d17f5798fe156"
+      }
+    }
+  ],
+  "thesis_equality": true,
+  "thesis_matrix_count": 348,
+  "thesis_position_replays": 7656,
+  "thesis_state_count": 87,
+  "unknown_numeric_contribution": null,
+  "v1_active": true,
+  "v2_active": false,
+  "weights_and_dependencies": [
+    {
+      "id": "earnings_acceleration",
+      "mandatory": [
+        24
+      ],
+      "optional": [
+        25,
+        26,
+        16,
+        27,
+        28
+      ],
+      "weight": "0.15"
+    },
+    {
+      "id": "market_regime",
+      "mandatory": [
+        1
+      ],
+      "optional": [],
+      "weight": "0.10"
+    },
+    {
+      "id": "sector_rotation",
+      "mandatory": [
+        2
+      ],
+      "optional": [
+        3
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "smart_money_evidence",
+      "mandatory": [
+        7
+      ],
+      "optional": [
+        9,
+        50,
+        58,
+        22
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "relative_strength",
+      "mandatory": [
+        6
+      ],
+      "optional": [],
+      "weight": "0.10"
+    },
+    {
+      "id": "price_structure",
+      "mandatory": [
+        10
+      ],
+      "optional": [
+        4,
+        5,
+        37,
+        38,
+        40,
+        41,
+        42,
+        46
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "volume_obv_vwap",
+      "mandatory": [
+        11
+      ],
+      "optional": [
+        35,
+        36,
+        58
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "ichimoku_mtf",
+      "mandatory": [
+        12
+      ],
+      "optional": [
+        13,
+        14,
+        59
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "valuation_risk_reward",
+      "mandatory": [
+        29,
+        45
+      ],
+      "optional": [
+        43,
+        44,
+        31
+      ],
+      "weight": "0.10"
+    },
+    {
+      "id": "liquidity_smc_traps",
+      "mandatory": [
+        8
+      ],
+      "optional": [
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        60,
+        61
+      ],
+      "weight": "0.05"
+    }
+  ],
+  "weights_unchanged": true
+}

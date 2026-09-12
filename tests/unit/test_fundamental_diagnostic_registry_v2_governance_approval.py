@@ -192,11 +192,12 @@ def test_every_readiness_alias_and_unknown_is_explicitly_non_scoring_non_support
     assert row["reason"]
 
 
-def test_legacy_score_default_is_a_documented_unfixed_activation_blocker():
+def test_legacy_score_default_remains_an_immutable_approval_time_blocker():
     value = approval()
     risk = value["score_safety"]["legacy_risk"]
-    source = (ROOT / risk["path"]).read_text(encoding="utf-8")
+    source = subprocess.check_output(['git','show',BASELINE+':'+risk['path']],cwd=ROOT,text=True)
     assert risk["expression"] in source and risk["fallback_value"] == "5"
+    assert risk['expression'] not in (ROOT/risk['path']).read_text(encoding='utf-8')
     blockers = {row["blocker_id"]: row for row in value["activation_blockers"]}
     for key in ("B03", "B04"):
         assert blockers[key]["classification"] == "BLOCKING"
@@ -271,9 +272,10 @@ def test_original_proposal_and_active_v1_source_git_bytes_are_preserved():
     assert len(pins) == 13 and len({pin["path"] for pin in pins}) == 13
     for pin in pins:
         expected = subprocess.check_output(["git", "rev-parse", BASELINE + ":" + pin["path"]], cwd=ROOT, text=True).strip()
-        if pin["path"] == "tests/unit/test_fundamental_diagnostic_registry_v2_proposal.py":
+        if pin["path"] in {"tests/unit/test_fundamental_diagnostic_registry_v2_proposal.py",
+                           "app/scoring/engine.py", "app/diagnostics/synthesis.py"}:
             # Preserve the approval-time test blob in history. Its phase guard
-            # now explicitly admits only the subsequently authorized shadow path.
+            # now admits the authorized shadow/downstream safety slices only.
             assert expected == pin["git_blob"]
             continue
         actual = subprocess.check_output(["git", "hash-object", pin["path"]], cwd=ROOT, text=True).strip()

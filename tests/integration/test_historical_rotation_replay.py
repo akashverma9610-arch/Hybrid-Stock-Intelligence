@@ -98,6 +98,17 @@ def test_rotation_audit_tamper_matrix_fails_closed(tmp_path, target):
 
 def test_rotation_approved_and_cash_deployment_event_paths_are_append_only(tmp_path):
     repo, run, candidate, original, scorecard, state = _fixture(tmp_path, raw_score=Decimal("9"))
+    # This positive event-path fixture already supplies a synthetic score.
+    # Supply its confidence explicitly as well: unmapped real diagnostic text
+    # must not manufacture confidence via the removed five-point fallback.
+    incomplete_score_id = scorecard.id
+    assert scorecard.data_confidence is None
+    scorecard = replace(scorecard, id=scorecard.id + "-explicit-confidence", data_confidence=.8)
+    repo.save_decision_scorecard(scorecard)
+    candidate = replace(candidate, evaluation_id=candidate.evaluation_id + "-explicit-confidence",
+                        decision_scorecard_id=scorecard.id)
+    repo.save_historical_analytical_evaluation(candidate)
+    assert repo.get_decision_scorecard(incomplete_score_id).data_confidence is None
     at=candidate.evaluation_timestamp
     gate=ExecutionGateEngine(GATE_CONFIG, __import__("tests.integration.test_historical_analytical_replay", fromlist=["CALENDAR"]).CALENDAR).evaluate(
         instrument_id=candidate.instrument_id, strategy_version=scorecard.strategy_version, registry_version=run.registry_version,

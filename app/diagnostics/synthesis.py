@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from app.analysis.models import AnalysisStatus
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
+from app.diagnostics.downstream import v1_synthesis_rejection
 
 @dataclass(frozen=True, slots=True)
 class SynthesisRules:
@@ -13,7 +14,11 @@ class SynthesisRules:
 class HigherOrderDiagnosticContext:
     as_of_timestamp:object; strategy_version:object; registry_version:str; diagnostics:tuple[EvaluatedDiagnostic,...]; configuration_version:str
     @property
-    def eligible(self): return tuple(x for x in self.diagnostics if x.eligibility is EvaluationEligibility.ELIGIBLE and x.record.as_of_timestamp<=self.as_of_timestamp)
+    def eligible(self):
+        if self.rejection_reason: return ()
+        return tuple({x.canonical_rule_id:x for x in self.diagnostics if x.eligibility is EvaluationEligibility.ELIGIBLE and x.record.as_of_timestamp<=self.as_of_timestamp}.values())
+    @property
+    def rejection_reason(self): return v1_synthesis_rejection(self.diagnostics,self.registry_version,self.as_of_timestamp)
     @property
     def by_rule(self): return {x.canonical_rule_id:x for x in self.eligible}
 @dataclass(frozen=True, slots=True)
@@ -21,8 +26,9 @@ class SynthesisAnalysis:
     state:str; details:tuple[tuple[str,str],...]; input_ids:tuple[str,...]; status:AnalysisStatus; confidence:float|None
 
 def _analysis(state,details,items,confidence=.7): return SynthesisAnalysis(state,tuple(details),tuple(i.record.id for i in items),AnalysisStatus.VALID,confidence)
-def _bad(): return SynthesisAnalysis("INSUFFICIENT_DATA",(),(),AnalysisStatus.INSUFFICIENT_DATA,None)
+def _bad(reason=None): return SynthesisAnalysis("INSUFFICIENT_DATA",(("blocker",reason),) if reason else (),(),AnalysisStatus.INSUFFICIENT_DATA,None)
 def risk(context,rules):
+    if context.rejection_reason:return _bad(context.rejection_reason)
     items=context.eligible
     if not items:return _bad()
     categories=[]
@@ -37,6 +43,7 @@ def risk(context,rules):
     state="SEVERE_RISK" if critical else "HIGH_RISK" if material>=3 else "ELEVATED_RISK" if material else "MODERATE_RISK"
     return _analysis(state,tuple(categories)+(("risk_matrix_semantics","ordinal MODEL_WEIGHTS / RISK_MATRIX_VALUES; not calibrated probability"),("red_flag_present",str(critical))),items,.8)
 def trading_thesis(context,rules):
+    if context.rejection_reason:return _bad(context.rejection_reason)
     d=context.by_rule; missing=[str(x) for x in rules.required_trading if x not in d]
     if missing:return _bad()
     inv=d[46].record.result
@@ -45,12 +52,14 @@ def trading_thesis(context,rules):
     status="STRONG" if len(supporting)>=5 else "VALID" if len(supporting)>=3 else "MIXED"
     return _analysis(status,(("direction","structure-dependent; non-executable"),("supporting_rules",",".join(map(str,supporting))),("invalidation_rule","46"),("required_missing",",".join(missing) or "none")),tuple(d.values()),min(1,.4+.1*len(supporting)))
 def investment_thesis(context,rules):
+    if context.rejection_reason:return _bad(context.rejection_reason)
     d=context.by_rule; present=[x for x in rules.required_investment if x in d]
     if len(present)<len(rules.required_investment):return _bad()
     weak=[x for x in present if d[x].record.result in {"WEAK","STRESSED","SEVERE_CONCERN","INSUFFICIENT_DATA"}]
     status="WEAK" if weak else "STRONG" if len(present)>=5 else "VALID"
     return _analysis(status,(("business_quality_rules","15,16,17,18,19,20,23"),("fundamental_conflicts",",".join(map(str,weak)) or "none"),("horizon","longer-horizon; not an execution recommendation")),tuple(d.values()),.8 if not weak else .5)
 def scenarios(context,rules):
+    if context.rejection_reason:return _bad(context.rejection_reason)
     d=context.by_rule
     if 31 not in d:return _bad()
     risk_state=d[31].record.result; trading=d.get(32); investment=d.get(33)

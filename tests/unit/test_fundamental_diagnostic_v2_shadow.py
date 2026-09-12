@@ -201,13 +201,15 @@ def test_immutability_determinism_utc_decimal_context_and_tamper_rejection():
         FundamentalDiagnosticV2ShadowEvaluator().evaluate(data,registry_version=V2_VERSION,as_of=T,entity_type=E.NON_FINANCIAL)
 
 
-def test_actual_score_and_higher_order_entries_reject_shadow_without_any_adapter():
+def test_actual_score_and_higher_order_entries_fail_closed_with_safety_adapter():
     rows=evaluate()
-    with pytest.raises(ValueError,match="V2_SHADOW_SCORE_FORBIDDEN"):
-        build_scorecard(instrument_id=ID,strategy_version=SimpleNamespace(strategy_id="fixture",version="v1"),
-            registry_version=V2_VERSION,as_of_timestamp=T,evaluated_at=T,diagnostics=rows)
+    score=build_scorecard(instrument_id=ID,strategy_version=SimpleNamespace(strategy_id="fixture",version="v1"),
+        registry_version=V2_VERSION,as_of_timestamp=T,evaluated_at=T,diagnostics=rows)
+    assert score.final_score is None and 'V2_SHADOW_SCORE_FORBIDDEN' in score.warnings
     context=HigherOrderDiagnosticContext(T,None,V2_VERSION,rows,"v1")
-    with pytest.raises(ValueError,match="V2_SHADOW_SCORE_FORBIDDEN"): investment_thesis(context,SynthesisRules())
+    result=investment_thesis(context,SynthesisRules())
+    assert result.state=='INSUFFICIENT_DATA'
+    assert dict(result.details)['blocker']=='CROSS_REGISTRY_DIAGNOSTIC_CONSUMPTION_FORBIDDEN'
     with pytest.raises(ValueError,match="CONSUMER_FORBIDDEN"): rows[0].record
 
 

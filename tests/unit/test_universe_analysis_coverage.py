@@ -218,7 +218,10 @@ def test_e2e_candidates_are_materialized_only_from_job_outputs_and_reused_by_rot
     assert qualified == ()  # Rule 4/14 remain fail-closed without distinct canonical timeframe bars.
     assert next(item for item in candidates if item.instrument_id == "D").qualification_status == "PARTIAL"
     incomplete = next(item for item in candidates if item.instrument_id == "E")
-    assert incomplete.decision_score is not None and incomplete.qualification_status == "PARTIAL"
+    # Several real V1 output labels have no explicit numeric score mapping.
+    # Removing their old implicit 5-point defaults now correctly leaves the
+    # score incomplete without changing candidate/rotation eligibility policy.
+    assert incomplete.decision_score is None and incomplete.qualification_status == "PARTIAL"
     assert all(item.analysis_snapshot_id.startswith("universe-stock:") and item.scorecard_id and item.confidence is not None for item in candidates)
     rotation = PortfolioUniverseRotationService(
         store=store,
