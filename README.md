@@ -79,6 +79,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Fundamental V2 Six Gates Provenance Repair (source binding; activation still blocked)](docs/architecture/FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_REPAIR.md)
 - [Fundamental V2 Six Gates Source Authority Repair 2 (independent score/holding authority; remaining sources blocked)](docs/architecture/FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_REPAIR_2.md)
 - [Final Six Gates authority routing closure (B08 compatibility closed; production source readiness separate and blocked)](docs/architecture/FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_REPAIR_3.md)
+- [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)
