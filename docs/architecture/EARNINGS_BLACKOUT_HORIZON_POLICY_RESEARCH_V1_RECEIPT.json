@@ -1,0 +1,86 @@
+{
+  "contract_id": "earnings-blackout-horizon-policy-research",
+  "contract_version": "v1",
+  "baseline_commit": "dc07af85a366c7fa136806abfd81c8cb81382b0d",
+  "active_gate6": {
+    "policy_id": "six-gates-production-v1",
+    "blackout_sessions": 5,
+    "status": "UNCHANGED",
+    "origin_classification": "STRATEGY_ASSUMPTION",
+    "origin_provenance": "UNKNOWN"
+  },
+  "current_regulation_29": {
+    "minimum_notice": "AT_LEAST_TWO_WORKING_DAYS",
+    "exclusions": ["INTIMATION_DATE", "MEETING_DATE"],
+    "authoritative_notice_guarantees_t_minus_5": false,
+    "source": "https://www.nseindia.com/static/companies-listing/compliance-information-compliance-calendar-main-board"
+  },
+  "historical_rule_guard": {
+    "required": "EFFECTIVE_DATED_REGULATION_VERSION_REQUIRED_FOR_REPLAY",
+    "current_rule_retroactive": false,
+    "old_rule_current": false,
+    "source": "https://www.sebi.gov.in/sebi_data/attachdocs/apr-2020/1587109438485.pdf"
+  },
+  "source_authority": {
+    "earlier_authoritative_t_minus_5_source_proven": false,
+    "complete_negative_absence_proof_proven": false,
+    "analyst_broker_ai_estimate_allowed": false
+  },
+  "three_state_clearance": {
+    "states": ["BLOCKED", "CLEAR", "UNKNOWN"],
+    "current_clear_supported": false,
+    "unknown_is_clear": false,
+    "known_positive_event_can_block_after_admission": true
+  },
+  "pilot_minimum": [
+    "TRUSTED_POSITIVE_SCHEDULE_BLOCKS",
+    "UNKNOWN_SCHEDULE_SURFACED",
+    "NO_FABRICATED_CLEAR",
+    "NO_PREDICTED_EARNINGS_DATE",
+    "NO_HISTORICAL_BACKDATING"
+  ],
+  "policy_options": [
+    {
+      "id": "A",
+      "name": "KEEP_FIXED_5_SESSION_HARD_GATE",
+      "source_feasible_now": false,
+      "pit_safe": true,
+      "requires_gate_policy_v2": false
+    },
+    {
+      "id": "B",
+      "name": "VERIFIED_SCHEDULE_DYNAMIC_HARD_BLOCK",
+      "source_feasible_now": false,
+      "pit_safe": true,
+      "requires_gate_policy_v2": true
+    },
+    {
+      "id": "C",
+      "name": "VERIFIED_HARD_BLOCK_PLUS_SOFT_RESULTS_SEASON_CONTEXT",
+      "source_feasible_now": false,
+      "pit_safe": true,
+      "requires_gate_policy_v2": true
+    },
+    {
+      "id": "D",
+      "name": "UNKNOWN_SCHEDULE_ALWAYS_BLOCKS_ENTRY",
+      "source_feasible_now": true,
+      "pit_safe": true,
+      "requires_gate_policy_v2": true
+    },
+    {
+      "id": "E",
+      "name": "EARLIER_AUTHORITATIVE_SOURCE_REQUIRED",
+      "source_feasible_now": false,
+      "pit_safe": true,
+      "requires_gate_policy_v2": false
+    }
+  ],
+  "final_decision": "VERIFIED_HARD_BLOCK_PLUS_SOFT_RISK_CONTEXT_RECOMMENDED",
+  "next_continuation": "EARNINGS_BLACKOUT_POLICY_V2_PROPOSAL",
+  "next_continuation_started": false,
+  "v1_active": true,
+  "v2_active": false,
+  "gate6_wired": false,
+  "fingerprint": "sha256:6d3bd12d7d9fad82bc63478c939fc09dfae771479362d08e38d16ff13697be6d"
+}
