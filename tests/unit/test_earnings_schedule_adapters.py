@@ -131,8 +131,9 @@ def test_nse_xbrl_exact_fields_linkage_and_date_consistency():
     assert row.field("symbol") == "APARINDS" and row.field("isin") == "INE372A01015"
     with pytest.raises(ValueError, match="CONFLICT"):
         parse_nse_prior_intimation(xbrl().replace(b"2026-10-16", b"2026-10-17"), parse_nse_rss(rss())[0])
-    with pytest.raises(ValueError):
-        parse_nse_prior_intimation(xbrl()[:-7] + b'<p:Agenda2>Dividend</p:Agenda2></xbrl>', parse_nse_rss(rss())[0])
+    multiple = parse_nse_prior_intimation(xbrl()[:-7] + b'<p:Agenda2>Dividend</p:Agenda2></xbrl>', parse_nse_rss(rss())[0])
+    assert multiple.field("agenda_2") == "Dividend"
+    assert classify(multiple).classification == P.FINANCIAL_RESULTS_UNSPECIFIED
 
 
 def test_bse_observed_detail_structure_retains_both_exchange_times():

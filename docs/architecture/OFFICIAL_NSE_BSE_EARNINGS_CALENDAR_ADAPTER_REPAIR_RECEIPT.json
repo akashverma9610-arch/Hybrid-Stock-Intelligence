@@ -1,0 +1,1031 @@
+{
+  "receipt_version": "official-earnings-calendar-discovery-repair-audit/v1",
+  "baseline_commit": "018d28e0a8a3666093c070d40f08a0b16e67fea5",
+  "authority": "UNVERIFIED_SOURCE_AUTHORITY",
+  "gate6_integrated": false,
+  "freshness": "POLICY_BLOCKED",
+  "controls": {
+    "https_only": true,
+    "maximum_response_bytes": 2097152,
+    "timeout_seconds": 10,
+    "canary_link_cap": 8,
+    "canary_link_pacing_seconds": 1,
+    "automatic_retries": 0,
+    "credentials_used": false,
+    "cookies_used": false,
+    "private_endpoints_used": false,
+    "production_writes": 0
+  },
+  "archaeology": {
+    "nse_board": {
+      "url": "https://www.nseindia.com/companies-listing/corporate-filings-board-meetings",
+      "http_status": 200,
+      "bytes": 334321,
+      "sha256": "fb2442a8868577d523c157238066804da5104cff314b0e3a6130b951dfd7eaf5",
+      "download_controls": [
+        {
+          "id": "CFboardmeetingEquity-download",
+          "href": "#",
+          "data_url": ""
+        },
+        {
+          "id": "CFboardmeetingSME-download",
+          "href": "#",
+          "data_url": ""
+        }
+      ],
+      "csv_admitted": false,
+      "reason": "NO_DIRECT_PUBLIC_DOWNLOAD_URL",
+      "company_window_protocol": "UNPROVEN",
+      "site_ist_label": "UNRELATED_MARKET_SNAPSHOT_NOT_FIELD_AUTHORITY"
+    },
+    "nse_web_table": {
+      "url": "https://nsearchives.nseindia.com/corporate/ixbrl/PRIOR_INTIMATION_75266_12012026173231_iXBRL_WEB.html",
+      "http_status": 200,
+      "bytes": 7585,
+      "sha256": "430ffa4344daee9a70230efdd169d777db130f7a5f77985d23ccae94ee790e03",
+      "scope": "HISTORICAL_MARKUP_ARCHAEOLOGY_ONLY_NOT_CANARY_OR_INGESTION",
+      "symbol": "NITINFIRE",
+      "isin": "INE489H01020",
+      "type": "Re-schedule (postpone or prepone)",
+      "proposed_meeting": "2026-01-16",
+      "original_meeting": "2026-01-15",
+      "reason_retained": true,
+      "date_of_report": "2026-01-12",
+      "public_known_at": null,
+      "parent_filing_link": null,
+      "representation": "PUBLIC_RENDERED_TABLE_NOT_INLINE_XBRL_FACT_TAGS"
+    },
+    "bse_listing": {
+      "url": "https://m.bseindia.com/corporates.aspx",
+      "http_status": 200,
+      "bytes": 38417,
+      "sha256": "5a76900859da77fc52f13b902036ddefdf74d88b45b71742f8598127e1939624",
+      "detail_query_keys": [
+        "newsid",
+        "flag",
+        "type",
+        "scrip_CD"
+      ],
+      "complete_company_window_protocol": "UNPROVEN",
+      "desktop_shell_retried": false
+    }
+  },
+  "canary": {
+    "retrieved_at_nse": "2026-09-12T16:45:50.472094+00:00",
+    "retrieved_at_bse": "2026-09-12T16:45:59.458377+00:00",
+    "requested_window": [
+      "2026-08-29",
+      "2026-10-27"
+    ],
+    "population_count": 31,
+    "request_count": 8,
+    "requests": [
+      "https://nsearchives.nseindia.com//content/RSS/Board_Meetings.xml",
+      "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_23772_WebXMLFile_20260912_202646725.xml",
+      "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_17560_WebXMLFile_20260912_191018378.xml",
+      "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_17560_WebXMLFile_20260912_185248969.xml",
+      "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_21174_WebXMLFile_20260912_155540077.xml",
+      "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_26873_WebXMLFile_20260912_152100453.xml",
+      "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_21173_WebXMLFile_20260912_130625767.xml",
+      "https://m.bseindia.com/corporates.aspx"
+    ],
+    "nse": {
+      "inventory_rows": 12,
+      "linked_documents_requested": 6,
+      "linked_documents_parsed": 6,
+      "source_side_symbol_isin_rows": 6,
+      "unique_source_pairs": 5,
+      "exact_links_proven": 6,
+      "inventory_fingerprint": "sha256:76d2c37a64bb60025bc012788c333548908dfc0e7b52a91a1dc5f9c351291684",
+      "inventory_state": "SOURCE_PARTIAL",
+      "individual_source_queries": 0,
+      "local_company_match_attempts": 31,
+      "canonical_matched": 0,
+      "timezone_proofs": 0,
+      "known_at_authority_proofs": 0,
+      "complete_windows": 0,
+      "current_descriptive": 0,
+      "strict_pit": 0
+    },
+    "bse": {
+      "state": "SOURCE_PARTIAL",
+      "reason": "RECENT_LIST_WINDOW_COVERAGE_UNPROVEN",
+      "source_fingerprint": "sha256:5088c686b49ea298760bb11b39d527f526b7ed06dd1084a332977c69804be9f1",
+      "http_status": 200,
+      "bytes": 38636,
+      "inventory_rows": 10,
+      "board_intimation_headlines": 0,
+      "individual_source_queries": 0,
+      "canonical_matched": 0,
+      "complete_windows": 0,
+      "current_descriptive": 0,
+      "strict_pit": 0
+    },
+    "linked_artifacts": [
+      {
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_23772_WebXMLFile_20260912_202646725.xml",
+        "http_status": 200,
+        "bytes": 2669,
+        "source_fingerprint": "sha256:67bddc11448ddf57ceab8aff079d9454597e677a0e29622d884214de32c73679",
+        "state": "SOURCE_PARTIAL",
+        "reason": "LINKED_FILING_NOT_DISCOVERY_COVERAGE"
+      },
+      {
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_17560_WebXMLFile_20260912_191018378.xml",
+        "http_status": 200,
+        "bytes": 2870,
+        "source_fingerprint": "sha256:dfddb1e7312ecdf2313e06945f65c11fca30b47d6da253a1e7ab3920e74cbd69",
+        "state": "SOURCE_PARTIAL",
+        "reason": "LINKED_FILING_NOT_DISCOVERY_COVERAGE"
+      },
+      {
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_17560_WebXMLFile_20260912_185248969.xml",
+        "http_status": 200,
+        "bytes": 2870,
+        "source_fingerprint": "sha256:dfddb1e7312ecdf2313e06945f65c11fca30b47d6da253a1e7ab3920e74cbd69",
+        "state": "SOURCE_PARTIAL",
+        "reason": "LINKED_FILING_NOT_DISCOVERY_COVERAGE"
+      },
+      {
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_21174_WebXMLFile_20260912_155540077.xml",
+        "http_status": 200,
+        "bytes": 2553,
+        "source_fingerprint": "sha256:2d380db6a354a43185fd91d7af961d1a3e8ded22c33b389d5982f2c243025321",
+        "state": "SOURCE_PARTIAL",
+        "reason": "LINKED_FILING_NOT_DISCOVERY_COVERAGE"
+      },
+      {
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_26873_WebXMLFile_20260912_152100453.xml",
+        "http_status": 200,
+        "bytes": 3391,
+        "source_fingerprint": "sha256:856e5cf26ed981e09b1eecc7ef925cb52863bf2bb08989beb26ac4ff0619dc2d",
+        "state": "SOURCE_PARTIAL",
+        "reason": "LINKED_FILING_NOT_DISCOVERY_COVERAGE"
+      },
+      {
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_21173_WebXMLFile_20260912_130625767.xml",
+        "http_status": 200,
+        "bytes": 2937,
+        "source_fingerprint": "sha256:1f24d0e5888388512508cefa729c2431a7be1b098c07b8d54187e98af0623450",
+        "state": "SOURCE_PARTIAL",
+        "reason": "LINKED_FILING_NOT_DISCOVERY_COVERAGE"
+      }
+    ],
+    "structured_rows": [
+      {
+        "symbol": "AVANTEL",
+        "isin": "INE005B01027",
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_23772_WebXMLFile_20260912_202646725.xml",
+        "source_fingerprint": "sha256:ef3fc1f485e32716efb3931dbdc870cac5948f23dd31686dd11ea81b5664f73f",
+        "inventory_fingerprint": "sha256:11a10b697055d2b13a50001ae0e99abeb939ab3fb3addb089e5f9c9934e1879b",
+        "document_fingerprint": "sha256:67bddc11448ddf57ceab8aff079d9454597e677a0e29622d884214de32c73679",
+        "meeting_date": "2026-09-18",
+        "intimation_type": "New",
+        "agenda": [
+          [
+            "agenda_1",
+            "Amalgamation"
+          ]
+        ],
+        "purpose": "NON_QUALIFYING",
+        "date_of_report": "2026-09-12",
+        "audit_basis": null,
+        "scope": null,
+        "period_type": null,
+        "period_month": null,
+        "period_year": null,
+        "disseminated_raw": "12-Sep-2026 20:26:49"
+      },
+      {
+        "symbol": "GFSTEELS",
+        "isin": "INE534A01028",
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_17560_WebXMLFile_20260912_191018378.xml",
+        "source_fingerprint": "sha256:42ea5e9fddccee699a3b293ca64b0aafed014a650381c926142effa7b75560e9",
+        "inventory_fingerprint": "sha256:5c1316a22e96cc40926ba0ae8f411afd2afbdec0a3c397bb21661e811aefd34e",
+        "document_fingerprint": "sha256:dfddb1e7312ecdf2313e06945f65c11fca30b47d6da253a1e7ab3920e74cbd69",
+        "meeting_date": "2026-09-17",
+        "intimation_type": "New",
+        "agenda": [
+          [
+            "agenda_1",
+            "Fund raising"
+          ]
+        ],
+        "purpose": "NON_QUALIFYING",
+        "date_of_report": "2026-09-12",
+        "audit_basis": null,
+        "scope": null,
+        "period_type": null,
+        "period_month": null,
+        "period_year": null,
+        "disseminated_raw": "12-Sep-2026 19:10:20"
+      },
+      {
+        "symbol": "GFSTEELS",
+        "isin": "INE534A01028",
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_17560_WebXMLFile_20260912_185248969.xml",
+        "source_fingerprint": "sha256:93dc25e63ff89b1517ce11fffd69a3dbe90af5b5467a9da0fffd8b2ab12f7488",
+        "inventory_fingerprint": "sha256:c1b9e0b0cfff425c23a1a40bf17f63e22939d44d4c40f12f541f324838520dcd",
+        "document_fingerprint": "sha256:dfddb1e7312ecdf2313e06945f65c11fca30b47d6da253a1e7ab3920e74cbd69",
+        "meeting_date": "2026-09-17",
+        "intimation_type": "New",
+        "agenda": [
+          [
+            "agenda_1",
+            "Fund raising"
+          ]
+        ],
+        "purpose": "NON_QUALIFYING",
+        "date_of_report": "2026-09-12",
+        "audit_basis": null,
+        "scope": null,
+        "period_type": null,
+        "period_month": null,
+        "period_year": null,
+        "disseminated_raw": "12-Sep-2026 18:52:51"
+      },
+      {
+        "symbol": "MOTISONS",
+        "isin": "INE0FRK01020",
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_21174_WebXMLFile_20260912_155540077.xml",
+        "source_fingerprint": "sha256:05831bfbdf26016c95f579a4ef07655f1ce69aac2d72cbc531a9d6bff0d5992d",
+        "inventory_fingerprint": "sha256:590d0ba3c3e212a9ec9bfbbc9e786485ad3c1fddc90100be5f56eb4c62ced68a",
+        "document_fingerprint": "sha256:2d380db6a354a43185fd91d7af961d1a3e8ded22c33b389d5982f2c243025321",
+        "meeting_date": "2026-09-17",
+        "intimation_type": "New",
+        "agenda": [
+          [
+            "agenda_1",
+            "Other business"
+          ]
+        ],
+        "purpose": "AMBIGUOUS",
+        "date_of_report": "2026-09-12",
+        "audit_basis": null,
+        "scope": null,
+        "period_type": null,
+        "period_month": null,
+        "period_year": null,
+        "disseminated_raw": "12-Sep-2026 15:55:42"
+      },
+      {
+        "symbol": "HTEL",
+        "isin": "INE0LEG01024",
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_26873_WebXMLFile_20260912_152100453.xml",
+        "source_fingerprint": "sha256:588f5c46c8383355432e79e80f5f076ca49d0c3cb0e4c4935a233fa27b8db128",
+        "inventory_fingerprint": "sha256:c29a76d8937795b1b0d0563d1e861c4cb2a46b1778258ee7471120361599888a",
+        "document_fingerprint": "sha256:856e5cf26ed981e09b1eecc7ef925cb52863bf2bb08989beb26ac4ff0619dc2d",
+        "meeting_date": "2026-09-18",
+        "intimation_type": "New",
+        "agenda": [
+          [
+            "agenda_1",
+            "Financial results"
+          ]
+        ],
+        "purpose": "FINANCIAL_RESULTS_UNSPECIFIED",
+        "date_of_report": "2026-09-12",
+        "audit_basis": "Unaudited",
+        "scope": "Standalone",
+        "period_type": "Quarterly",
+        "period_month": "June",
+        "period_year": "2026",
+        "disseminated_raw": "12-Sep-2026 15:21:03"
+      },
+      {
+        "symbol": "ANLON",
+        "isin": "INE0LR101013",
+        "url": "https://nsearchives.nseindia.com/corporate/xbrl/PRIOR_INTIMATION_21173_WebXMLFile_20260912_130625767.xml",
+        "source_fingerprint": "sha256:2804b31826dd2630d7099a43765d3fc251f618bbfac818c64b4a8c86ef799d18",
+        "inventory_fingerprint": "sha256:c609760008bde8b4618753493896c100899f3ea32dcb8340eaa77cfa9e3b3ad8",
+        "document_fingerprint": "sha256:1f24d0e5888388512508cefa729c2431a7be1b098c07b8d54187e98af0623450",
+        "meeting_date": "2026-09-17",
+        "intimation_type": "New",
+        "agenda": [
+          [
+            "agenda_1",
+            "Increase in authorised capital"
+          ],
+          [
+            "agenda_2",
+            "Bonus"
+          ],
+          [
+            "agenda_3",
+            "Other business"
+          ]
+        ],
+        "purpose": "AMBIGUOUS",
+        "date_of_report": "2026-09-12",
+        "audit_basis": null,
+        "scope": null,
+        "period_type": null,
+        "period_month": null,
+        "period_year": null,
+        "disseminated_raw": "12-Sep-2026 13:06:28"
+      }
+    ],
+    "companies": [
+      {
+        "instrument": "NSE:INE002A01018",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:4015416b33b6e94a4f066fac7dd1c639c906ad0b9323d7772fd04a39ac54f0e0",
+        "bse_receipt_fingerprint": "sha256:966118e4f63f2e33d65ce8155c1838f94ae8c1bdbac1343b41f2435396fe824b"
+      },
+      {
+        "instrument": "NSE:INE002L01015",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:93d4f4bf97301b4aeafc99bdb5cad11d8c1c8b23491a6cf1f091d8a01dad2d6c",
+        "bse_receipt_fingerprint": "sha256:9751013ff8572c3d7013f5d1bc887693bbbdabb55cbefb31590d6849a0280da8"
+      },
+      {
+        "instrument": "NSE:INE002S01010",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:35b809bfe2c6a0123fa328d4ba5eaa3f9315e2cec6d016776fc408c9dcbb2a22",
+        "bse_receipt_fingerprint": "sha256:ffc9c9cabb2d060d11e73d4f9cb64c71ece32b6f4fbe3086f4b54e06f4219699"
+      },
+      {
+        "instrument": "NSE:INE003A01024",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:d02d8e4f84156c2bfa5f6bec0db0df615ad5b90212e61a0f710ae70cd73b6811",
+        "bse_receipt_fingerprint": "sha256:d7c5f8498e8ff06763c4306d28465bdf323628967df81955fcd354c4a8be2cf1"
+      },
+      {
+        "instrument": "NSE:INE006I01046",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:2e8445e5e4a04541af2c1621a5931113082875b3a06c66f48eca8a2b10b7a801",
+        "bse_receipt_fingerprint": "sha256:a6e6b5301afc0aee0ec35cf6f921b0d77b0e8eeebcbdcd801f7c199e4b4fb374"
+      },
+      {
+        "instrument": "NSE:INE007A01025",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:b3b238e531bcfdf3670e2e21fa529be6c6b3a4c7dd4720294be9030c992beb8c",
+        "bse_receipt_fingerprint": "sha256:dc8652d487bf2b6f464e2cd6e9dee07f8346529284b3a328ba16fadf2a7c5087"
+      },
+      {
+        "instrument": "NSE:INE008A01015",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:390e60a115727c755e9bef20229677e5f40189406f101f637dc6c709ae334f6b",
+        "bse_receipt_fingerprint": "sha256:76b7e2aec699a8f203e3acaef974055d24e44ebd7143d87bb0fab8694c10a5b8"
+      },
+      {
+        "instrument": "NSE:INE009A01021",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:c357980f6f5788ce3ac3e8699816c1e65416715d2328f1fcfacaf7e6a1e507a2",
+        "bse_receipt_fingerprint": "sha256:8af09b47ea2205088076f7d8695bee604336a16e9d0b546498d845336fa6339c"
+      },
+      {
+        "instrument": "NSE:INE00E101023",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:9f980dfe77af74a0a7a23e6ce8eb06b851c62dfb96d033d61c968700e158f359",
+        "bse_receipt_fingerprint": "sha256:b6bd9dcc910642154f57d74238454b1f09fe28fad34ba396d05b57b9e658b258"
+      },
+      {
+        "instrument": "NSE:INE00FF01025",
+        "registry_symbol": null,
+        "historical_identity_state": "NOT_EFFECTIVE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:4e741ec5852b1a73a3aa29c8587f3855065ad8e99b1bdfb5dfdf6b434b8ababa",
+        "bse_receipt_fingerprint": "sha256:5d5d929d8bf14083444c5d9d5354bbfa976cce276216dee54eaeb9932ebb7f3a"
+      },
+      {
+        "instrument": "NSE:INE00H001014",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:12bd04cbd21dde9259d99abe903f90d2554c736733347527500eac3207ff9ace",
+        "bse_receipt_fingerprint": "sha256:8da8246c158374e06a2951f15c0648a657deeb1cccf6d2ac1ebd1018538a99ec"
+      },
+      {
+        "instrument": "NSE:INE00LO01017",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:7ce1b8e60bd0c62ed77d4e82fdfdc5fbbd8ff8df7b2fbe47fde920e57b34c202",
+        "bse_receipt_fingerprint": "sha256:0d9b76ec503baa0e924543a1aa7fc02f13a5e6f8c9e48906c6ee4345dfea821a"
+      },
+      {
+        "instrument": "NSE:INE00R701025",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:7b6b0c1b6b29d69a5a20a347f2a0ef412eb611ff143950656d131583f925e4c3",
+        "bse_receipt_fingerprint": "sha256:adef6d409df9c2c2b4e183ab8497e9bbdd4080f459b798167630835a6310f0e6"
+      },
+      {
+        "instrument": "NSE:INE00WC01027",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:43f2ea32c0e0889f9119772bc9f3aa25c466e7f0c82cc7dce3d6ebf3f9f4c4e1",
+        "bse_receipt_fingerprint": "sha256:6b7f3076a8765bb7de398ffa67c3f61db104bb6001105e04dceb7779231a9b80"
+      },
+      {
+        "instrument": "NSE:INE010B01027",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:1cccbe712e60c94f744d54eeeb6fe068ce05ea12f42242e8194b33ee7338380b",
+        "bse_receipt_fingerprint": "sha256:e073d0a021943d0c109b48980c45ab83c51001b3b1a40648dd34b4dbdd5e35a1"
+      },
+      {
+        "instrument": "NSE:INE010J01012",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:f4b57e07bbd52b12110ec3e69a3f8978d6b7b8682dbd992b65eb1ed085a44328",
+        "bse_receipt_fingerprint": "sha256:e3c1757b1bff0ec6a6b63edb96082b0098bd089d916b935c50703c06e0a353f4"
+      },
+      {
+        "instrument": "NSE:INE010V01017",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:9acd629bd6bd9132714e9877df7cf91367d4cce523646c0a2e26acc2f23c47f6",
+        "bse_receipt_fingerprint": "sha256:b891854e009200c6efc38f1f85a76dc6b1d30a58f5760b574d3e3353a81adc8d"
+      },
+      {
+        "instrument": "NSE:INE011K01018",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:b8f03e49767033789f45394c8413c89e07dd462d41fdc25da719981101413bf8",
+        "bse_receipt_fingerprint": "sha256:50826b147e7e9daf93a203c45b88d61a59c7adc594eb01d1f8b039755d4f734b"
+      },
+      {
+        "instrument": "NSE:INE012A01025",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:ffb04a8e4ee53ed8afbc6444697ba35dd66d0080cf4e4552b38fb5ccb2938a86",
+        "bse_receipt_fingerprint": "sha256:254cd023661a4c89a23dba95f414d6717ca342c14e7dee3f84a6250c401e8505"
+      },
+      {
+        "instrument": "NSE:INE013P01021",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:95db20e839e830758c09d51a64e18edf757b62211958d9e238353b6ef6c8d27c",
+        "bse_receipt_fingerprint": "sha256:b7d42fb2953ac39f6c17f63b0ba548b9b5c89deb26224616075a92283ceb46b9"
+      },
+      {
+        "instrument": "NSE:INE016A01026",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:c62eb04a5a02abb5cbf752ed4ab83e59373e1ca27598c8a1ae46666ecc18d845",
+        "bse_receipt_fingerprint": "sha256:371b903ced2dd3ce9b32709952f70520ff9b856be91ce2c846c96570717b986e"
+      },
+      {
+        "instrument": "NSE:INE017A01032",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:6cdd03ebc5d179c678d7c2b18e0e5e471ed64201699c43684fa657addd5f95e7",
+        "bse_receipt_fingerprint": "sha256:76d0c58b701f1c8021778367e3e62a066b394bd3fb988cc0d1169325304eb9ed"
+      },
+      {
+        "instrument": "NSE:INE018A01030",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:111bc79009176f3c513888959df0e939fbc561473a611258577e2974705720f0",
+        "bse_receipt_fingerprint": "sha256:3dce674631d49e0e4f65474c865166006cfcc5d14a57461eedd5c9bf9e5f5dfc"
+      },
+      {
+        "instrument": "NSE:INE068V01023",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:d402aea17f2cfacdbdcebb0995962fb4bc1def6ae0f48253562b16afca663d60",
+        "bse_receipt_fingerprint": "sha256:449dd45f08e5cb48c0a6673ebb507990b8e5767fcb1f1289daa94b07ed35e53c"
+      },
+      {
+        "instrument": "NSE:INE090A01021",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:e124d776a6cf7e0ba0e8a362fba707a96a2b66a77e01e5a105794c1f2b0a92e4",
+        "bse_receipt_fingerprint": "sha256:1f0ee0c2519964ab21ffe7274ef703c21ddb022d22a113a37a42e21a8e5af5fd"
+      },
+      {
+        "instrument": "NSE:INE0FHS01024",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:a61429553db5bde24b06e863e4bbd2d161dad10aa1efc38653eba5016f507e0c",
+        "bse_receipt_fingerprint": "sha256:d0e2706b54fb01fc4e8d4e738c99636e84118c873b1af0d05e265b465ef7f40e"
+      },
+      {
+        "instrument": "NSE:INE0PPK01015",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:139282c3e9117d39d2ad8b1e57f23d786f201741555dc16e30bfff29f2cdc112",
+        "bse_receipt_fingerprint": "sha256:91515503456d8c4857fcfc24d5788564adac4fa0c0a2b652052faf5153143a94"
+      },
+      {
+        "instrument": "NSE:INE372A01015",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:5d277b008f6f123d75ee33f7fbbfdc698a3601384397e51f36d47724968cd484",
+        "bse_receipt_fingerprint": "sha256:0228edb9c1c4f1adbb9bc9b01dd4bc98d2949aee6368d87eb845500a6a68bd06"
+      },
+      {
+        "instrument": "NSE:INE429E01023",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:c2892f0d491a272120277597004096a34a2d69c805c4a2d26f0e075f0ad9929e",
+        "bse_receipt_fingerprint": "sha256:7a0a139b285dce007adf3e0621e06b7288ef10247d5ed31eaab245af9f7f067d"
+      },
+      {
+        "instrument": "NSE:INE437A01024",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:cb1e4aa1917481a316a42342ad23253e6f7b1eba2a379b4dbc83019db4bb4ce4",
+        "bse_receipt_fingerprint": "sha256:e054441c7052a56c7ab093f9638be23ac642a87592f4fbfadfe0641916d80638"
+      },
+      {
+        "instrument": "NSE:INE955D01029",
+        "registry_symbol": null,
+        "historical_identity_state": "DATA_UNAVAILABLE",
+        "identity_query_state": "IDENTITY_UNRESOLVED",
+        "nse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "bse_query": "WINDOW_COVERAGE_UNPROVEN",
+        "local_exact_match_attempted": true,
+        "nse_matching_documents": 0,
+        "current_descriptive": 0,
+        "strict_pit": 0,
+        "future_schedule_state": "UNPROVEN_NOT_ABSENT",
+        "known_at": "UNAVAILABLE",
+        "complete_window": false,
+        "nse_receipt_fingerprint": "sha256:927ed467730b3047d9a7a431493dd4e0ceca1f1b9d5df281ed862f63ac1a54ae",
+        "bse_receipt_fingerprint": "sha256:013942a3a024c54947f62ead5583312ba1d96baa7e272e93d20a48e8adc1d40e"
+      }
+    ],
+    "replay_equal": true,
+    "production_writes": 0
+  },
+  "identity_audit": {
+    "historical_snapshot_count": 201,
+    "current_effective_targets": 0,
+    "data_unavailable_targets": 30,
+    "not_effective_targets": 1,
+    "not_effective_instrument": "NSE:INE00FF01025",
+    "instrument_table_count": 0,
+    "identity_snapshot_source": "NSE_CM_UDIFF_FINAL_BHAVCOPY",
+    "no_name_or_current_master_fallback": true
+  },
+  "protected_before": {
+    "financial_facts": {
+      "count": 6118,
+      "sha256": "9a1853e3d71f81bdbaa8d992265f1f73df86f3b01e0db00be30db642bae3d5cb"
+    },
+    "corporate_filings": {
+      "count": 455,
+      "sha256": "115753df27459650c96188db78a86f7a9ff74208952e4d639fe139a80ea00b15"
+    },
+    "portfolio_snapshots": {
+      "count": 1,
+      "sha256": "a52f70cfc65322f97fa9190622ff0071886faacb2e9c37ad8cd230d86f2bfdd2"
+    },
+    "canonical_diagnostic_strategy_definitions": {
+      "count": 1,
+      "sha256": "8662120b2aaaa8fbdef7a050c2f0680785318eb0acd14b43e16ffe65bbd16df7"
+    },
+    "canonical_diagnostic_results": {
+      "count": 2074,
+      "sha256": "bbd39111915a2fe1e9c56d9d6a9b5e0e5f99537f3d89d49ce806eb542d69eae7"
+    },
+    "execution_gate_evaluations": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "canonical_execution_gate_evaluations": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "strategy_versions": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_results": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "paper_trades": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "trade_plans": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "portfolio_transactions": {
+      "count": 5,
+      "sha256": "3eefb3103db3b4b3853501572a716d8687d3a3b243b85f97bee508fe3956b742"
+    },
+    "portfolios": {
+      "count": 1,
+      "sha256": "e63363a6b7a3afb06427750a6bf8daa6ff1cbfb45870e426ab9b06881938af0c"
+    }
+  },
+  "protected_before_matches_previous": true,
+  "schema_fingerprint_before": "d4f2278d6e13166da01a701f92220d8bd92ccfac09120f5e7ca1600888ccf829",
+  "cash_state": "UNKNOWN",
+  "production_schedule_tables_created": 0,
+  "source_revision_counts": {
+    "canary_structured_reschedules": 0,
+    "canary_cancellations": 0,
+    "canary_conflicts": 0,
+    "archaeology_reschedule_examples": 1,
+    "admitted_revision_links": 0
+  },
+  "validation": {
+    "focused": {
+      "passed": 124,
+      "failed": 0
+    },
+    "affected": {
+      "passed": 200,
+      "failed": 0,
+      "warnings": 2
+    },
+    "full_backend": {
+      "runs": 1,
+      "passed": 4324,
+      "failed": 0,
+      "skipped": 6,
+      "warnings": 2,
+      "exit_code": 0,
+      "seconds": 359.47
+    },
+    "sqlite_integrity": "ok",
+    "foreign_key_violations": 0,
+    "replay_equal": true,
+    "protected_after": "UNCHANGED",
+    "markdown_links": {
+      "local_targets_checked": 256,
+      "errors": 0
+    },
+    "git_diff_check": "PASS",
+    "integrity_seconds": 539,
+    "schema_unchanged": true,
+    "application_test_hashes_before_and_after_full": {
+      "app/filings/earnings_schedule_source.py": "56e98f0be0cfcfdb953cac0b60542a2f5f04c7bbb8c58c6c802667a7d693bb86",
+      "app/filings/earnings_schedule_discovery.py": "e39df62495f0f394b2d9b7be2664864f277a7af18b9990a54b7c0563e7ed36bb",
+      "tests/unit/test_earnings_schedule_adapters.py": "3137e6794f87cfd9c47923a45f7f668524e98c9534df19b7077f1971fa1fa71c",
+      "tests/unit/test_earnings_schedule_discovery.py": "9e8f64a184d3628ef4fdfee91e4957aedb74ddee8a946fe64a1dd50355fe8b7b"
+    },
+    "whitespace_errors": 0,
+    "secret_pattern_findings": 0,
+    "classifier_ast_unchanged": true
+  },
+  "next_continuation": "EARNINGS_CALENDAR_ALTERNATIVE_OFFICIAL_SOURCE_RESEARCH_V1",
+  "protected_after": {
+    "financial_facts": {
+      "count": 6118,
+      "sha256": "9a1853e3d71f81bdbaa8d992265f1f73df86f3b01e0db00be30db642bae3d5cb"
+    },
+    "corporate_filings": {
+      "count": 455,
+      "sha256": "115753df27459650c96188db78a86f7a9ff74208952e4d639fe139a80ea00b15"
+    },
+    "portfolio_snapshots": {
+      "count": 1,
+      "sha256": "a52f70cfc65322f97fa9190622ff0071886faacb2e9c37ad8cd230d86f2bfdd2"
+    },
+    "canonical_diagnostic_strategy_definitions": {
+      "count": 1,
+      "sha256": "8662120b2aaaa8fbdef7a050c2f0680785318eb0acd14b43e16ffe65bbd16df7"
+    },
+    "canonical_diagnostic_results": {
+      "count": 2074,
+      "sha256": "bbd39111915a2fe1e9c56d9d6a9b5e0e5f99537f3d89d49ce806eb542d69eae7"
+    },
+    "execution_gate_evaluations": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "canonical_execution_gate_evaluations": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "strategy_versions": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_results": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "paper_trades": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "trade_plans": {
+      "count": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "portfolio_transactions": {
+      "count": 5,
+      "sha256": "3eefb3103db3b4b3853501572a716d8687d3a3b243b85f97bee508fe3956b742"
+    },
+    "portfolios": {
+      "count": 1,
+      "sha256": "e63363a6b7a3afb06427750a6bf8daa6ff1cbfb45870e426ab9b06881938af0c"
+    }
+  }
+}

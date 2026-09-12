@@ -62,17 +62,22 @@ def public_url(url: str) -> str:
     allowed = False
     if p.hostname == "nsearchives.nseindia.com" and not p.query:
         allowed = p.path == "//content/RSS/Board_Meetings.xml" or bool(re.fullmatch(
-            r"/corporate/xbrl/PRIOR_INTIMATION_[A-Za-z0-9_]+\.xml", p.path))
+            r"/corporate/(?:xbrl/PRIOR_INTIMATION_[A-Za-z0-9_]+\.xml|ixbrl/PRIOR_INTIMATION_[0-9_]+iXBRL_WEB\.html)", p.path))
     if p.hostname == "www.nseindia.com" and not p.query:
         allowed = p.path == "/companies-listing/corporate-filings-board-meetings"
     if p.hostname == "www.bseindia.com" and not p.query:
         allowed = p.path in ("/corporates/board_meeting.aspx", "/corporates/board_meeting")
     if p.hostname == "m.bseindia.com" and p.path == "/MAnnDet.aspx":
         q = parse_qs(p.query, keep_blank_values=True)
-        allowed = (set(q) == {"Form", "newsid", "scrpcd"} and q["Form"] == ["STR"]
-                   and len(q["newsid"]) == len(q["scrpcd"]) == 1
+        legacy = set(q) == {"Form", "newsid", "scrpcd"} and q["Form"] == ["STR"]
+        listing = (set(q) == {"newsid", "flag", "type", "scrip_CD"}
+                   and q["flag"] == ["C"] and q["type"] == ["A"])
+        codes = q.get("scrpcd", q.get("scrip_CD", []))
+        allowed = ((legacy or listing) and len(q["newsid"]) == len(codes) == 1
                    and re.fullmatch(r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}", q["newsid"][0])
-                   and re.fullmatch(r"[0-9]{6}", q["scrpcd"][0]))
+                   and re.fullmatch(r"[0-9]{6}", codes[0]))
+    if p.hostname == "m.bseindia.com" and not p.query:
+        allowed = p.path in {"/corporates.aspx", "/Corporates.aspx"}
     if not allowed:
         raise ValueError("EARNINGS_SOURCE_URL_REJECTED")
     return url
@@ -281,29 +286,123 @@ def parse_nse_rss(body: bytes) -> tuple[RawSchedule, ...]:
     return tuple(rows)
 
 
-def parse_nse_prior_intimation(body: bytes, rss: RawSchedule) -> RawSchedule:
-    """Join only the exact XML href published in this RSS item, never names."""
-    reference = public_url(rss.field("link") or "")
+class _PriorIntimationTable(HTMLParser):
+    """Observed public iXBRL WEB rendering, not an inline-XBRL fact parser."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.rows, self.row, self.cell = [], [], None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "tr":
+            self.row = []
+        if tag == "td":
+            self.cell = []
+
+    def handle_data(self, data):
+        if self.cell is not None:
+            self.cell.append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "td" and self.cell is not None:
+            self.row.append(" ".join("".join(self.cell).split()))
+            self.cell = None
+        if tag == "tr" and len(self.row) == 2:
+            self.rows.append(tuple(self.row))
+
+
+def _prior_intimation_fields(body: bytes, reference: str) -> dict[str, str]:
+    if len(body) > MAX_BYTES:
+        raise SourceFailure(SourceState.SOURCE_RESPONSE_TOO_LARGE, "RESPONSE_SIZE_BOUND")
+    if "/ixbrl/" in reference:
+        parser = _PriorIntimationTable()
+        parser.feed(body.decode("utf-8-sig"))
+        labels = {"NSE Symbol*": "NSESymbol", "ISIN*": "ISIN",
+                  "Name of the Company*": "NameOfTheCompany", "Type of Meeting": "TypeOfMeeting",
+                  "Type of Intimation*": "TypeOfIntimation", "Proposed Meeting Date": "DateOfProposedMeeting",
+                  "Original Meeting Date": "original_meeting_date",
+                  "Reason for Re-schedule (postpone or prepone) / Cancellation": "revision_reason",
+                  "Date of Report*": "DateOfReport", "Agenda*": "Agenda1",
+                  "Whether results are audited or unaudited": "WhetherResultsAreAuditedOrUnaudited",
+                  "Nature of report standalone or consolidated": "NatureOfReportStandaloneConsolidated",
+                  "Period end Type": "ReportingPeriodType", "Period up to (Month)": "MonthOfPeriodEnded",
+                  "Period up to (Year)": "YearOfPeriodEnded", "Remarks (website dissemination)": "RemarksWebsiteDissemination"}
+        fields = {}
+        for label, value in parser.rows:
+            if label in labels:
+                key = labels[label]
+                if key in fields:
+                    raise ValueError("NSE_PRIOR_INTIMATION_DUPLICATE_FIELD")
+                # Observed rendered list prefixes are presentation, not agenda inference.
+                if key in {"Agenda1", "TypeOfMeeting"}:
+                    value = re.sub(r"^1\) ", "", value)
+                fields[key] = value
+        return fields
     root = _xml(body)
     if root.tag != "{http://www.xbrl.org/2003/instance}xbrl":
         raise ValueError("NSE_PRIOR_INTIMATION_SHAPE_UNSUPPORTED")
     namespace = "{https://www.sebi.gov.in/xbrl/2023-05-31/in-capmkt}"
+    fields = {}
+    for node in root:
+        if node.tag.startswith(namespace):
+            key = node.tag[len(namespace):]
+            if key in fields:
+                raise ValueError("NSE_PRIOR_INTIMATION_DUPLICATE_FIELD")
+            fields[key] = node.text or ""
+    return fields
+
+
+def parse_nse_prior_intimation(body: bytes, rss: RawSchedule, *, document_url: str | None = None) -> RawSchedule:
+    """Exact published href join; no company/date/title or report-date join.
+
+    Acquisition supplies the actual response URL; the optional default preserves
+    the existing parser API for callers already binding bytes to the RSS href.
+    """
+    rss.__post_init__()
+    reference = public_url(rss.field("link") or "")
+    if (rss.exchange != SourceExchange.NSE or rss.reference != NSE_RSS
+            or rss.parser_version != "nse-board-rss/v1"
+            or "/PRIOR_INTIMATION_" not in reference
+            or (document_url is not None and document_url != reference)):
+        raise ValueError("NSE_EXACT_SOURCE_JOIN_UNPROVEN")
+    fields = _prior_intimation_fields(body, reference)
     mapping = {"NSESymbol": "symbol", "ISIN": "isin", "NameOfTheCompany": "company",
                "TypeOfMeeting": "meeting_type", "TypeOfIntimation": "intimation_type",
                "DateOfProposedMeeting": "meeting_date_iso", "Agenda1": "purpose"}
     values = dict(rss.raw)
+    values["inventory_purpose"] = values.pop("purpose", "")
+    # Remarks/RSS prose cannot override an explicit structured agenda.
+    if "details" in values:
+        values["inventory_details"] = values.pop("details")
     for key, output in mapping.items():
-        found = root.findall(namespace + key)
-        if len(found) != 1 or not found[0].text:
+        if not fields.get(key):
             raise ValueError("NSE_PRIOR_INTIMATION_FIELD_UNSUPPORTED")
-        values[output] = found[0].text
+        values[output] = fields[key]
     if values["meeting_type"] != "Board Meeting" or parse_meeting_date(values["meeting_date"]) != date.fromisoformat(values["meeting_date_iso"]):
         raise ValueError("NSE_PRIOR_INTIMATION_RSS_CONFLICT")
-    # Unknown additional agendas are not silently ignored.
-    if any(e.tag.startswith(namespace + "Agenda") and e.tag != namespace + "Agenda1" for e in root):
-        raise ValueError("NSE_MULTIPLE_AGENDAS_UNSUPPORTED")
+    if any(k.startswith("Agenda") and re.fullmatch(r"Agenda[1-9][0-9]*", k) is None for k in fields):
+        raise ValueError("NSE_PRIOR_INTIMATION_AGENDAS_UNSUPPORTED")
+    agendas = {int(k[6:]): v for k, v in fields.items() if re.fullmatch(r"Agenda[1-9][0-9]*", k)}
+    if (not agendas or len(agendas) > 16 or set(agendas) != set(range(1, len(agendas) + 1))
+            or any(not v for v in agendas.values())):
+        raise ValueError("NSE_PRIOR_INTIMATION_AGENDAS_UNSUPPORTED")
+    for number, agenda in sorted(agendas.items()):
+        values[f"agenda_{number}"] = agenda
+    # Reuse the classifier unchanged: multiple agendas are retained, and only an
+    # exact explicit financial-results agenda supplies that structured label.
+    if any(v.casefold() == "financial results" for v in agendas.values()):
+        values["purpose"] = "Financial results"
+    else:
+        values["purpose"] = " / ".join(agendas[n] for n in sorted(agendas))
+    optional = {"DateOfReport": "date_of_report", "original_meeting_date": "original_meeting_date",
+                "revision_reason": "revision_reason", "WhetherResultsAreAuditedOrUnaudited": "audit_basis",
+                "NatureOfReportStandaloneConsolidated": "statement_scope", "ReportingPeriodType": "reporting_period_type",
+                "MonthOfPeriodEnded": "reporting_period_month", "YearOfPeriodEnded": "reporting_period_year",
+                "RemarksWebsiteDissemination": "remarks"}
+    values.update({out: fields[key] for key, out in optional.items() if key in fields})
     values["xml_checksum"] = "sha256:" + sha256(body).hexdigest()
-    return _raw(SourceExchange.NSE, reference, values, "nse-reg29-2023-05-31/v1")
+    values.update(inventory_reference=rss.reference, inventory_fingerprint=rss.fingerprint)
+    version = "nse-reg29-web-table/v1" if "/ixbrl/" in reference else "nse-reg29-2023-05-31/v2"
+    return _raw(SourceExchange.NSE, reference, values, version)
 
 
 class _BseCells(HTMLParser):
@@ -349,7 +448,7 @@ def parse_bse_detail(body: bytes, url: str) -> tuple[RawSchedule, ...]:
     if len(subjects) != 1 or len(details) != 1 or "security_code" not in values:
         raise ValueError("BSE_DETAIL_SHAPE_UNSUPPORTED")
     query = parse_qs(urlsplit(url).query)
-    if values["security_code"] != query["scrpcd"][0]:
+    if values["security_code"] != query.get("scrpcd", query.get("scrip_CD", []))[0]:
         raise ValueError("BSE_DETAIL_SECURITY_CONFLICT")
     dates = re.findall(r"\bis scheduled on ([0-9]{2}/[0-9]{2}/[0-9]{4})\b", details[0])
     if len(dates) != 1:
@@ -427,7 +526,7 @@ class NSEOfficialEarningsScheduleSource(_OfficialSource):
             checksum = "sha256:" + sha256(response.body).hexdigest()
             if status != 200:
                 raise SourceFailure(SourceState.SOURCE_UNAVAILABLE, f"HTTP_{status}")
-            row = parse_nse_prior_intimation(response.body, rss)
+            row = parse_nse_prior_intimation(response.body, rss, document_url=response.url)
             return SourceBatch(self.exchange, target, point, SourceState.SOURCE_PARTIAL, "LINKED_FILING_NOT_DISCOVERY_COVERAGE", (row,), checksum, status, size)
         except SourceFailure as exc:
             return SourceBatch(self.exchange, target, point, exc.state, exc.reason, (), checksum, status, size)
