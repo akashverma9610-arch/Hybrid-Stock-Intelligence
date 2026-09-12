@@ -53,7 +53,7 @@ def test_source_research_does_not_convert_a_surface_or_identity_into_clearance()
         "nse_event_calendar", "nse_board_meetings", "nse_announcements", "nse_archive_ixbrl", "bse_public_alternative"))
     assert boundary["timezone_assumed"] is False
     assert boundary["known_at_authority"] == "UNPROVEN"
-    assert boundary["target_current_event"] == "NOT_PROVEN"
+    assert boundary["target_current_event"] == "CURRENT_EVENT_UNKNOWN_BECAUSE_WINDOW_INCOMPLETE"
     assert boundary["complete_window"] == "UNPROVEN"
     assert set(options) == {
         "NSE_EVENT_CALENDAR", "NSE_BOARD_MEETINGS", "NSE_ANNOUNCEMENTS",

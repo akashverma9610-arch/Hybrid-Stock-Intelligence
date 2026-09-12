@@ -79,7 +79,7 @@ An admissible future join is only:
 
 Company name plus date, symbol plus date, a guessed archive URL, and a result filing backdated to a prior notice are rejected. `exchange_received_at`, `exchange_disseminated_at`, and HSI retrieval are distinct fields; no timezone is assumed to be IST. A report date alone cannot create strict `known_at`.
 
-Each of APARINDS, DEEPINDS, GENUSPOWER, GLAND and ICICIBANK is `SOURCE_FAMILY_PROVEN / CURRENT_WINDOW_QUERYABLE_SURFACE / CURRENT_EVENT_NOT_PROVEN / COMPLETE_WINDOW_UNPROVEN`. This is deliberately not an absence statement.
+Each of APARINDS, DEEPINDS, GENUSPOWER, GLAND and ICICIBANK is `SOURCE_FAMILY_PROVEN / CURRENT_WINDOW_QUERYABLE / CURRENT_EVENT_UNKNOWN_BECAUSE_WINDOW_INCOMPLETE`. This is deliberately not an absence statement.
 
 ## Five-target historical evidence probe
 

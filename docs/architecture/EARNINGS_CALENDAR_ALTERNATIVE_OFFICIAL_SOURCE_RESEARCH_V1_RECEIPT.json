@@ -147,7 +147,7 @@
     "received_disseminated_hsi_received_distinct": true,
     "timezone_assumed": false,
     "known_at_authority": "UNPROVEN",
-    "target_current_event": "NOT_PROVEN",
+    "target_current_event": "CURRENT_EVENT_UNKNOWN_BECAUSE_WINDOW_INCOMPLETE",
     "complete_window": "UNPROVEN"
   },
   "outcome": {
@@ -158,5 +158,5 @@
     "next_slice_started": false,
     "gate6_ready": false
   },
-  "receipt_fingerprint": "sha256:95541e8b117ac933c90d20375fec1c1554d65000223ff7452d09ad1f4cb3033f"
+  "receipt_fingerprint": "sha256:7ca90d8c63859c207f1bb75fc34e6f7b1af31b2dce296c07638e1cc5752e2d10"
 }
