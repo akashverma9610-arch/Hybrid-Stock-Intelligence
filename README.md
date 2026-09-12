@@ -70,6 +70,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Official Company-Level EBITDA / EBIT Source Feasibility V1](docs/architecture/OFFICIAL_COMPANY_LEVEL_EBITDA_EBIT_SOURCE_FEASIBILITY_V1.md)
 - [EBITDA / EBIT Diagnostic Policy Alternatives Research V1](docs/architecture/EBITDA_EBIT_DIAGNOSTIC_POLICY_ALTERNATIVE_RESEARCH_V1.md)
 - [Fundamental Diagnostic Policy Resolution Research V1](docs/architecture/FUNDAMENTAL_DIAGNOSTIC_POLICY_UNRESOLVED_V1.md)
+- [Fundamental Diagnostic Registry V2 Proposal (not active)](docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_PROPOSAL.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)

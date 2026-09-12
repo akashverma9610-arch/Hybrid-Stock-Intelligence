@@ -1,0 +1,1723 @@
+{
+  "schema_version": "hsi-diagnostic-registry-proposal/v1",
+  "registry_version_candidate": "diagnostic-registry-v2-proposed",
+  "parent_registry_version": "diagnostic-registry-v1",
+  "parent_commit": "f19f8072792d6cbf54310e359e4306153dc7a6a3",
+  "status": "PROPOSED",
+  "activation_authorized": false,
+  "runtime_wiring": false,
+  "policy_version_candidate": "fundamental-component-policy-v2-proposed",
+  "fingerprint_scheme": "sha256:utf8:canonical-json-v1:exclude-proposal_fingerprint",
+  "parent_registry_semantic_fingerprint": "sha256:b9aa7cd7c4f0e0f4174759bf5df69365e4ee47ebd915e8415a51c8048117a299",
+  "parent_source_pins": [
+    {
+      "path": "app/registry/canonical.py",
+      "git_blob": "4927a6592b816a6dede90f63d2823b678dbfddcc"
+    },
+    {
+      "path": "app/registry/models.py",
+      "git_blob": "e72c25df4148b5ec94746d52ea724d6df44fa422"
+    },
+    {
+      "path": "app/analysis/fundamentals.py",
+      "git_blob": "a02718e60cda6aae9aecbb91816eef57b14a2f6f"
+    },
+    {
+      "path": "app/analysis/valuation_trade.py",
+      "git_blob": "fc232a8898e7d24c3c8f2fc2ee27795f32a81b21"
+    },
+    {
+      "path": "app/fundamentals/diagnostic_input.py",
+      "git_blob": "3159156f9b0c296b126c2e119331200944bb8291"
+    },
+    {
+      "path": "app/diagnostics/evaluators.py",
+      "git_blob": "c172b03bbc7257506ebd63d0a8e098ced07fd445"
+    },
+    {
+      "path": "app/scoring/engine.py",
+      "git_blob": "5e384c17de6b65797af6436e50e3ddb4e4c8b2d6"
+    },
+    {
+      "path": "app/diagnostics/synthesis.py",
+      "git_blob": "ac5ce5860b1b84616a2dd24fbd1675986aa04499"
+    },
+    {
+      "path": "app/domain/canonical_diagnostic_strategy.py",
+      "git_blob": "3c7cd8c87445af14a29e0d85288eed3b5db817e6"
+    },
+    {
+      "path": "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json",
+      "git_blob": "c99bc37ab35f2b86a993d758161aaf216d5c69f0"
+    }
+  ],
+  "activation_states": [
+    "PROPOSED",
+    "RESEARCH_VALIDATED",
+    "GOVERNANCE_APPROVED",
+    "SHADOW",
+    "ACTIVE",
+    "RETIRED"
+  ],
+  "execution_binding": {
+    "required": [
+      "registry_version",
+      "strategy_version",
+      "policy_version",
+      "as_of"
+    ],
+    "registry_fingerprint_required": true,
+    "strategy_fingerprint_required": true,
+    "policy_fingerprint_required": true,
+    "implicit_current_registry": false,
+    "active_versions_per_execution": 1,
+    "v1_strategy": "canonical-universe-analysis/v1",
+    "v1_strategy_fingerprint": "sha256:3144ec1e9452f24a1e9f3776c77e33cbd59f31459c3e2f7d734c4924bb2b9ee3",
+    "v2_strategy_binding": "NOT_CREATED",
+    "as_of_rule": "Caller-supplied aware timestamp normalized UTC; approval effective time and evidence publication/receipt/period end must be <= as_of; ambiguous policy resolution fails closed."
+  },
+  "changed_rule_ids": [
+    16,
+    17,
+    19,
+    25,
+    26,
+    29
+  ],
+  "unchanged_rule_count": 55,
+  "rules": [
+    {
+      "rule_id": 1,
+      "parent_reference": "diagnostic-registry-v1#1",
+      "parent_definition_fingerprint": "sha256:bb956c446009d8fe2f864b930c11e2dc631dbda98cc0641af10b713d9d6cc2f8",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Market Regime Classification"
+    },
+    {
+      "rule_id": 2,
+      "parent_reference": "diagnostic-registry-v1#2",
+      "parent_definition_fingerprint": "sha256:2d28c4035843aadb1ada80d9d6463a4da3fada671da1fc3ab1adba7d2c56f79a",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Sector Index Health & Trend"
+    },
+    {
+      "rule_id": 3,
+      "parent_reference": "diagnostic-registry-v1#3",
+      "parent_definition_fingerprint": "sha256:73fb00027501a6162fba23e1cb3525db426c57e11d270c8907cc31f3f58d7e9c",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Sector Rotation Phase"
+    },
+    {
+      "rule_id": 4,
+      "parent_reference": "diagnostic-registry-v1#4",
+      "parent_definition_fingerprint": "sha256:7b1edad558f1d76295f27e72a06fae9472e61487b533b6178e88889dfd7de844",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Primary Trend Direction — Weekly & Daily"
+    },
+    {
+      "rule_id": 5,
+      "parent_reference": "diagnostic-registry-v1#5",
+      "parent_definition_fingerprint": "sha256:56ac73e8a66b363735d4b0f0f6a77fa04da7a47984304d856a03cd4d9923c2e7",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Weinstein Market Stage"
+    },
+    {
+      "rule_id": 6,
+      "parent_reference": "diagnostic-registry-v1#6",
+      "parent_definition_fingerprint": "sha256:f12205b6285d22de529c0a4afa527a00fcb12575755a657b088b9588fb482fec",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Relative Strength Rank vs Nifty 50, Sector Index & Peers"
+    },
+    {
+      "rule_id": 7,
+      "parent_reference": "diagnostic-registry-v1#7",
+      "parent_definition_fingerprint": "sha256:555bb5b9353e466284d7b9dfe914d54e4b5c64458fbf4d14456985293aa2fdab",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Institutional / Smart Money Observable Proxies"
+    },
+    {
+      "rule_id": 8,
+      "parent_reference": "diagnostic-registry-v1#8",
+      "parent_definition_fingerprint": "sha256:869d182a7db7c96ee0daf048f518848ed265a715ffde33a34942b31026ec486b",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Liquidity Pool Mapping — Buy-side & Sell-side"
+    },
+    {
+      "rule_id": 9,
+      "parent_reference": "diagnostic-registry-v1#9",
+      "parent_definition_fingerprint": "sha256:26753d561af5892a292b52bc1faafdc89f2f7b4de692616655fdc522135059ab",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Wyckoff Phase Classification"
+    },
+    {
+      "rule_id": 10,
+      "parent_reference": "diagnostic-registry-v1#10",
+      "parent_definition_fingerprint": "sha256:84459a80953c44052774b91c898b2f0900c6b7c622ecc3bf8d55549363985b53",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Classical Market Structure — Dow HH/HL vs LH/LL"
+    },
+    {
+      "rule_id": 11,
+      "parent_reference": "diagnostic-registry-v1#11",
+      "parent_definition_fingerprint": "sha256:238b03e6521ccb9077983eb2eb8cb7dfc834cd1c86216411d255031453df9054",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Volume Behavior & Relative Volume (RVOL)"
+    },
+    {
+      "rule_id": 12,
+      "parent_reference": "diagnostic-registry-v1#12",
+      "parent_definition_fingerprint": "sha256:4b7715c9e96fa19691afab6504ebc53349025504968b93f829dcfade769d7879",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Ichimoku Cloud Structure"
+    },
+    {
+      "rule_id": 13,
+      "parent_reference": "diagnostic-registry-v1#13",
+      "parent_definition_fingerprint": "sha256:59af682f2800211838ebae8db5272f0e4a8993646a7a5c8e4864df2354c3f1c2",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Chikou Span Confirmation"
+    },
+    {
+      "rule_id": 14,
+      "parent_reference": "diagnostic-registry-v1#14",
+      "parent_definition_fingerprint": "sha256:72c7e5126083da44f247ef319b1a3072c7234929bcb869350460583d6ea69a13",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Multi-Timeframe Alignment — Weekly, Daily, 4H/1H, 15M where data permits"
+    },
+    {
+      "rule_id": 15,
+      "parent_reference": "diagnostic-registry-v1#15",
+      "parent_definition_fingerprint": "sha256:57a3889515245bc91077a0f6dcd30fa456f68112dc0f5abe2333c18ff4edc598",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Business Model & Moat Sustainability"
+    },
+    {
+      "rule_id": 16,
+      "parent_reference": "diagnostic-registry-v1#16",
+      "parent_definition_fingerprint": "sha256:b51f7dfb79fd8e70d6864e536dfc4cee4f860b36a9af6ed72ddf06477b9fd160",
+      "change": "PROPOSED_SEMANTIC_DIFF",
+      "definition": {
+        "rule_id": 16,
+        "proposed_name": "Five-Year Financial Trend — Revenue, PAT and EPS CAGR",
+        "v1_behavior": "Six annual rows; all four Revenue/EBITDA/PAT/EPS components required. The canonical input bridge certifies fiscal continuity and positive endpoints. V1 classification aggregates four growth rates.",
+        "purpose": "Describe five-year changes in revenue, after-tax accounting profit and per-share earnings; operating earnings are separately labelled enrichment.",
+        "mandatory_change": "Remove EBITDA from mandatory core; retain Revenue, PAT and EPS, each with six comparable consecutive full-year observations spanning five fiscal intervals.",
+        "optional_change": "Source-qualified reported EBITDA and separately governed operating earnings become optional enrichment.",
+        "entity_change": "Require exact NON_FINANCIAL classification for standard branch; bank/NBFC/insurer branch policy and unknown classification block interpretation.",
+        "output_change": "One result exposes three core CAGR components, completeness and optional coverage; no four-to-three score conversion or automatic ACCELERATING/HEALTHY carry-forward.",
+        "reason": "EBITDA is not a universal standardized reported line; exact wording is narrower than ambiguous Revenue, Profitability and EPS Trend.",
+        "sources": [
+          "MCA_SCHEDULE_III",
+          "MCA_IND_AS_1",
+          "SEBI_RATIO_EXAMPLE",
+          "ACCEPTED_RESEARCH"
+        ],
+        "risk": "Three rates cannot inherit V1 four-component aggregates or calibrated state cutoffs; PAT/EPS attribution and restatements must remain comparable.",
+        "components": [
+          {
+            "component_id": "REVENUE_CAGR",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "REVENUE six annual observations"
+            ],
+            "measurement_definition": "(value_at_t / value_at_t_minus_5) ** (1/5) - 1; positive endpoints only. No calculation in this proposal.",
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution. Six consecutive fiscal years, exactly five fiscal intervals.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 6,
+            "fiscal_intervals": 5
+          },
+          {
+            "component_id": "PAT_CAGR",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "PAT six annual observations"
+            ],
+            "measurement_definition": "(value_at_t / value_at_t_minus_5) ** (1/5) - 1; positive endpoints only. No calculation in this proposal.",
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution. Six consecutive fiscal years, exactly five fiscal intervals.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 6,
+            "fiscal_intervals": 5
+          },
+          {
+            "component_id": "EPS_BASIC_CAGR",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "EPS_BASIC six annual observations"
+            ],
+            "measurement_definition": "(value_at_t / value_at_t_minus_5) ** (1/5) - 1; positive endpoints only. No calculation in this proposal.",
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution. Six consecutive fiscal years, exactly five fiscal intervals.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 6,
+            "fiscal_intervals": 5
+          },
+          {
+            "component_id": "ISSUER_REPORTED_EBITDA",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "direct official EBITDA",
+              "issuer definition",
+              "revision and PIT lineage"
+            ],
+            "measurement_definition": "Issuer-defined value only; never a canonical standardized EBIT/EBITDA.",
+            "period_contract": "Exact same period/scope; formula stable across comparisons.",
+            "policy_availability": "FUTURE_CONTRACT_REQUIRED"
+          },
+          {
+            "component_id": "HSI_STANDARDIZED_OPERATING_EARNINGS",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "approved distinct metric contract",
+              "immutable compatible parent facts"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Same compared fiscal periods.",
+            "policy_availability": "POLICY_BLOCKED"
+          }
+        ],
+        "aggregation": "ALL_MANDATORY_CORE",
+        "formula_note": "Preserve five-year CAGR mathematics. Retain available signed raw series when CAGR is undefined; label INSUFFICIENT_DATA with CAGR_DOMAIN_INVALID, not NOT_APPLICABLE. Missing a latest period never permits fallback to an older window.",
+        "alternatives": [
+          [
+            "CURRENT_FOUR_COMPONENT_NAME",
+            "Reject universal hard EBITDA dependency."
+          ],
+          [
+            "Revenue, Profitability and EPS Trend",
+            "Reject vague profitability basis and loss of explicit CAGR scope."
+          ],
+          [
+            "Revenue, PAT and EPS CAGR",
+            "Selected precise three-component name; operating-earnings coverage is explicitly not claimed."
+          ]
+        ]
+      },
+      "v1_name": "Five-Year Financial Trend — Revenue, EBITDA, PAT, EPS CAGR",
+      "v1_purpose": "Canonical diagnostic checkpoint for Five-Year Financial Trend — Revenue, EBITDA, PAT, EPS CAGR."
+    },
+    {
+      "rule_id": 17,
+      "parent_reference": "diagnostic-registry-v1#17",
+      "parent_definition_fingerprint": "sha256:9c7c7a6dacc54ec5bbcdee7a9cd6f0ffe22592fa6939e43cdf9be9c52bc90cd2",
+      "change": "PROPOSED_SEMANTIC_DIFF",
+      "definition": {
+        "rule_id": 17,
+        "proposed_name": "Entity-Aware Return Efficiency — ROE and Qualified ROCE",
+        "v1_behavior": "Joint PAT/EBIT/equity/debt/cash intake; latest PAT divided by mean beginning/end equity; EBIT divided by capital employed. Legacy ending-only denominator fallback is explicitly labelled.",
+        "purpose": "Describe return efficiency using a standard non-financial ROE core and separately qualified ROCE; require native financial-sector contracts.",
+        "mandatory_change": "ROE is the proposed non-financial core. Require exact beginning/end total equity matched to annual PAT; V2 removes ending-only fallback for average-equity ROE.",
+        "optional_change": "Qualified ROCE and formula-matched official ROE/ROCE corroboration; absence does not erase ROE evidence.",
+        "entity_change": "BANK native ROE/ROA may be future branch candidates; NBFC/INSURER remain policy blocked. Industrial ROCE is not the bank/insurer return concept.",
+        "output_change": "READY_STANDARD_BRANCH only for complete standard core; READY_ENTITY_SPECIFIC_BRANCH only after separate native branch approval; PARTIAL, POLICY_BLOCKED, INSUFFICIENT_DATA and conflict states remain explicit.",
+        "reason": "ROE and ROCE definitions, equity attribution and capital-employed denominators are not automatically uniform.",
+        "sources": [
+          "MCA_SCHEDULE_III",
+          "SEBI_RATIO_EXAMPLE",
+          "RBI_BANK",
+          "RBI_NBFC",
+          "IRDAI",
+          "ACCEPTED_RESEARCH"
+        ],
+        "risk": "Removing joint requirements and ending fallback changes eligibility; source PAT/equity scope must agree. No V1 joint healthy classification may be reused.",
+        "components": [
+          {
+            "component_id": "ROE",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "annual PAT",
+              "beginning total equity",
+              "ending total equity",
+              "consistent profit/equity attribution"
+            ],
+            "measurement_definition": "Annual PAT / ((beginning total equity + ending total equity) / 2); exact matching basis, positive mean equity, no parent-only/group-total mix.",
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution. Two consecutive annual equity boundaries; latest annual PAT.",
+            "policy_availability": "PROPOSED_ONLY"
+          },
+          {
+            "component_id": "ROCE",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "approved EBIT or separately named numerator contract",
+              "approved average capital-employed definition"
+            ],
+            "measurement_definition": null,
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution. Two aligned balance boundaries; no ending fallback.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "ISSUER_REPORTED_ROE_ROCE",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "ISSUER_REPORTED_FINANCIAL_RATIO",
+              "exact formula match"
+            ],
+            "measurement_definition": "Corroboration only; cannot satisfy ROE/ROCE parent requirements.",
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution.",
+            "policy_availability": "FUTURE_CONTRACT_REQUIRED"
+          }
+        ],
+        "aggregation": "ALL_MANDATORY_CORE",
+        "formula_note": "This proposal does not approve a new ROCE numerator or capital-employed formula. Negative PAT is descriptive if denominator valid; no universal healthy threshold."
+      },
+      "v1_name": "Return Ratios — ROCE and ROE",
+      "v1_purpose": "Canonical diagnostic checkpoint for Return Ratios — ROCE and ROE."
+    },
+    {
+      "rule_id": 18,
+      "parent_reference": "diagnostic-registry-v1#18",
+      "parent_definition_fingerprint": "sha256:1125ad2a12bbb709a89621aea35c8a5642fcef7c2239b99010fa13378355094f",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Operating Cash Flow & Free Cash Flow Health"
+    },
+    {
+      "rule_id": 19,
+      "parent_reference": "diagnostic-registry-v1#19",
+      "parent_definition_fingerprint": "sha256:6578e18b1dbb5fce63d6f491c69df91747df5a64b9b8bcb99ed431163148a6b6",
+      "change": "PROPOSED_SEMANTIC_DIFF",
+      "definition": {
+        "rule_id": 19,
+        "proposed_name": "Entity-Aware Leverage — Debt/Equity, Net Debt and Qualified Interest Coverage",
+        "v1_behavior": "All debt/equity/cash/EBIT/interest inputs required jointly; any absent input blocks the entire leverage evaluation; coverage drives STRESSED before D/E drives ELEVATED.",
+        "purpose": "Expose leverage, net-debt position and independently qualified coverage without concealing missing coverage or creating a healthy verdict.",
+        "mandatory_change": "Debt/equity is the proposed ordinary non-financial core; absence prevents full core readiness but does not delete other ready component evidence.",
+        "optional_change": "Net debt and qualified interest coverage are OPTIONAL_COMPONENT; observed adverse coverage is retained prominently, with risk escalation dependent on separate approved policy.",
+        "entity_change": "Banks, NBFCs and insurers require native capital, leverage/solvency contracts; unknown classification remains policy blocked.",
+        "output_change": "Core completeness and full component coverage are distinct. Optional absence cannot become HEALTHY; no new BLOCKING_COMPONENT threshold is introduced.",
+        "reason": "Debt/equity, net debt and interest coverage answer independent questions; DSCR includes debt service and cannot replace interest coverage.",
+        "sources": [
+          "MCA_SCHEDULE_III",
+          "SEBI_RATIO_EXAMPLE",
+          "RBI_BANK",
+          "RBI_NBFC",
+          "IRDAI",
+          "ACCEPTED_RESEARCH"
+        ],
+        "risk": "Partial leverage evidence must not suppress red flags or be interpreted as V1 healthy; financial debt semantics differ.",
+        "components": [
+          {
+            "component_id": "DEBT_EQUITY",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "exact total debt definition",
+              "same-end total equity"
+            ],
+            "measurement_definition": "Total debt / total equity; positive equity, explicit debt definition and treatment of leases/restricted instruments.",
+            "period_contract": "Same fiscal-end POINT_IN_TIME balances and representation.",
+            "policy_availability": "PROPOSED_ONLY"
+          },
+          {
+            "component_id": "NET_DEBT",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "same-end total debt",
+              "eligible cash and equivalents",
+              "approved debt/cash boundary"
+            ],
+            "measurement_definition": "Total debt - cash and equivalents, only under an approved exact debt/cash contract; negative net debt is retained as a measurement.",
+            "period_contract": "Same fiscal-end POINT_IN_TIME balances and representation.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "INTEREST_COVERAGE",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "approved earnings numerator",
+              "explicit interest-only denominator or approved finance-cost bridge"
+            ],
+            "measurement_definition": null,
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "ISSUER_REPORTED_DEBT_EQUITY",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "ISSUER_REPORTED_FINANCIAL_RATIO",
+              "exact formula match"
+            ],
+            "measurement_definition": "Corroboration only, never a replacement for mandatory parents.",
+            "period_contract": "Exact matched fiscal end.",
+            "policy_availability": "FUTURE_CONTRACT_REQUIRED"
+          }
+        ],
+        "aggregation": "ALL_MANDATORY_CORE",
+        "formula_note": "No component is designated BLOCKING_COMPONENT without an approved adverse-condition policy. That role would block semantic evaluation even when evidence is present, not merely mean absent optional input. DSCR is separate evidence outside these three component calculations."
+      },
+      "v1_name": "Balance Sheet Leverage — Debt/Equity, Net Debt, Interest Coverage",
+      "v1_purpose": "Canonical diagnostic checkpoint for Balance Sheet Leverage — Debt/Equity, Net Debt, Interest Coverage."
+    },
+    {
+      "rule_id": 20,
+      "parent_reference": "diagnostic-registry-v1#20",
+      "parent_definition_fingerprint": "sha256:792ddbf527fd5d45e31c6c8edbc141e29f87e418d2ef651cc5e9b81135925325",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Working Capital & Cash Conversion Cycle"
+    },
+    {
+      "rule_id": 21,
+      "parent_reference": "diagnostic-registry-v1#21",
+      "parent_definition_fingerprint": "sha256:4876500647380eb3c8785e4216fd5f2fc756496a64d9dd4995625f9765a3e98d",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Ownership Structure — Promoter Holding & Pledge"
+    },
+    {
+      "rule_id": 22,
+      "parent_reference": "diagnostic-registry-v1#22",
+      "parent_definition_fingerprint": "sha256:e57c0ebb9dbdf54e48ae6390733128a9244e0364dbd92c96f32e0c1a0225d31b",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Institutional Holding Shifts — DII/MF/FII"
+    },
+    {
+      "rule_id": 23,
+      "parent_reference": "diagnostic-registry-v1#23",
+      "parent_definition_fingerprint": "sha256:17823ee96b22ba394ba376f12ac1f0ed0b078f34d1e8782238f45c3148c150b5",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Corporate Governance & Auditor Cleanliness"
+    },
+    {
+      "rule_id": 24,
+      "parent_reference": "diagnostic-registry-v1#24",
+      "parent_definition_fingerprint": "sha256:e657479c13c717867fe50a39614a319055d9bbed4db282d2deaa9bf577793d58",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Earnings Acceleration Status — Organic vs One-Off"
+    },
+    {
+      "rule_id": 25,
+      "parent_reference": "diagnostic-registry-v1#25",
+      "parent_definition_fingerprint": "sha256:f58d4e2d5e0d9b22eca885a5ff257fae28a8261a219a355f16d0037bbda8a09c",
+      "change": "PROPOSED_SEMANTIC_DIFF",
+      "definition": {
+        "rule_id": 25,
+        "proposed_name": "Latest Quarterly Results — Revenue, PAT and EPS YoY & QoQ",
+        "v1_behavior": "Five quarterly rows; positive latest, previous and year-ago triples independently produce each Revenue/EBITDA/PAT/EPS growth pair; even one metric can be wrapper-eligible.",
+        "purpose": "Describe current quarterly revenue, after-tax profit and per-share earnings comparisons with complete-core and optional-earnings coverage separated.",
+        "mandatory_change": "Revenue/PAT/EPS become CORE_REQUIRED (alias of MANDATORY_CORE) for full readiness; one surviving component remains partial.",
+        "optional_change": "EBITDA and approved distinct operating earnings optional; absence cannot invalidate complete core.",
+        "entity_change": "Standard branch requires NON_FINANCIAL; financial entities require their reporting-basis contracts.",
+        "output_change": "READY core only when all three YoY and QoQ pairs satisfy comparison-domain checks; missing components preserve PARTIAL evidence without full semantic eligibility.",
+        "reason": "Quarterly reporting purpose is retained without universal EBITDA requirement or one-component completeness claims.",
+        "sources": [
+          "MCA_IND_AS_1",
+          "NSE_FILING",
+          "ACCEPTED_RESEARCH"
+        ],
+        "risk": "Stricter full-core readiness differs from V1 wrapper eligibility; reported growth is not organic acceleration.",
+        "components": [
+          {
+            "component_id": "REVENUE_YOY_QOQ",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "REVENUE quarter-only observations"
+            ],
+            "measurement_definition": "YoY = q / q_minus_4 - 1; QoQ = q / q_minus_1 - 1, retaining current positive triple domain. Signed raw values retained if growth domain invalid.",
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 5
+          },
+          {
+            "component_id": "PAT_YOY_QOQ",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "PAT quarter-only observations"
+            ],
+            "measurement_definition": "YoY = q / q_minus_4 - 1; QoQ = q / q_minus_1 - 1, retaining current positive triple domain. Signed raw values retained if growth domain invalid.",
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 5
+          },
+          {
+            "component_id": "EPS_BASIC_YOY_QOQ",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "EPS_BASIC quarter-only observations"
+            ],
+            "measurement_definition": "YoY = q / q_minus_4 - 1; QoQ = q / q_minus_1 - 1, retaining current positive triple domain. Signed raw values retained if growth domain invalid.",
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 5
+          },
+          {
+            "component_id": "ISSUER_REPORTED_EBITDA",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "direct official EBITDA",
+              "issuer definition",
+              "revision and PIT lineage"
+            ],
+            "measurement_definition": "Issuer-defined value only; never a canonical standardized EBIT/EBITDA.",
+            "period_contract": "Exact same period/scope; formula stable across comparisons.",
+            "policy_availability": "FUTURE_CONTRACT_REQUIRED"
+          },
+          {
+            "component_id": "HSI_STANDARDIZED_OPERATING_EARNINGS",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "approved distinct metric contract",
+              "immutable compatible parent facts"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Same compared fiscal periods.",
+            "policy_availability": "POLICY_BLOCKED"
+          }
+        ],
+        "aggregation": "ALL_MANDATORY_CORE",
+        "formula_note": "No new negative-base percentage convention, nearest-quarter substitution or implied earnings-acceleration verdict."
+      },
+      "v1_name": "Latest Quarterly Results — YoY & QoQ",
+      "v1_purpose": "Canonical diagnostic checkpoint for Latest Quarterly Results — YoY & QoQ."
+    },
+    {
+      "rule_id": 26,
+      "parent_reference": "diagnostic-registry-v1#26",
+      "parent_definition_fingerprint": "sha256:96ed7ac9662318876cc38a474bdc70520cf124de00f282a1f8bb5d15512371c9",
+      "change": "PROPOSED_SEMANTIC_DIFF",
+      "definition": {
+        "rule_id": 26,
+        "proposed_name": "Profitability Margin Trajectory — Net Profit Core, Qualified Margin Context",
+        "v1_behavior": "Name promises operating and gross margins; actual evaluator measures latest quarterly EBITDA/revenue and YoY change with five-quarter intake. No canonical gross-margin numerator.",
+        "purpose": "Describe explicitly named after-tax profitability margins while separating operating, gross and issuer-defined EBITDA contexts.",
+        "mandatory_change": "Propose NET_PROFIT_MARGIN as named non-financial core from exact reported PAT and revenue; this is a new proposed scope requiring human governance, not an already approved formula.",
+        "optional_change": "PBT, direct operating, gross and issuer EBITDA margins are distinctly named optional components with independent contracts.",
+        "entity_change": "No industrial PAT/revenue, operating or gross-margin mechanics for BANK/NBFC/INSURER without native policy; unknown remains blocked.",
+        "output_change": "Descriptive net margin levels and YoY percentage-point change; no V1 EXPANDING/CONTRACTING threshold transfer or inference about gross/operating margins.",
+        "reason": "Profitability is broader than operating/gross profitability. The explicit net-profit core makes the semantic loss visible rather than relabelling a substitute.",
+        "sources": [
+          "MCA_IND_AS_1",
+          "MCA_SCHEDULE_III",
+          "SEBI_RATIO_EXAMPLE",
+          "ACCEPTED_RESEARCH"
+        ],
+        "risk": "Net profit includes finance, tax and non-operating effects; cannot establish operational efficiency. Thresholds and source PAT attribution need governance/calibration before activation.",
+        "components": [
+          {
+            "component_id": "NET_PROFIT_MARGIN",
+            "role": "MANDATORY_CORE",
+            "required_inputs": [
+              "exact reported PAT",
+              "same-period revenue",
+              "consistent PAT attribution and revenue basis"
+            ],
+            "measurement_definition": "PAT / revenue; revenue > 0, finite signed PAT; levels are dimensionless fractions and YoY percentage-point change = 100 * (margin_q - margin_q_minus_4).",
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "PROPOSED_ONLY",
+            "minimum_observations": 5
+          },
+          {
+            "component_id": "PBT_MARGIN",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "reported PBT",
+              "same-period revenue"
+            ],
+            "measurement_definition": "PBT / revenue, revenue > 0; explicitly before tax and after financing. Not operating margin.",
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "PROPOSED_ONLY"
+          },
+          {
+            "component_id": "OPERATING_MARGIN",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "direct operating-profit numerator",
+              "exact excluded-item definition",
+              "same-period revenue"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "GROSS_MARGIN",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "direct gross-profit or governed COGS contract",
+              "matching revenue/cost scope"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "ISSUER_EBITDA_MARGIN",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "direct issuer EBITDA",
+              "disclosed definition",
+              "matching revenue"
+            ],
+            "measurement_definition": "Issuer EBITDA / revenue only after a source-qualified ratio contract; not standardized operating margin.",
+            "period_contract": "Five consecutive QUARTER_ONLY fiscal observations q-4..q; exact YoY q/q-4 and QoQ q/q-1; no YTD substitution.",
+            "policy_availability": "FUTURE_CONTRACT_REQUIRED"
+          }
+        ],
+        "aggregation": "ALL_MANDATORY_CORE",
+        "formula_note": "PAT is not gross profit; PBT is not operating profit; issuer EBITDA is not standardized operating profit. HSI_STANDARDIZED_OPERATING_EARNINGS remains a formula-null placeholder, not a parent for the core.",
+        "alternatives": [
+          [
+            "Profitability Margin Trajectory",
+            "Selected with explicit Net Profit Core, Qualified Margin Context suffix to disclose the changed purpose."
+          ],
+          [
+            "Operating Profitability Trajectory",
+            "Rejected: unavailable standardized operating-profit contract would make wording misleading."
+          ],
+          [
+            "Margin Structure & Profitability Trend",
+            "Rejected: implies full cost/margin decomposition that current evidence cannot establish."
+          ]
+        ]
+      },
+      "v1_name": "Operating Margin & Gross Margin Trajectory",
+      "v1_purpose": "Canonical diagnostic checkpoint for Operating Margin & Gross Margin Trajectory."
+    },
+    {
+      "rule_id": 27,
+      "parent_reference": "diagnostic-registry-v1#27",
+      "parent_definition_fingerprint": "sha256:07df5b77987910c1d6b2ba11a42e0e64678189402e50b47c719a4e4b8163b869",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Order Book & Book-to-Bill Ratio"
+    },
+    {
+      "rule_id": 28,
+      "parent_reference": "diagnostic-registry-v1#28",
+      "parent_definition_fingerprint": "sha256:0a25093a0569d39f271805206373795dc54a4cf08ccd7d1617f9e001c7f6f7c2",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Management Execution Track Record — Guidance vs Delivery"
+    },
+    {
+      "rule_id": 29,
+      "parent_reference": "diagnostic-registry-v1#29",
+      "parent_definition_fingerprint": "sha256:23d84e98a168e8f4fb0210ec6370fc40e933049f6ef57b629a52160f178e9321",
+      "change": "PROPOSED_SEMANTIC_DIFF",
+      "definition": {
+        "rule_id": 29,
+        "proposed_name": "Entity-Aware Valuation Multiples — Independently Qualified Components",
+        "v1_behavior": "P/E drives classification; forward P/E, PEG, EV/EBITDA and P/B are optional calculations in the legacy evaluator. Canonical bridge blocks unsupported forward/share inputs and prevents legacy EV missing-debt/cash zero defaults.",
+        "purpose": "Preserve independently comparable valuation evidence with explicit component applicability and no automatic cross-component scoring.",
+        "mandatory_change": "No universal mandatory multiple; AT_LEAST_ONE_READY_APPLICABLE_COMPONENT establishes descriptive availability, not a full valuation verdict.",
+        "optional_change": "P/E, P/B, EV/EBITDA, forward P/E and PEG are independently optional; omitted inputs never default to zero.",
+        "entity_change": "Financial-sector P/E/P/B require native basis/comparison policy; industrial EV/EBITDA marked not applicable only by an approved classified entity exclusion.",
+        "output_change": "Each component uses READY/PARTIAL/NOT_READY/NOT_APPLICABLE/POLICY_BLOCKED presentation aliases; exact underlying insufficiency/conflict remains retained.",
+        "reason": "Absent EV/EBITDA must not erase valid P/E/PB evidence; fair-value and score conclusions require separate versioned interpretation.",
+        "sources": [
+          "MCA_IND_AS_1",
+          "RBI_BANK",
+          "RBI_NBFC",
+          "IRDAI",
+          "ACCEPTED_RESEARCH"
+        ],
+        "risk": "An available multiple is not ATTRACTIVE. No score weighting, forecast or missing-debt/cash fill is authorized.",
+        "components": [
+          {
+            "component_id": "PE",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "PIT price",
+              "positive annual EPS_BASIC",
+              "same currency/per-share unit and adjustment basis"
+            ],
+            "measurement_definition": "PIT price / annual EPS; preserve annual horizon, no implicit forward or TTM conversion.",
+            "period_contract": "FULL_YEAR, exact fiscal identity, same statement scope and accounting basis; no TTM substitution. Price cutoff equals execution as_of; actual price session retained.",
+            "policy_availability": "PROPOSED_ONLY"
+          },
+          {
+            "component_id": "PB",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "PIT price",
+              "exact outstanding shares",
+              "positive attributable book equity",
+              "share/equity alignment policy"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Exact priced capital and balance-date bridge required.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "EV_EBITDA",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "approved EV debt/cash/share bridge",
+              "direct source-qualified positive EBITDA",
+              "formula comparability"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Explicit EV cutoff and earnings period.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "FORWARD_PE",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "PIT forecast EPS",
+              "forecast horizon",
+              "revision/source contract",
+              "PIT price"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Exact forecast availability and horizon.",
+            "policy_availability": "POLICY_BLOCKED"
+          },
+          {
+            "component_id": "PEG",
+            "role": "OPTIONAL_COMPONENT",
+            "required_inputs": [
+              "qualified PE",
+              "positive approved growth measure",
+              "growth method and unit policy"
+            ],
+            "measurement_definition": null,
+            "period_contract": "Growth lookback or forecast horizon must be explicit.",
+            "policy_availability": "POLICY_BLOCKED"
+          }
+        ],
+        "aggregation": "AT_LEAST_ONE_READY_APPLICABLE_COMPONENT",
+        "formula_note": "NOT_READY is a presentation alias for INSUFFICIENT_DATA or EVIDENCE_CONFLICTED with the underlying state/reasons retained; do not collapse conflict. Zero ready components cannot produce a ready rule."
+      },
+      "v1_name": "Valuation Multiples — P/E, Forward P/E, PEG, EV/EBITDA, P/B",
+      "v1_purpose": "Canonical diagnostic checkpoint for Valuation Multiples — P/E, Forward P/E, PEG, EV/EBITDA, P/B."
+    },
+    {
+      "rule_id": 30,
+      "parent_reference": "diagnostic-registry-v1#30",
+      "parent_definition_fingerprint": "sha256:bdfde445c436f4ec8ad6537fdce1a5392ec807b72ade157a18e841dac672c40b",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Fundamental Catalysts — High/Medium/Low Impact"
+    },
+    {
+      "rule_id": 31,
+      "parent_reference": "diagnostic-registry-v1#31",
+      "parent_definition_fingerprint": "sha256:da7f5c5e368b342386db4a3cf0e3e81d947c2b1829ee215643634864b7667a46",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Comprehensive Risk Engine — Probability × Impact"
+    },
+    {
+      "rule_id": 32,
+      "parent_reference": "diagnostic-registry-v1#32",
+      "parent_definition_fingerprint": "sha256:3263248d004881a6ec3e1a6f4a5156ca4a40911e99504dacb1c2843ad9c56190",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Trading Thesis"
+    },
+    {
+      "rule_id": 33,
+      "parent_reference": "diagnostic-registry-v1#33",
+      "parent_definition_fingerprint": "sha256:43178c4bff198096ebf93b4a62cae52aa5746f08bd06d96d2538bf9958b1bfed",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Investment Thesis"
+    },
+    {
+      "rule_id": 34,
+      "parent_reference": "diagnostic-registry-v1#34",
+      "parent_definition_fingerprint": "sha256:a4816d9e8c01db5ac821288944b1f7295d3f2ab0f1387dd59178667d21b36ff9",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Bull / Base / Bear Probability Scenarios"
+    },
+    {
+      "rule_id": 35,
+      "parent_reference": "diagnostic-registry-v1#35",
+      "parent_definition_fingerprint": "sha256:2522c3e2586fa0971e90c0791548de7982bb95b9892d49b4928ef1f6428f084e",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "VWAP & Value Area Acceptance"
+    },
+    {
+      "rule_id": 36,
+      "parent_reference": "diagnostic-registry-v1#36",
+      "parent_definition_fingerprint": "sha256:b908bb480a57d488060c325ebd9dfa16f4062261fae2c4ca604be35cdc29aa37",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "OBV Trend & Divergence"
+    },
+    {
+      "rule_id": 37,
+      "parent_reference": "diagnostic-registry-v1#37",
+      "parent_definition_fingerprint": "sha256:7b166fad531f330c4858ab31b586d9e2a18f519bb76fdeba02bc4659bf2e1d5b",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Base Pattern Quality — VCP, Cup & Handle, Flat Base, Ascending Base"
+    },
+    {
+      "rule_id": 38,
+      "parent_reference": "diagnostic-registry-v1#38",
+      "parent_definition_fingerprint": "sha256:247ab70297cf046eb2ed05ac0f6a350d8b0149d97a3d338977a97ad6cbb7bfe7",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Pullback Quality & Support Confluence"
+    },
+    {
+      "rule_id": 39,
+      "parent_reference": "diagnostic-registry-v1#39",
+      "parent_definition_fingerprint": "sha256:23f0e9e56a63c0b59d9e3542903565d0bf8ff6004b1b2ec83f9a3a36684efbd7",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Technical Indicator Layer — RSI, ADX, ATR"
+    },
+    {
+      "rule_id": 40,
+      "parent_reference": "diagnostic-registry-v1#40",
+      "parent_definition_fingerprint": "sha256:e7045e2378ee4c5da33d469e5bd697b3a71a06345014d79d1dc75dbd47f4d950",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Aggressive Entry Level"
+    },
+    {
+      "rule_id": 41,
+      "parent_reference": "diagnostic-registry-v1#41",
+      "parent_definition_fingerprint": "sha256:1a53c4c1c40d3d3725b6134cf1fd25505ae2fe85249ae64f623f96b36819d58d",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Confirmation Entry Level"
+    },
+    {
+      "rule_id": 42,
+      "parent_reference": "diagnostic-registry-v1#42",
+      "parent_definition_fingerprint": "sha256:9b5e2308e9fa559c51a79e08c7cc415910686210937ccaf812e328b695ec3e6b",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Pullback / Retest Entry Level"
+    },
+    {
+      "rule_id": 43,
+      "parent_reference": "diagnostic-registry-v1#43",
+      "parent_definition_fingerprint": "sha256:58d10d074443e1a3a925d599444b00ada13aefa70e4705989b591bbdb689ff74",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Structural Stop-Loss"
+    },
+    {
+      "rule_id": 44,
+      "parent_reference": "diagnostic-registry-v1#44",
+      "parent_definition_fingerprint": "sha256:7475f4257195c213ff87d5d5f52c4ea2e2a124a603dc85ecbf5a910617894edf",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Target Hierarchy — T1, T2, Extended Target"
+    },
+    {
+      "rule_id": 45,
+      "parent_reference": "diagnostic-registry-v1#45",
+      "parent_definition_fingerprint": "sha256:8ec160324b40f47f76633ec32b45553cc86819553565b578ffc3511866d71348",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Risk/Reward Calculation — minimum structural R:R normally 1:2"
+    },
+    {
+      "rule_id": 46,
+      "parent_reference": "diagnostic-registry-v1#46",
+      "parent_definition_fingerprint": "sha256:5524988a7af74f61b5031e6d81c5b13e85096c22e1ff3d4ac18ecb08f94f73d8",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Exact Thesis Invalidation Conditions"
+    },
+    {
+      "rule_id": 47,
+      "parent_reference": "diagnostic-registry-v1#47",
+      "parent_definition_fingerprint": "sha256:501b69a805f94ce461df229e3bf44f1b46194938aca791c10bca707dadde5bdb",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Retail / Public Sentiment Score — 0 to 100"
+    },
+    {
+      "rule_id": 48,
+      "parent_reference": "diagnostic-registry-v1#48",
+      "parent_definition_fingerprint": "sha256:38b885766c0d861b04ec6c0bb40847f4c516d783c76293f21bb7544aac6fd32f",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Crowd Positioning Tier"
+    },
+    {
+      "rule_id": 49,
+      "parent_reference": "diagnostic-registry-v1#49",
+      "parent_definition_fingerprint": "sha256:1a2e263d8d9d4c17e6ea82c638087074fa8736969053a53ac1633e9c0aa63247",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Crowd Data Confidence"
+    },
+    {
+      "rule_id": 50,
+      "parent_reference": "diagnostic-registry-v1#50",
+      "parent_definition_fingerprint": "sha256:21ccbc3edeff609c985fd54b3cc3fe722598ffa52f9a6e01a7cba079b8360ccd",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Institutional Accumulation vs Distribution Proxy"
+    },
+    {
+      "rule_id": 51,
+      "parent_reference": "diagnostic-registry-v1#51",
+      "parent_definition_fingerprint": "sha256:db893d450310c688e4fdafa3e775beded393447ea46dd58a8a56610539b4adcb",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Major Stop-Loss Cluster Mapping"
+    },
+    {
+      "rule_id": 52,
+      "parent_reference": "diagnostic-registry-v1#52",
+      "parent_definition_fingerprint": "sha256:8daa60b93c5aa2ccd44a64f11d57c8ea2887bb703a129b1e24a11897e4723f86",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Liquidity Event Detection — Sweep, Absorption, Breakout Acceptance"
+    },
+    {
+      "rule_id": 53,
+      "parent_reference": "diagnostic-registry-v1#53",
+      "parent_definition_fingerprint": "sha256:aa8cc9a36b7959756c4be9dcf3307cd251b1feee23980d51ace82636660fffff",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Bull Trap Identification"
+    },
+    {
+      "rule_id": 54,
+      "parent_reference": "diagnostic-registry-v1#54",
+      "parent_definition_fingerprint": "sha256:20a634fafefd5184514996c793a22cd5c8c7a8ba88efab0b5124d9611feb1d4f",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Bear Trap Identification"
+    },
+    {
+      "rule_id": 55,
+      "parent_reference": "diagnostic-registry-v1#55",
+      "parent_definition_fingerprint": "sha256:d1ae67894a0f72285ad1ff78616b0aac3af82c56594055f100b62526a1a484cf",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Crowd Trap Probability"
+    },
+    {
+      "rule_id": 56,
+      "parent_reference": "diagnostic-registry-v1#56",
+      "parent_definition_fingerprint": "sha256:2ce3e2fbf5915bdb94fc01d77f054d368a3b5566714d21a14a0780b88bb6135c",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Price vs Crowd Sentiment Divergence"
+    },
+    {
+      "rule_id": 57,
+      "parent_reference": "diagnostic-registry-v1#57",
+      "parent_definition_fingerprint": "sha256:18d26c406b94acfa255d05374fa21acc6ca68afd998dc380f0d813d294aa85e8",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Post-News Price Reaction — Absorption vs Sell-the-News"
+    },
+    {
+      "rule_id": 58,
+      "parent_reference": "diagnostic-registry-v1#58",
+      "parent_definition_fingerprint": "sha256:34538de566a93ed9a176914231a4af140406cda4b0bd59af9d364267cef188a2",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Volume Climax & Distribution Signs"
+    },
+    {
+      "rule_id": 59,
+      "parent_reference": "diagnostic-registry-v1#59",
+      "parent_definition_fingerprint": "sha256:68f65f534f444234a2c89e5efdd1e28392e95816cdeb8f707664c1d1755de111",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Contrarian Ichimoku Confluence"
+    },
+    {
+      "rule_id": 60,
+      "parent_reference": "diagnostic-registry-v1#60",
+      "parent_definition_fingerprint": "sha256:0d2ff51c032e2f62bd8c902a05c9577b8abab63666983c0c49528cced82d380c",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Contrarian Signal Quality — Strong / Moderate / Weak"
+    },
+    {
+      "rule_id": 61,
+      "parent_reference": "diagnostic-registry-v1#61",
+      "parent_definition_fingerprint": "sha256:ebcaa97f14bfbec983be785ed6e4f582f3ee268aa241e973f39ec2a4cdb58c13",
+      "change": "INHERIT_EXACT_PARENT",
+      "canonical_name": "Contrarian Action Verdict — Buy / Sell / Hold / Avoid / Wait"
+    }
+  ],
+  "entity_classes": [
+    "NON_FINANCIAL",
+    "BANK",
+    "NBFC",
+    "INSURER",
+    "UNKNOWN_NON_COMPARABLE"
+  ],
+  "entity_cell_states": [
+    "STANDARD_BRANCH",
+    "ENTITY_SPECIFIC_BRANCH",
+    "OPTIONAL_COMPONENT_ONLY",
+    "POLICY_BLOCKED",
+    "NOT_APPLICABLE"
+  ],
+  "entity_applicability": [
+    {
+      "rule_id": 16,
+      "NON_FINANCIAL": "STANDARD_BRANCH",
+      "BANK": "POLICY_BLOCKED",
+      "NBFC": "POLICY_BLOCKED",
+      "INSURER": "POLICY_BLOCKED",
+      "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+    },
+    {
+      "rule_id": 17,
+      "NON_FINANCIAL": "STANDARD_BRANCH",
+      "BANK": "POLICY_BLOCKED",
+      "NBFC": "POLICY_BLOCKED",
+      "INSURER": "POLICY_BLOCKED",
+      "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+    },
+    {
+      "rule_id": 19,
+      "NON_FINANCIAL": "STANDARD_BRANCH",
+      "BANK": "POLICY_BLOCKED",
+      "NBFC": "POLICY_BLOCKED",
+      "INSURER": "POLICY_BLOCKED",
+      "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+    },
+    {
+      "rule_id": 25,
+      "NON_FINANCIAL": "STANDARD_BRANCH",
+      "BANK": "POLICY_BLOCKED",
+      "NBFC": "POLICY_BLOCKED",
+      "INSURER": "POLICY_BLOCKED",
+      "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+    },
+    {
+      "rule_id": 26,
+      "NON_FINANCIAL": "STANDARD_BRANCH",
+      "BANK": "POLICY_BLOCKED",
+      "NBFC": "POLICY_BLOCKED",
+      "INSURER": "POLICY_BLOCKED",
+      "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+    },
+    {
+      "rule_id": 29,
+      "NON_FINANCIAL": "STANDARD_BRANCH",
+      "BANK": "POLICY_BLOCKED",
+      "NBFC": "POLICY_BLOCKED",
+      "INSURER": "POLICY_BLOCKED",
+      "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+    }
+  ],
+  "entity_policy": {
+    "matrix_meaning": "Candidate branch support conditional on future approval; STANDARD_BRANCH is not active or data-ready. Financial classes require ENTITY_SPECIFIC_BRANCH but all such policies are currently absent.",
+    "evidence_hierarchy": [
+      "exact PIT-visible regulator registration/status",
+      "applicable statutory reporting framework",
+      "official exchange/issuer classification",
+      "authoritative canonical industry taxonomy with exact mapping"
+    ],
+    "required": [
+      "canonical instrument and issuer identity bridge",
+      "source identity and fingerprint",
+      "published_at",
+      "received_at",
+      "effective interval",
+      "revision lineage",
+      "no conflicting effective classification"
+    ],
+    "unknown_behavior": "POLICY_BLOCKED:ENTITY_CLASSIFICATION_UNAVAILABLE",
+    "conflict_behavior": "EVIDENCE_CONFLICTED:ENTITY_CLASSIFICATION_CONFLICT",
+    "name_heuristics_allowed": false,
+    "absence_from_regulator_list_proves_nonfinancial": false,
+    "classify_existing_unknowns": false,
+    "native_candidates": {
+      "BANK": [
+        "ROE",
+        "ROA",
+        "NIM context",
+        "asset quality context",
+        "capital adequacy context"
+      ],
+      "NBFC": [
+        "native returns and funding/leverage branch: POLICY_BLOCKED"
+      ],
+      "INSURER": [
+        "policyholder/shareholder and solvency branch: POLICY_BLOCKED"
+      ]
+    }
+  },
+  "component_contract": {
+    "name": "DiagnosticComponentState",
+    "scope_rule_ids": [16, 17, 19, 25, 26, 29],
+    "implemented": false,
+    "states": [
+      "READY",
+      "PARTIAL",
+      "INSUFFICIENT_DATA",
+      "POLICY_BLOCKED",
+      "NOT_APPLICABLE",
+      "EVIDENCE_CONFLICTED"
+    ],
+    "roles": [
+      "MANDATORY_CORE",
+      "OPTIONAL_COMPONENT",
+      "BLOCKING_COMPONENT"
+    ],
+    "fields": [
+      "component_id",
+      "role",
+      "state",
+      "evidence_ids",
+      "evidence_fingerprints",
+      "reason_codes",
+      "confidence",
+      "confidence_lineage",
+      "policy_id",
+      "policy_version",
+      "policy_fingerprint",
+      "as_of",
+      "entity_branch",
+      "value",
+      "value_unit",
+      "measurement_period",
+      "formula_reference"
+    ],
+    "confidence": {
+      "default": null,
+      "unavailable_reason": "CONFIDENCE_CALCULATION_NOT_APPROVED",
+      "synthetic_values_allowed": false,
+      "source_value_allowed": "Only source-carried, verified, exact-policy confidence with lineage; no aggregate confidence formula."
+    },
+    "constraints": [
+      "READY requires approved applicable exact component policy and complete verified PIT evidence.",
+      "PARTIAL retains at least one valid submeasurement but cannot satisfy a mandatory core.",
+      "Unavailable/conflicted fields carry null values and nonempty reason codes; no zero-fill.",
+      "NOT_APPLICABLE requires exact approved policy exclusion plus classified entity evidence; missing data/policy is never N/A.",
+      "Evidence references are sorted by exact identity; duplicate/conflicting IDs rejected, not silently deduplicated.",
+      "No component is an extra rule, weighted vote or trade authority.",
+      "Unknown component states/roles/IDs fail closed.",
+      "PROPOSED_ONLY component policy availability never permits execution."
+    ],
+    "aggregation": {
+      "core_complete": "Every mandatory core component READY; N/A core requires an explicitly approved alternative branch core, never vacuous completeness.",
+      "optional_coverage": "Ready optional count / applicable optional count as a descriptive pair; unavailable count and excluded count also retained; no score weight.",
+      "conflict": "Preserve every conflict; mandatory/blocking conflict gives EVIDENCE_CONFLICTED, isolated optional conflict remains attached and prevents FULL_COMPONENT_COVERAGE, not erasure of ready core.",
+      "blocking": "A BLOCKING_COMPONENT needs an approved categorical risk policy; none is designated in these six rule proposals.",
+      "result": "One canonical result carries core_completeness, optional_enrichment_coverage, component states, confidence/null, blockers and policy lineage. Readiness is separate from semantic outcome and scoring eligibility.",
+      "no_ready": "With no verified ready core or component, return POLICY_BLOCKED if governing policy is absent, else INSUFFICIENT_DATA; branch/mandatory conflict has precedence.",
+      "scoring": "No mapping from readiness to PASS/HEALTHY/ATTRACTIVE or numerical score; score eligibility false for an unapproved V2 interpretation adapter."
+    },
+    "rule17_aliases": {
+      "READY_STANDARD_BRANCH": "Complete NON_FINANCIAL approved core",
+      "READY_ENTITY_SPECIFIC_BRANCH": "Complete separately approved financial native core",
+      "PARTIAL": "Some component evidence; mandatory core incomplete",
+      "POLICY_BLOCKED": "Required policy/classification absent",
+      "INSUFFICIENT_DATA": "Applicable approved component evidence absent",
+      "NOT_APPLICABLE": "Approved concept exclusion only",
+      "EVIDENCE_CONFLICTED": "Contradictory mandatory evidence"
+    },
+    "rule25_roles": {
+      "CORE_REQUIRED": "MANDATORY_CORE",
+      "OPTIONAL": "OPTIONAL_COMPONENT",
+      "UNAVAILABLE": "Presentation of underlying INSUFFICIENT_DATA or POLICY_BLOCKED, not a role"
+    },
+    "rule29_aliases": {
+      "READY": [
+        "READY"
+      ],
+      "PARTIAL": [
+        "PARTIAL"
+      ],
+      "NOT_READY": [
+        "INSUFFICIENT_DATA",
+        "EVIDENCE_CONFLICTED"
+      ],
+      "NOT_APPLICABLE": [
+        "NOT_APPLICABLE"
+      ],
+      "POLICY_BLOCKED": [
+        "POLICY_BLOCKED"
+      ]
+    },
+    "example_cases": [
+      {
+        "case_id": "mandatory_missing_optional_ready",
+        "mandatory": [
+          "INSUFFICIENT_DATA"
+        ],
+        "optional": [
+          "READY"
+        ],
+        "core_complete": false,
+        "readiness": "PARTIAL",
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "core_ready_optional_missing",
+        "mandatory": [
+          "READY",
+          "READY",
+          "READY"
+        ],
+        "optional": [
+          "INSUFFICIENT_DATA"
+        ],
+        "core_complete": true,
+        "readiness": "READY_STANDARD_BRANCH",
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "core_ready_optional_conflicted",
+        "mandatory": [
+          "READY"
+        ],
+        "optional": [
+          "EVIDENCE_CONFLICTED"
+        ],
+        "core_complete": true,
+        "readiness": "READY_STANDARD_BRANCH",
+        "retained_blockers": [
+          "OPTIONAL_EVIDENCE_CONFLICTED"
+        ],
+        "full_component_coverage": false,
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "mandatory_conflicted",
+        "mandatory": [
+          "EVIDENCE_CONFLICTED"
+        ],
+        "optional": [
+          "READY"
+        ],
+        "core_complete": false,
+        "readiness": "EVIDENCE_CONFLICTED",
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "mandatory_policy_missing",
+        "mandatory": [
+          "POLICY_BLOCKED"
+        ],
+        "optional": [],
+        "core_complete": false,
+        "readiness": "POLICY_BLOCKED",
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "valuation_no_ready",
+        "mandatory": [],
+        "optional": [
+          "POLICY_BLOCKED",
+          "POLICY_BLOCKED"
+        ],
+        "aggregation": "AT_LEAST_ONE_READY_APPLICABLE_COMPONENT",
+        "core_complete": false,
+        "readiness": "POLICY_BLOCKED",
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "valuation_pe_ready",
+        "mandatory": [],
+        "optional": [
+          "READY",
+          "POLICY_BLOCKED"
+        ],
+        "aggregation": "AT_LEAST_ONE_READY_APPLICABLE_COMPONENT",
+        "core_complete": true,
+        "readiness": "PARTIAL",
+        "semantic_scoring_eligible": false
+      },
+      {
+        "case_id": "mandatory_na_not_waived",
+        "mandatory": [
+          "NOT_APPLICABLE"
+        ],
+        "optional": [
+          "READY"
+        ],
+        "core_complete": false,
+        "readiness": "POLICY_BLOCKED",
+        "semantic_scoring_eligible": false
+      }
+    ]
+  },
+  "reported_ratio": {
+    "contract": "ISSUER_REPORTED_FINANCIAL_RATIO",
+    "status": "FUTURE_CONTRACT_NOT_IMPLEMENTED",
+    "mandatory_core_eligible": false,
+    "current_role": "FORMULA_MATCHED_CORROBORATION_ONLY",
+    "entry_rules": [
+      17,
+      19,
+      26
+    ],
+    "stronger_use": "Separate future approved canonical ratio contract plus rule policy version; same name never sufficient.",
+    "required_fields": [
+      "ratio_type",
+      "value",
+      "period_end",
+      "statement_scope",
+      "source_filing_id",
+      "published_at",
+      "received_at",
+      "numerator_definition",
+      "denominator_definition",
+      "formula_fingerprint",
+      "source_authority",
+      "revision_lineage",
+      "pit_visibility",
+      "comparability_status"
+    ],
+    "dscr_is_interest_coverage": false
+  },
+  "derived_metric": {
+    "identity": "HSI_STANDARDIZED_OPERATING_EARNINGS",
+    "status": "PLACEHOLDER_NOT_APPROVED",
+    "formula": null,
+    "reported_ebitda_alias": false,
+    "reported_ebit_alias": false,
+    "required": [
+      "immutable parent fact IDs",
+      "formula version",
+      "scope",
+      "period identity",
+      "scale/unit/currency compatibility",
+      "vintage",
+      "PIT eligibility",
+      "deterministic replay",
+      "conflict handling"
+    ]
+  },
+  "downstream_impact": [
+    {
+      "consumer_id": "financial_intake_and_evaluators",
+      "paths": [
+        "app/fundamentals/diagnostic_input.py",
+        "app/analysis/fundamentals.py",
+        "app/analysis/valuation_trade.py",
+        "app/diagnostics/evaluators.py"
+      ],
+      "symbols": [
+        "CanonicalFinancialDiagnosticInput",
+        "five_year_trend",
+        "return_ratios",
+        "leverage",
+        "latest_quarter",
+        "margins",
+        "valuation"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        25,
+        26,
+        29
+      ],
+      "dependency": "Direct",
+      "classifications": [
+        "IMPLEMENTATION_UPDATE_REQUIRED"
+      ],
+      "reason": "Future explicit V2 dispatch; preserve V1 code path and thresholds. No change now."
+    },
+    {
+      "consumer_id": "canonical_execution_and_rehydration",
+      "paths": [
+        "app/universe_analysis/service.py",
+        "app/domain/canonical_diagnostic_strategy.py",
+        "app/portfolio/canonical_diagnostics_orchestration.py"
+      ],
+      "symbols": [
+        "Canonical61DiagnosticRunner",
+        "require_canonical_61_runner_authorization",
+        "rehydrate_persisted_canonical_diagnostics"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        25,
+        26,
+        29
+      ],
+      "dependency": "Direct version binding",
+      "classifications": [
+        "IMPLEMENTATION_UPDATE_REQUIRED"
+      ],
+      "reason": "Current runner authorizes exact canonical-universe-analysis/v1; rehydration stamps current constant. Future version lookup must be exact, never relabel V1 records."
+    },
+    {
+      "consumer_id": "decision_score",
+      "paths": [
+        "app/scoring/engine.py",
+        "app/portfolio/canonical_decision_score_activation.py"
+      ],
+      "symbols": [
+        "COMPONENTS",
+        "BASE_STATE_SCORES",
+        "build_scorecard"
+      ],
+      "affected_rule_ids": [
+        16,
+        25,
+        26,
+        29
+      ],
+      "dependency": "Direct plus Rule31 indirect",
+      "classifications": [
+        "SEMANTIC_REVIEW_REQUIRED",
+        "IMPLEMENTATION_UPDATE_REQUIRED",
+        "CALIBRATION_REQUIRED"
+      ],
+      "reason": "16/25/26 are optional inputs to 15% earnings component; 29 mandatory in 10% valuation/RR. Unknown state defaults to 5, PARTIAL scores 5; V2 readiness must never enter this mapping. Optional evidence changes component averages even with fixed top-level weights."
+    },
+    {
+      "consumer_id": "higher_order_thesis",
+      "paths": [
+        "app/diagnostics/synthesis.py"
+      ],
+      "symbols": [
+        "SynthesisRules",
+        "risk",
+        "investment_thesis",
+        "scenarios"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        29
+      ],
+      "dependency": "16/17/19 -> Rule33; 19/29 -> Rule31; Rule31/32/33 -> Rule34",
+      "classifications": [
+        "SEMANTIC_REVIEW_REQUIRED",
+        "IMPLEMENTATION_UPDATE_REQUIRED",
+        "CALIBRATION_REQUIRED"
+      ],
+      "reason": "Presence/non-weak checks can treat new readiness labels as supportive. Keep Rules31-34 definitions unchanged; future adapter must gate V2 semantic eligibility."
+    },
+    {
+      "consumer_id": "shared_brain_portfolio",
+      "paths": [
+        "app/portfolio/holding_intelligence.py",
+        "app/portfolio/canonical_diagnostics_orchestration.py",
+        "app/intelligence/shared_brain_application.py"
+      ],
+      "symbols": [
+        "compose_holding_intelligence",
+        "rehydrate_persisted_canonical_diagnostics"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        25,
+        26,
+        29
+      ],
+      "dependency": "Via canonical diagnostics and synthesized thesis",
+      "classifications": [
+        "SEMANTIC_REVIEW_REQUIRED",
+        "IMPLEMENTATION_UPDATE_REQUIRED"
+      ],
+      "reason": "Preserve exact as_of, strategy/registry version and blockers; no automatic portfolio action or thesis promotion."
+    },
+    {
+      "consumer_id": "six_gates",
+      "paths": [
+        "app/gates/engine.py",
+        "app/portfolio/canonical_six_gates_activation.py",
+        "app/portfolio/canonical_six_gates.py"
+      ],
+      "symbols": [
+        "scorecard_id",
+        "registry_version"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        25,
+        26,
+        29
+      ],
+      "dependency": "Indirect through scorecard and higher-order evidence",
+      "classifications": [
+        "SEMANTIC_REVIEW_REQUIRED",
+        "CALIBRATION_REQUIRED"
+      ],
+      "reason": "No new direct rule thresholds or gate changes. Require version-compatible complete score/evidence; never treat partial fundamental readiness as capital authority."
+    },
+    {
+      "consumer_id": "long_term_shadows",
+      "paths": [
+        "app/intelligence/long_term_thesis_review.py",
+        "app/intelligence/long_term_thesis_research_shadow.py",
+        "app/intelligence/quality_fair_value_research_shadow.py",
+        "app/intelligence/fundamental_compounder_research_shadow.py",
+        "app/intelligence/fundamental_inflection_research_shadow.py",
+        "app/intelligence/long_term_policy_transmission_research_shadow.py"
+      ],
+      "symbols": [
+        "DeepAnalysisDossierCandidate",
+        "LongTermThesisResearchShadow"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        25,
+        26,
+        29
+      ],
+      "dependency": "Indirect dossier and financial evidence lineage; no direct six-ID formula mapping",
+      "classifications": [
+        "SEMANTIC_REVIEW_REQUIRED"
+      ],
+      "reason": "Reuse same dossier; V2 coverage cannot satisfy missing family parameters. Existing financial-sector N/A vocabulary needs compatibility review; never copy it into V2 missing-policy semantics."
+    },
+    {
+      "consumer_id": "raw_evidence_stores",
+      "paths": [
+        "app/fundamentals/models.py",
+        "app/fundamentals/store.py"
+      ],
+      "symbols": [
+        "FinancialFact",
+        "FinancialFactStore"
+      ],
+      "affected_rule_ids": [
+        16,
+        17,
+        19,
+        25,
+        26,
+        29
+      ],
+      "dependency": "No formula/consumer change in proposal",
+      "classifications": [
+        "NO_IMPACT"
+      ],
+      "reason": "Facts, filings, provider integrations and storage are untouched; future acquisition separate."
+    }
+  ],
+  "horizon_impact": {
+    "path": "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json",
+    "fingerprint": "sha256:bc1f7548b372738d69b72c2e54afdc34c9f10929aee9a10d834ce99cb8d43d8a",
+    "source_status": "CANDIDATE_NOT_ACTIVE",
+    "rule_rows": [
+      {
+        "rule_id": 16,
+        "short_term": "CONTEXT",
+        "positional": "APPLICABLE",
+        "long_term": "APPLICABLE",
+        "technical_profile": null
+      },
+      {
+        "rule_id": 17,
+        "short_term": "CONTEXT",
+        "positional": "APPLICABLE",
+        "long_term": "APPLICABLE",
+        "technical_profile": null
+      },
+      {
+        "rule_id": 19,
+        "short_term": "APPLICABLE",
+        "positional": "APPLICABLE",
+        "long_term": "APPLICABLE",
+        "technical_profile": null
+      },
+      {
+        "rule_id": 25,
+        "short_term": "CONTEXT",
+        "positional": "APPLICABLE",
+        "long_term": "APPLICABLE",
+        "technical_profile": null
+      },
+      {
+        "rule_id": 26,
+        "short_term": "CONTEXT",
+        "positional": "APPLICABLE",
+        "long_term": "APPLICABLE",
+        "technical_profile": null
+      },
+      {
+        "rule_id": 29,
+        "short_term": "CONTEXT",
+        "positional": "APPLICABLE",
+        "long_term": "APPLICABLE",
+        "technical_profile": "VALUATION_PRICE_CONTEXT"
+      }
+    ],
+    "change": "NO_APPLICABILITY_CHANGE_PROPOSED; entity-branch awareness and versioned name/reference updates required before future V2 use.",
+    "future_policy_version_required": true,
+    "new_horizons": [],
+    "timeframes": [
+      "15m",
+      "30m",
+      "1H",
+      "4H",
+      "1D",
+      "1W",
+      "1M"
+    ],
+    "rule29_note": "VALUATION_PRICE_CONTEXT stays price context; no intraday earnings or horizon relabel."
+  },
+  "migration_notes": [
+    "V1 definitions and outputs remain permanently V1; no backfill overwrite or implicit latest registry.",
+    "Only one active registry binding per execution. Explicit V2 research replay is a distinct execution/result with original V1 retained.",
+    "Unaffected 55 inherit exact parent metadata/semantic fingerprint and calculation_version; envelope records selected registry version separately.",
+    "Future human approval, versioned strategy/policy binding, per-consumer adapters, shadow calibration and effective-time registration precede activation.",
+    "No existing API/schema/storage adapter is extended now; any future schema need requires separate reviewed migration.",
+    "Historical scores/gates/paper trades/decisions/outcomes keep original registry/strategy/policy versions and cannot be silently recomputed."
+  ],
+  "sources": [
+    {
+      "source_id": "ACCEPTED_RESEARCH",
+      "path": "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_POLICY_UNRESOLVED_V1.md",
+      "authority": "Accepted research receipt; recommendations are not runtime approval"
+    },
+    {
+      "source_id": "V1_COMPARABILITY",
+      "path": "docs/architecture/CANONICAL_FINANCIAL_DIAGNOSTIC_INPUT_COMPARABILITY_CLOSURE_V1.md",
+      "authority": "Existing V1 behavior and input certification"
+    },
+    {
+      "source_id": "MCA_SCHEDULE_III",
+      "url": "https://www.mca.gov.in/Ministry/pdf/ScheduleIIIAmendmentNotification_24032021.pdf",
+      "authority": "Statutory disclosures and issuer numerator/denominator explanations"
+    },
+    {
+      "source_id": "MCA_IND_AS_1",
+      "url": "https://www.mca.gov.in/Ministry/pdf/Ind_AS1.pdf",
+      "authority": "Financial-statement presentation; does not approve HSI formulas or cutoffs"
+    },
+    {
+      "source_id": "ICAI_GUIDANCE",
+      "url": "https://kb.icai.org/pdfs/PDFFile5b27857548bee2.71295102.pdf",
+      "authority": "Presentation context; accepted receipt"
+    },
+    {
+      "source_id": "SEBI_RATIO_EXAMPLE",
+      "url": "https://www.sebi.gov.in/sebi_data/attachdocs/sep-2024/1727675578109.pdf",
+      "authority": "Official issuer ratio definitions; example, not universal formula"
+    },
+    {
+      "source_id": "RBI_BANK",
+      "url": "https://systemhealth.rbi.org.in/Scripts/BS_ViewMasDirections.aspx_id%3D12158%281%29.html",
+      "authority": "Bank reporting applicability; accepted receipt"
+    },
+    {
+      "source_id": "RBI_NBFC",
+      "url": "https://rbi.org.in/Scripts/NotificationUser.aspx?Id=12292",
+      "authority": "NBFC reporting context; accepted receipt"
+    },
+    {
+      "source_id": "IRDAI",
+      "url": "https://irdai.gov.in/document-detail?documentId=374643",
+      "authority": "Insurance reporting framework; accepted receipt"
+    },
+    {
+      "source_id": "NSE_FILING",
+      "url": "https://nsearchives.nseindia.com/corporate/ixbrl/INTEGRATED_FILING_INDAS_152826_24042026225714_iXBRL_WEB.html",
+      "authority": "Official issuer filing structure; accepted receipt"
+    },
+    {
+      "source_id": "BSE_STRUCTURE",
+      "path": "app/fundamentals/bse_official.py",
+      "authority": "Existing official BSE XBRL ingestion/source-lineage structure; no ingestion change"
+    }
+  ],
+  "data_build_vs_buy": {
+    "principle": "FROZEN",
+    "gate": "MANDATORY_BEFORE_MATERIAL_FINANCIAL_ACQUISITION",
+    "acquisition_authorized": false,
+    "required_future_fields": [
+      "official entity classification",
+      "six annual comparable Revenue/PAT/EPS periods",
+      "five comparable quarterly periods",
+      "exact beginning/end equity and debt/cash definitions",
+      "ratio numerator/denominator/source/revision/PIT metadata",
+      "PIT shares/price/book alignment",
+      "licensed estimates only if later approved"
+    ]
+  },
+  "next_continuation": "FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL",
+  "proposal_fingerprint": "sha256:668005237acd727ead86b19fca11a0fe9a1f640291dbe647a02cab989774a261",
+  "temporal_and_comparability_contract": {
+    "scope_rule_ids": [16, 17, 19, 25, 26, 29],
+    "same_instrument": true,
+    "scope": "Use the canonical selected statement scope. Never switch consolidated/standalone across metrics or periods for coverage.",
+    "periods": "Exact full-year or quarter-only fiscal intervals; no YTD/TTM/calendar approximation or retreat to older complete windows.",
+    "representation": "Preserve exact unit, scale, currency, accounting/normalization version and source profit/equity attribution; no ungoverned FX or scale conversion.",
+    "vintage": "Reuse frozen FinancialFact vintage selection and comparability contracts; later receipt/revision is excluded at historical as_of.",
+    "identity": "Every component links selected fact/filing/observation IDs and fingerprints; reject duplicate conflicting lineage, ambiguous classification and policy selection.",
+    "math_domain": "Missing is never zero. Undefined CAGR or nonpositive required ratio denominator is INSUFFICIENT_DATA with domain reason, not NOT_APPLICABLE.",
+    "freshness": "Use caller-bound source freshness policy and actual period/publication/receipt timestamps; no new expiry or runtime-now."
+  },
+  "activation_requirements": [
+    "Human approval of the exact proposal fingerprint and six explicit semantic diffs",
+    "Separate strategy and policy binding with immutable effective-time approval lineage",
+    "Pin current V1 source/runner artifacts including declared UNVERSIONED_DEPENDENCY limitations for historical replay",
+    "Version-specific interpretation/scoring adapters with no fallback scoring of readiness text",
+    "Focused/whole-backend tests, explicit V1 replay and V2 shadow evaluation before ACTIVE",
+    "No material raw acquisition before DATA_BUILD_VS_BUY_AUDIT_V1"
+  ]
+}
