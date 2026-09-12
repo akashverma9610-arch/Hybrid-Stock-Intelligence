@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Protocol
 
 from app.gates.engine import ActionContext, ExecutionGateEngine, GateInput
+from app.gates.version_compatibility import require_gate_source
 from app.portfolio.canonical_diagnostics_orchestration import PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS
 from app.portfolio.canonical_six_gates import canonical_execution_gate_evaluation_from
 
@@ -67,8 +68,13 @@ class CanonicalPortfolioSixGatesActivator:
         self, instrument_id: str, execution_as_of: datetime, inputs: GateInput | None,
         action_context: ActionContext | None,
     ):
+        stored_scores = tuple(self._governance.list_canonical_decision_scorecards(instrument_id))
+        require_gate_source(inputs)
+        for value in stored_scores:
+            require_gate_source(value)
+            value.verify_integrity()
         scores = tuple(
-            value for value in self._governance.list_canonical_decision_scorecards(instrument_id)
+            value for value in stored_scores
             if value.as_of_timestamp <= execution_as_of and value.evaluated_at <= execution_as_of
         )
         if not scores:

@@ -1,0 +1,289 @@
+{
+  "baseline_commit": "c182b6421303f5f1cb8df3517be36872e72d5602",
+  "durable_lineage_limitation": "No migration: legacy scalar-to-source linkage is not retroactively invented",
+  "gate_input_fields": [
+    "scorecard_id",
+    "raw_decision_score",
+    "snapshot_id",
+    "snapshot_as_of_timestamp",
+    "comparison_score",
+    "expected_incremental_return",
+    "modeled_switching_friction",
+    "holding_entry_date",
+    "atr_expansion",
+    "surveillance",
+    "trade_plan",
+    "exposure",
+    "earnings_scheduled_at",
+    "earnings_schedule_verified_at",
+    "evidence_ids",
+    "diagnostic_ids"
+  ],
+  "gates": [
+    {
+      "aggregate_score_effect": "No new score calculation",
+      "as_of": "Exact input snapshot cutoff; existing per-gate PIT/freshness/calendar semantics preserved",
+      "calendar_dependency": false,
+      "current_guard": "Nominal input/field validation plus explicit registry admission before all gate calculations",
+      "decision_score_dependency": true,
+      "diagnostic_lineage": "Opaque diagnostic_ids; V1 source guard before extraction",
+      "direct_diagnostic_dependency": false,
+      "entry": "app.gates.engine.ExecutionGateEngine.evaluate",
+      "fallback": "No cross-registry selection; unknown explicit versions rejected; exact legacy label v1 retained",
+      "gate_id": "GATE_1_ROTATION",
+      "input_field_types": {
+        "comparison_score": "Decimal | None",
+        "expected_incremental_return": "Decimal | None",
+        "modeled_switching_friction": "Decimal | None",
+        "raw_decision_score": "Decimal | None"
+      },
+      "input_fields": [
+        "raw_decision_score",
+        "comparison_score",
+        "expected_incremental_return",
+        "modeled_switching_friction"
+      ],
+      "input_type": "GateInput",
+      "method": "_rotation",
+      "missing_behavior": "Rotation score or economic input absent -> INSUFFICIENT_DATA; non-rotation exemption unchanged",
+      "nested_fields": [],
+      "policy_ast_fingerprint": "sha256:ba2c0b971cb9dbb79d93ebc14a585aa4409675ad8de70c0a9bd4b0bb82596140",
+      "policy_version_source": "ExecutionGateConfig.version",
+      "portfolio_dependency": true,
+      "prior_risk": "Top-level V2 guard only; nested duck types and scalar extraction could lose registry provenance",
+      "required_evidence_families": [
+        "V1_DECISION_SCORE",
+        "INCUMBENT_COMPARISON_SCORE",
+        "APPROVED_FRICTION_INPUTS"
+      ],
+      "strategy_version_source": "evaluate.strategy_version; plan has its original strategy/configuration references",
+      "upstream_sources": [
+        "app.universe_analysis.service._gates",
+        "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+        "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+        "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one"
+      ],
+      "version_retention": "Legacy scalar inputs have no native registry; optional GateEvidenceContext retains typed dependency lineage"
+    },
+    {
+      "aggregate_score_effect": "Separate velocity adjustment only",
+      "as_of": "Exact input snapshot cutoff; existing per-gate PIT/freshness/calendar semantics preserved",
+      "calendar_dependency": true,
+      "current_guard": "Nominal input/field validation plus explicit registry admission before all gate calculations",
+      "decision_score_dependency": false,
+      "diagnostic_lineage": "Opaque diagnostic_ids; V1 source guard before extraction",
+      "direct_diagnostic_dependency": false,
+      "entry": "app.gates.engine.ExecutionGateEngine.evaluate",
+      "fallback": "No cross-registry selection; unknown explicit versions rejected; exact legacy label v1 retained",
+      "gate_id": "GATE_2_VELOCITY",
+      "input_field_types": {
+        "atr_expansion": "Decimal | None",
+        "holding_entry_date": "date | None"
+      },
+      "input_fields": [
+        "holding_entry_date",
+        "atr_expansion"
+      ],
+      "input_type": "GateInput",
+      "method": "_velocity",
+      "missing_behavior": "Holding/ATR absent -> INSUFFICIENT_DATA; fresh-entry exemption unchanged",
+      "nested_fields": [],
+      "policy_ast_fingerprint": "sha256:49139a1f09ba1d25ab30a011a777c32679264706959b22d4b0473f8630c75686",
+      "policy_version_source": "ExecutionGateConfig.version",
+      "portfolio_dependency": true,
+      "prior_risk": "Top-level V2 guard only; nested duck types and scalar extraction could lose registry provenance",
+      "required_evidence_families": [
+        "HOLDING_ENTRY_SESSION",
+        "ATR_EXPANSION"
+      ],
+      "strategy_version_source": "evaluate.strategy_version; plan has its original strategy/configuration references",
+      "upstream_sources": [
+        "app.universe_analysis.service._gates",
+        "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+        "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+        "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one"
+      ],
+      "version_retention": "Legacy scalar inputs have no native registry; optional GateEvidenceContext retains typed dependency lineage"
+    },
+    {
+      "aggregate_score_effect": "No new score calculation",
+      "as_of": "Exact input snapshot cutoff; existing per-gate PIT/freshness/calendar semantics preserved",
+      "calendar_dependency": true,
+      "current_guard": "Nominal input/field validation plus explicit registry admission before all gate calculations",
+      "decision_score_dependency": false,
+      "diagnostic_lineage": "Opaque diagnostic_ids; V1 source guard before extraction",
+      "direct_diagnostic_dependency": false,
+      "entry": "app.gates.engine.ExecutionGateEngine.evaluate",
+      "fallback": "No cross-registry selection; unknown explicit versions rejected; exact legacy label v1 retained",
+      "gate_id": "GATE_3_SURVEILLANCE",
+      "input_field_types": {
+        "surveillance": "SurveillanceObservation | None"
+      },
+      "input_fields": [
+        "surveillance"
+      ],
+      "input_type": "GateInput",
+      "method": "_surveillance",
+      "missing_behavior": "Absent/non-authoritative/future/stale/incomplete -> INSUFFICIENT_DATA",
+      "nested_fields": [
+        "id",
+        "effective_at",
+        "source",
+        "authoritative",
+        "asm_stage",
+        "gsm_stage",
+        "circuit_limit",
+        "evidence_ids"
+      ],
+      "policy_ast_fingerprint": "sha256:32a30a23ca55d0074cb772c2f026292c62f12d2be2fbd3e2ca96634fef22ef76",
+      "policy_version_source": "ExecutionGateConfig.version",
+      "portfolio_dependency": false,
+      "prior_risk": "Top-level V2 guard only; nested duck types and scalar extraction could lose registry provenance",
+      "required_evidence_families": [
+        "AUTHORITATIVE_SURVEILLANCE_CIRCUIT"
+      ],
+      "strategy_version_source": "evaluate.strategy_version; plan has its original strategy/configuration references",
+      "upstream_sources": [
+        "app.universe_analysis.service._gates",
+        "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+        "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+        "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one"
+      ],
+      "version_retention": "Legacy scalar inputs have no native registry; optional GateEvidenceContext retains typed dependency lineage"
+    },
+    {
+      "aggregate_score_effect": "No new score calculation",
+      "as_of": "Exact input snapshot cutoff; existing per-gate PIT/freshness/calendar semantics preserved",
+      "calendar_dependency": false,
+      "current_guard": "Nominal input/field validation plus explicit registry admission before all gate calculations",
+      "decision_score_dependency": false,
+      "diagnostic_lineage": "Opaque diagnostic_ids; V1 source guard before extraction",
+      "direct_diagnostic_dependency": false,
+      "entry": "app.gates.engine.ExecutionGateEngine.evaluate",
+      "fallback": "No cross-registry selection; unknown explicit versions rejected; exact legacy label v1 retained",
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "input_field_types": {
+        "trade_plan": "TradeManagementPlan | None"
+      },
+      "input_fields": [
+        "trade_plan"
+      ],
+      "input_type": "GateInput",
+      "method": "_plan",
+      "missing_behavior": "Absent/undefined stop or T1 -> FAIL; unresolved config -> INSUFFICIENT_DATA",
+      "nested_fields": [
+        "id",
+        "initial_tranche",
+        "t1_reduction",
+        "stop_defined",
+        "t1_defined",
+        "breakeven_conditions",
+        "structural_conditions",
+        "strategy_version",
+        "configuration_version"
+      ],
+      "policy_ast_fingerprint": "sha256:b6d43dd0b5d58d08a52d6f156ffd65e6afbbe2b82668c51fab534ee2515ff1e2",
+      "policy_version_source": "ExecutionGateConfig.version",
+      "portfolio_dependency": false,
+      "prior_risk": "Top-level V2 guard only; nested duck types and scalar extraction could lose registry provenance",
+      "required_evidence_families": [
+        "APPROVED_TRADE_MANAGEMENT_PLAN"
+      ],
+      "strategy_version_source": "evaluate.strategy_version; plan has its original strategy/configuration references",
+      "upstream_sources": [
+        "app.universe_analysis.service._gates",
+        "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+        "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+        "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one"
+      ],
+      "version_retention": "Legacy scalar inputs have no native registry; optional GateEvidenceContext retains typed dependency lineage"
+    },
+    {
+      "aggregate_score_effect": "No new score calculation",
+      "as_of": "Exact input snapshot cutoff; existing per-gate PIT/freshness/calendar semantics preserved",
+      "calendar_dependency": false,
+      "current_guard": "Nominal input/field validation plus explicit registry admission before all gate calculations",
+      "decision_score_dependency": false,
+      "diagnostic_lineage": "Opaque diagnostic_ids; V1 source guard before extraction",
+      "direct_diagnostic_dependency": false,
+      "entry": "app.gates.engine.ExecutionGateEngine.evaluate",
+      "fallback": "No cross-registry selection; unknown explicit versions rejected; exact legacy label v1 retained",
+      "gate_id": "GATE_5_HEAT",
+      "input_field_types": {
+        "exposure": "PortfolioExposure | None"
+      },
+      "input_fields": [
+        "exposure"
+      ],
+      "input_type": "GateInput",
+      "method": "_heat",
+      "missing_behavior": "Missing equity/risk/allocation -> INSUFFICIENT_DATA",
+      "nested_fields": [
+        "portfolio_equity",
+        "existing_risk_amount",
+        "candidate_risk_amount",
+        "candidate_allocation",
+        "sector_allocation",
+        "evidence_ids"
+      ],
+      "policy_ast_fingerprint": "sha256:f9d7dac72ea057b155d0694dad659a71bce1891650cb375bb6505b96e6cb7c11",
+      "policy_version_source": "ExecutionGateConfig.version",
+      "portfolio_dependency": true,
+      "prior_risk": "Top-level V2 guard only; nested duck types and scalar extraction could lose registry provenance",
+      "required_evidence_families": [
+        "PORTFOLIO_RISK_AND_ALLOCATION"
+      ],
+      "strategy_version_source": "evaluate.strategy_version; plan has its original strategy/configuration references",
+      "upstream_sources": [
+        "app.universe_analysis.service._gates",
+        "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+        "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+        "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one"
+      ],
+      "version_retention": "Legacy scalar inputs have no native registry; optional GateEvidenceContext retains typed dependency lineage"
+    },
+    {
+      "aggregate_score_effect": "No new score calculation",
+      "as_of": "Exact input snapshot cutoff; existing per-gate PIT/freshness/calendar semantics preserved",
+      "calendar_dependency": true,
+      "current_guard": "Nominal input/field validation plus explicit registry admission before all gate calculations",
+      "decision_score_dependency": false,
+      "diagnostic_lineage": "Opaque diagnostic_ids; V1 source guard before extraction",
+      "direct_diagnostic_dependency": false,
+      "entry": "app.gates.engine.ExecutionGateEngine.evaluate",
+      "fallback": "No cross-registry selection; unknown explicit versions rejected; exact legacy label v1 retained",
+      "gate_id": "GATE_6_EARNINGS",
+      "input_field_types": {
+        "earnings_schedule_verified_at": "datetime | None",
+        "earnings_scheduled_at": "datetime | None"
+      },
+      "input_fields": [
+        "earnings_scheduled_at",
+        "earnings_schedule_verified_at"
+      ],
+      "input_type": "GateInput",
+      "method": "_blackout",
+      "missing_behavior": "Missing/future verification -> INSUFFICIENT_DATA; existing-position exemptions unchanged",
+      "nested_fields": [],
+      "policy_ast_fingerprint": "sha256:dcc8c7a91d1b0b138b3217c6eb7b574aecee0244f48fb6569580b9c5e9e3aa99",
+      "policy_version_source": "ExecutionGateConfig.version",
+      "portfolio_dependency": false,
+      "prior_risk": "Top-level V2 guard only; nested duck types and scalar extraction could lose registry provenance",
+      "required_evidence_families": [
+        "VERIFIED_EARNINGS_SCHEDULE",
+        "EXCHANGE_CALENDAR"
+      ],
+      "strategy_version_source": "evaluate.strategy_version; plan has its original strategy/configuration references",
+      "upstream_sources": [
+        "app.universe_analysis.service._gates",
+        "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+        "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+        "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one"
+      ],
+      "version_retention": "Legacy scalar inputs have no native registry; optional GateEvidenceContext retains typed dependency lineage"
+    }
+  ],
+  "inventory_version": "fundamental-six-gates-version-compatibility/v1",
+  "optional_incompatible_evidence": "Conservatively rejected, not silently dropped",
+  "required_incompatible_evidence": "Whole evaluation raises controlled VERSION_BLOCKED; no gate result emitted"
+}

@@ -291,7 +291,9 @@ def test_current_source_boundary_and_preserved_policy_files():
         'app/intelligence/research_diagnostic_evidence.py','app/portfolio/canonical_diagnostics_orchestration.py',
         'app/portfolio/holding_intelligence.py','app/portfolio/sell_side_runtime.py','app/portfolio/engine.py',
         'app/rotation/engine.py','app/gates/engine.py'}
-    changed=set(subprocess.check_output(['git','diff',BASELINE,'--name-only','--','app'],text=True).splitlines())
+    # B07's immutable source scope remains pinned to its completed checkpoint.
+    # The successor B08 tests independently pin its exact production edit set.
+    changed=set(subprocess.check_output(['git','diff',BASELINE,'c182b6421303f5f1cb8df3517be36872e72d5602','--name-only','--','app'],text=True).splitlines())
     assert changed<=permitted
     for path in ('app/scoring/engine.py','app/diagnostics/downstream.py','app/diagnostics/synthesis.py',
                  'app/portfolio/sell_side_policy.py','app/gates/production_policy.py','app/rotation/models.py',

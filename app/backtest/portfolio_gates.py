@@ -4,6 +4,7 @@ from dataclasses import replace
 from decimal import Decimal
 
 from app.gates.engine import ActionContext, ExecutionGateConfig, ExecutionGateEngine, GateInput, PortfolioExposure
+from app.gates.version_compatibility import require_gate_source
 from app.historical.guard import manifest_fingerprint
 from .models import BacktestEvent, BacktestEventType, HistoricalPortfolioGateEvaluation
 
@@ -26,8 +27,10 @@ class HistoricalPortfolioGateReplayService:
         contexts=tuple(self.repository.get_historical_holding_gate_context(x) for x in holding_context_ids)
         if any(x is None for x in contexts): raise ValueError("Frozen holding context is missing.")
         for context in contexts:
+            require_gate_source(context)
             if context.historical_analytical_evaluation_id:
                 evaluation=self.repository.get_historical_analytical_evaluation(context.historical_analytical_evaluation_id)
+                require_gate_source(evaluation)
                 if evaluation is None or evaluation.evaluation_timestamp>evaluation_timestamp: raise ValueError("Future or missing holding analytics are ineligible.")
         result=self.evaluate_frozen(run=run, evaluation_timestamp=evaluation_timestamp, candidate=candidate,
             original=original, state=state, contexts=contexts, gate_config=gate_config,
@@ -60,8 +63,19 @@ class HistoricalPortfolioGateReplayService:
                         candidate_allocation=None, expected_incremental_return=None,
                         modeled_switching_friction=None):
         """Pure canonical gate evaluation from already-resolved immutable artifacts."""
+        for source in (run, candidate, original, state, *contexts):
+            require_gate_source(source)
+        require_gate_source(state.snapshot)
         scorecard=self.repository.get_decision_scorecard(candidate.decision_scorecard_id)
         if scorecard is None: raise ValueError("Candidate historical evaluation requires its frozen scorecard.")
+        require_gate_source(scorecard)
+        for context in contexts:
+            if context.historical_analytical_evaluation_id:
+                source = self.repository.get_historical_analytical_evaluation(context.historical_analytical_evaluation_id)
+                if source is None:
+                    raise ValueError("GATE_HOLDING_SOURCE_UNVERIFIED")
+                require_gate_source(source)
+            require_gate_source(context.comparison_score)
         incumbent=next((x for x in contexts if x.comparison_score is not None),None)
         comparison=Decimal(incumbent.comparison_score) if incumbent else None
         exposure=self._exposure(state,candidate_sector,candidate_risk_amount,candidate_allocation)

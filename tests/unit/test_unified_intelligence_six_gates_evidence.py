@@ -169,7 +169,12 @@ def test_existing_repository_read_path_is_exact_evaluation_id_only():
 
 def test_adapter_is_stored_only_and_excludes_gate_execution_scoring_actions_and_persistence():
     source = (Path(__file__).parents[2] / "app" / "intelligence" / "six_gates_evidence.py").read_text(encoding="utf-8")
+    # B08 permits only the pure rejection helper, not a gate evaluator import.
+    admission_import = "from app.gates.version_compatibility import require_gate_source\n"
+    assert source.count(admission_import) == 1
+    source = source.replace(admission_import, "")
     assert not any(token in source for token in (
         "app.gates", "build_scorecard", "Canonical61DiagnosticRunner", "requests.", "urlopen", "httpx",
         "CREATE TABLE", "INSERT INTO", "Signal", "PaperTrade", "BUY", "HOLD", "SELL", "TRIM", "ROTATE", "order(",
     ))
+    assert ".evaluate(" not in source and "require_gate_inputs(" not in source

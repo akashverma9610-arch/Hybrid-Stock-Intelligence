@@ -819,6 +819,9 @@ def _latest_research_timestamp(snapshot: ResearchSnapshot) -> datetime | None:
 
 
 def _gates(config, score, diagnostics, evidence, at, strategy, supplied: GateInput | None = None):
+    from app.gates.version_compatibility import require_gate_source
+    for source in (score, supplied, *diagnostics):
+        require_gate_source(source)
     values = supplied or GateInput(score.id, score.final_score, evidence.snapshot.id, at, diagnostic_ids=tuple(item.record.id for item in diagnostics))
     if values.scorecard_id != score.id or values.snapshot_id != evidence.snapshot.id or values.snapshot_as_of_timestamp != at:
         raise UniverseAnalysisError("Gate inputs must remain bound to this instrument's frozen analysis snapshot and scorecard.")

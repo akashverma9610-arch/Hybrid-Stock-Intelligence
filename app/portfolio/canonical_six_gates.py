@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Any
 
 from app.gates.engine import ExecutionGateEvaluation
+from app.gates.version_compatibility import require_gate_source
 from app.historical.guard import manifest_fingerprint
 from app.portfolio.canonical_decision_score import CanonicalDecisionScorecard
 
@@ -27,6 +28,7 @@ class CanonicalExecutionGateEvaluation:
 
     def verify_integrity(self) -> None:
         value = self.evaluation
+        require_gate_source(value)
         if not _aware(value.as_of_timestamp) or not _aware(value.evaluated_at):
             raise ValueError("Canonical execution gate timestamps must be timezone-aware.")
         if value.evaluated_at > value.as_of_timestamp:
@@ -47,6 +49,9 @@ class CanonicalExecutionGateEvaluation:
 def canonical_execution_gate_evaluation_from(
     evaluation: ExecutionGateEvaluation, *, score: CanonicalDecisionScorecard,
 ) -> CanonicalExecutionGateEvaluation:
+    require_gate_source(evaluation)
+    require_gate_source(score)
+    score.verify_integrity()
     if evaluation.scorecard_id != score.id or evaluation.instrument_id != score.instrument_id:
         raise ValueError("Canonical execution gates require the exact canonical Decision Score.")
     if evaluation.strategy_version != score.strategy_version:

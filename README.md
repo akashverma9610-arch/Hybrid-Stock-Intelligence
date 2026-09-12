@@ -75,6 +75,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Fundamental Diagnostic Registry V2 Isolated Shadow V1 (not active)](docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_SHADOW_IMPLEMENTATION_V1.md)
 - [Fundamental V2 Downstream Fail-Closed Safety V1 (V2 not active)](docs/architecture/FUNDAMENTAL_V2_DOWNSTREAM_FAIL_CLOSED_ADAPTER_V1.md)
 - [Fundamental V2 Brain / Portfolio Lineage V1 (observational only)](docs/architecture/FUNDAMENTAL_V2_BRAIN_PORTFOLIO_VERSION_PROPAGATION_V1.md)
+- [Fundamental V2 Six Gates Version Compatibility V1 (shadow rejected)](docs/architecture/FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_V1.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)

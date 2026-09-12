@@ -4,7 +4,10 @@ from dataclasses import dataclass, asdict
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 from enum import Enum
-from typing import Mapping
+from typing import Mapping, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.gates.version_compatibility import GateEvidenceContext
 
 
 class ActionContext(str, Enum):
@@ -185,12 +188,12 @@ class ExecutionGateEngine:
 
     def evaluate(self, *, instrument_id: str, strategy_version: object, registry_version: str,
                  scoring_configuration_version: str, action_context: ActionContext,
-                 as_of_timestamp: datetime, evaluated_at: datetime, inputs: GateInput) -> ExecutionGateEvaluation:
-        from app.diagnostics.brain_lineage import require_production_evidence
-        from app.registry.versioned import V2_VERSION
-        require_production_evidence(inputs, reason="V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN")
-        if registry_version == V2_VERSION:
-            raise ValueError("V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN")
+                 as_of_timestamp: datetime, evaluated_at: datetime, inputs: GateInput,
+                 evidence_context: GateEvidenceContext | None = None) -> ExecutionGateEvaluation:
+        from app.gates.version_compatibility import require_gate_inputs, require_gate_source
+        require_gate_source(strategy_version)
+        require_gate_inputs(inputs, registry_version=registry_version, as_of=as_of_timestamp,
+                            gate_policy_version=getattr(self.config, "version", None), evidence_context=evidence_context)
         if inputs.snapshot_as_of_timestamp != as_of_timestamp:
             raise ValueError("Gate inputs must be an approved as-of snapshot matching the requested evaluation time.")
         unresolved = self.config.unresolved()

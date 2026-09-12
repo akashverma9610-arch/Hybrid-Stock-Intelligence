@@ -1,0 +1,175 @@
+{
+  "as_of": "2026-08-31T18:00:00+00:00",
+  "b08_status": "CLOSED_FOR_SHADOW_COMPATIBILITY",
+  "b09_status": "STILL_BLOCKING_ACTIVATION",
+  "b14_status": "STILL_BLOCKING_ACTIVATION",
+  "baseline_commit": "c182b6421303f5f1cb8df3517be36872e72d5602",
+  "fingerprint": "sha256:81943ad5cf3645f222887f640d5b9f6becd22ccadba3e187578bf9ac408c75d4",
+  "fixture_type": "SYNTHETIC_ISOLATED_EXISTING_POLICY",
+  "gates": [
+    {
+      "compatibility_state": "V1_ONLY_SHADOW_FORBIDDEN",
+      "cross_version_rejections": [
+        [
+          "raw_decision_score",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ],
+        [
+          "comparison_score",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ],
+        [
+          "expected_incremental_return",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ],
+        [
+          "modeled_switching_friction",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ]
+      ],
+      "gate_id": "GATE_1_ROTATION",
+      "gate_policy_fingerprint": "64a27eff9c313339b025cae73e1389a5ce3cdaf1ade19de4ec040b75ca5e9413",
+      "gate_policy_version": "six-gates-production-v1",
+      "registry_version_accepted": "diagnostic-registry-v1",
+      "required_evidence_families": [
+        "V1_DECISION_SCORE",
+        "INCUMBENT_COMPARISON_SCORE",
+        "APPROVED_FRICTION_INPUTS"
+      ],
+      "shadow_accepted": false,
+      "test_fingerprint": "sha256:e145d229cc63c36b99a87e0951d26ed901c7e4327828b6548ee395ff047112d2",
+      "v1_replay_equal": true,
+      "v1_replay_fingerprint": "sha256:4126683362c34358bd0c1b25d90d758a5ebee719011a703856f5c845cebcb7a4"
+    },
+    {
+      "compatibility_state": "V1_ONLY_SHADOW_FORBIDDEN",
+      "cross_version_rejections": [
+        [
+          "holding_entry_date",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ],
+        [
+          "atr_expansion",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ]
+      ],
+      "gate_id": "GATE_2_VELOCITY",
+      "gate_policy_fingerprint": "64a27eff9c313339b025cae73e1389a5ce3cdaf1ade19de4ec040b75ca5e9413",
+      "gate_policy_version": "six-gates-production-v1",
+      "registry_version_accepted": "diagnostic-registry-v1",
+      "required_evidence_families": [
+        "HOLDING_ENTRY_SESSION",
+        "ATR_EXPANSION"
+      ],
+      "shadow_accepted": false,
+      "test_fingerprint": "sha256:d541e3b4ed09f76023eecd8b14f2d714afc42ed16fb4adfad25dbdd704d73aeb",
+      "v1_replay_equal": true,
+      "v1_replay_fingerprint": "sha256:fd8fc2598ca29a1ddb65a18ff028bfb6d100796ca8da1b74238bb8adc79340c2"
+    },
+    {
+      "compatibility_state": "V1_ONLY_SHADOW_FORBIDDEN",
+      "cross_version_rejections": [
+        [
+          "surveillance",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ]
+      ],
+      "gate_id": "GATE_3_SURVEILLANCE",
+      "gate_policy_fingerprint": "64a27eff9c313339b025cae73e1389a5ce3cdaf1ade19de4ec040b75ca5e9413",
+      "gate_policy_version": "six-gates-production-v1",
+      "registry_version_accepted": "diagnostic-registry-v1",
+      "required_evidence_families": [
+        "AUTHORITATIVE_SURVEILLANCE_CIRCUIT"
+      ],
+      "shadow_accepted": false,
+      "test_fingerprint": "sha256:c3a267befb4bee98114d6ec578d0e300f4109c5f747582eac2df87b9d302d539",
+      "v1_replay_equal": true,
+      "v1_replay_fingerprint": "sha256:00e11fd2238a2bf1d2068fb3995d9e1ab53c15e43ae98ad06c24abfbdbb175bf"
+    },
+    {
+      "compatibility_state": "V1_ONLY_SHADOW_FORBIDDEN",
+      "cross_version_rejections": [
+        [
+          "trade_plan",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ]
+      ],
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "gate_policy_fingerprint": "64a27eff9c313339b025cae73e1389a5ce3cdaf1ade19de4ec040b75ca5e9413",
+      "gate_policy_version": "six-gates-production-v1",
+      "registry_version_accepted": "diagnostic-registry-v1",
+      "required_evidence_families": [
+        "APPROVED_TRADE_MANAGEMENT_PLAN"
+      ],
+      "shadow_accepted": false,
+      "test_fingerprint": "sha256:92e08bf979dbdc139901c80330879a7b731164c56fc30d53e912cb2f5a3c2ebc",
+      "v1_replay_equal": true,
+      "v1_replay_fingerprint": "sha256:2fe5b403a549710da95b4db8096e565fdc09e3a5a092341810e6b51155f15b95"
+    },
+    {
+      "compatibility_state": "V1_ONLY_SHADOW_FORBIDDEN",
+      "cross_version_rejections": [
+        [
+          "exposure",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ]
+      ],
+      "gate_id": "GATE_5_HEAT",
+      "gate_policy_fingerprint": "64a27eff9c313339b025cae73e1389a5ce3cdaf1ade19de4ec040b75ca5e9413",
+      "gate_policy_version": "six-gates-production-v1",
+      "registry_version_accepted": "diagnostic-registry-v1",
+      "required_evidence_families": [
+        "PORTFOLIO_RISK_AND_ALLOCATION"
+      ],
+      "shadow_accepted": false,
+      "test_fingerprint": "sha256:290ab9c552ca01f1a56e1266b9af8f0ae35ffd82f7d0980ac4725838f7aecc2e",
+      "v1_replay_equal": true,
+      "v1_replay_fingerprint": "sha256:c661e8b61ad0ed1c393dcd0c562c1f5fbe5a5a869d5a6e06d3a52bf529d2a2b0"
+    },
+    {
+      "compatibility_state": "V1_ONLY_SHADOW_FORBIDDEN",
+      "cross_version_rejections": [
+        [
+          "earnings_scheduled_at",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ],
+        [
+          "earnings_schedule_verified_at",
+          "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN",
+          "VERSION_BLOCKED"
+        ]
+      ],
+      "gate_id": "GATE_6_EARNINGS",
+      "gate_policy_fingerprint": "64a27eff9c313339b025cae73e1389a5ce3cdaf1ade19de4ec040b75ca5e9413",
+      "gate_policy_version": "six-gates-production-v1",
+      "registry_version_accepted": "diagnostic-registry-v1",
+      "required_evidence_families": [
+        "VERIFIED_EARNINGS_SCHEDULE",
+        "EXCHANGE_CALENDAR"
+      ],
+      "shadow_accepted": false,
+      "test_fingerprint": "sha256:61ad60b39927b9bfd5d5d4a355e251fab261a3eb2741694192994bde6c9273ac",
+      "v1_replay_equal": true,
+      "v1_replay_fingerprint": "sha256:25cf2132ac701be505799012fbc66f0c92745688da6587a682d26e07d80884c2"
+    }
+  ],
+  "inventory_fingerprint": "sha256:3ec892d7913ed6f269f65bf992840e5f3ede38ab50b9af34aa9fdc2f7302ae19",
+  "orders": 0,
+  "production_evaluations": 0,
+  "provider_calls": 0,
+  "receipt_version": "fundamental-six-gates-version-compatibility/v1",
+  "replay_case_count": 21,
+  "v1_active": true,
+  "v2_active": false,
+  "writes": 0
+}

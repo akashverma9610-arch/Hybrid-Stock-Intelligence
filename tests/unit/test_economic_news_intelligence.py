@@ -78,5 +78,15 @@ def test_event_catalyst_materiality_policy_gap_and_dedup_preserve_lineage():
 def test_economic_intelligence_has_no_decision_engine_or_action_imports():
     from pathlib import Path
     root = Path(__file__).resolve().parents[2] / "app" / "intelligence"
-    text = "\n".join(item.read_text(encoding="utf-8") for item in root.rglob("*.py"))
+    sources = []
+    for item in root.rglob("*.py"):
+        source = item.read_text(encoding="utf-8")
+        if item == root / "six_gates_evidence.py":
+            # B08's one pure rejection helper is not a gate engine/action call.
+            admission = "from app.gates.version_compatibility import require_gate_source\n"
+            assert source.count(admission) == 1
+            assert ".evaluate(" not in source and "require_gate_inputs(" not in source
+            source = source.replace(admission, "")
+        sources.append(source)
+    text = "\n".join(sources)
     assert "app.scoring" not in text and "app.gates" not in text and "RotationDecisionState" not in text

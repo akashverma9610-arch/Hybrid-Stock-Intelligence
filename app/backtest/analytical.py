@@ -11,6 +11,7 @@ from app.diagnostics.evaluators import DeterministicDiagnosticEvaluators, Weinst
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
 from app.domain.models import AsOfSnapshot, FinancialObservation, MarketObservation, StrategyVersionReference
 from app.gates.engine import ActionContext, ExecutionGateConfig, ExecutionGateEngine, GateInput, SurveillanceObservation
+from app.gates.version_compatibility import require_gate_source
 from app.historical.guard import BacktestLookaheadGuard, manifest_fingerprint
 from app.historical.models import HistoricalFact
 from app.registry.canonical import DIAGNOSTIC_REGISTRY_VERSION, DIAGNOSTIC_RULES
@@ -137,6 +138,8 @@ class HistoricalAnalyticalReplayService:
         self.repository.save_diagnostic_result(diagnostic.record)
 
     def _gates(self, run, snapshot_record, instrument, at, scorecard, diagnostics, snapshot):
+        for source in (run, scorecard, *diagnostics):
+            require_gate_source(source)
         surveillance = _surveillance(snapshot, instrument)
         earnings_at, earnings_verified_at = _earnings_schedule(snapshot, instrument)
         gate_input = GateInput(scorecard.id, scorecard.final_score, snapshot_record.source_snapshot_id, at,
@@ -177,16 +180,27 @@ def _as_datetime(value):
 def _surveillance(snapshot, instrument):
     candidates = [x for x in snapshot.observations if x.instrument.id == instrument and isinstance(x.payload, dict) and "asm_stage" in x.payload]
     if not candidates: return None
+    for item in candidates:
+        require_gate_source(item)
+        require_gate_source(item.payload)
+        if isinstance(item, FinancialObservation) or item.kind == "fundamental":
+            raise ValueError("GATE_SURVEILLANCE_SOURCE_UNVERIFIED")
     item = max(candidates, key=lambda x: x.provenance.market_timestamp)
     payload = item.payload
     circuit = payload.get("circuit_limit")
     return SurveillanceObservation(item.id, item.provenance.market_timestamp, item.provenance.source,
-        bool(payload.get("authoritative", False)), payload.get("asm_stage"), payload.get("gsm_stage"),
+        payload.get("authoritative", False), payload.get("asm_stage"), payload.get("gsm_stage"),
         Decimal(str(circuit)) if circuit is not None else None, (item.id,))
 
 
 def _earnings_schedule(snapshot, instrument):
     candidates = [x for x in snapshot.observations if x.instrument.id == instrument and isinstance(x.payload, dict) and "earnings_scheduled_at" in x.payload]
     if not candidates: return None, None
+    for item in candidates:
+        require_gate_source(item)
+        require_gate_source(item.payload)
+        if (isinstance(item, FinancialObservation) or item.kind == "fundamental"
+                or any(key in item.payload for key in ("period_end", "filing_date", "publication_timestamp"))):
+            raise ValueError("GATE_EARNINGS_FINANCIAL_SOURCE_FORBIDDEN")
     item = max(candidates, key=lambda x: x.provenance.market_timestamp)
     return _as_datetime(item.payload.get("earnings_scheduled_at")), _as_datetime(item.payload.get("earnings_schedule_verified_at")) or item.provenance.market_timestamp

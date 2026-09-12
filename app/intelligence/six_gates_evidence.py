@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Protocol
 
 from app.domain.models import FreshnessStatus
+from app.gates.version_compatibility import require_gate_source
 from app.historical.guard import manifest_fingerprint
 from app.intelligence.unified_state import (
     IntelligenceEvidenceAvailability,
@@ -100,9 +101,12 @@ class SixGatesEvidenceAdapter:
     ) -> tuple[StoredIntelligenceArtifact, ...]:
         if self._evaluations is None:
             return (_unavailable(canonical_instrument_id, "SIX_GATES_DURABLE_READ_BOUNDARY_MISSING"),)
+        supplied = tuple(self._evaluations.list_stored_six_gates_evaluations(canonical_instrument_id, as_of=as_of))
+        for value in supplied:
+            require_gate_source(value)
         values = tuple(
             value
-            for value in self._evaluations.list_stored_six_gates_evaluations(canonical_instrument_id, as_of=as_of)
+            for value in supplied
             if _eligible(value, canonical_instrument_id, as_of)
         )
         if not values:

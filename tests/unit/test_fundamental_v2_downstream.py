@@ -202,7 +202,10 @@ def test_active_registry_weights_and_forbidden_boundaries_unchanged():
     allowed={'app/scoring/engine.py','app/diagnostics/synthesis.py'}
     lineage_repairs={'app/gates/engine.py','app/intelligence/research_diagnostic_evidence.py',
         'app/intelligence/shared_brain_application.py','app/portfolio/canonical_diagnostics_orchestration.py',
-        'app/portfolio/engine.py','app/portfolio/holding_intelligence.py','app/portfolio/sell_side_runtime.py','app/rotation/engine.py'}
+        'app/portfolio/engine.py','app/portfolio/holding_intelligence.py','app/portfolio/sell_side_runtime.py','app/rotation/engine.py',
+        # B08 guards only; its independent baseline/replay test pins these.
+        'app/backtest/analytical.py','app/backtest/portfolio_gates.py','app/portfolio/canonical_six_gates.py',
+        'app/portfolio/canonical_six_gates_activation.py','app/intelligence/six_gates_evidence.py','app/universe_analysis/service.py'}
     for path,fp in BASELINE['source_sha256'].items():
         if path not in allowed:
             # Later authorized B07 boundary guards are separately tested for
