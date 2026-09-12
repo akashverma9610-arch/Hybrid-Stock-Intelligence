@@ -20,9 +20,7 @@ from app.filings.earnings_schedule_source import (
 )
 from app.fundamentals.diagnostic_comparability import canonical_json, content_fingerprint
 from app.gates.official_earnings_schedule_candidate import PurposeClassification, SourceExchange
-from app.historical.security_identity_selector import (
-    HistoricalSecurityIdentityResolutionStatus, resolve_historical_security_identity,
-)
+from app.filings.earnings_schedule_identity import EarningsScheduleCanonicalIdentityBridge, IdentityState
 from app.historical.security_master import HistoricalSecurityIdentity
 
 BSE_CORPORATES = "https://m.bseindia.com/corporates.aspx"
@@ -154,7 +152,8 @@ class LinkedScheduleInspection:
 
 
 def inspect_nse_join(inventory: RawSchedule, document: Fetch, *, canonical_instrument_id: str,
-                     identities: tuple[HistoricalSecurityIdentity, ...], observed_at: datetime) -> LinkedScheduleInspection:
+                     identities: tuple[HistoricalSecurityIdentity, ...] = (), observed_at: datetime,
+                     identity_bridge: EarningsScheduleCanonicalIdentityBridge | None = None) -> LinkedScheduleInspection:
     """Reparse exact joined bytes; observation time never becomes known_at.
 
     Current descriptive identity does not authorize historical mapping reuse.
@@ -166,19 +165,17 @@ def inspect_nse_join(inventory: RawSchedule, document: Fetch, *, canonical_instr
     if document.status != 200:
         raise ValueError("NSE_JOIN_DOCUMENT_UNAVAILABLE")
     row = parse_nse_prior_intimation(document.body, inventory, document_url=document.url)
-    selected = resolve_historical_security_identity(
-        tuple(x for x in identities if x.exchange == "NSE"),
-        canonical_instrument_id=canonical_instrument_id, as_of=point)
-    matches = tuple(x for x in identities if x.identity_id == selected.identity_id and x.exchange == "NSE")
+    if identity_bridge is not None and identities:
+        raise ValueError("EARNINGS_IDENTITY_INPUT_AMBIGUOUS")
+    bridge = identity_bridge or EarningsScheduleCanonicalIdentityBridge(identities=identities)
+    selected = bridge.resolve_nse(row.field("symbol"), row.field("isin"), point)
     identity_state, identity_fp = "IDENTITY_UNRESOLVED", None
-    if (selected.status == HistoricalSecurityIdentityResolutionStatus.RESOLVED and matches
-            and all(x == matches[0] for x in matches)):
-        identity = matches[0]
-        if row.field("symbol") != identity.symbol or row.field("isin") != identity.isin:
+    if selected.resolution_state in {IdentityState.IDENTITY_CONFLICTED, IdentityState.AMBIGUOUS}:
+        identity_state = "IDENTITY_CONFLICTED"
+    elif selected.resolution_state == IdentityState.RESOLVED:
+        if selected.canonical_instrument_id != canonical_instrument_id:
             identity_state = "IDENTITY_CONFLICTED"
-        elif (identity.isin == canonical_instrument_id.removeprefix("NSE:")
-              and identity.source_reference and identity.source_fingerprint
-              and re.fullmatch(r"sha256:[0-9a-f]{64}", identity.source_fingerprint)):
+        else:
             identity_state, identity_fp = "EXACT_IDENTITY_RESOLVED", selected.fingerprint
     purpose = classify(row).classification
     qualifying = purpose not in {PurposeClassification.AMBIGUOUS, PurposeClassification.NON_QUALIFYING}
@@ -191,7 +188,7 @@ def inspect_nse_join(inventory: RawSchedule, document: Fetch, *, canonical_instr
     if not original:
         reasons.append("EXACT_PARENT_FILING_REQUIRED")
     normalized = normalize_schedule(row, canonical_instrument_id=canonical_instrument_id,
-                                    identities=identities, retrieved_at=point)
+                                    identity_bridge=bridge, retrieved_at=point)
     timestamp = normalized.timestamp_receipt
     known_state = ("TIMEZONE_RESOLVED_AUTHORITY_UNVERIFIED" if timestamp is not None
                    and timestamp.normalized_utc_timestamp is not None

@@ -19,9 +19,7 @@ from app.gates.official_earnings_schedule_candidate import (
     SourceInstrumentIdentifierKind, make_official_earnings_schedule_candidate,
 )
 from app.historical.security_master import HistoricalSecurityIdentity
-from app.historical.security_identity_selector import (
-    HistoricalSecurityIdentityResolutionStatus, resolve_historical_security_identity,
-)
+from app.filings.earnings_schedule_identity import EarningsScheduleCanonicalIdentityBridge, IdentityState
 from app.historical.filing_timestamp_timezone_provenance import (
     EventKnownTimeStatus, FilingTimestampProvenanceReceipt, SourceTimestampEncoding,
     SourceTimezoneRule, make_filing_timestamp_input, resolve_filing_timestamp,
@@ -87,9 +85,10 @@ def _timestamp(row: RawSchedule, field: str, instrument: str, retrieved_at: date
 
 
 def normalize_schedule(row: RawSchedule, *, canonical_instrument_id: str,
-                       identities: tuple[HistoricalSecurityIdentity, ...],
+                       identities: tuple[HistoricalSecurityIdentity, ...] = (),
                        retrieved_at: datetime,
-                       timezone_rules: tuple[SourceTimezoneRule, ...] = ()) -> ScheduleNormalization:
+                       timezone_rules: tuple[SourceTimezoneRule, ...] = (),
+                       identity_bridge: EarningsScheduleCanonicalIdentityBridge | None = None) -> ScheduleNormalization:
     row.__post_init__()
     point = utc(retrieved_at)
     if not re.fullmatch(r"NSE:IN[A-Z0-9]{9}[0-9]", canonical_instrument_id):
@@ -124,22 +123,14 @@ def normalize_schedule(row: RawSchedule, *, canonical_instrument_id: str,
         return failed(SourceState.TIMESTAMP_UNAVAILABLE, "SOURCE_TIMESTAMP_UNPARSEABLE")
     source_key = "symbol" if row.exchange == SourceExchange.NSE else "security_code"
     source_identifier = row.field(source_key)
-    selected = resolve_historical_security_identity(
-        tuple(x for x in identities if x.exchange == row.exchange.value),
-        canonical_instrument_id=canonical_instrument_id, as_of=known,
-    )
-    if selected.status != HistoricalSecurityIdentityResolutionStatus.RESOLVED:
+    if identity_bridge is not None and identities:
+        raise ValueError("EARNINGS_IDENTITY_INPUT_AMBIGUOUS")
+    bridge = identity_bridge or EarningsScheduleCanonicalIdentityBridge(identities=identities)
+    resolve = bridge.resolve_nse if row.exchange == SourceExchange.NSE else bridge.resolve_bse
+    selected = resolve(source_identifier, row.field("isin"), known)
+    if selected.resolution_state != IdentityState.RESOLVED:
         return failed(SourceState.IDENTITY_UNRESOLVED, "EFFECTIVE_IDENTITY_REQUIRED")
-    matches = [x for x in identities if x.identity_id == selected.identity_id and x.exchange == row.exchange.value]
-    if not matches or any(x != matches[0] for x in matches):
-        return failed(SourceState.IDENTITY_UNRESOLVED, "IDENTITY_PROVENANCE_CONFLICT")
-    identity = matches[0]
-    expected = identity.symbol if row.exchange == SourceExchange.NSE else identity.exchange_security_code
-    if (not source_identifier or source_identifier != expected
-            or identity.isin != canonical_instrument_id.removeprefix("NSE:")
-            or row.field("isin") not in (None, identity.isin)
-            or not identity.source_reference or not identity.source_fingerprint
-            or not re.fullmatch(r"sha256:[0-9a-f]{64}", identity.source_fingerprint)):
+    if selected.canonical_instrument_id != canonical_instrument_id:
         return failed(SourceState.IDENTITY_UNRESOLVED, "EXACT_SOURCE_IDENTITY_REQUIRED")
     identity_fingerprint = selected.fingerprint
     try:
