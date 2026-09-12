@@ -88,6 +88,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Earnings Calendar Coverage / Window Policy V1 (non-active coverage/absence contract; five-session notice mismatch)](docs/architecture/EARNINGS_CALENDAR_COVERAGE_WINDOW_POLICY_V1.md)
 - [Earnings Blackout Horizon Policy Research V1 (V1 unchanged; source-aware V2 proposal required)](docs/architecture/EARNINGS_BLACKOUT_HORIZON_POLICY_RESEARCH_V1.md)
 - [Earnings Blackout Policy V2 Proposal .2 (not active; veto/no-veto distinct from clearance, horizon unset, V1 immutable)](docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_PROPOSAL.md)
+- [Earnings Blackout Policy V2 Governance Approval (conditional semantics only; activation blockers open, horizon unset, V1 unchanged)](docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)

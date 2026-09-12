@@ -1,0 +1,122 @@
+{
+  "schema_version": "earnings-blackout-policy-governance-approval/v1",
+  "approval_id": "earnings-blackout-policy-v2-governance-approval/v1",
+  "baseline_commit": "3b6194cadf9ff1e300f7272b8991d7b4e1525d78",
+  "authority": {"basis": "USER_DELEGATED_BOUNDED_GOVERNANCE_REVIEW", "directive_id": "f0107207-5d2f-4a01-8dd8-d82dbf07f4d9", "reviewer": "Codex governance reviewer", "human_signature_claimed": false},
+  "decision": "A",
+  "approval_status": "GOVERNANCE_APPROVED_WITH_ACTIVATION_BLOCKERS",
+  "scope": "SEMANTICS_AND_EXPLICIT_RESIDUAL_RISK_ONLY",
+  "runtime_effective_at": null,
+  "runtime_implementation_authorized": false,
+  "runtime_registration_created": false,
+  "proposal_reference": {
+    "policy_id": "execution-gate-policy-v2-proposed",
+    "policy_version": "v2-proposal.2",
+    "proposal_fingerprint": "sha256:36c80f2ea561a4411b252e6b4749f9c73275d6e434b257e89bdeb24d83de0e21",
+    "parent_policy_id": "six-gates-production-v1",
+    "parent_version": "v1",
+    "source_status": "PROPOSED",
+    "original_proposal_overwritten": false
+  },
+  "proposal_files_lf": {
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_PROPOSAL.json": "sha256:8341093d296710afa8209e6867b7d5ea45e5cd103193d96385bb4d7f47b29713",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_PROPOSAL.md": "sha256:8e086d7d3ab0a27cef73bbfe8a3097d2b509634542df6eb797e54ef4fe185938",
+    "tests/unit/test_earnings_blackout_policy_v2_proposal.py": "sha256:db08c069c4647261b6df9199903a1f6959e9554274e8ca35d5ff3659bfcfaf6c"
+  },
+  "gate_ids": ["GATE_1_ROTATION", "GATE_2_VELOCITY", "GATE_3_SURVEILLANCE", "GATE_4_TRADE_PLAN", "GATE_5_HEAT", "GATE_6_EARNINGS"],
+  "liveness": {
+    "decision": "FUTURE_COMPOSITION_PATH_PROVEN",
+    "mapping": {"VETO": "FAIL", "NO_VETO_ESTABLISHED": "PASS", "UNDETERMINED": "INSUFFICIENT_DATA"},
+    "witness_preconditions": ["APPROVED_EFFECTIVE_MODE_AND_HORIZON", "VALID_REQUEST_AND_TRUSTED_PRODUCER_OBSERVATION", "NO_PROVEN_VETO_OR_RETAINED_UNRESOLVED_EVENT", "GATES_1_TO_5_PASS"],
+    "witness_eligibility": "EXECUTABLE",
+    "complete_entry_ready_proven": false,
+    "current_v2_entry_path_active": false,
+    "generic_insufficient_data_bypass_allowed": false
+  },
+  "no_false_clearance": {
+    "decision": "REQUIRED_VERSIONED_NON_CLEARANCE",
+    "no_veto_not_equivalent_to": ["CLEAR", "SAFE", "NO_EARNINGS_SOON", "AUTHORITATIVE_NEGATIVE_EVIDENCE"],
+    "earnings_clearance": "UNVERIFIED",
+    "required_no_veto_metadata": ["evaluation_mode", "earnings_clearance", "confidence", "source_warnings", "coverage_limitations", "policy_id", "policy_version", "policy_fingerprint", "source_receipt_lineage", "evaluation_as_of"],
+    "evaluation_mode": "VERIFIED_EVENT_VETO",
+    "confidence": null,
+    "required_warning": "EARNINGS_CLEARANCE_UNVERIFIED",
+    "source_warnings_suppressible": false,
+    "missing_metadata_behavior": "REJECT_COMPATIBILITY",
+    "pass_means_source_completeness": false,
+    "pass_means_calendar_confidence_one": false
+  },
+  "veto": {
+    "decision": "APPROVED_CONJUNCTION_ONLY_NOT_OPERATIONAL",
+    "all_required": ["EXACT_CANONICAL_INSTRUMENT", "QUALIFYING_OFFICIAL_FINANCIAL_RESULTS_PURPOSE", "TRUSTED_OFFICIAL_PAYLOAD_LINEAGE", "VERIFIED_HSI_FIRST_OBSERVED_RECEIPT", "VERSIONED_EVENT_AND_REVISION_LINEAGE", "CONFLICT_FREE_EFFECTIVE_LIFECYCLE", "VISIBLE_NON_CANCELLED_NON_SUPERSEDED_NON_COMPLETED_EVENT", "APPROVED_POSITIVE_EVENT_LINEAGE_AND_FRESHNESS", "APPROVED_EFFECTIVE_HORIZON_AND_MEMBERSHIP"],
+    "visibility": "known_at <= evaluation_as_of",
+    "global_policy_and_producer_admission_required": true,
+    "query_failure_erases_independent_valid_veto": false,
+    "conflicted_event_can_prove_own_veto": false
+  },
+  "undetermined": {
+    "required_cases": ["PRODUCER_RECEIPT_MISSING", "INVALID_PROVENANCE", "RETAINED_EVENT_UNRESOLVED", "SOURCE_STATE_CONFLICT", "MALFORMED_EVIDENCE", "VERSION_MISMATCH"],
+    "global_invalid_admission": "REJECT_EVALUATION_OR_UNDETERMINED_NEVER_ELIGIBLE",
+    "local_unresolved_without_independent_veto": "UNDETERMINED",
+    "conflict_can_be_treated_as_source_gap": false,
+    "existing_proposal_admission_reasons_preserved": true,
+    "precedence": ["GLOBAL_POLICY_OR_ADMISSION_INVALID_UNDETERMINED", "EXCLUDE_FUTURE_EVIDENCE", "ANY_INDEPENDENT_VALID_VETO", "RETAINED_UNRESOLVED_EVENT_UNDETERMINED", "OTHERWISE_NO_VETO_WITH_SOURCE_WARNINGS"]
+  },
+  "source_gaps": {
+    "trusted_observation_required": true,
+    "no_veto_without_retained_event_may_include": ["PARTIAL", "UNPROVEN", "STALE", "OBSERVED_QUERY_FAILURE"],
+    "missing_receipt_is_observed_failure": false,
+    "unresolved_retained_event_allows_no_veto": false,
+    "future_identity_in_historical_warning_allowed": false,
+    "canonical_source_states_preserved": true
+  },
+  "residual_risk": {
+    "id": "VERIFIED_EVENT_VETO_RESIDUAL_SOURCE_RISK",
+    "version": "v1",
+    "decision": "ACCEPTED_FOR_CONDITIONAL_SEMANTICS_NOT_RUNTIME_ACTIVATION",
+    "description": "An official earnings event may exist but remain unobserved or unverified until later; no-veto composition accepts this exposure without negative clearance.",
+    "must_be_visible_and_versioned": true,
+    "confidence_one_or_safety_claim_allowed": false
+  },
+  "horizon": {"state": "POLICY_UNSET", "value": null, "unit": null, "precision_and_boundaries": null, "calibration_status": "CALIBRATION_REQUIRED", "inherits_v1_five": false, "regulatory_notice_is_risk_window": false, "b14": "OPEN", "b09": "SEPARATE_RULE_HORIZON_POLICY"},
+  "soft_context": {"id": "RESULTS_SEASON_RISK_CONTEXT", "activation": "NOT_ACTIVE", "boundaries": ["NON_GATE", "NON_SCORING", "NON_EXECUTABLE", "NON_SIZING", "NON_ACTIONABLE"], "future_uses": ["RESEARCH_EXPLANATION", "UI_CONTEXT", "QUALITATIVE_CONFIDENCE_DISCUSSION"], "numerical_confidence_adjustment_allowed": false, "new_brain_or_diagnostic_allowed": false},
+  "holdings_and_lifecycle": {"entry_scope": ["FRESH_ENTRY", "ADD_TO_POSITION", "ROTATE_IN"], "management_exemptions": ["HOLD_EXISTING", "REDUCE_EXISTING", "EXIT_EXISTING", "RISK_MANAGEMENT"], "input_contexts_not_action_outputs": true, "forced_sell_or_exit": false, "retroactive_violation": false, "new_add_authority_created": false, "revision_reschedule_cancellation_effect": "OWN_KNOWN_AT_ONWARD_ONLY", "cancellation": "REMOVE_LINKED_VETO_ONLY_NOT_GLOBAL_CLEARANCE", "lifecycle_selection": "LOCAL_VISIBILITY_PER_REVISION_BEFORE_EFFECTIVE_LIFECYCLE", "duplicate_headline_creates_event": false},
+  "replay": {"v1_records_immutable": true, "explicit_policy_id_version_fingerprint": true, "as_of_source_and_regulatory_versions_required": true, "local_observation_and_revision_lineage_required": true, "current_data_backfill": false, "implicit_latest_policy": false},
+  "presentation": {"event": ["VERIFIED", "NOT VERIFIED"], "clearance": "UNVERIFIED", "veto": ["ACTIVE", "NO VERIFIED VETO", "UNDETERMINED"], "verified_outside_window_event_remains_verified": true, "forbidden": ["Earnings Safe", "No Earnings Soon", "Calendar Clear"], "ui_implemented": false},
+  "pilot": {"scope": "FUTURE_25_TO_30_USER_PILOT", "requires_governed_runtime_horizon_and_all_applicable_blockers_closed": true, "verified_veto_blocks_fresh_entry": true, "admitted_no_veto_can_continue_composition": true, "clearance_remains_unverified": true, "research_continues_regardless": true, "complete_historical_calendar_is_research_prerequisite": false, "commercial_readiness_claim": false, "started": false},
+  "downstream_impact": {
+    "Decision Score": "NO_CHANGE",
+    "Brain": "ADAPTER_UPDATE_REQUIRED",
+    "Portfolio": "POLICY_REVIEW_REQUIRED",
+    "Signals": "ADAPTER_UPDATE_REQUIRED",
+    "TradePlan": "NO_CHANGE",
+    "Entry-ready lifecycle": "POLICY_REVIEW_REQUIRED",
+    "Alerts": "POLICY_REVIEW_REQUIRED",
+    "Outcome ledger": "CALIBRATION_REQUIRED",
+    "Backtest": "ADAPTER_UPDATE_REQUIRED",
+    "Six-Gates orchestration": "ADAPTER_UPDATE_REQUIRED"
+  },
+  "activation_blockers": [
+    {"id": "B01", "area": "EVENT_RISK_HORIZON_CALIBRATION", "proposal_refs": ["A1"], "classification": "BLOCKING", "state": "OPEN", "closure": "Approved versioned window, calendar/precision/end semantics and calibration evidence; no inherited five or regulatory two-day default."},
+    {"id": "B02", "area": "TRUSTED_SCHEDULE_PRODUCER", "proposal_refs": ["A2"], "classification": "BLOCKING", "state": "OPEN", "closure": "Admitted official producer and payload-bound automatic first-observed receipts; candidate existence is not authority."},
+    {"id": "B03", "area": "SOURCE_STATE_INTERPRETATION", "proposal_refs": ["A3"], "classification": "BLOCKING", "state": "OPEN", "closure": "Prove observed gaps versus missing receipts, source-state conflict, positive-event freshness and retained-event precedence without false clearance."},
+    {"id": "B04", "area": "RUNTIME_V2_GATE6_ADAPTER", "proposal_refs": ["A4"], "classification": "BLOCKING", "state": "OPEN", "closure": "One existing engine; exact identity and per-revision local PIT before lifecycle; reject invalid provenance, precision and version; no default horizon."},
+    {"id": "B05", "area": "PASS_CONFIDENCE_SEMANTIC_GUARD", "proposal_refs": ["A5"], "classification": "BLOCKING", "state": "OPEN", "closure": "No-veto PASS has confidence null, VERIFIED_EVENT_VETO mode and UNVERIFIED clearance; tests reject confidence 1.0 or completeness inference without changing V1 or Gates 1-5."},
+    {"id": "B06", "area": "EXECUTION_METADATA_PROPAGATION", "proposal_refs": ["A5"], "classification": "BLOCKING", "state": "OPEN", "closure": "Lossless fingerprint-bound mode, clearance, confidence, policy version, as-of, source lineage/warnings and coverage limits through canonical records and Brain; missing metadata rejects compatibility."},
+    {"id": "B07", "area": "SIGNAL_ENTRY_READY_COMPATIBILITY", "proposal_refs": ["A5"], "classification": "BLOCKING", "state": "OPEN", "closure": "Govern downstream no-veto interpretation separately from complete entry readiness; preserve setup and other gates; management scope cannot confer clearance or add authority."},
+    {"id": "B08", "area": "OPTIONAL_ALERT_COMPATIBILITY", "proposal_refs": ["A6"], "classification": "NON_BLOCKING", "state": "OPEN", "closure": "Alerts stay disabled; wording, metadata, dedup and revision review must close before any alert activation."},
+    {"id": "B09", "area": "OUTCOME_CALIBRATION_COMPATIBILITY", "proposal_refs": ["A7"], "classification": "BLOCKING", "state": "OPEN", "closure": "Predeclare versioned observation/cohort/counterfactual methodology and missing-data rules, including measurable unobserved-event misses; no synthetic fills or performance claims."},
+    {"id": "B10", "area": "HISTORICAL_POLICY_VERSION_ISOLATION", "proposal_refs": ["A8"], "classification": "BLOCKING", "state": "OPEN", "closure": "Replay exact effective policy/source/regulatory/horizon/calendar versions and local observation lineage; preserve V1, reject missing history, no latest-policy fallback."},
+    {"id": "B11", "area": "COMPLETE_HISTORICAL_ARCHIVE_OUTCOMES", "proposal_refs": ["A9"], "classification": "DEFERRED_FOR_SHADOW", "state": "OPEN", "closure": "Not a prospective research prerequisite; required before claims depending on complete historical coverage."},
+    {"id": "B12", "area": "AUTHORITATIVE_NEGATIVE_CLEARANCE", "proposal_refs": ["A10"], "classification": "DEFERRED_FOR_SHADOW", "state": "OPEN", "closure": "CLEAR_UNSUPPORTED persists; no clearance path until separately approved negative-evidence authority exists."},
+    {"id": "B13", "area": "OPTIONAL_RESULTS_SEASON_CONTEXT", "proposal_refs": ["A11"], "classification": "NON_BLOCKING", "state": "OPEN", "closure": "Disabled pending separate source/presentation approval; never gate, score, numerical penalty, sizing or action."}
+  ],
+  "calibration_requirements": ["KNOWN_AT_TO_EVENT_DISTANCE", "OVERNIGHT_OPEN_GAP", "ABSOLUTE_GAP", "ATR_NORMALIZED_GAP", "MFE", "MAE", "DRAWDOWN", "SLIPPAGE", "POST_EVENT_VOLATILITY", "MISSED_OPPORTUNITY_FROM_BLOCKING", "FALSE_BLOCK_RATE", "SCHEDULE_REVISION_RATE", "SCHEDULE_KNOWN_LATE_RATE", "RESCHEDULE_FREQUENCY", "UNOBSERVED_EVENT_MISS_RATE_WHERE_MEASURABLE"],
+  "calibration_parameters_approved": false,
+  "reuse": {"schedule_identity": "app/filings/earnings_schedule_identity.py", "known_at": "app/filings/earnings_schedule_known_at.py", "coverage": "app/filings/earnings_schedule_coverage.py", "trading_calendar": "app/gates/engine.py#ExchangeCalendar", "gate_result": "app/gates/engine.py#GateOutcome", "event_evidence": "app/gates/official_earnings_schedule_candidate.py", "schedule_lifecycle": "app/filings/earnings_schedule_store.py", "canonical_reducer": "app/gates/engine.py#ExecutionGateEngine", "provenance_authority": "app/gates/source_authority.py", "policy_selection": "app/gates/production_policy.py"},
+  "boundaries": {"V1_ACTIVE": true, "GATE_POLICY_V2_ACTIVE": false, "SIX_GATES_EXACTLY_SIX": true, "NO_UNVERIFIED_CALENDAR_CLEARANCE": true, "NO_RETROACTIVE_BLACKOUT": true, "NO_AI_PREDICTED_EARNINGS_DATE": true, "PILOT_SIMPLICITY_RULE": "ACTIVE", "AI_DECISION_AUTHORITY": false},
+  "next_continuation": "EARNINGS_BLACKOUT_HORIZON_CALIBRATION_CONTRACT_V1",
+  "next_continuation_started": false,
+  "fingerprint_scheme": "sha256:utf8:canonical-json-v1:exclude-approval_fingerprint",
+  "approval_fingerprint": "sha256:0d2bd690a9b5cec347437163cbc7ad88cadec940b0546549ce40361b833414d0"
+}
