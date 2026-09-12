@@ -1,0 +1,162 @@
+{
+  "receipt_version": "earnings-calendar-alternative-official-source-research/v1",
+  "baseline_commit": "ce227acf5a0832559c08a47e9b05612fba9d0eb5",
+  "branch": "main",
+  "research_date": "2026-09-12",
+  "governance": {
+    "V1_ACTIVE": true,
+    "V2_ACTIVE": false,
+    "V2_SHADOW_ONLY": true,
+    "B08": "CLOSED_FOR_ACTIVATION_COMPATIBILITY",
+    "NO_UNVERIFIED_CALENDAR_CLEARANCE": true,
+    "NO_HISTORICAL_RESULT_DATE_AS_FUTURE_SCHEDULE": true,
+    "NO_NAME_BASED_IDENTITY": true,
+    "NO_UNDOCUMENTED_PRIVATE_SOURCE": true,
+    "NO_AI_PREDICTED_EARNINGS_DATE": true,
+    "AI_DECISION_AUTHORITY": false
+  },
+  "controls": {
+    "database_access": "READ_ONLY",
+    "source_transport": "DIRECT_PUBLIC_HTTPS_GET_ONLY",
+    "browser_automation": false,
+    "private_or_undocumented_api": false,
+    "guessed_archive_or_document_identifier": false,
+    "broad_crawl": false,
+    "commercial_or_ai_source": false,
+    "source_data_writes": 0,
+    "schedule_candidate_writes": 0,
+    "production_schedule_writes": 0,
+    "maximum_response_bytes": 2097152,
+    "request_timeout_seconds": 15,
+    "automatic_retries": 0
+  },
+  "identity_audit": {
+    "population_source": "SELECT DISTINCT financial_facts.instrument_id",
+    "population_count": 31,
+    "current_nse_universe_as_of": "2026-08-24T20:38:50.218348+00:00",
+    "dated_nse_evidence_latest": "2026-08-31",
+    "historical_security_identity_reader": "HistoricalSecurityIdentity effective at source known_at",
+    "classification_counts": {
+      "CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED": 30,
+      "CANONICAL_IDENTITY_GENUINELY_MISSING": 0,
+      "IDENTITY_EXISTS_BUT_NOT_EFFECTIVE_FOR_DATE": 1,
+      "IDENTITY_CONFLICTED": 0,
+      "SOURCE_RECORD_NOT_PRESENT_IN_CURRENT_WINDOW": 0
+    },
+    "rows": [
+      ["NSE:INE002A01018","RELIANCE","500325",12,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE002L01015","SJVN","533206",2,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE002S01010","MGL","539957",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE003A01024","SIEMENS","500550",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE006I01046","ASTRAL","532830",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE007A01025","CRISIL","500092",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE008A01015","IDBI","500116",3,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE009A01021","INFY","500209",9,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE00E101023","BIKAJI","543653",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE00FF01025","ACUTAAS","543349",1,2,"IDENTITY_EXISTS_BUT_NOT_EFFECTIVE_FOR_DATE"],
+      ["NSE:INE00H001014","SWIGGY","544285",4,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE00LO01017","CRAFTSMAN","543276",5,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE00R701025","DALBHARAT","542216",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE00WC01027","AFFLE","542752",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE010B01027","ZYDUSLIFE","532321",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE010J01012","TEJASNET","540595",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE010V01017","LTTS","540115",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE011K01018","TEGA","543413",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE012A01025","ACC","500410",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE013P01021","ONESOURCE","544292",3,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE016A01026","DABUR","500096",2,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE017A01032","GESHIP","500620",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE018A01030","LT","500510",6,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE068V01023","GLAND","543245",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE090A01021","ICICIBANK","532174",9,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE0FHS01024","DEEPINDS","543288",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE0PPK01015","ORIENTTECH","544235",2,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE372A01015","APARINDS","532259",1,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE429E01023","SAFARI","523025",4,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE437A01024","APOLLOHOSP","508869",7,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"],
+      ["NSE:INE955D01029","GENUSPOWER","530343",5,0,"CANONICAL_IDENTITY_EXISTS_ADAPTER_READER_MISALIGNED"]
+    ],
+    "dhan_active_mapping_symbols": ["APARINDS","APOLLOHOSP","DEEPINDS","GENUSPOWER","GLAND","ICICIBANK","ZYDUSLIFE"],
+    "reader_blocker": "INTERNAL_IDENTITY_BRIDGE"
+  },
+  "source_probes": {
+    "nse_event_calendar": {
+      "url": "https://www.nseindia.com/companies-listing/corporate-filings-event-calendar",
+      "official_query_shape_observed": "?symbol=<NSE_SYMBOL>&tabIndex=equity",
+      "target_symbol_http_200": ["APARINDS","DEEPINDS","GENUSPOWER","GLAND","ICICIBANK"],
+      "target_rows_in_static_response": false,
+      "complete_company_window_protocol": "UNPROVEN",
+      "source_state": "SOURCE_AVAILABLE"
+    },
+    "nse_board_meetings": {
+      "url": "https://www.nseindia.com/companies-listing/corporate-filings-board-meetings",
+      "target_symbol_http_200": ["APARINDS","DEEPINDS","GENUSPOWER","GLAND","ICICIBANK"],
+      "static_fields_observed": ["BOARD_MEETING_DETAILS","XBRL","DOWNLOAD_CSV"],
+      "target_rows_in_static_response": false,
+      "complete_company_window_protocol": "UNPROVEN",
+      "source_state": "SOURCE_AVAILABLE"
+    },
+    "nse_announcements": {
+      "url": "https://www.nseindia.com/companies-listing/corporate-filings-announcements",
+      "target_symbol_http_200": ["APARINDS","DEEPINDS","GENUSPOWER","GLAND","ICICIBANK"],
+      "static_fields_observed": ["XBRL","DOWNLOAD_CSV"],
+      "public_rendered_record_fields_observed": ["EXCHANGE_RECEIVED_TIME","EXCHANGE_DISSEMINATION_TIME"],
+      "target_rows_in_static_response": false,
+      "complete_company_window_protocol": "UNPROVEN",
+      "source_state": "SOURCE_AVAILABLE"
+    },
+    "nse_archive_ixbrl": {
+      "base_url": "https://nsearchives.nseindia.com/corporate/ixbrl/",
+      "exact_identity_examples": ["APARINDS","DEEPINDS","ICICIBANK"],
+      "additional_target_archive_evidence": ["GENUSPOWER"],
+      "admission": "ONLY_AFTER_EXACT_INVENTORY_TO_DOCUMENT_JOIN",
+      "source_state": "SOURCE_AVAILABLE"
+    },
+    "bse_public_alternative": {
+      "board_meeting_url": "https://www.bseindia.com/corporates/board_meeting.aspx",
+      "results_url_shape": "https://www.bseindia.com/corporates/Comp_Results.aspx?Code=<EXACT_BSE_CODE>",
+      "indexed_fields": ["SECURITY_CODE","SECURITY_NAME","PURPOSE","MEETING_DATE"],
+      "target_scoped_complete_window_protocol": "UNPROVEN",
+      "source_state": "SOURCE_AVAILABLE"
+    },
+    "issuer_fallback": {
+      "admitted": false,
+      "reason": "EXCHANGE_SOURCE_FAMILIES_REACHABLE_BUT_NOT_YET_COMPLETE"
+    }
+  },
+  "source_option_matrix": {
+    "NSE_EVENT_CALENDAR": ["IDENTITY_UNPROVEN","EVENT_DATE_SCHEMA_VISIBLE","KNOWN_AT_UNPROVEN","REVISION_UNPROVEN","WINDOW_INCOMPLETE","PUBLIC_STATIC_SURFACE","PRIMARY_EXCHANGE","PARTIAL_NOT_ADMITTED"],
+    "NSE_BOARD_MEETINGS": ["IDENTITY_UNPROVEN","EVENT_DATE_SCHEMA_VISIBLE","KNOWN_AT_UNPROVEN","REVISION_UNPROVEN","WINDOW_INCOMPLETE","PUBLIC_STATIC_SURFACE","PRIMARY_EXCHANGE","PARTIAL_NOT_ADMITTED"],
+    "NSE_ANNOUNCEMENTS": ["IDENTITY_IF_EXACT_RECORD","EVENT_DATE_IF_EXACT_RECORD","TIMESTAMP_VALUE_TIMEZONE_UNPROVEN","REVISION_UNPROVEN","WINDOW_INCOMPLETE","PUBLIC_STATIC_SURFACE","PRIMARY_EXCHANGE","PARTIAL_NOT_ADMITTED"],
+    "NSE_PRIOR_INTIMATION_XBRL": ["IDENTITY_IF_EXACT_LINKED_DOCUMENT","EVENT_DATE_IF_EXACT_LINKED_DOCUMENT","KNOWN_AT_NOT_INDEPENDENT","REVISION_INTENT_ONLY","NO_COMPLETE_INVENTORY","STRUCTURED_EXACT_DOCUMENT_WHEN_LINKED","PRIMARY_EXCHANGE_DISTRIBUTED_COMPANY_FILING","CORROBORATION_ONLY"],
+    "BSE_BOARD_MEETINGS": ["BSE_CODE_INTERNAL_SOURCE_JOIN_UNPROVEN","EVENT_DATE_SCHEMA_VISIBLE","KNOWN_AT_UNPROVEN","REVISION_UNPROVEN","WINDOW_INCOMPLETE","PUBLIC_STATIC_SURFACE","PRIMARY_EXCHANGE","PARTIAL_NOT_ADMITTED"],
+    "BSE_ANNOUNCEMENTS": ["BSE_CODE_INTERNAL_SOURCE_JOIN_UNPROVEN","EVENT_DATE_IF_EXACT_RECORD","KNOWN_AT_UNPROVEN","REVISION_UNPROVEN","WINDOW_INCOMPLETE","PUBLIC_STATIC_SURFACE","PRIMARY_EXCHANGE","PARTIAL_NOT_ADMITTED"],
+    "BSE_PRIOR_INTIMATION_STRUCTURED": ["UNPROVEN","UNPROVEN","UNPROVEN","UNPROVEN","UNPROVEN","NO_DOCUMENTED_SCOPED_ROUTE","PRIMARY_EXCHANGE","UNAVAILABLE_FOR_THIS_SLICE"],
+    "PRIMARY_ISSUER_WEBSITE_FALLBACK": ["SEPARATE_ISSUER_IDENTITY_REQUIRED","POTENTIAL","WEAK_UNLESS_PROVEN","POTENTIAL","UNPROVEN","SITE_SPECIFIC","PRIMARY_ISSUER","DEFERRED_NOT_ADMITTED"]
+  },
+  "target_historical_probe": {
+    "APARINDS": "ARCHIVE_FAMILY_PROVEN_NOT_EXACT_CURRENT_INVENTORY_LINK",
+    "DEEPINDS": "LATER_RESULT_CORROBORATION_ONLY",
+    "GENUSPOWER": "ARCHIVE_RESULTS_COMMUNICATION_WITHOUT_ADMITTED_PRIOR_INTIMATION_JOIN",
+    "GLAND": "NO_TARGET_RECORD_ADMITTED_IN_BOUNDED_PROBE",
+    "ICICIBANK": "EXACT_SYMBOL_ISIN_AGENDA_DATE_BUT_KNOWN_AT_AND_INVENTORY_LINK_UNPROVEN"
+  },
+  "time_and_join_boundary": {
+    "exact_join": "inventory_record_or_immutable_identifier -> published_exact_xbrl_or_attachment -> exact_symbol_and_isin_agenda_and_meeting_date -> effective_canonical_identity_at_exchange_dissemination_or_known_at",
+    "forbidden_join": ["company_name_and_date","symbol_and_date","guessed_archive_path","result_filing_backdated_to_prior_notice"],
+    "received_disseminated_hsi_received_distinct": true,
+    "timezone_assumed": false,
+    "known_at_authority": "UNPROVEN",
+    "target_current_event": "NOT_PROVEN",
+    "complete_window": "UNPROVEN"
+  },
+  "outcome": {
+    "classification": "B",
+    "label": "SOURCE_AVAILABLE_IDENTITY_BRIDGE_BLOCKED",
+    "dominant_blocker": "INTERNAL_IDENTITY_BRIDGE",
+    "next_slice": "EARNINGS_CALENDAR_CANONICAL_IDENTITY_BRIDGE_V1",
+    "next_slice_started": false,
+    "gate6_ready": false
+  },
+  "receipt_fingerprint": "sha256:95541e8b117ac933c90d20375fec1c1554d65000223ff7452d09ad1f4cb3033f"
+}
