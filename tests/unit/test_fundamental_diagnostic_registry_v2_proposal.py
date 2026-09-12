@@ -271,6 +271,10 @@ def test_source_references_execution_binding_and_no_runtime_artifact_loading():
     assert value["next_continuation"] == "FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL"
     assert value["data_build_vs_buy"]["acquisition_authorized"] is False
     for path in (ROOT / "app").rglob("*.py"):
+        # The subsequent approved shadow slice may load the pinned artifact;
+        # all existing active callers must still be free of V2 wiring.
+        if path.relative_to(ROOT).as_posix() in {"app/registry/versioned.py", "app/fundamentals/diagnostic_v2_shadow.py"}:
+            continue
         source = path.read_text(encoding="utf-8")
         assert PATH.name not in source
         assert "diagnostic-registry-v2-proposed" not in source
