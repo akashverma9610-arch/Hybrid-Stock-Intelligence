@@ -1,0 +1,988 @@
+{
+  "schema_version": "hsi-diagnostic-registry-governance-approval/v1",
+  "approval_id": "fundamental-diagnostic-registry-v2-governance-approval/v1",
+  "baseline_commit": "60e8529249961d8eb8fa8a287fd81ea8c0f0bce6",
+  "proposal_reference": {
+    "path": "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_PROPOSED.json",
+    "candidate": "diagnostic-registry-v2-proposed",
+    "parent": "diagnostic-registry-v1",
+    "proposal_fingerprint": "sha256:668005237acd727ead86b19fca11a0fe9a1f640291dbe647a02cab989774a261",
+    "source_status": "PROPOSED",
+    "original_proposal_overwritten": false
+  },
+  "approval_state": "GOVERNANCE_APPROVED_WITH_ACTIVATION_BLOCKERS",
+  "decision_outcome": "B",
+  "active": false,
+  "v1_active": true,
+  "v2_active": false,
+  "runtime_effective_at": null,
+  "runtime_registration_created": false,
+  "shadow_execution_started": false,
+  "review_authority": {
+    "policy_id": "fundamental-diagnostic-registry-v2-governance-review",
+    "policy_version": "v1",
+    "authority": "USER_DELEGATED_BOUNDED_GOVERNANCE_REVIEW",
+    "authorization_reference": "user-directive:c0933e5a-e8b1-4cd6-8b47-b22345ec46d2",
+    "reviewer": "Codex architecture/governance reviewer",
+    "human_signature_claimed": false,
+    "scope": "Approve semantic definitions with explicit conditions; no runtime activation, binding, implementation or numerical calibration approval."
+  },
+  "approval_scope": {
+    "rule_ids": [
+      16,
+      17,
+      19,
+      25,
+      26,
+      29
+    ],
+    "rule_count": 61,
+    "unchanged_rule_count": 55,
+    "parent_registry_semantic_fingerprint": "sha256:b9aa7cd7c4f0e0f4174759bf5df69365e4ee47ebd915e8415a51c8048117a299",
+    "semantic_definition_approval": true,
+    "implementation_approval": false,
+    "score_policy_approval": false,
+    "entity_branch_activation": false,
+    "evidence_contract_implementation": false
+  },
+  "source_preservation_pins": [
+    {
+      "path": "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_PROPOSED.json",
+      "git_blob": "babeed85610657637f1e00f716dfed14127d97ec"
+    },
+    {
+      "path": "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_PROPOSAL.md",
+      "git_blob": "90f5b274aa489b484c7a40faaa8f91add2f3dbcd"
+    },
+    {
+      "path": "tests/unit/test_fundamental_diagnostic_registry_v2_proposal.py",
+      "git_blob": "dc2149e10eba34461fd4e7ccd0a987c7ec5769f1"
+    },
+    {
+      "path": "app/registry/canonical.py",
+      "git_blob": "4927a6592b816a6dede90f63d2823b678dbfddcc"
+    },
+    {
+      "path": "app/registry/models.py",
+      "git_blob": "e72c25df4148b5ec94746d52ea724d6df44fa422"
+    },
+    {
+      "path": "app/analysis/fundamentals.py",
+      "git_blob": "a02718e60cda6aae9aecbb91816eef57b14a2f6f"
+    },
+    {
+      "path": "app/analysis/valuation_trade.py",
+      "git_blob": "fc232a8898e7d24c3c8f2fc2ee27795f32a81b21"
+    },
+    {
+      "path": "app/fundamentals/diagnostic_input.py",
+      "git_blob": "3159156f9b0c296b126c2e119331200944bb8291"
+    },
+    {
+      "path": "app/diagnostics/evaluators.py",
+      "git_blob": "c172b03bbc7257506ebd63d0a8e098ced07fd445"
+    },
+    {
+      "path": "app/scoring/engine.py",
+      "git_blob": "5e384c17de6b65797af6436e50e3ddb4e4c8b2d6"
+    },
+    {
+      "path": "app/diagnostics/synthesis.py",
+      "git_blob": "ac5ce5860b1b84616a2dd24fbd1675986aa04499"
+    },
+    {
+      "path": "app/domain/canonical_diagnostic_strategy.py",
+      "git_blob": "3c7cd8c87445af14a29e0d85288eed3b5db817e6"
+    },
+    {
+      "path": "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json",
+      "git_blob": "c99bc37ab35f2b86a993d758161aaf216d5c69f0"
+    }
+  ],
+  "rule_decisions": [
+    {
+      "rule_id": 16,
+      "decision": "APPROVE",
+      "reason": "The explicit Revenue/PAT/EPS name matches the three core measurements and preserves true five-year mathematics.",
+      "approved_core": [
+        "REVENUE_CAGR",
+        "PAT_CAGR",
+        "EPS_BASIC_CAGR"
+      ],
+      "conditions": [
+        "Six consecutive comparable FULL_YEAR observations per metric, spanning five fiscal intervals; five observations never suffice.",
+        "Positive endpoints are required for this CAGR convention; invalid-domain signed values remain descriptive, never zero-filled or N/A.",
+        "Source-qualified EBITDA stays optional; V1 four-component verdicts and thresholds are not transferred."
+      ],
+      "not_approved": [
+        "operating-earnings derivation",
+        "automatic V1 four-to-three scoring/threshold transfer"
+      ],
+      "source_basis": [
+        "MCA_SCHEDULE_III",
+        "MCA_IND_AS_1",
+        "ACCEPTED_RESEARCH"
+      ],
+      "activation_blockers": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B10",
+        "B14",
+        "B15"
+      ]
+    },
+    {
+      "rule_id": 17,
+      "decision": "APPROVE",
+      "reason": "Independent standard ROE preserves return-efficiency evidence while qualified ROCE cannot be inferred from a missing or issuer-specific numerator.",
+      "approved_core": [
+        "ROE"
+      ],
+      "conditions": [
+        "Annual PAT and exact beginning/end equity must have compatible attribution, scope and periods; mean equity positive; no ending-only fallback.",
+        "Missing ROCE is policy/data unavailable, never N/A for absence alone; ready ROE does not establish complete ROCE/ROE coverage.",
+        "Financial-sector branches remain blocked; reported ROE/ROCE require formula-matched corroboration contracts."
+      ],
+      "not_approved": [
+        "new ROCE formula",
+        "industrial ROCE for BANK/NBFC/INSURER",
+        "name-based reported ratio equivalence"
+      ],
+      "source_basis": [
+        "MCA_SCHEDULE_III",
+        "SEBI_RATIO_EXAMPLE",
+        "RBI_BANK",
+        "RBI_NBFC",
+        "IRDAI"
+      ],
+      "activation_blockers": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06",
+        "B10",
+        "B14",
+        "B15"
+      ]
+    },
+    {
+      "rule_id": 19,
+      "decision": "APPROVE",
+      "reason": "Debt/equity core, net debt and interest coverage answer different questions; explicit completeness prevents debt/equity alone implying financial health.",
+      "approved_core": [
+        "DEBT_EQUITY"
+      ],
+      "conditions": [
+        "Debt/equity alone yields CORE_READY_OPTIONAL_INCOMPLETE when net debt or coverage is unavailable; full_rule_ready=false and economic_verdict=null.",
+        "Exact debt definition and same-end positive equity remain prerequisites; ready observations do not invent unavailable debt/cash/interest facts.",
+        "Net debt and interest coverage retain their own policy/data states; adverse or conflicting optional evidence stays visible.",
+        "DSCR is a separate measure and can never replace interest coverage."
+      ],
+      "not_approved": [
+        "whole-rule HEALTHY from core readiness",
+        "new net-debt boundary policy",
+        "new interest-coverage numerator/denominator policy",
+        "DSCR substitution"
+      ],
+      "source_basis": [
+        "MCA_SCHEDULE_III",
+        "SEBI_RATIO_EXAMPLE",
+        "RBI_BANK",
+        "RBI_NBFC",
+        "IRDAI"
+      ],
+      "activation_blockers": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06",
+        "B10",
+        "B14",
+        "B15"
+      ]
+    },
+    {
+      "rule_id": 25,
+      "decision": "APPROVE",
+      "reason": "Complete Revenue/PAT/EPS comparisons preserve quarterly-results purpose; optional EBITDA is not a universal core prerequisite.",
+      "approved_core": [
+        "REVENUE_YOY_QOQ",
+        "PAT_YOY_QOQ",
+        "EPS_BASIC_YOY_QOQ"
+      ],
+      "conditions": [
+        "Five consecutive QUARTER_ONLY observations establish exact q/q-1 and q/q-4 comparisons; YTD and nearest-quarter substitutions are forbidden.",
+        "All three positive-domain YoY/QoQ pairs are needed for core completeness; one surviving component remains partial.",
+        "Missing optional EBITDA reduces optional coverage only; no zero-fill or score renormalization."
+      ],
+      "not_approved": [
+        "organic/one-off inference",
+        "negative-base growth convention",
+        "automatic earnings-acceleration verdict"
+      ],
+      "source_basis": [
+        "MCA_IND_AS_1",
+        "NSE_FILING",
+        "ACCEPTED_RESEARCH"
+      ],
+      "activation_blockers": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B10",
+        "B14",
+        "B15"
+      ]
+    },
+    {
+      "rule_id": 26,
+      "decision": "APPROVE",
+      "reason": "The explicit Net Profit Core name describes PAT/revenue and discloses the change from V1 operating/gross wording.",
+      "approved_core": [
+        "NET_PROFIT_MARGIN"
+      ],
+      "conditions": [
+        "PAT / Revenue means NET_PROFIT_MARGIN only, with finite signed PAT, positive revenue, exact period/scope/attribution and compatible units.",
+        "Net margin is a fraction; YoY percentage-point change is 100 * (margin_q - margin_q_minus_4). Five consecutive quarter-only observations remain the contract.",
+        "Operating margin, gross margin and issuer EBITDA margin are distinct optional/future contexts with their own source-qualified numerator definitions.",
+        "No V1 0.02 margin classification threshold or operating-efficiency conclusion is inherited."
+      ],
+      "not_approved": [
+        "NET_PROFIT_MARGIN as OPERATING_MARGIN",
+        "NET_PROFIT_MARGIN as GROSS_MARGIN",
+        "NET_PROFIT_MARGIN as EBITDA_MARGIN",
+        "operating/gross derived numerator",
+        "economic classification thresholds"
+      ],
+      "source_basis": [
+        "MCA_IND_AS_1",
+        "MCA_SCHEDULE_III",
+        "SEBI_RATIO_EXAMPLE",
+        "ACCEPTED_RESEARCH"
+      ],
+      "activation_blockers": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B10",
+        "B14",
+        "B15"
+      ]
+    },
+    {
+      "rule_id": 29,
+      "decision": "APPROVE",
+      "reason": "Independent qualified multiples preserve valid evidence without manufacturing a complete valuation view or a favourable score.",
+      "approved_core": [],
+      "approved_availability": "AT_LEAST_ONE_READY_APPLICABLE_COMPONENT",
+      "conditions": [
+        "P/E uses its exact annual EPS/PIT price definition; price session and per-share basis remain explicit.",
+        "P/B requires approved book/share/price alignment; EV/EBITDA requires an approved EV bridge and source-qualified positive denominator; both remain gated where unavailable.",
+        "Forward P/E requires governed forward EPS; PEG requires governed positive growth/horizon/unit definitions. No forecast or growth fill.",
+        "Missing EV/EBITDA never erases P/E or independently valid P/B; financial-sector cells remain policy blocked.",
+        "NOT_READY retains underlying INSUFFICIENT_DATA or EVIDENCE_CONFLICTED reasons; no optional-component reweighting."
+      ],
+      "not_approved": [
+        "new forecast",
+        "new PEG growth definition",
+        "missing debt/cash zero defaults",
+        "automatic ATTRACTIVE verdict"
+      ],
+      "source_basis": [
+        "MCA_IND_AS_1",
+        "RBI_BANK",
+        "RBI_NBFC",
+        "IRDAI",
+        "ACCEPTED_RESEARCH"
+      ],
+      "activation_blockers": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B10",
+        "B14",
+        "B15"
+      ]
+    }
+  ],
+  "entity_policy_decision": {
+    "decision": "APPROVE",
+    "matrix": [
+      {
+        "rule_id": 16,
+        "NON_FINANCIAL": "STANDARD_BRANCH",
+        "BANK": "POLICY_BLOCKED",
+        "NBFC": "POLICY_BLOCKED",
+        "INSURER": "POLICY_BLOCKED",
+        "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+      },
+      {
+        "rule_id": 17,
+        "NON_FINANCIAL": "STANDARD_BRANCH",
+        "BANK": "POLICY_BLOCKED",
+        "NBFC": "POLICY_BLOCKED",
+        "INSURER": "POLICY_BLOCKED",
+        "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+      },
+      {
+        "rule_id": 19,
+        "NON_FINANCIAL": "STANDARD_BRANCH",
+        "BANK": "POLICY_BLOCKED",
+        "NBFC": "POLICY_BLOCKED",
+        "INSURER": "POLICY_BLOCKED",
+        "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+      },
+      {
+        "rule_id": 25,
+        "NON_FINANCIAL": "STANDARD_BRANCH",
+        "BANK": "POLICY_BLOCKED",
+        "NBFC": "POLICY_BLOCKED",
+        "INSURER": "POLICY_BLOCKED",
+        "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+      },
+      {
+        "rule_id": 26,
+        "NON_FINANCIAL": "STANDARD_BRANCH",
+        "BANK": "POLICY_BLOCKED",
+        "NBFC": "POLICY_BLOCKED",
+        "INSURER": "POLICY_BLOCKED",
+        "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+      },
+      {
+        "rule_id": 29,
+        "NON_FINANCIAL": "STANDARD_BRANCH",
+        "BANK": "POLICY_BLOCKED",
+        "NBFC": "POLICY_BLOCKED",
+        "INSURER": "POLICY_BLOCKED",
+        "UNKNOWN_NON_COMPARABLE": "POLICY_BLOCKED"
+      }
+    ],
+    "standard_branch_meaning": "Semantic branch approved conditionally; not proof of sufficient evidence, implemented evaluator or runtime readiness.",
+    "unknown_behavior": "POLICY_BLOCKED",
+    "conflicting_classification_behavior": "EVIDENCE_CONFLICTED",
+    "name_heuristics_allowed": false,
+    "unknown_default_nonfinancial": false,
+    "current_unknown_companies_reclassified": 0,
+    "classification_contract": "Reuse exact canonical issuer/security mapping and PIT-visible regulator/statutory/exchange/taxonomy evidence; verify effective times and source fingerprints.",
+    "deferred_financial_branches": [
+      "BANK",
+      "NBFC",
+      "INSURER"
+    ]
+  },
+  "component_readiness_decision": {
+    "decision": "APPROVE",
+    "scope_rule_ids": [
+      16,
+      17,
+      19,
+      25,
+      26,
+      29
+    ],
+    "component_states": [
+      "READY",
+      "PARTIAL",
+      "INSUFFICIENT_DATA",
+      "POLICY_BLOCKED",
+      "NOT_APPLICABLE",
+      "EVIDENCE_CONFLICTED"
+    ],
+    "roles": [
+      "MANDATORY_CORE",
+      "OPTIONAL_COMPONENT",
+      "BLOCKING_COMPONENT"
+    ],
+    "canonical_results_per_rule": 1,
+    "new_scoring_engine": false,
+    "confidence_default": null,
+    "confidence_separate_from_score": true,
+    "optional_absence_invalidates_complete_core": false,
+    "weight_renormalization_allowed": false,
+    "blocked_or_conflicted_values_default_zero": false,
+    "core_and_coverage_are_separate": true,
+    "approval_clarification": {
+      "status": "BINDING_APPROVAL_CONDITION_NO_PROPOSAL_REWRITE",
+      "scope": "Clarifies the already-proposed core/coverage distinction; no formula, component role, required input, threshold or canonical ID changes.",
+      "core_ready_optional_incomplete": "CORE_READY_OPTIONAL_INCOMPLETE",
+      "core_ready_optional_conflicted": "CORE_READY_OPTIONAL_CONFLICTED",
+      "all_components_ready": "CORE_AND_OPTIONAL_COMPLETE",
+      "meaning": "READY_STANDARD_BRANCH/READY_ENTITY_SPECIFIC_BRANCH are core-only aliases. They must be qualified by optional coverage; never emitted or consumed as unqualified full-rule readiness.",
+      "full_rule_ready_requires": "All required core and applicable optional components READY with no conflict; mathematically valid measurements still confer no economic verdict.",
+      "economic_verdict_on_readiness": null,
+      "partial_or_na_core_is_complete": false,
+      "not_applicable_requires": "Verified applicable policy exclusion, never absent data/policy; unknown classification remains POLICY_BLOCKED."
+    },
+    "example_scope": "Contract examples, not production observations. A READY optional component presupposes its separately approved policy and verified inputs; these examples do not resolve the current POLICY_BLOCKED component contracts.",
+    "rule19_examples": [
+      {
+        "case_id": "de_only",
+        "components": {
+          "DEBT_EQUITY": "READY",
+          "NET_DEBT": "POLICY_BLOCKED",
+          "INTEREST_COVERAGE": "INSUFFICIENT_DATA",
+          "ISSUER_REPORTED_DEBT_EQUITY": "POLICY_BLOCKED"
+        },
+        "core_complete": true,
+        "coverage_state": "CORE_READY_OPTIONAL_INCOMPLETE",
+        "full_rule_ready": false,
+        "economic_verdict": null,
+        "score_eligible": false
+      },
+      {
+        "case_id": "de_optional_conflict",
+        "components": {
+          "DEBT_EQUITY": "READY",
+          "NET_DEBT": "READY",
+          "INTEREST_COVERAGE": "EVIDENCE_CONFLICTED",
+          "ISSUER_REPORTED_DEBT_EQUITY": "POLICY_BLOCKED"
+        },
+        "core_complete": true,
+        "coverage_state": "CORE_READY_OPTIONAL_CONFLICTED",
+        "full_rule_ready": false,
+        "retained_blockers": [
+          "INTEREST_COVERAGE_EVIDENCE_CONFLICTED"
+        ],
+        "economic_verdict": null,
+        "score_eligible": false
+      },
+      {
+        "case_id": "de_missing_other_ready",
+        "components": {
+          "DEBT_EQUITY": "INSUFFICIENT_DATA",
+          "NET_DEBT": "READY",
+          "INTEREST_COVERAGE": "POLICY_BLOCKED",
+          "ISSUER_REPORTED_DEBT_EQUITY": "POLICY_BLOCKED"
+        },
+        "core_complete": false,
+        "coverage_state": "PARTIAL",
+        "full_rule_ready": false,
+        "economic_verdict": null,
+        "score_eligible": false
+      }
+    ]
+  },
+  "score_safety": {
+    "UNKNOWN_V2_STATE_MUST_NEVER_DEFAULT_POSITIVE": true,
+    "NO_V2_RESULT_MAY_BECOME_SUPPORTIVE_BY_UNKNOWN_STATE_FALLTHROUGH": true,
+    "legacy_risk": {
+      "path": "app/scoring/engine.py",
+      "expression": "cfg.state_scores.get(x.record.result,Decimal(\"5\"))",
+      "fallback_value": "5",
+      "partial_currently_positive": true
+    },
+    "all_v2_states_require_explicit_mapping": true,
+    "unknown_state_policy": "FAIL_CLOSED_UNRECOGNIZED_V2_STATE",
+    "unknown_contribution": null,
+    "unknown_eligibility": false,
+    "required_missing_score_result": "SCORE_INCOMPLETE",
+    "optional_absence_policy": "Surface optional coverage; no positive/default score fill, no weight renormalization or score re-averaging change without separately approved scoring policy.",
+    "readiness_is_not_economic_verdict": true,
+    "state_dispositions": [
+      {
+        "state": "READY",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "READINESS_IS_NOT_ECONOMIC_CLASSIFICATION"
+      },
+      {
+        "state": "PARTIAL",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "INSUFFICIENT_DATA",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "POLICY_BLOCKED",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "NOT_APPLICABLE",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "EVIDENCE_CONFLICTED",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "READY_STANDARD_BRANCH",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "READINESS_IS_NOT_ECONOMIC_CLASSIFICATION"
+      },
+      {
+        "state": "READY_ENTITY_SPECIFIC_BRANCH",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "READINESS_IS_NOT_ECONOMIC_CLASSIFICATION"
+      },
+      {
+        "state": "CORE_READY_OPTIONAL_INCOMPLETE",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "READINESS_IS_NOT_ECONOMIC_CLASSIFICATION"
+      },
+      {
+        "state": "CORE_READY_OPTIONAL_CONFLICTED",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "READINESS_IS_NOT_ECONOMIC_CLASSIFICATION"
+      },
+      {
+        "state": "CORE_AND_OPTIONAL_COMPLETE",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "READINESS_IS_NOT_ECONOMIC_CLASSIFICATION"
+      },
+      {
+        "state": "NOT_READY",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "UNAVAILABLE",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "NON_SCORING_READINESS_OR_BLOCKER_STATE"
+      },
+      {
+        "state": "UNKNOWN_OR_UNRECOGNIZED",
+        "score_eligible": false,
+        "contribution": null,
+        "supportive": false,
+        "reason": "UNRECOGNIZED_V2_STATE"
+      }
+    ],
+    "future_economic_states": "Any later approved economic verdict requires a new exhaustive versioned mapping and calibration; unknown states remain fail-closed.",
+    "implementation_performed": false
+  },
+  "downstream_risks": [
+    {
+      "consumer": "higher_order_rules",
+      "paths": [
+        "app/diagnostics/synthesis.py"
+      ],
+      "risk": "Rule31 risk mapping and Rule34 scenarios can accept unrecognized upstream labels unless a V2 adapter rejects them.",
+      "blocker_ids": [
+        "B05",
+        "B14"
+      ],
+      "no_supportive_fallthrough": true
+    },
+    {
+      "consumer": "thesis_synthesis",
+      "paths": [
+        "app/diagnostics/synthesis.py"
+      ],
+      "risk": "Required Rule33 inputs present but outside finite weak list can imply STRONG.",
+      "blocker_ids": [
+        "B06"
+      ],
+      "no_supportive_fallthrough": true
+    },
+    {
+      "consumer": "decision_score",
+      "paths": [
+        "app/scoring/engine.py"
+      ],
+      "risk": "Unknown labels and PARTIAL can contribute positive values; available component averages can change without top-level weight changes.",
+      "blocker_ids": [
+        "B03",
+        "B04",
+        "B14"
+      ],
+      "no_supportive_fallthrough": true
+    },
+    {
+      "consumer": "six_gates",
+      "paths": [
+        "app/portfolio/canonical_six_gates_activation.py",
+        "app/gates/engine.py"
+      ],
+      "risk": "Indirect version-incompatible score propagation could affect gate evidence.",
+      "blocker_ids": [
+        "B08"
+      ],
+      "no_supportive_fallthrough": true
+    },
+    {
+      "consumer": "long_term_shadows",
+      "paths": [
+        "app/intelligence/long_term_thesis_review.py",
+        "app/intelligence/long_term_thesis_research_shadow.py"
+      ],
+      "risk": "Dossier coverage/lineage is not a positive family policy; existing N/A wording must not overwrite V2 policy-blocked semantics.",
+      "blocker_ids": [
+        "B05",
+        "B06",
+        "B14"
+      ],
+      "no_supportive_fallthrough": true
+    },
+    {
+      "consumer": "portfolio_brain",
+      "paths": [
+        "app/portfolio/holding_intelligence.py",
+        "app/portfolio/canonical_diagnostics_orchestration.py",
+        "app/intelligence/shared_brain_application.py"
+      ],
+      "risk": "Version loss or partial-as-supportive promotion through rehydration and composition.",
+      "blocker_ids": [
+        "B07"
+      ],
+      "no_supportive_fallthrough": true
+    },
+    {
+      "consumer": "research_outputs",
+      "paths": [
+        "app/real_brain/service.py",
+        "app/intelligence/radar_diagnostic_orchestration.py"
+      ],
+      "risk": "V1/V2 evidence/outcomes could be pooled without version labels or coverage denominators.",
+      "blocker_ids": [
+        "B01",
+        "B14",
+        "B15"
+      ],
+      "no_supportive_fallthrough": true
+    }
+  ],
+  "version_rehydration": {
+    "required": [
+      "registry_version",
+      "strategy_version",
+      "policy_version",
+      "as_of"
+    ],
+    "explicit_fingerprints_required": true,
+    "v1_results_rehydrate_as": "diagnostic-registry-v1",
+    "global_latest_fallback": false,
+    "implicit_v2_replay": false,
+    "v1_source_limitations_retained": true,
+    "v1_history_mutable": false,
+    "v2_replay": "Explicit caller-requested research replay with distinct versioned identity; original V1 receipt is never rewritten.",
+    "runtime_effective_time": "This timestamp-free documentation receipt is not a production effective-time registration. Future activation must bind authoritative approval/effective times; no historical backdating."
+  },
+  "horizon_policy": {
+    "path": "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json",
+    "fingerprint": "sha256:bc1f7548b372738d69b72c2e54afdc34c9f10929aee9a10d834ce99cb8d43d8a",
+    "status": "CANDIDATE_NOT_ACTIVE",
+    "semantics_changed": false,
+    "timeframes_changed": false,
+    "activation_authorized": false,
+    "future_requirement": "An exact versioned V2 horizon/applicability reference with entity awareness is mandatory before horizon-aware V2 execution."
+  },
+  "reported_ratio": {
+    "contract": "ISSUER_REPORTED_FINANCIAL_RATIO",
+    "implemented": false,
+    "role": "FORMULA_MATCHED_CORROBORATION_ONLY",
+    "same_name_implies_equivalence": false,
+    "mandatory_core_substitution": false,
+    "stronger_role_requires_separate_policy": true,
+    "dscr_equals_interest_coverage": false
+  },
+  "derived_operating_earnings": {
+    "identity": "HSI_STANDARDIZED_OPERATING_EARNINGS",
+    "status": "PLACEHOLDER_ONLY",
+    "formula": null,
+    "is_reported_fact": false,
+    "is_ebit": false,
+    "is_ebitda": false,
+    "active_derived_metric": false,
+    "separate_formula_approval_required": true
+  },
+  "activation_blocker_vocabulary": [
+    "BLOCKING",
+    "NON_BLOCKING",
+    "DEFERRED_NOT_REQUIRED_FOR_SHADOW",
+    "NOT_APPLICABLE"
+  ],
+  "activation_blockers": [
+    {
+      "blocker_id": "B01",
+      "topic": "Explicit registry-version resolver",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_RUNTIME",
+      "evidence": "Current canonical runner authorizes exact V1; rehydration stamps DIAGNOSTIC_REGISTRY_VERSION.",
+      "required_proof": "Exact registry/strategy/policy/as_of binding and fingerprints; mixed/unknown/future versions rejected; historical V1 lookup proven.",
+      "shadow_requirement": "Needed before any execution dispatch; isolated fixtures may pass explicit candidate and approval fingerprints without a production resolver."
+    },
+    {
+      "blocker_id": "B02",
+      "topic": "V2 evaluator implementations",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_RUNTIME",
+      "evidence": "Only a JSON proposal exists; current functions implement V1.",
+      "required_proof": "Separate version-bound evaluators over approved measurements; six/quarter observation and signed-domain tests; no V1 in-place edits.",
+      "shadow_requirement": "First isolated shadow implementation must include deterministic core/component contracts and tests; no production wiring."
+    },
+    {
+      "blocker_id": "B03",
+      "topic": "Fail-closed score adapter",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_SCORING",
+      "evidence": "Readiness and economic verdict are separate; no V2 score adapter exists.",
+      "required_proof": "Exhaustive state schema and versioned adapter; ineligible/conflicted/missing/policy-blocked values yield no contribution and incomplete required score.",
+      "shadow_requirement": "Must be closed before any shadow score is calculated; unscored descriptive shadow may proceed without calling scoring."
+    },
+    {
+      "blocker_id": "B04",
+      "topic": "Unknown-state positive-default removal on the V2 path",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_DOWNSTREAM",
+      "evidence": "app/scoring/engine.py uses state_scores.get(result, Decimal('5')); PARTIAL is also mapped to 5.",
+      "required_proof": "Explicit dispatch with fail-closed unknown state; no V2 route to the V1 default. Preserve V1 replay. Prove unknown, POLICY_BLOCKED, INSUFFICIENT_DATA and EVIDENCE_CONFLICTED never contribute positively.",
+      "shadow_requirement": "Before any V2 score/thesis/consumer integration; isolate initial unscored shadow from legacy mapping."
+    },
+    {
+      "blocker_id": "B05",
+      "topic": "Higher-order rule adapters",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_SYNTHESIS",
+      "evidence": "Rules 31 and 34 consume upstream result labels through finite risk/state checks.",
+      "required_proof": "Version-bound accepted state vocabulary; unknown/partial sources cannot become supportive; exact source coverage preserved.",
+      "shadow_requirement": "Required before higher-order shadow synthesis; isolated six-rule measurements stay disconnected."
+    },
+    {
+      "blocker_id": "B06",
+      "topic": "Thesis synthesis compatibility",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_SYNTHESIS",
+      "evidence": "Rule 33 checks required 16/17/18/19/23 presence and a finite weak list.",
+      "required_proof": "No positive-by-absence-of-weak-label behavior; incomplete core and coverage remain incomplete through thesis synthesis.",
+      "shadow_requirement": "Required before any V2 thesis output; no thesis projection in first shadow slice."
+    },
+    {
+      "blocker_id": "B07",
+      "topic": "Portfolio and Brain version propagation",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_CONSUMER_INTEGRATION",
+      "evidence": "Portfolio rehydration and Brain/holding evidence carry registry-dependent diagnostics.",
+      "required_proof": "Exact immutable strategy/registry/policy identity propagation, PIT alignment and no mutation of existing V1 receipts; portfolio action remains outside authority.",
+      "shadow_requirement": "Required before Brain/portfolio integration; isolated research output has no portfolio dependency."
+    },
+    {
+      "blocker_id": "B08",
+      "topic": "Six Gates compatibility",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_GATE_INTEGRATION",
+      "evidence": "Gates reference canonical scorecard ID and registry version.",
+      "required_proof": "Compatible approved scorecard/evidence binding; incomplete or unknown state cannot satisfy a gate; evidence-only boundary and thresholds unchanged.",
+      "shadow_requirement": "Required before any shadow gate computation; no gates in initial shadow."
+    },
+    {
+      "blocker_id": "B09",
+      "topic": "Versioned horizon-policy reference",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_RUNTIME",
+      "evidence": "Frozen horizon artifact is CANDIDATE_NOT_ACTIVE and references V1.",
+      "required_proof": "Explicit V2-compatible horizon/applicability version with entity branch awareness; no automatic activation or timeframe change.",
+      "shadow_requirement": "Initial isolated shadow reports no horizon applicability; required before horizon-aware execution."
+    },
+    {
+      "blocker_id": "B10",
+      "topic": "Exact entity-classification contract compatibility",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_INTERPRETATION",
+      "evidence": "An existing PIT classification receipt exists; six-rule V2 binding/validation is not implemented.",
+      "required_proof": "Reuse existing exact PIT classifier; unknown/conflict/missing never default to NON_FINANCIAL; statement scope and regulatory branch checked.",
+      "shadow_requirement": "Required for standard-branch shadow measurements; missing classification yields POLICY_BLOCKED using current evidence only."
+    },
+    {
+      "blocker_id": "B11",
+      "topic": "BANK policy",
+      "classification": "DEFERRED_NOT_REQUIRED_FOR_SHADOW",
+      "resolution": "OPEN",
+      "activation_scope": "BANK_BRANCH_ONLY",
+      "evidence": "Bank-native return/leverage/valuation/margin contracts are not approved.",
+      "required_proof": "Separate bank policy/data/measurement approval and evidence; no industrial ROCE override.",
+      "shadow_requirement": "May remain open only while all BANK cells remain POLICY_BLOCKED; not required for NON_FINANCIAL-only shadow."
+    },
+    {
+      "blocker_id": "B12",
+      "topic": "NBFC policy",
+      "classification": "DEFERRED_NOT_REQUIRED_FOR_SHADOW",
+      "resolution": "OPEN",
+      "activation_scope": "NBFC_BRANCH_ONLY",
+      "evidence": "NBFC funding and return semantics require their own policy.",
+      "required_proof": "Separate NBFC approval with finance-cost/debt/equity and valuation basis.",
+      "shadow_requirement": "May remain open only while all NBFC cells remain POLICY_BLOCKED."
+    },
+    {
+      "blocker_id": "B13",
+      "topic": "INSURER policy",
+      "classification": "DEFERRED_NOT_REQUIRED_FOR_SHADOW",
+      "resolution": "OPEN",
+      "activation_scope": "INSURER_BRANCH_ONLY",
+      "evidence": "Policyholder/shareholder and solvency frameworks require their own policy.",
+      "required_proof": "Separate insurer reporting/solvency/valuation approval and evidence.",
+      "shadow_requirement": "May remain open only while all INSURER cells remain POLICY_BLOCKED."
+    },
+    {
+      "blocker_id": "B14",
+      "topic": "Outcome and calibration compatibility",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_ECONOMIC_CLASSIFICATION",
+      "evidence": "V1 thresholds/score mappings were built for different component semantics.",
+      "required_proof": "Versioned descriptive/economic outcome schema; no inherited growth/margin/healthy/valuation thresholds; comparative V1/V2 shadow evidence, no performance claim.",
+      "shadow_requirement": "Descriptive unscored measurement shadow may proceed; any economic classification or score requires approved calibration policy."
+    },
+    {
+      "blocker_id": "B15",
+      "topic": "Replay and backward compatibility",
+      "classification": "BLOCKING",
+      "resolution": "OPEN",
+      "activation_scope": "ALL_V2_RUNTIME",
+      "evidence": "V1 registry/strategy include declared unversioned dependencies; exact old source must remain reproducible.",
+      "required_proof": "Retain V1 strategy/registry/policy/source artifacts; replay V1 unchanged; V2 replay explicitly requested and separately identified; no historical relabelling.",
+      "shadow_requirement": "Required before any persisted/production replay; isolated tests must prove no V1 mutation and deterministic lineage."
+    }
+  ],
+  "activation_gate": {
+    "active": false,
+    "all_blockers_resolved": false,
+    "open_blocking_count": 12,
+    "open_scoped_deferred_count": 3,
+    "rule": "No V2 activation while any applicable activation-critical blocker is open. Deferred BANK/NBFC/INSURER policies never permit those branches; their cells stay blocked even after other blockers close.",
+    "deferred_does_not_mean_resolved": true
+  },
+  "scope_for_next_shadow": {
+    "scope": "Isolated deterministic descriptive components using existing canonical PIT evidence and fixtures; no runtime registry, score, thesis, gate, portfolio, API/UI or persistence integration.",
+    "reuse_existing_contracts": true,
+    "missing_evidence": "Remain POLICY_BLOCKED/INSUFFICIENT_DATA/EVIDENCE_CONFLICTED as appropriate; do not invent debt, EBIT, forecasts or entity type.",
+    "calibration_required_for_scoring": true,
+    "material_acquisition_required_to_start": false,
+    "positive_strategy_or_trading_authority": false,
+    "next_slice_started": false
+  },
+  "source_basis": [
+    {
+      "source_id": "ACCEPTED_RESEARCH",
+      "path": "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_POLICY_UNRESOLVED_V1.md",
+      "authority": "Accepted research receipt; recommendations are not runtime approval",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "V1_COMPARABILITY",
+      "path": "docs/architecture/CANONICAL_FINANCIAL_DIAGNOSTIC_INPUT_COMPARABILITY_CLOSURE_V1.md",
+      "authority": "Existing V1 behavior and input certification",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "MCA_SCHEDULE_III",
+      "url": "https://www.mca.gov.in/Ministry/pdf/ScheduleIIIAmendmentNotification_24032021.pdf",
+      "authority": "Statutory disclosures and issuer numerator/denominator explanations",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "MCA_IND_AS_1",
+      "url": "https://www.mca.gov.in/Ministry/pdf/Ind_AS1.pdf",
+      "authority": "Financial-statement presentation; does not approve HSI formulas or cutoffs",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "ICAI_GUIDANCE",
+      "url": "https://kb.icai.org/pdfs/PDFFile5b27857548bee2.71295102.pdf",
+      "authority": "Presentation context; accepted receipt",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "SEBI_RATIO_EXAMPLE",
+      "url": "https://www.sebi.gov.in/sebi_data/attachdocs/sep-2024/1727675578109.pdf",
+      "authority": "Official issuer ratio definitions; example, not universal formula",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "RBI_BANK",
+      "url": "https://systemhealth.rbi.org.in/Scripts/BS_ViewMasDirections.aspx_id%3D12158%281%29.html",
+      "authority": "Bank reporting applicability; accepted receipt",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "RBI_NBFC",
+      "url": "https://rbi.org.in/Scripts/NotificationUser.aspx?Id=12292",
+      "authority": "NBFC reporting context; accepted receipt",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "IRDAI",
+      "url": "https://irdai.gov.in/document-detail?documentId=374643",
+      "authority": "Insurance reporting framework; accepted receipt",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "NSE_FILING",
+      "url": "https://nsearchives.nseindia.com/corporate/ixbrl/INTEGRATED_FILING_INDAS_152826_24042026225714_iXBRL_WEB.html",
+      "authority": "Official issuer filing structure; accepted receipt",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    },
+    {
+      "source_id": "BSE_STRUCTURE",
+      "path": "app/fundamentals/bse_official.py",
+      "authority": "Existing official BSE XBRL ingestion/source-lineage structure; no ingestion change",
+      "reuse": "Accepted proposal/research source; no new provider or acquisition review."
+    }
+  ],
+  "preserved_invariants": {
+    "ONE_CANONICAL_61_DIAGNOSTIC_REGISTRY": true,
+    "SEPARATE_TECHNICAL_BRAIN": false,
+    "V1_ACTIVE": true,
+    "V2_ACTIVE": false,
+    "NO_SILENT_REGISTRY_REWRITE": true,
+    "NO_SYNTHETIC_REPORTED_FACTS": true,
+    "UNKNOWN_V2_STATE_MUST_NEVER_DEFAULT_POSITIVE": true,
+    "NO_V2_RESULT_MAY_BECOME_SUPPORTIVE_BY_UNKNOWN_STATE_FALLTHROUGH": true,
+    "AI_DECISION_AUTHORITY": false,
+    "HSI_DATA_BUILD_VS_BUY_PRINCIPLE_V1": "FROZEN",
+    "DATA_BUILD_VS_BUY_AUDIT_V1": "MANDATORY_BEFORE_MATERIAL_FINANCIAL_ACQUISITION",
+    "HSI_EFFICIENT_VALIDATION_EXECUTION_POLICY_V1": "ACTIVE"
+  },
+  "next_continuation": "FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_SHADOW_IMPLEMENTATION_V1",
+  "fingerprint_scheme": "sha256:utf8:canonical-json-v1:exclude-approval_fingerprint",
+  "approval_fingerprint": "sha256:316936ca62d8b10accae8034f7e00ea7c5b17bcface796d3b9d79dd30c641013"
+}
