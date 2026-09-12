@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 from datetime import datetime
 from decimal import Decimal
+from app.diagnostics.brain_lineage import require_production_evidence
 
 from app.gates.engine import ExchangeCalendar
 from .models import (
@@ -24,6 +25,8 @@ class PortfolioEngine:
     def reconstruct(self, *, portfolio: Portfolio, as_of_timestamp: datetime, initial_cash: CashPosition,
                     transactions: tuple[PortfolioTransaction, ...], actions: tuple[CorporateAction, ...],
                     prices: tuple[PriceReference, ...], analytics: tuple[HoldingAnalytics, ...]) -> PortfolioSnapshot:
+        for item in analytics:
+            require_production_evidence(item)
         if initial_cash.as_of_timestamp > as_of_timestamp:
             raise ValueError("Initial cash cannot be known after the requested portfolio snapshot.")
         ledger = tuple(sorted((x for x in transactions if x.portfolio_id == portfolio.portfolio_id and x.effective_at <= as_of_timestamp and x.known_at <= as_of_timestamp), key=lambda x: (x.effective_at, x.transaction_id)))

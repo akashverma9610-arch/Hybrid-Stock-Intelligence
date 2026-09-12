@@ -1,0 +1,1143 @@
+{
+  "B07": "CLOSED_FOR_SHADOW_PROPAGATION",
+  "B07_activation": "STILL_BLOCKING_ACTIVATION",
+  "as_of": "2026-08-31T18:21:20.437011+00:00",
+  "audit_version": "fundamental-v2-brain-portfolio-proof/v1",
+  "baseline_commit": "01593df3d89c57d982f67b25bf8819281474d9ff",
+  "comparisons": [
+    {
+      "brain_evidence_status": "UNAVAILABLE",
+      "comparison": {
+        "as_of": "2026-08-31T18:21:20.437011+00:00",
+        "canonical_instrument_id": "NSE:INE068V01023",
+        "contract_version": "fundamental-brain-portfolio-lineage/v1",
+        "execution_eligible": false,
+        "fingerprint": "sha256:774d6bb80a3fb99e52a04bbb878c18885a65c46c76c0034c1c80cab512b5e66f",
+        "observations": [
+          [
+            16,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_CAGR",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            17,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "ISSUER_REPORTED_ROE_ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROE",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            19,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "INTEREST_COVERAGE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_DEBT",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            25,
+            "REPORTED",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            26,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "GROSS_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_EBITDA_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_PROFIT_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "OPERATING_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PBT_MARGIN",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "POLICY_BLOCKED_THRESHOLD_NOT_APPROVED",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            29,
+            "EXPENSIVE",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EV_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "FORWARD_PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PB",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PEG",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ]
+        ],
+        "portfolio_action_eligible": false,
+        "purpose": "OBSERVATIONAL_RESEARCH_ONLY",
+        "score_eligible": false,
+        "v1_evidence_fingerprint": "sha256:861c885c9d22fbd1d9ff2b94604290a2797d3920e3f4369f3cdea18683f11d04",
+        "v1_production_blocker": "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE",
+        "v1_production_fingerprint": null,
+        "v1_reference_fingerprint": "sha256:c02c61a456d394ace5531f89b079564388c08e2f28dd6f832cc7783d2e9c490f",
+        "v1_registry": "diagnostic-registry-v1",
+        "v2_evidence_fingerprint": "sha256:a09a7052ae174413a2595069efcb1c3142ee431372e22633c578262ae892069b",
+        "v2_reference_fingerprint": "sha256:cbbcb3dc5f5a0c981ad73f57c1af8aca4f8dce26931544249237f7a07743c4ef",
+        "v2_registry": "diagnostic-registry-v2-proposed"
+      },
+      "portfolio_observation_fingerprint": "sha256:fa06ae6ff5c9bc553165e7a81847fa89e67438248f822017d276105657581305",
+      "price_state": "CERTIFIED_PRICE_NOT_VISIBLE_AT_CUTOFF",
+      "rejections": {
+        "cross_version": "CROSS_REGISTRY_BRAIN_CONSUMPTION_FORBIDDEN",
+        "harvest": "PROFIT_HARVESTING_ASSURANCE_REQUIRED",
+        "portfolio": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "rotation": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "sell": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "six_gates": "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN"
+      },
+      "v1_boundary_unchanged": true,
+      "v1_holding_composition_unchanged": null,
+      "v1_preexisting_failure": [
+        "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE",
+        "RESEARCH_METRIC_DIRECTIONALITY_EXACT_RULE_REQUIRED"
+      ]
+    },
+    {
+      "brain_evidence_status": "PARTIAL",
+      "comparison": {
+        "as_of": "2026-08-31T18:21:20.437011+00:00",
+        "canonical_instrument_id": "NSE:INE090A01021",
+        "contract_version": "fundamental-brain-portfolio-lineage/v1",
+        "execution_eligible": false,
+        "fingerprint": "sha256:a10ca40b378bf312148662d36ae539e1f1ce4fac638da456476332d128144ca9",
+        "observations": [
+          [
+            16,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_CAGR",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            17,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "ISSUER_REPORTED_ROE_ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROE",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            19,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "INTEREST_COVERAGE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_DEBT",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            25,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            26,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "GROSS_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_EBITDA_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_PROFIT_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "OPERATING_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PBT_MARGIN",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "POLICY_BLOCKED_THRESHOLD_NOT_APPROVED",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            29,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EV_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "FORWARD_PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PB",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PEG",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ]
+        ],
+        "portfolio_action_eligible": false,
+        "purpose": "OBSERVATIONAL_RESEARCH_ONLY",
+        "score_eligible": false,
+        "v1_evidence_fingerprint": "sha256:64042dec97d878b299fd76a0740294307f5b998933ea3af23ecf1798d6c0d949",
+        "v1_production_blocker": null,
+        "v1_production_fingerprint": "5b446d99bce6bf1bfe8e2c628d3d9a4bfd78ec638cb436c4f08e46ec08576efc",
+        "v1_reference_fingerprint": "sha256:97bfd8677d838733e7e29e1fd8755b13ed7a3daf6695757f05e6517da3025700",
+        "v1_registry": "diagnostic-registry-v1",
+        "v2_evidence_fingerprint": "sha256:3a9f748f43a1459092fe0a4c4c8360cd35ac9683f77a040e77086b485a659044",
+        "v2_reference_fingerprint": "sha256:41b9182cb11811008e3547d91352ae4950ca44e261d0b9cc366e89bc4031387e",
+        "v2_registry": "diagnostic-registry-v2-proposed"
+      },
+      "portfolio_observation_fingerprint": "sha256:a75b47e3100aa6092502ce09ee05ea789585471642e3bb162938fe6ca01039f6",
+      "price_state": "CERTIFIED_PRICE_NOT_VISIBLE_AT_CUTOFF",
+      "rejections": {
+        "cross_version": "CROSS_REGISTRY_BRAIN_CONSUMPTION_FORBIDDEN",
+        "harvest": "PROFIT_HARVESTING_ASSURANCE_REQUIRED",
+        "portfolio": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "rotation": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "sell": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "six_gates": "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN"
+      },
+      "v1_boundary_unchanged": true,
+      "v1_holding_composition_unchanged": true,
+      "v1_preexisting_failure": null
+    },
+    {
+      "brain_evidence_status": "PARTIAL",
+      "comparison": {
+        "as_of": "2026-08-31T18:21:20.437011+00:00",
+        "canonical_instrument_id": "NSE:INE0FHS01024",
+        "contract_version": "fundamental-brain-portfolio-lineage/v1",
+        "execution_eligible": false,
+        "fingerprint": "sha256:b79499ebdc7828d63b88c0bf07f6b8f442e64f9f7e7b2ec5dfce5606fb57a0ca",
+        "observations": [
+          [
+            16,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_CAGR",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            17,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "ISSUER_REPORTED_ROE_ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROE",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            19,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "INTEREST_COVERAGE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_DEBT",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            25,
+            "REPORTED",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            26,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "GROSS_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_EBITDA_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_PROFIT_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "OPERATING_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PBT_MARGIN",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "POLICY_BLOCKED_THRESHOLD_NOT_APPROVED",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            29,
+            "REASONABLE",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EV_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "FORWARD_PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PB",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PEG",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ]
+        ],
+        "portfolio_action_eligible": false,
+        "purpose": "OBSERVATIONAL_RESEARCH_ONLY",
+        "score_eligible": false,
+        "v1_evidence_fingerprint": "sha256:9baf79eb71aab200c66ab37bb7a73d203a3be67d297f555a7aef6faf3f686498",
+        "v1_production_blocker": null,
+        "v1_production_fingerprint": "5d250293f6feb2c9c577d1f8568f9911fe38e8763a21cec1d916ed120bd8b43a",
+        "v1_reference_fingerprint": "sha256:690be52000803cf025660fd5f6248a7834ef56b069d1b2902ce4c19eb611f99d",
+        "v1_registry": "diagnostic-registry-v1",
+        "v2_evidence_fingerprint": "sha256:592e36d6f0a87e3d4993c70b3d97f10d98ac49369fb5733ee798da23cffdf3e8",
+        "v2_reference_fingerprint": "sha256:ffef2696ef404955c611f6f836c5dae30b604591b525d1883abb00b305562f6d",
+        "v2_registry": "diagnostic-registry-v2-proposed"
+      },
+      "portfolio_observation_fingerprint": "sha256:4b62ed4370a71e6bb85ca895b382fdbfd0ab891ef553054e6857b6f217075954",
+      "price_state": "CERTIFIED_PRICE_NOT_VISIBLE_AT_CUTOFF",
+      "rejections": {
+        "cross_version": "CROSS_REGISTRY_BRAIN_CONSUMPTION_FORBIDDEN",
+        "harvest": "PROFIT_HARVESTING_ASSURANCE_REQUIRED",
+        "portfolio": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "rotation": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "sell": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "six_gates": "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN"
+      },
+      "v1_boundary_unchanged": true,
+      "v1_holding_composition_unchanged": true,
+      "v1_preexisting_failure": null
+    },
+    {
+      "brain_evidence_status": "UNAVAILABLE",
+      "comparison": {
+        "as_of": "2026-08-31T18:21:20.437011+00:00",
+        "canonical_instrument_id": "NSE:INE372A01015",
+        "contract_version": "fundamental-brain-portfolio-lineage/v1",
+        "execution_eligible": false,
+        "fingerprint": "sha256:f7a3dcf6a46a3c873d80cf5dbe095d6df38aca7a2b93899220e02271f833e1bf",
+        "observations": [
+          [
+            16,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_CAGR",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            17,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "ISSUER_REPORTED_ROE_ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROE",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            19,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "INTEREST_COVERAGE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_DEBT",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            25,
+            "REPORTED",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            26,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "GROSS_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_EBITDA_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_PROFIT_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "OPERATING_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PBT_MARGIN",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "POLICY_BLOCKED_THRESHOLD_NOT_APPROVED",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            29,
+            "EXPENSIVE",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EV_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "FORWARD_PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PB",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PEG",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ]
+        ],
+        "portfolio_action_eligible": false,
+        "purpose": "OBSERVATIONAL_RESEARCH_ONLY",
+        "score_eligible": false,
+        "v1_evidence_fingerprint": "sha256:d74278e53414a314231464cfa5f26ab84e27afc840d3d3b487e2ab893180433a",
+        "v1_production_blocker": "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE",
+        "v1_production_fingerprint": null,
+        "v1_reference_fingerprint": "sha256:57128bc06927fe5e792ec79d3b979276144b9f86dc5eb653d7573f9c2b16abf1",
+        "v1_registry": "diagnostic-registry-v1",
+        "v2_evidence_fingerprint": "sha256:e92365c0e480c8f13700d1002d769f6aab5f29679d1789026297d9f08389c689",
+        "v2_reference_fingerprint": "sha256:4c92e40408a8248ca151843da55165fa10bb2c2706f9ef36b34aa4668a92160f",
+        "v2_registry": "diagnostic-registry-v2-proposed"
+      },
+      "portfolio_observation_fingerprint": "sha256:d1830ee2571835ab640169fa4a9a8679c6f64314dd51439fad8b1848c0c9a397",
+      "price_state": "CERTIFIED_PRICE_NOT_VISIBLE_AT_CUTOFF",
+      "rejections": {
+        "cross_version": "CROSS_REGISTRY_BRAIN_CONSUMPTION_FORBIDDEN",
+        "harvest": "PROFIT_HARVESTING_ASSURANCE_REQUIRED",
+        "portfolio": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "rotation": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "sell": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "six_gates": "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN"
+      },
+      "v1_boundary_unchanged": true,
+      "v1_holding_composition_unchanged": null,
+      "v1_preexisting_failure": [
+        "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE",
+        "RESEARCH_METRIC_DIRECTIONALITY_EXACT_RULE_REQUIRED"
+      ]
+    },
+    {
+      "brain_evidence_status": "UNAVAILABLE",
+      "comparison": {
+        "as_of": "2026-08-31T18:21:20.437011+00:00",
+        "canonical_instrument_id": "NSE:INE955D01029",
+        "contract_version": "fundamental-brain-portfolio-lineage/v1",
+        "execution_eligible": false,
+        "fingerprint": "sha256:1a229f3f222b9eae29d32ef4c686aa23221c4a8fa7bb3d171e3838fb7d192fee",
+        "observations": [
+          [
+            16,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_CAGR",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_CAGR",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            17,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "ISSUER_REPORTED_ROE_ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROCE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ROE",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            19,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "INTEREST_COVERAGE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_DEBT_EQUITY",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_DEBT",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            25,
+            "REPORTED",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EPS_BASIC_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "HSI_STANDARDIZED_OPERATING_EARNINGS",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_REPORTED_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PAT_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "REVENUE_YOY_QOQ",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            26,
+            "INSUFFICIENT_DATA",
+            "POLICY_BLOCKED",
+            [
+              [
+                "GROSS_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "ISSUER_EBITDA_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "NET_PROFIT_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "OPERATING_MARGIN",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PBT_MARGIN",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "POLICY_BLOCKED_THRESHOLD_NOT_APPROVED",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ],
+          [
+            29,
+            "REASONABLE",
+            "POLICY_BLOCKED",
+            [
+              [
+                "EV_EBITDA",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "FORWARD_PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PB",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PE",
+                "POLICY_BLOCKED"
+              ],
+              [
+                "PEG",
+                "POLICY_BLOCKED"
+              ]
+            ],
+            [
+              "ECONOMIC_CLASSIFICATION_POLICY_NOT_APPROVED",
+              "ENTITY_BRANCH_POLICY_BLOCKED:UNKNOWN_NON_COMPARABLE",
+              "REGULATOR_LINKAGE_UNAVAILABLE",
+              "TAXONOMY_EVIDENCE_UNAVAILABLE"
+            ]
+          ]
+        ],
+        "portfolio_action_eligible": false,
+        "purpose": "OBSERVATIONAL_RESEARCH_ONLY",
+        "score_eligible": false,
+        "v1_evidence_fingerprint": "sha256:12232f662872b7dff7fabc266665ca2e15f73371a63be4d7e791b398e311cb07",
+        "v1_production_blocker": "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE",
+        "v1_production_fingerprint": null,
+        "v1_reference_fingerprint": "sha256:109500145bc7ff3b48da94613222eba55cb881442a0e4b311fb82da4fbef63c1",
+        "v1_registry": "diagnostic-registry-v1",
+        "v2_evidence_fingerprint": "sha256:d05faabf5ad41b8e377ef73736ae593de04dfe06c3b090f919d8ccec3bf0fd6e",
+        "v2_reference_fingerprint": "sha256:1cd7a9181c6058b2674d836f180efe15cd7ce7a8d781112870098ef8a6564ca9",
+        "v2_registry": "diagnostic-registry-v2-proposed"
+      },
+      "portfolio_observation_fingerprint": "sha256:8f2e78c0422119e1193675d402f633ad45ef8476c6ffbf25b4f2170a60bb1ad8",
+      "price_state": "CERTIFIED_PRICE_NOT_VISIBLE_AT_CUTOFF",
+      "rejections": {
+        "cross_version": "CROSS_REGISTRY_BRAIN_CONSUMPTION_FORBIDDEN",
+        "harvest": "PROFIT_HARVESTING_ASSURANCE_REQUIRED",
+        "portfolio": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "rotation": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "sell": "CROSS_REGISTRY_PORTFOLIO_CONSUMPTION_FORBIDDEN",
+        "six_gates": "V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN"
+      },
+      "v1_boundary_unchanged": true,
+      "v1_holding_composition_unchanged": null,
+      "v1_preexisting_failure": [
+        "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE",
+        "RESEARCH_METRIC_DIRECTIONALITY_EXACT_RULE_REQUIRED"
+      ]
+    }
+  ],
+  "execution_eligible": false,
+  "fingerprint": "sha256:0c47e872586b94cd7a0fbaf8e2f03b74a3eeb4a37a1d228e5bf20107b2cf23e8",
+  "next_continuation": "FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_V1",
+  "portfolio_action_eligible": false,
+  "portfolio_snapshot_fingerprint": "sha256:b1ea52e6b4b068ab2a7f580f43e77e226225b94d454249c7ad406952a5f77a1d",
+  "portfolio_unchanged": true,
+  "production_action_evaluations": 0,
+  "provider_calls": 0,
+  "replay": "PASS",
+  "score_eligible": false,
+  "source_fingerprint": "sha256:18d3eb596948570b5426d72db230d363247c3367d9c8c71f11b4433caa764a12",
+  "source_scope": "EXACT_STORED_61_CUTOFF; STORED_FINANCIAL_AND_DIAGNOSTIC_BRAIN_INPUTS_ONLY; OTHER_DOMAINS_UNAVAILABLE",
+  "v1_active": true,
+  "v2_active": false,
+  "writes": 0
+}

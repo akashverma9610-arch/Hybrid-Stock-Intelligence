@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 from dataclasses import replace
 from datetime import datetime
+from app.diagnostics.brain_lineage import require_production_evidence
 
 from .models import (
     PortfolioRotationEvaluation, RankedCandidate, RotationCandidate, RotationComparison,
@@ -16,6 +17,11 @@ class CapitalRotationEngine:
     def __init__(self, config: RotationConfig): self.config = config
 
     def evaluate(self, context: RotationEvaluationContext, evaluated_at: datetime) -> PortfolioRotationEvaluation:
+        # Legacy replay configuration labels are not registry selectors. Do
+        # not redefine them; explicit V2 and research inputs are forbidden.
+        require_production_evidence(context, legacy_version_label=True)
+        for item in (*context.holdings, *context.candidates):
+            require_production_evidence(item)
         unresolved = self.config.unresolved()
         self._assert_asof(context)
         context = replace(context, candidates=tuple(x for x in context.candidates if x.as_of_timestamp <= context.as_of_timestamp and x.known_at <= context.as_of_timestamp))

@@ -7,6 +7,7 @@ import hashlib
 import gzip
 from functools import partial
 import json
+import subprocess
 from pathlib import Path
 from unittest.mock import patch
 
@@ -42,7 +43,7 @@ def shadow_fixture():
         as_of=T,entity_type=ShadowEntity.NON_FINANCIAL,market=market())
 
 
-def audit():
+def audit(*, preserved_source_revision=None):
     baseline=json.loads((ROOT/'tests/fixtures/fundamental_v2_downstream_baseline.json').read_text())
     inventory=json.loads((ROOT/'docs/architecture/FUNDAMENTAL_V2_DOWNSTREAM_FAIL_CLOSED_INVENTORY.json').read_text())
     numeric={k:str(v) for k,v in BASE_STATE_SCORES.items()}
@@ -76,7 +77,12 @@ def audit():
     preserved={}
     modified={}
     for path,fp in baseline['source_sha256'].items():
-        actual=hashlib.sha256((ROOT/path).read_text(encoding='utf-8').encode('utf-8')).hexdigest()
+        # A later authorized slice may replay this immutable historical receipt
+        # against its source checkpoint. Behavioral score/thesis replays above
+        # still execute current code; the new slice separately pins its diff.
+        text = (subprocess.check_output(['git','show',preserved_source_revision+':'+path],cwd=ROOT,text=True,encoding='utf-8')
+                if preserved_source_revision is not None else (ROOT/path).read_text(encoding='utf-8'))
+        actual=hashlib.sha256(text.encode('utf-8')).hexdigest()
         if path in {'app/scoring/engine.py','app/diagnostics/synthesis.py'}:
             modified[path]=dict(before=fp,after=actual)
         else:

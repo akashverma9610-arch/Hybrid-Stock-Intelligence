@@ -1,0 +1,210 @@
+{
+  "schema_version": "fundamental-v2-brain-portfolio-inventory/v1",
+  "baseline_commit": "01593df3d89c57d982f67b25bf8819281474d9ff",
+  "columns": [
+    "path",
+    "boundary",
+    "input_type",
+    "existing_lineage",
+    "selection",
+    "repair_or_preservation",
+    "action_influence"
+  ],
+  "sites": [
+    [
+      "app/intelligence/research_diagnostic_evidence.py",
+      "ResearchDiagnosticEvidenceAdapter.artifacts",
+      "DiagnosticResult",
+      "strategy_version, canonical fingerprints (canonical only); registry absent",
+      "latest PIT bundle among source-provided strategy/as-of keys",
+      "V1 assumption; reject non-record before eligibility; no cross-registry fallback",
+      "Research diagnostic availability -> Unified State -> Brain"
+    ],
+    [
+      "app/intelligence/shared_brain_application.py",
+      "StoredSharedBrainEvidenceAssembler / SharedBrainApplicationService.analyze_stock",
+      "Stored artifacts, canonical financial bundle",
+      "as_of; snapshot/unified/research/materiality fingerprints; no diagnostic registry field",
+      "explicit as_of or existing clock; exact resolver",
+      "legacy view unchanged; separate explicit lineage method only",
+      "shared output feeds holding composition"
+    ],
+    [
+      "app/intelligence/shared_brain_production.py",
+      "build_shared_brain_production_snapshot",
+      "UnifiedIntelligenceState, financial bundle",
+      "policy identities/as_of/fingerprints; Brain Research State V2 is NOT Diagnostic Registry V2",
+      "no registry resolver",
+      "unchanged typed existing assembly",
+      "financial semantic context only"
+    ],
+    [
+      "app/intelligence/unified_state_builder.py",
+      "UnifiedIntelligenceStateBuilder.build",
+      "StoredIntelligenceArtifact",
+      "as_of/available_at/fingerprint, no diagnostic version field",
+      "PIT-sorted source artifacts",
+      "unchanged; new shadow wrapper is not StoredIntelligenceArtifact",
+      "domain availability"
+    ],
+    [
+      "app/portfolio/canonical_diagnostics_orchestration.py",
+      "rehydrate_persisted_canonical_diagnostics / _run_holding",
+      "DiagnosticResult",
+      "strategy/canonical result fingerprint; transient registry stamped V1",
+      "exact strategy/as-of in caller; future exclusion",
+      "reject non-record/canonical lineage mismatch before stamping V1",
+      "composition -> sell decision; orchestration can persist but will not be run"
+    ],
+    [
+      "app/portfolio/holding_intelligence.py",
+      "compose_holding_intelligence",
+      "legacy Brain view, EvaluatedDiagnostic",
+      "brain/context/policy fingerprints; diagnostic IDs; hardcoded V1 context",
+      "as-of filter; no latest registry",
+      "reject explicit shadow/foreign registry before attribute projection",
+      "Trading/Investment/Rule46 -> HoldingAnalytics"
+    ],
+    [
+      "app/portfolio/sell_side_runtime.py",
+      "evaluate_portfolio_sell_side_action / audit.persist",
+      "PortfolioSellSideInput",
+      "brain fingerprint; policy version/fingerprint; diagnostic registry not explicit",
+      "exact intelligence/snapshot checks",
+      "research objects rejected; existing action policy unchanged",
+      "HOLD/EXIT_TO_CASH/ROTATE/REVIEW_REQUIRED/NO_ACTION; no production evaluation here"
+    ],
+    [
+      "app/rotation/engine.py",
+      "CapitalRotationEngine.evaluate",
+      "RotationEvaluationContext, holdings, candidates",
+      "scorecard/gate references/as_of; no registry field",
+      "PIT candidates; current comparable context",
+      "reject shadow at input boundary; unchanged ranking/friction/hurdles",
+      "rotation classification and ranking"
+    ],
+    [
+      "app/portfolio/engine.py",
+      "PortfolioEngine.reconstruct / _holding",
+      "HoldingAnalytics, ledger, cash, prices",
+      "strategy/as_of/known_at/diagnostic IDs; no registry field",
+      "latest PIT analytics within same legacy input",
+      "shadow analytics rejected before ledger computation; no reconstruction in production proof",
+      "snapshot heat/risk/allocation derived from actual ledger"
+    ],
+    [
+      "app/gates/engine.py",
+      "ExecutionGateEngine.evaluate",
+      "GateInput plus registry_version argument",
+      "registry/strategy/scoring config/as_of/evidence/diagnostic IDs",
+      "exact input snapshot; no lookup",
+      "reject shadow object/known V2 before six policies; B08 still open",
+      "six analytical gate statuses"
+    ],
+    [
+      "app/portfolio/canonical_six_gates_activation.py",
+      "CanonicalPortfolioSixGatesActivator._materialize_one",
+      "canonical score store, GateInput",
+      "score registry/strategy/as_of/fingerprint forwarded",
+      "max PIT stored score; no new V2 persistence",
+      "inspected only; downstream type guard; B08 version-aware persistence remains deferred",
+      "can store gate evaluations; not executed"
+    ],
+    [
+      "app/portfolio/canonical_decision_score_activation.py",
+      "CanonicalPortfolioDecisionScoreActivator",
+      "exact canonical definition, persisted diagnostics",
+      "fixed V1 registry; strategy/semantic fingerprint",
+      "latest common exact-strategy diagnostic cutoff",
+      "shared rehydration guard prevents shadow; B03 unchanged",
+      "score artifact consumed by gates/Brain"
+    ],
+    [
+      "app/portfolio/canonical_decision_score.py",
+      "CanonicalDecisionScorecard",
+      "ScoredStock",
+      "registry/strategy/policy/source fingerprints retained",
+      "none",
+      "unchanged",
+      "canonical score persistence"
+    ],
+    [
+      "app/portfolio_analysis/service.py",
+      "PortfolioAnalysisJobService",
+      "PortfolioSnapshot / existing canonical runner",
+      "snapshot id/as_of; job revision, no registry lineage",
+      "latest requested snapshot/job revision",
+      "unchanged; no job run",
+      "orchestration may write; not used in proof"
+    ],
+    [
+      "app/real_brain/service.py",
+      "RealBrainTrialService",
+      "canonical stored assembler/runner",
+      "V1 registry explicitly passed; score/result IDs",
+      "bounded cohort; clock only run receipts",
+      "unchanged; not executed (writes results)",
+      "stored trial score and coverage"
+    ],
+    [
+      "app/intelligence/long_term_thesis_review.py",
+      "DeepAnalysisDossierCandidate",
+      "typed dossier reference/diagnostic lineage",
+      "source policy/as_of/available_at/fingerprints; not fundamental registry resolver",
+      "explicit PIT context",
+      "unchanged; no second dossier",
+      "Watch-only readiness"
+    ],
+    [
+      "app/intelligence/profit_harvesting_review.py",
+      "evaluate_profit_harvesting_review",
+      "MarketExtremesAssuranceProjection",
+      "assurance/policy/version/as_of/fingerprints",
+      "explicit typed assurance",
+      "existing nominal type check already rejects new wrapper",
+      "MONITOR_PROFIT etc; no portfolio authority"
+    ],
+    [
+      "app/intelligence/sell_risk_review_policy.py",
+      "Sell/Risk review evaluator",
+      "typed canonical adverse event and Rule46 evidence",
+      "canonical evidence fingerprints/PIT/policy",
+      "no diagnostic version resolver",
+      "no wiring from new research wrapper; unchanged",
+      "descriptive review only"
+    ],
+    [
+      "app/intelligence/fast_rotation_comparison_assurance.py",
+      "assess_fast_rotation_comparison",
+      "typed context and comparison candidate",
+      "source policy/lineage/as_of/fingerprint",
+      "explicit candidates; no discovery",
+      "unchanged no new adapter",
+      "non-executable comparison assurance"
+    ],
+    [
+      "app/api/capital_rotation_query.py",
+      "SnapshotCapitalRotationQueryService",
+      "stored PortfolioRotationEvaluation",
+      "as_of and precomputed score/gate refs",
+      "one completed injected evaluation",
+      "unchanged; no API/UI shadow wiring",
+      "projects prior action words; no recalculation"
+    ],
+    [
+      "app/api/shared_brain_query.py",
+      "Shared Brain query",
+      "existing shared Brain service",
+      "public view refs; no new research route",
+      "requested as-of",
+      "unchanged",
+      "read-only public display"
+    ]
+  ],
+  "notes": [
+    "New research envelope never enters generic StoredIntelligenceArtifact or production SharedBrainAnalysisView.",
+    "Unversioned legacy callers remain explicitly V1; no latest-registry default.",
+    "Portfolio snapshots, DB schemas and action policies unchanged.",
+    "Explicit V2 is rejected at pre-gate boundary; this does not resolve B08 policy compatibility."
+  ]
+}

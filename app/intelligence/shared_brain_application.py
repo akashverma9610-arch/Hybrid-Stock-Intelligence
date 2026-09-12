@@ -359,6 +359,43 @@ class SharedBrainApplicationService:
         self._clock = clock
         self._forward_paper_intelligence = forward_paper_intelligence
 
+    def diagnostic_research(self, identifier: str, *, as_of: datetime, diagnostics: tuple,
+                            registry_version=None, mode="ACTIVE"):
+        """Explicit non-executable sidecar; never replaces the production view.
+
+        Historical interpretation requires a caller-supplied cutoff. V2 input
+        must use its exact canonical instrument ID and bypasses no production
+        selection: it does not call the assembler, paper projector or clock.
+        """
+        from app.diagnostics.brain_lineage import brain_diagnostic_research
+        from app.diagnostics.downstream import active_v1_rejection
+        from app.registry.canonical import DIAGNOSTIC_REGISTRY_VERSION
+        from app.registry.versioned import RegistryMode, resolve_diagnostic_registry
+        if not isinstance(as_of, datetime) or as_of.tzinfo is None or as_of.utcoffset() is None:
+            raise SharedBrainApplicationError("SHARED_BRAIN_AS_OF_TIMEZONE_REQUIRED", "An explicit timezone-aware research cutoff is required.")
+        version = DIAGNOSTIC_REGISTRY_VERSION if registry_version is None else registry_version
+        registry = resolve_diagnostic_registry(version, mode=mode)
+        if version == DIAGNOSTIC_REGISTRY_VERSION:
+            if (registry.mode is not RegistryMode.ACTIVE or not isinstance(diagnostics, tuple)
+                    or any(active_v1_rejection(item, version) for item in diagnostics)):
+                raise ValueError("CROSS_REGISTRY_BRAIN_CONSUMPTION_FORBIDDEN")
+            instrument = self._resolver.resolve(identifier, as_of=as_of)
+            try:
+                view = self.analyze_stock(instrument.instrument_id, context=BrainOutputContext.DEEP_ANALYSIS, as_of=as_of)
+            except SharedBrainApplicationError as error:
+                if error.code != "SHARED_BRAIN_SNAPSHOT_UNAVAILABLE":
+                    raise
+                # A research receipt can retain diagnostic evidence while the
+                # unchanged production assembler fails closed. No fake view.
+                return brain_diagnostic_research(canonical_instrument_id=instrument.instrument_id,
+                    as_of=as_of, diagnostics=diagnostics, registry_version=version, mode=registry.mode,
+                    production_brain_blocker=error.code)
+            return brain_diagnostic_research(canonical_instrument_id=instrument.instrument_id,
+                as_of=as_of, diagnostics=diagnostics, registry_version=version, mode=registry.mode,
+                production_brain_fingerprint=view.snapshot_fingerprint)
+        return brain_diagnostic_research(canonical_instrument_id=identifier, as_of=as_of,
+            diagnostics=diagnostics, registry_version=version, mode=registry.mode)
+
     def analyze_stock(
         self,
         identifier: str,

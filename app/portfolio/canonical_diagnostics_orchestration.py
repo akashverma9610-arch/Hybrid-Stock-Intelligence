@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Protocol
 
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
+from app.diagnostics.brain_lineage import require_v1_stored_diagnostic
 from app.data_operations.models import EvidenceRefreshOutcome, EvidenceRefreshRequest
 from app.domain.canonical_diagnostic_strategy import (
     CanonicalDiagnosticStrategyDefinition, governance_limitations_fingerprint,
@@ -220,6 +221,7 @@ def rehydrate_persisted_canonical_diagnostics(
     """
     values = []
     for record in records:
+        require_v1_stored_diagnostic(record)
         if record.instrument_id != instrument_id or record.as_of_timestamp > as_of or record.evaluated_at > as_of:
             continue
         try:

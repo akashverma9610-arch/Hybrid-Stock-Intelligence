@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from datetime import datetime
 from enum import StrEnum
+from app.diagnostics.brain_lineage import require_production_evidence
 
 from app.audit.decision import DecisionAuditRecord, DecisionAuditStore, DecisionOutcomeLink, decision_audit_fingerprint, decision_outcome_fingerprint
 from app.historical.guard import manifest_fingerprint
@@ -112,6 +113,12 @@ def evaluate_portfolio_sell_side_action(
     policy: FrozenPortfolioSellSideDecisionPolicy = CURRENT_FROZEN_PORTFOLIO_SELL_SIDE_DECISION_POLICY,
 ) -> PortfolioSellSideDecision:
     """Classify one existing holding without recalculating Brain/rotation inputs."""
+    require_production_evidence(value)
+    require_production_evidence(value.holding.analytics)
+    require_production_evidence(value.rotation_evaluation)
+    if value.rotation_evaluation is not None:
+        require_production_evidence(value.rotation_evaluation.context, legacy_version_label=True)
+    require_production_evidence(value.shared_brain_fingerprint)
     thesis, freshness, thesis_notes = _thesis(value)
     rotation, rotation_id, rotation_blockers = _rotation(value)
     policy_valid = (

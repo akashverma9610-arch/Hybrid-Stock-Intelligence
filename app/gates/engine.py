@@ -186,6 +186,11 @@ class ExecutionGateEngine:
     def evaluate(self, *, instrument_id: str, strategy_version: object, registry_version: str,
                  scoring_configuration_version: str, action_context: ActionContext,
                  as_of_timestamp: datetime, evaluated_at: datetime, inputs: GateInput) -> ExecutionGateEvaluation:
+        from app.diagnostics.brain_lineage import require_production_evidence
+        from app.registry.versioned import V2_VERSION
+        require_production_evidence(inputs, reason="V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN")
+        if registry_version == V2_VERSION:
+            raise ValueError("V2_SHADOW_GATE_CONSUMPTION_FORBIDDEN")
         if inputs.snapshot_as_of_timestamp != as_of_timestamp:
             raise ValueError("Gate inputs must be an approved as-of snapshot matching the requested evaluation time.")
         unresolved = self.config.unresolved()

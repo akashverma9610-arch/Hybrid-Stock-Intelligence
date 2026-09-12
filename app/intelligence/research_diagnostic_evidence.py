@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Protocol
 
 from app.domain.models import DiagnosticResult, FreshnessStatus, StrategyVersionReference
+from app.diagnostics.brain_lineage import require_v1_stored_diagnostic
 from app.historical.guard import manifest_fingerprint
 from app.intelligence.unified_state import (
     IntelligenceEvidenceAvailability,
@@ -101,9 +102,12 @@ class ResearchDiagnosticEvidenceAdapter:
                 ("DIAGNOSTIC_DURABLE_READ_BOUNDARY_MISSING", "RESEARCH_DURABLE_READ_BOUNDARY_MISSING"),
                 artifact_id="diagnostic-evidence:unavailable",
             ),)
+        supplied = self._diagnostics.list_stored_diagnostic_results(canonical_instrument_id, as_of=as_of)
+        for item in supplied:
+            require_v1_stored_diagnostic(item)
         values = tuple(
             item
-            for item in self._diagnostics.list_stored_diagnostic_results(canonical_instrument_id, as_of=as_of)
+            for item in supplied
             if _eligible(item, canonical_instrument_id, as_of)
         )
         if not values:

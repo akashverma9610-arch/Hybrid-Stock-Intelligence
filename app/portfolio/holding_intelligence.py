@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
+from app.diagnostics.brain_lineage import CROSS_PORTFOLIO, require_production_evidence
+from app.diagnostics.downstream import active_v1_rejection
 from app.diagnostics.synthesis import HigherOrderDiagnosticContext, SynthesisRules, investment_thesis, risk, trading_thesis
 from app.historical.guard import manifest_fingerprint
 from app.intelligence.shared_brain_application import SharedBrainAnalysisView
@@ -65,6 +67,9 @@ def compose_holding_intelligence(
     synthesis functions are reused.  P&L, cost, valuation, and forward-paper
     intelligence are intentionally never inspected.
     """
+    require_production_evidence(shared_brain)
+    if any(active_v1_rejection(item, DIAGNOSTIC_REGISTRY_VERSION) for item in diagnostics):
+        raise ValueError(CROSS_PORTFOLIO)
     if not any(item.holding_id == holding.holding_id and item.instrument_id == holding.instrument_id for item in portfolio_snapshot.holdings):
         raise ValueError("HOLDING_INTELLIGENCE_HOLDING_NOT_IN_PORTFOLIO")
     if shared_brain.canonical_instrument_id != holding.instrument_id:
