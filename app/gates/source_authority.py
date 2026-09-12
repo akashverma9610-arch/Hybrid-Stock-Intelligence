@@ -107,6 +107,12 @@ class UnavailableGateAuthority:
         raise GateVersionBlocked("GATE_SCORE_AUTHORITY_UNAVAILABLE")
 
     def verify_domain(self, ref, value, **context):
+        from app.gates.source_readiness import GateSourceNotReady, source_gap
+        gap = source_gap(ref.input_field)
+        if gap is not None:
+            legacy = (CALENDAR_BLOCKER if ref.input_field.startswith("earnings_") else
+                      "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:" + ref.input_field)
+            raise GateSourceNotReady(legacy, input_field=ref.input_field)
         if ref.evidence_family == "EARNINGS_CALENDAR":
             raise GateVersionBlocked(CALENDAR_BLOCKER)
         raise GateVersionBlocked("GATE_DOMAIN_AUTHORITY_UNAVAILABLE:" + ref.input_field)

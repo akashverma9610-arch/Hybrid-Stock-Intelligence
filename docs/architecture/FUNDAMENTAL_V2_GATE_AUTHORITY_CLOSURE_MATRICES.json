@@ -1,0 +1,640 @@
+{
+  "admitted_inputs": [
+    "raw_decision_score",
+    "comparison_score",
+    "holding_entry_date"
+  ],
+  "baseline": "c76affb4dad6521a031ebdd4f294d396aee04216",
+  "before_matrix_fingerprint": "sha256:9ebb2f3d8cbb5803a6d62b602eb696a7122fd5d81dca508c275a9d5fbe099f36",
+  "before_receipt_fingerprint": "sha256:457ed0db9347e8a5996d201a7fb0f03895c8e46a0e51a3a21a1ec5d7e7438884",
+  "calendar_source_feasibility": "SOURCE_AVAILABLE_ADAPTER_MISSING",
+  "expanded_fields": [
+    {
+      "authority_readiness": "NOT_APPLICABLE",
+      "before_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "blocker": null,
+      "field": "scorecard_id",
+      "future_slice": null,
+      "gates": [],
+      "input_field": "scorecard_id"
+    },
+    {
+      "authority_readiness": "READY_EXISTING_CANONICAL_PRODUCER",
+      "before_readiness": "INDEPENDENT_SCORE_ATTESTATION_READY",
+      "blocker": null,
+      "field": "raw_decision_score",
+      "future_slice": null,
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "raw_decision_score"
+    },
+    {
+      "authority_readiness": "NOT_APPLICABLE",
+      "before_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "blocker": null,
+      "field": "snapshot_id",
+      "future_slice": null,
+      "gates": [],
+      "input_field": "snapshot_id"
+    },
+    {
+      "authority_readiness": "NOT_APPLICABLE",
+      "before_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "blocker": null,
+      "field": "snapshot_as_of_timestamp",
+      "future_slice": null,
+      "gates": [],
+      "input_field": "snapshot_as_of_timestamp"
+    },
+    {
+      "authority_readiness": "READY_EXISTING_CANONICAL_PRODUCER",
+      "before_readiness": "INDEPENDENT_SCORE_ATTESTATION_READY",
+      "blocker": null,
+      "field": "comparison_score",
+      "future_slice": null,
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "comparison_score"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+      "field": "expected_incremental_return",
+      "future_slice": "GATE1_FRICTION_POLICY_AUTHORITY_V1",
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "expected_incremental_return"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+      "field": "modeled_switching_friction",
+      "future_slice": "GATE1_FRICTION_POLICY_AUTHORITY_V1",
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "modeled_switching_friction"
+    },
+    {
+      "authority_readiness": "READY_EXISTING_CANONICAL_PRODUCER",
+      "before_readiness": "STORED_HOLDING_BINDING_READY",
+      "blocker": null,
+      "field": "holding_entry_date",
+      "future_slice": null,
+      "gates": [
+        "GATE_2_VELOCITY"
+      ],
+      "input_field": "holding_entry_date"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE2_ATR_AUTHORITY_NOT_READY",
+      "field": "atr_expansion",
+      "future_slice": "GATE2_ATR_EXPANSION_SOURCE_GOVERNANCE_V1",
+      "gates": [
+        "GATE_2_VELOCITY"
+      ],
+      "input_field": "atr_expansion"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.id",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.effective_at",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.source",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.authoritative",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.asm_stage",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.gsm_stage",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.circuit_limit",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_NOT_IMPLEMENTED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "field": "surveillance.evidence_ids",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.id",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.initial_tranche",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.t1_reduction",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.stop_defined",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.t1_defined",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.breakeven_conditions",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.structural_conditions",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.strategy_version",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "field": "trade_plan.configuration_version",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "field": "exposure.portfolio_equity",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "field": "exposure.existing_risk_amount",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "field": "exposure.candidate_risk_amount",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "field": "exposure.candidate_allocation",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "field": "exposure.sector_allocation",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure"
+    },
+    {
+      "authority_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+      "before_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "field": "exposure.evidence_ids",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure"
+    },
+    {
+      "authority_readiness": "SOURCE_AVAILABLE_ADAPTER_MISSING",
+      "before_readiness": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "blocker": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "field": "earnings_scheduled_at",
+      "future_slice": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+      "gates": [
+        "GATE_6_EARNINGS"
+      ],
+      "input_field": "earnings_scheduled_at"
+    },
+    {
+      "authority_readiness": "SOURCE_AVAILABLE_ADAPTER_MISSING",
+      "before_readiness": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "blocker": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "field": "earnings_schedule_verified_at",
+      "future_slice": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+      "gates": [
+        "GATE_6_EARNINGS"
+      ],
+      "input_field": "earnings_schedule_verified_at"
+    },
+    {
+      "authority_readiness": "NOT_APPLICABLE",
+      "before_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "blocker": null,
+      "field": "evidence_ids",
+      "future_slice": null,
+      "gates": [],
+      "input_field": "evidence_ids"
+    },
+    {
+      "authority_readiness": "NOT_APPLICABLE",
+      "before_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "blocker": null,
+      "field": "diagnostic_ids",
+      "future_slice": null,
+      "gates": [],
+      "input_field": "diagnostic_ids"
+    }
+  ],
+  "fingerprint": "sha256:95c5e69d8046098ea73f59ed7bd67b1765288c91341ae9ad49e27776c6169fcb",
+  "gate_compatibility": [
+    {
+      "authority_enforcement": "ENFORCED",
+      "caller_spoof_resistance": "INDEPENDENT_AUTHORITY_OR_REJECTION",
+      "gate_id": "GATE_1_ROTATION",
+      "v1_replay": "FROZEN_21_SCENARIOS_UNCHANGED",
+      "v2_rejection": "VERSION_BLOCKED",
+      "version_compatibility": "CLOSED_FOR_ACTIVATION_COMPATIBILITY"
+    },
+    {
+      "authority_enforcement": "ENFORCED",
+      "caller_spoof_resistance": "INDEPENDENT_AUTHORITY_OR_REJECTION",
+      "gate_id": "GATE_2_VELOCITY",
+      "v1_replay": "FROZEN_21_SCENARIOS_UNCHANGED",
+      "v2_rejection": "VERSION_BLOCKED",
+      "version_compatibility": "CLOSED_FOR_ACTIVATION_COMPATIBILITY"
+    },
+    {
+      "authority_enforcement": "ENFORCED",
+      "caller_spoof_resistance": "INDEPENDENT_AUTHORITY_OR_REJECTION",
+      "gate_id": "GATE_3_SURVEILLANCE",
+      "v1_replay": "FROZEN_21_SCENARIOS_UNCHANGED",
+      "v2_rejection": "VERSION_BLOCKED",
+      "version_compatibility": "CLOSED_FOR_ACTIVATION_COMPATIBILITY"
+    },
+    {
+      "authority_enforcement": "ENFORCED",
+      "caller_spoof_resistance": "INDEPENDENT_AUTHORITY_OR_REJECTION",
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "v1_replay": "FROZEN_21_SCENARIOS_UNCHANGED",
+      "v2_rejection": "VERSION_BLOCKED",
+      "version_compatibility": "CLOSED_FOR_ACTIVATION_COMPATIBILITY"
+    },
+    {
+      "authority_enforcement": "ENFORCED",
+      "caller_spoof_resistance": "INDEPENDENT_AUTHORITY_OR_REJECTION",
+      "gate_id": "GATE_5_HEAT",
+      "v1_replay": "FROZEN_21_SCENARIOS_UNCHANGED",
+      "v2_rejection": "VERSION_BLOCKED",
+      "version_compatibility": "CLOSED_FOR_ACTIVATION_COMPATIBILITY"
+    },
+    {
+      "authority_enforcement": "ENFORCED",
+      "caller_spoof_resistance": "INDEPENDENT_AUTHORITY_OR_REJECTION",
+      "gate_id": "GATE_6_EARNINGS",
+      "v1_replay": "FROZEN_21_SCENARIOS_UNCHANGED",
+      "v2_rejection": "VERSION_BLOCKED",
+      "version_compatibility": "CLOSED_FOR_ACTIVATION_COMPATIBILITY"
+    }
+  ],
+  "new_adapters": 0,
+  "prior_eight_blocked_fields": [
+    "expected_incremental_return",
+    "modeled_switching_friction",
+    "atr_expansion",
+    "surveillance",
+    "trade_plan",
+    "exposure",
+    "earnings_scheduled_at",
+    "earnings_schedule_verified_at"
+  ],
+  "production_observation": {
+    "approved_gate_policies": 1,
+    "audit_date": "2026-09-12",
+    "board_schedule_metadata_rows": 0,
+    "canonical_scorecards": 3,
+    "cash": "UNKNOWN",
+    "corporate_filings": 455,
+    "db_mtime_ns": 1789150260641346800,
+    "db_size": 18346504192,
+    "kind": "FROZEN_READ_ONLY_AUDIT_NOT_LIVE_STATUS",
+    "ownership_filings": 30,
+    "portfolio_equity": null,
+    "portfolio_heat": null,
+    "portfolio_payload_fingerprint": "sha256:4fe5ca7f9cc36706367b269efff559c9a9ba54a46ee54e98815420cfdb0c1889",
+    "portfolio_snapshots": 1,
+    "results_filings": 425,
+    "score_as_of": "2026-08-31T18:21:20.437011+00:00",
+    "trade_plans": 0
+  },
+  "production_source_readiness": [
+    {
+      "current_required_data_complete": false,
+      "existing_producer": "Effective-dated immutable approved policy and statutory friction formula exist; user costs and advantage remain caller scenario inputs.",
+      "freshness_proven": false,
+      "gate_id": "GATE_1_ROTATION",
+      "missing_producer": "No approved scenario identity/known-at/eligibility binds expected return, turnover, brokerage, slippage, tax or taxable services.",
+      "modules": [
+        "app/gates/production_policy.py",
+        "app/backtest/portfolio_gates.py",
+        "app/rotation/models.py"
+      ],
+      "real_evidence_clearance_ready": false,
+      "senseedge_impact": "Rotation economic clearance unavailable; not a bearish stock assessment.",
+      "source_gaps": [
+        {
+          "blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+          "future_slice": "GATE1_FRICTION_POLICY_AUTHORITY_V1",
+          "gate_id": "GATE_1_ROTATION",
+          "input_field": "expected_incremental_return",
+          "state": "SOURCE_GOVERNANCE_REQUIRED"
+        },
+        {
+          "blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+          "future_slice": "GATE1_FRICTION_POLICY_AUTHORITY_V1",
+          "gate_id": "GATE_1_ROTATION",
+          "input_field": "modeled_switching_friction",
+          "state": "SOURCE_GOVERNANCE_REQUIRED"
+        }
+      ]
+    },
+    {
+      "current_required_data_complete": false,
+      "existing_producer": "technical-v1 Wilder ATR and governed daily ATR14 contraction evidence exist, with source observation IDs and PIT status.",
+      "freshness_proven": false,
+      "gate_id": "GATE_2_VELOCITY",
+      "missing_producer": "No canonical holding-period ATR expansion definition/result: ATR price units, ATR contraction and >1 ATR expansion are not interchangeable. Timeframe, displacement anchor and normalization need governance.",
+      "modules": [
+        "app/analysis/technical.py",
+        "app/analysis/models.py",
+        "app/strategies/pre_breakout/materialization.py",
+        "app/registry/canonical.py"
+      ],
+      "real_evidence_clearance_ready": false,
+      "senseedge_impact": "Velocity adjustment evidence unavailable; no invented ATR, penalty or stock weakness.",
+      "source_gaps": [
+        {
+          "blocker": "GATE2_ATR_AUTHORITY_NOT_READY",
+          "future_slice": "GATE2_ATR_EXPANSION_SOURCE_GOVERNANCE_V1",
+          "gate_id": "GATE_2_VELOCITY",
+          "input_field": "atr_expansion",
+          "state": "SOURCE_GOVERNANCE_REQUIRED"
+        }
+      ]
+    },
+    {
+      "current_required_data_complete": false,
+      "existing_producer": "Approved official-nse-surveillance-v1 declaration and gate observation carrier exist.",
+      "freshness_proven": false,
+      "gate_id": "GATE_3_SURVEILLANCE",
+      "missing_producer": "No source-backed ASM/GSM/price-band/security-status producer with exact identity, publication/receipt time, coverage and revision proof. Generic MarketObservation plus authoritative=True is not authority.",
+      "modules": [
+        "app/gates/production_policy.py",
+        "app/backtest/analytical.py",
+        "app/gates/engine.py"
+      ],
+      "real_evidence_clearance_ready": false,
+      "senseedge_impact": "Fresh-entry surveillance clearance unavailable.",
+      "source_gaps": [
+        {
+          "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+          "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+          "gate_id": "GATE_3_SURVEILLANCE",
+          "input_field": "surveillance",
+          "state": "SOURCE_NOT_IMPLEMENTED"
+        }
+      ]
+    },
+    {
+      "current_required_data_complete": false,
+      "existing_producer": "Stored analytical TradePlan and governed Pre-Breakout assessment exist. Zero stored plans is not absence of these contracts.",
+      "freshness_proven": false,
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "missing_producer": "TradePlan lacks its own instrument/as-of/policy fingerprint and management tranche/reduction/breakeven terms. Setup assessment stops before candidate formation. Signal gate references cannot bootstrap their own prerequisite plan authority.",
+      "modules": [
+        "app/signals/models.py",
+        "app/storage/sqlite_governance_repository.py",
+        "app/strategies/pre_breakout/setup_assessment.py",
+        "app/gates/engine.py"
+      ],
+      "real_evidence_clearance_ready": false,
+      "senseedge_impact": "Candidate cannot receive plan clearance or become ENTRY_READY.",
+      "source_gaps": [
+        {
+          "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+          "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+          "gate_id": "GATE_4_TRADE_PLAN",
+          "input_field": "trade_plan",
+          "state": "SOURCE_GOVERNANCE_REQUIRED"
+        }
+      ]
+    },
+    {
+      "current_required_data_complete": false,
+      "existing_producer": "Canonical PortfolioSnapshot has existing exposure, heat, cash and PIT identity; stored holding-date adapter remains admitted.",
+      "freshness_proven": false,
+      "gate_id": "GATE_5_HEAT",
+      "missing_producer": "No approved candidate-risk/allocation scenario binds candidate identity, capital, sector, policy and known-at. Frozen replay parameters are not user approval; production cash/equity/heat are unknown.",
+      "modules": [
+        "app/portfolio/models.py",
+        "app/portfolio/engine.py",
+        "app/backtest/portfolio_gates.py"
+      ],
+      "real_evidence_clearance_ready": false,
+      "senseedge_impact": "Allocation/execution readiness blocked; no capital or candidate quantity inferred.",
+      "source_gaps": [
+        {
+          "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+          "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+          "gate_id": "GATE_5_HEAT",
+          "input_field": "exposure",
+          "state": "SOURCE_GOVERNANCE_REQUIRED"
+        }
+      ]
+    },
+    {
+      "current_required_data_complete": false,
+      "existing_producer": "CorporateFiling retains board-meeting metadata, announcements, receipts and revisions; approved official-nse-earnings-calendar-v1 declaration exists.",
+      "freshness_proven": false,
+      "gate_id": "GATE_6_EARNINGS",
+      "missing_producer": "No admitted results-purpose future-schedule producer, exact session/date semantics, verification, cancellation/revision coverage or absence proof. Candidate calendar explicitly remains UNVERIFIED_SOURCE_AUTHORITY.",
+      "modules": [
+        "app/filings/models.py",
+        "app/filings/providers.py",
+        "app/filings/store.py",
+        "app/gates/earnings_schedule_evidence.py",
+        "app/gates/production_policy.py"
+      ],
+      "real_evidence_clearance_ready": false,
+      "senseedge_impact": "Fresh-entry earnings-blackout clearance unavailable; existing risk-management exemption unchanged.",
+      "source_gaps": [
+        {
+          "blocker": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+          "future_slice": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+          "gate_id": "GATE_6_EARNINGS",
+          "input_field": "earnings_scheduled_at",
+          "state": "SOURCE_AVAILABLE_ADAPTER_MISSING"
+        },
+        {
+          "blocker": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+          "future_slice": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+          "gate_id": "GATE_6_EARNINGS",
+          "input_field": "earnings_schedule_verified_at",
+          "state": "SOURCE_AVAILABLE_ADAPTER_MISSING"
+        }
+      ]
+    }
+  ],
+  "threat_model": "no protection against Python-code/DI replacement or canonical-store compromise; no PKI claimed",
+  "version": "six-gates-source-readiness/v1"
+}

@@ -1,0 +1,130 @@
+{
+  "admission_attacks": [
+    {
+      "field": "expected_incremental_return",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:expected_incremental_return"
+    },
+    {
+      "field": "modeled_switching_friction",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:modeled_switching_friction"
+    },
+    {
+      "field": "holding_entry_date",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:holding_entry_date"
+    },
+    {
+      "field": "atr_expansion",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:atr_expansion"
+    },
+    {
+      "field": "surveillance",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:surveillance"
+    },
+    {
+      "field": "trade_plan",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:trade_plan"
+    },
+    {
+      "field": "exposure",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:exposure"
+    },
+    {
+      "field": "earnings_scheduled_at",
+      "reason": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY"
+    },
+    {
+      "field": "earnings_schedule_verified_at",
+      "reason": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY"
+    },
+    {
+      "field": "raw-score",
+      "reason": "GATE_CANDIDATE_SCORE_PROVENANCE_REQUIRED"
+    },
+    {
+      "field": "rehashed-fake-v1",
+      "reason": "GATE_SCORE_PRODUCER_MISMATCH"
+    }
+  ],
+  "ai_decision_authority": false,
+  "b08_after": "CLOSED_FOR_ACTIVATION_COMPATIBILITY",
+  "b08_before": "CLOSED_FOR_SHADOW_COMPATIBILITY",
+  "b09": "STILL_BLOCKING_ACTIVATION",
+  "b14": "STILL_BLOCKING_ACTIVATION",
+  "baseline": "c76affb4dad6521a031ebdd4f294d396aee04216",
+  "fingerprint": "sha256:3909b5102d578faf90e5634afd55e75ede74910f5eeaad2766eb143e10bdb535",
+  "gate_source_data_readiness": "NOT_READY",
+  "generic_repair_4": false,
+  "legacy_receipt_unchanged": true,
+  "matrix_fingerprint": "sha256:95c5e69d8046098ea73f59ed7bd67b1765288c91341ae9ad49e27776c6169fcb",
+  "named_source_blockers": [
+    {
+      "blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+      "future_slice": "GATE1_FRICTION_POLICY_AUTHORITY_V1",
+      "gate_id": "GATE_1_ROTATION",
+      "input_field": "expected_incremental_return",
+      "state": "SOURCE_GOVERNANCE_REQUIRED"
+    },
+    {
+      "blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+      "future_slice": "GATE1_FRICTION_POLICY_AUTHORITY_V1",
+      "gate_id": "GATE_1_ROTATION",
+      "input_field": "modeled_switching_friction",
+      "state": "SOURCE_GOVERNANCE_REQUIRED"
+    },
+    {
+      "blocker": "GATE2_ATR_AUTHORITY_NOT_READY",
+      "future_slice": "GATE2_ATR_EXPANSION_SOURCE_GOVERNANCE_V1",
+      "gate_id": "GATE_2_VELOCITY",
+      "input_field": "atr_expansion",
+      "state": "SOURCE_GOVERNANCE_REQUIRED"
+    },
+    {
+      "blocker": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_NOT_READY",
+      "future_slice": "GATE3_SURVEILLANCE_SOURCE_AUTHORITY_V1",
+      "gate_id": "GATE_3_SURVEILLANCE",
+      "input_field": "surveillance",
+      "state": "SOURCE_NOT_IMPLEMENTED"
+    },
+    {
+      "blocker": "GATE4_TRADE_PLAN_AUTHORITY_NOT_READY",
+      "future_slice": "TRADE_PLAN_AUTHORITY_CONTRACT_V1",
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "input_field": "trade_plan",
+      "state": "SOURCE_GOVERNANCE_REQUIRED"
+    },
+    {
+      "blocker": "GATE5_RISK_ALLOCATION_AUTHORITY_NOT_READY",
+      "future_slice": "PORTFOLIO_RISK_SCENARIO_AUTHORITY_V1",
+      "gate_id": "GATE_5_HEAT",
+      "input_field": "exposure",
+      "state": "SOURCE_GOVERNANCE_REQUIRED"
+    },
+    {
+      "blocker": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "future_slice": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+      "gate_id": "GATE_6_EARNINGS",
+      "input_field": "earnings_scheduled_at",
+      "state": "SOURCE_AVAILABLE_ADAPTER_MISSING"
+    },
+    {
+      "blocker": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "future_slice": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+      "gate_id": "GATE_6_EARNINGS",
+      "input_field": "earnings_schedule_verified_at",
+      "state": "SOURCE_AVAILABLE_ADAPTER_MISSING"
+    }
+  ],
+  "new_producers": 0,
+  "next_continuation": "EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1",
+  "orders": 0,
+  "prior_receipt_fingerprint": "sha256:457ed0db9347e8a5996d201a7fb0f03895c8e46a0e51a3a21a1ec5d7e7438884",
+  "provider_acquisition_calls": 0,
+  "unsafe_ingress_accepted": 0,
+  "v1_active": true,
+  "v1_replay_cases": 21,
+  "v1_replay_fingerprint": "sha256:81943ad5cf3645f222887f640d5b9f6becd22ccadba3e187578bf9ac408c75d4",
+  "v2_active": false,
+  "v2_shadow_only": true,
+  "version": "six-gates-source-readiness/v1",
+  "writes": 0
+}
