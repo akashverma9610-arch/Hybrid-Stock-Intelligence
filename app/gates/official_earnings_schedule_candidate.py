@@ -243,6 +243,11 @@ class OfficialEarningsScheduleCandidate:
             self.source_announcement_type, self.policy_id, self.policy_version,
         )
         if (self.contract_version != CONTRACT_VERSION
+                or not isinstance(self.source_exchange, SourceExchange)
+                or not isinstance(self.source_instrument_identifier_kind, SourceInstrumentIdentifierKind)
+                or not isinstance(self.schedule_precision, SchedulePrecision)
+                or not isinstance(self.revision_state, ScheduleLifecycleState)
+                or not isinstance(self.purpose_classification, PurposeClassification)
                 or self.event_type is not ScheduleEventType.FINANCIAL_RESULTS_BOARD_MEETING
                 or self.purpose_classification not in _QUALIFYING_PURPOSES
                 or type(self.scheduled_date) is not date
@@ -283,6 +288,7 @@ class OfficialEarningsScheduleCandidate:
             raise EarningsScheduleGovernanceError("EARNINGS_SCHEDULE_FINGERPRINT_MISMATCH")
 
     def visible_at(self, as_of: datetime) -> bool:
+        self.__post_init__()
         return self.known_at <= _utc(as_of)
 
     def to_json(self) -> str:
@@ -347,10 +353,10 @@ class EarningsScheduleReconciliation:
             valid = (self.canonical_instrument_id is None and not self.source_schedule_ids
                      and not self.source_exchanges and self.reason_code == "PIT_NOT_VISIBLE")
         elif self.state is ReconciliationState.ONE_EXCHANGE_CANDIDATE:
-            valid = (self.canonical_instrument_id is not None and len(self.source_schedule_ids) == 1
+            valid = (self.canonical_instrument_id is not None and len(self.source_schedule_ids) >= 1
                      and len(self.source_exchanges) == 1 and self.reason_code is None)
         elif self.state is ReconciliationState.DUAL_EXCHANGE_AGREEMENT:
-            valid = (self.canonical_instrument_id is not None and len(self.source_schedule_ids) == 2
+            valid = (self.canonical_instrument_id is not None and len(self.source_schedule_ids) >= 2
                      and self.source_exchanges == (SourceExchange.BSE, SourceExchange.NSE)
                      and self.reason_code is None)
         else:
@@ -372,8 +378,8 @@ def _make_reconciliation(*, as_of: datetime, state: ReconciliationState,
     body = {
         "as_of": _utc(as_of), "state": state,
         "canonical_instrument_id": canonical_instrument_id,
-        "source_schedule_ids": tuple(item.schedule_id for item in ordered),
-        "source_exchanges": tuple(item.source_exchange for item in ordered),
+        "source_schedule_ids": tuple(sorted(item.schedule_id for item in ordered)),
+        "source_exchanges": tuple(sorted({item.source_exchange for item in ordered}, key=str)),
         "reason_code": reason_code, "contract_version": CONTRACT_VERSION,
     }
     return EarningsScheduleReconciliation(**(body | {"fingerprint": content_fingerprint(body)}))
@@ -398,16 +404,17 @@ def reconcile_visible_schedule_candidates(candidates: tuple[OfficialEarningsSche
     instruments = {item.canonical_instrument_id for item in visible}
     exchanges = {item.source_exchange for item in visible}
     agreement = {
-        (item.canonical_instrument_id, item.event_type, item.declared_purpose,
+        (item.canonical_instrument_id, item.event_type,
          item.purpose_classification, item.scheduled_date, item.scheduled_time,
-         item.schedule_precision, item.statement_scope, item.financial_period_reference)
+         item.schedule_precision, item.statement_scope, item.financial_period_reference,
+         item.revision_state is ScheduleLifecycleState.CANCELLED)
         for item in visible
     }
-    if len(visible) > 2 or len(exchanges) != len(visible) or len(instruments) != 1 or len(agreement) != 1:
+    if len(instruments) != 1 or len(agreement) != 1:
         return _make_reconciliation(as_of=point, state=ReconciliationState.EVIDENCE_CONFLICTED,
                                     canonical_instrument_id=next(iter(instruments)) if len(instruments) == 1 else None,
                                     candidates=visible, reason_code="EVIDENCE_CONFLICTED")
-    state = ReconciliationState.ONE_EXCHANGE_CANDIDATE if len(visible) == 1 else ReconciliationState.DUAL_EXCHANGE_AGREEMENT
+    state = ReconciliationState.ONE_EXCHANGE_CANDIDATE if len(exchanges) == 1 else ReconciliationState.DUAL_EXCHANGE_AGREEMENT
     return _make_reconciliation(as_of=point, state=state,
                                 canonical_instrument_id=next(iter(instruments)), candidates=visible,
                                 reason_code=None)
