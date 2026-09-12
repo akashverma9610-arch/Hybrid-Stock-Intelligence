@@ -1,0 +1,814 @@
+{
+  "baseline": "5da0111324707ff1f95543d598571463fe63522c",
+  "callers": [
+    {
+      "admission": "candidate only; supplied comparison/domain primitives without provenance rejected",
+      "path": "app.universe_analysis.service._gates",
+      "producer": "build_scorecard output",
+      "status": "MIGRATED_TO_PROVENANCE_ENVELOPE"
+    },
+    {
+      "admission": "no verified calendar timestamp fallback",
+      "path": "app.backtest.analytical.HistoricalAnalyticalReplayService._gates",
+      "producer": "historical V1 score output + frozen MarketObservation",
+      "status": "MIGRATED_TO_PROVENANCE_ENVELOPE"
+    },
+    {
+      "admission": "unlinked holding scores rejected; all linked scores checked before selection",
+      "path": "app.backtest.portfolio_gates.HistoricalPortfolioGateReplayService.evaluate_frozen",
+      "producer": "existing score/gate readers + frozen hypothetical replay state",
+      "status": "MIGRATED_TO_PROVENANCE_ENVELOPE"
+    },
+    {
+      "admission": "declared neutral context required; no automatic production neutral-source adapter",
+      "path": "app.portfolio.canonical_six_gates_activation.CanonicalPortfolioSixGatesActivator._materialize_one",
+      "producer": "canonical score reader and integrity verifier",
+      "status": "MIGRATED_TO_PROVENANCE_ENVELOPE"
+    }
+  ],
+  "fields": [
+    {
+      "authority_domain": "INPUT_BINDING_METADATA",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "scorecard_id",
+      "gates": [],
+      "input_field": "scorecard_id",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "existing input snapshot / linked score metadata",
+      "raw_admission_now": "metadata only, not authority",
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full GateInput binding",
+      "type": "str"
+    },
+    {
+      "authority_domain": "DIAGNOSTIC_SCORE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "raw_decision_score",
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "raw_decision_score",
+      "legacy_admission": "TRUSTED_V1_INTERNAL_ADAPTER",
+      "prior_raw_admission": true,
+      "producer": "app.scoring.engine.build_scorecard / canonical_decision_scorecard_from",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "REGISTRY_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "SOURCE_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full source card plus linked original comparison result",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "INPUT_BINDING_METADATA",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "snapshot_id",
+      "gates": [],
+      "input_field": "snapshot_id",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "existing input snapshot / linked score metadata",
+      "raw_admission_now": "metadata only, not authority",
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full GateInput binding",
+      "type": "str | None"
+    },
+    {
+      "authority_domain": "INPUT_BINDING_METADATA",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "snapshot_as_of_timestamp",
+      "gates": [],
+      "input_field": "snapshot_as_of_timestamp",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "existing input snapshot / linked score metadata",
+      "raw_admission_now": "metadata only, not authority",
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full GateInput binding",
+      "type": "datetime | None"
+    },
+    {
+      "authority_domain": "DIAGNOSTIC_SCORE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "comparison_score",
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "comparison_score",
+      "legacy_admission": "TRUSTED_V1_INTERNAL_ADAPTER",
+      "prior_raw_admission": true,
+      "producer": "original ExecutionGateEvaluation linked to incumbent scorecard through HistoricalAnalyticalEvaluation",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "REGISTRY_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "SOURCE_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full source card plus linked original comparison result",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "USER_APPROVED_CONTEXT",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "expected_incremental_return",
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "expected_incremental_return",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "explicit frozen hypothetical replay scenario; otherwise caller-supplied approved-context reference required",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "USER_APPROVED_CONTEXT",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "modeled_switching_friction",
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "modeled_switching_friction",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "explicit frozen hypothetical replay scenario; otherwise caller-supplied approved-context reference required",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "PORTFOLIO_STATE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "holding_entry_date",
+      "gates": [
+        "GATE_2_VELOCITY"
+      ],
+      "input_field": "holding_entry_date",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied governed holding source; no automatic live producer in this slice",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "date | None"
+    },
+    {
+      "authority_domain": "MARKET_DATA",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "atr_expansion",
+      "gates": [
+        "GATE_2_VELOCITY"
+      ],
+      "input_field": "atr_expansion",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied canonical market/technical source; no automatic live producer in this slice",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.id",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.effective_at",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "datetime"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.source",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.authoritative",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "bool"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.asm_stage",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "int | None"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.gsm_stage",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "int | None"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.circuit_limit",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "SURVEILLANCE",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "surveillance.evidence_ids",
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._surveillance / _market_gate_context; or explicit surveillance source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "tuple[str, ...]"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.id",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.initial_tranche",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.t1_reduction",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.stop_defined",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "bool"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.t1_defined",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "bool"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.breakeven_conditions",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str | None"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.structural_conditions",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str | None"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.strategy_version",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str"
+    },
+    {
+      "authority_domain": "TRADE_PLAN",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "trade_plan.configuration_version",
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "caller-supplied approved plan; no plan generated",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PLAN_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "str"
+    },
+    {
+      "authority_domain": "RISK_ALLOCATION",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "exposure.portfolio_equity",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.portfolio_gates._exposure + frozen scenario/state; or explicit governed risk source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "RISK_ALLOCATION",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "exposure.existing_risk_amount",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.portfolio_gates._exposure + frozen scenario/state; or explicit governed risk source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "RISK_ALLOCATION",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "exposure.candidate_risk_amount",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.portfolio_gates._exposure + frozen scenario/state; or explicit governed risk source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "RISK_ALLOCATION",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "exposure.candidate_allocation",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.portfolio_gates._exposure + frozen scenario/state; or explicit governed risk source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "RISK_ALLOCATION",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "exposure.sector_allocation",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.portfolio_gates._exposure + frozen scenario/state; or explicit governed risk source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "Decimal | None"
+    },
+    {
+      "authority_domain": "RISK_ALLOCATION",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "exposure.evidence_ids",
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.portfolio_gates._exposure + frozen scenario/state; or explicit governed risk source context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "PORTFOLIO_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "tuple[str, ...]"
+    },
+    {
+      "authority_domain": "EARNINGS_CALENDAR",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "earnings_scheduled_at",
+      "gates": [
+        "GATE_6_EARNINGS"
+      ],
+      "input_field": "earnings_scheduled_at",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "app.backtest.analytical._earnings_schedule / _market_gate_context; or explicit calendar context",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "CALENDAR_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "datetime | None"
+    },
+    {
+      "authority_domain": "EARNINGS_CALENDAR",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "earnings_schedule_verified_at",
+      "gates": [
+        "GATE_6_EARNINGS"
+      ],
+      "input_field": "earnings_schedule_verified_at",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "same exact calendar source as scheduled event; no filing/period/observation fallback",
+      "raw_admission_now": false,
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE",
+        "SOURCE_VERSION_REQUIRED",
+        "POLICY_VERSION_REQUIRED",
+        "CALENDAR_VERSION_REQUIRED"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "explicit source fingerprint + exact field value fingerprint",
+      "type": "datetime | None"
+    },
+    {
+      "authority_domain": "INPUT_BINDING_METADATA",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "evidence_ids",
+      "gates": [],
+      "input_field": "evidence_ids",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "existing input snapshot / linked score metadata",
+      "raw_admission_now": "metadata only, not authority",
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full GateInput binding",
+      "type": "tuple[str, ...]"
+    },
+    {
+      "authority_domain": "INPUT_BINDING_METADATA",
+      "failure": "VERSION_BLOCKED before any gate; missing None retains original gate policy",
+      "field": "diagnostic_ids",
+      "gates": [],
+      "input_field": "diagnostic_ids",
+      "legacy_admission": "NON_REGISTRY_EVIDENCE",
+      "prior_raw_admission": true,
+      "producer": "existing input snapshot / linked score metadata",
+      "raw_admission_now": "metadata only, not authority",
+      "required_version_dimensions": [
+        "NO_REGISTRY_VERSION_APPLICABLE"
+      ],
+      "source_authentication": "canonical source-reader trust boundary, not authenticated by a content hash",
+      "source_fingerprint": "full GateInput binding",
+      "type": "tuple[str, ...]"
+    }
+  ],
+  "fingerprint": "sha256:b7452f3d79f59b319e5b4cb7d2d7f1f9e4431ae7320474cbdfe5c2aed5a2f5b3",
+  "gate_input_fields": [
+    "scorecard_id",
+    "raw_decision_score",
+    "snapshot_id",
+    "snapshot_as_of_timestamp",
+    "comparison_score",
+    "expected_incremental_return",
+    "modeled_switching_friction",
+    "holding_entry_date",
+    "atr_expansion",
+    "surveillance",
+    "trade_plan",
+    "exposure",
+    "earnings_scheduled_at",
+    "earnings_schedule_verified_at",
+    "evidence_ids",
+    "diagnostic_ids"
+  ],
+  "no_database_migration": true,
+  "no_provider_acquisition": true,
+  "raw_legacy_test_callers": "TEST_ONLY: explicit tests.fixtures.gate_provenance adapters",
+  "remaining_authority_gaps": [
+    "legacy generic score lacks independent persisted fingerprint/producer attestation",
+    "caller-declared neutral source references are content bindings, not authenticated authority",
+    "legacy MarketObservation calendar has no independently approved calendar-source/version registry"
+  ],
+  "unsafe_raw_registry_callers": 0,
+  "version": "six-gates-provenance-repair/v1"
+}

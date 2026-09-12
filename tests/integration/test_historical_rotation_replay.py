@@ -110,7 +110,10 @@ def test_rotation_approved_and_cash_deployment_event_paths_are_append_only(tmp_p
     repo.save_historical_analytical_evaluation(candidate)
     assert repo.get_decision_scorecard(incomplete_score_id).data_confidence is None
     at=candidate.evaluation_timestamp
-    gate=ExecutionGateEngine(GATE_CONFIG, __import__("tests.integration.test_historical_analytical_replay", fromlist=["CALENDAR"]).CALENDAR).evaluate(
+    from tests.fixtures.gate_provenance import synthetic_evaluate
+    from app.gates.score_provenance import score_evidence
+    gate=synthetic_evaluate(ExecutionGateEngine(GATE_CONFIG, __import__("tests.integration.test_historical_analytical_replay", fromlist=["CALENDAR"]).CALENDAR),
+        candidate_score_evidence=score_evidence(scorecard),
         instrument_id=candidate.instrument_id, strategy_version=scorecard.strategy_version, registry_version=run.registry_version,
         scoring_configuration_version=run.scoring_config_version, action_context=__import__("app.gates.engine", fromlist=["ActionContext"]).ActionContext.ROTATE_IN,
         as_of_timestamp=at, evaluated_at=at, inputs=GateInput(scorecard.id, scorecard.final_score, state.snapshot.snapshot_id, at, Decimal("7"),

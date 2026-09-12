@@ -5,6 +5,8 @@ from datetime import timedelta
 from decimal import Decimal
 
 import pytest
+from tests.fixtures.gate_provenance import synthetic_evaluate
+from app.gates.score_provenance import score_evidence
 
 from app.gates.engine import (
     ActionContext, ExchangeCalendar, ExecutionGateConfig, ExecutionGateEngine, GateInput,
@@ -42,10 +44,11 @@ def _evaluation(score):
         earnings_scheduled_at=T + timedelta(days=20), earnings_schedule_verified_at=T,
         evidence_ids=("evidence:input",), diagnostic_ids=("diagnostic:lineage",),
     )
-    return ExecutionGateEngine(_config(), ExchangeCalendar("NSE")).evaluate(
+    return synthetic_evaluate(ExecutionGateEngine(_config(), ExchangeCalendar("NSE")),
         instrument_id=score.instrument_id, strategy_version=score.strategy_version,
         registry_version="diagnostic-registry-v1", scoring_configuration_version=score.configuration_version,
         action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=inputs,
+        candidate_score_evidence=score_evidence(score),
     )
 
 

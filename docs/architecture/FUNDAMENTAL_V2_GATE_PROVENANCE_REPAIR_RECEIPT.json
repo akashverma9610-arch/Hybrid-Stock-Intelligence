@@ -1,0 +1,55 @@
+{
+  "b08_after": "CLOSED_FOR_SHADOW_COMPATIBILITY",
+  "b08_before": "CLOSED_FOR_SHADOW_COMPATIBILITY",
+  "b09": "STILL_BLOCKING_ACTIVATION",
+  "b14": "STILL_BLOCKING_ACTIVATION",
+  "baseline": "5da0111324707ff1f95543d598571463fe63522c",
+  "fingerprint": "sha256:ed32144c91adb4e4ce63bd509e0f6f32569bfb2e63329f393f41d7b88af77ae7",
+  "gates": [
+    {
+      "gate_id": "GATE_1_ROTATION",
+      "shadow_accepted": false,
+      "v1_replay_equal": true
+    },
+    {
+      "gate_id": "GATE_2_VELOCITY",
+      "shadow_accepted": false,
+      "v1_replay_equal": true
+    },
+    {
+      "gate_id": "GATE_3_SURVEILLANCE",
+      "shadow_accepted": false,
+      "v1_replay_equal": true
+    },
+    {
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "shadow_accepted": false,
+      "v1_replay_equal": true
+    },
+    {
+      "gate_id": "GATE_5_HEAT",
+      "shadow_accepted": false,
+      "v1_replay_equal": true
+    },
+    {
+      "gate_id": "GATE_6_EARNINGS",
+      "shadow_accepted": false,
+      "v1_replay_equal": true
+    }
+  ],
+  "historical_replay": "linked artifacts preserve values; absent provenance is blocked, not retroactively stamped",
+  "inventory_fingerprint": "sha256:b7452f3d79f59b319e5b4cb7d2d7f1f9e4431ae7320474cbdfe5c2aed5a2f5b3",
+  "next_continuation": "FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_REPAIR_2",
+  "orders": 0,
+  "primitive_laundering_rejection": "GATE_CANDIDATE_SCORE_PROVENANCE_REQUIRED",
+  "prior_replay_fingerprint": "sha256:81943ad5cf3645f222887f640d5b9f6becd22ccadba3e187578bf9ac408c75d4",
+  "provider_calls": 0,
+  "replay_cases": 21,
+  "source_authentication_gaps": 3,
+  "unsafe_raw_registry_callers": 0,
+  "v1_active": true,
+  "v2_active": false,
+  "v2_shadow_only": true,
+  "version": "six-gates-provenance-repair/v1",
+  "writes": 0
+}

@@ -124,7 +124,8 @@ def audit():
         args = dict(instrument_id="NSE:ISOLATED", strategy_version="fixture/v1", registry_version=DIAGNOSTIC_REGISTRY_VERSION,
                     scoring_configuration_version="decision-score-v1", as_of_timestamp=AT, evaluated_at=AT, inputs=data)
         before = old.ExecutionGateEngine(config, calendar).evaluate(**args, action_context=old.ActionContext(context.value))
-        after = engine.evaluate(**args, action_context=context)
+        from tests.fixtures.gate_provenance import synthetic_evaluate
+        after = synthetic_evaluate(engine, **args, action_context=context)
         assert content_fingerprint(before) == content_fingerprint(after)
         pairs.append((context.value, gate_input_fingerprint(data), before, after))
     rows = []

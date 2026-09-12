@@ -11,6 +11,7 @@ from typing import Protocol
 
 from app.gates.engine import ActionContext, ExecutionGateEngine, GateInput
 from app.gates.version_compatibility import require_gate_source
+from app.gates.score_provenance import score_evidence
 from app.portfolio.canonical_diagnostics_orchestration import PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS
 from app.portfolio.canonical_six_gates import canonical_execution_gate_evaluation_from
 
@@ -50,23 +51,27 @@ class CanonicalPortfolioSixGatesActivator:
         execution_as_of: datetime,
         inputs_by_instrument: dict[str, GateInput] | None = None,
         action_context_by_instrument: dict[str, ActionContext] | None = None,
+        evidence_context_by_instrument: dict | None = None,
     ) -> CanonicalSixGatesActivationRun:
         _aware(execution_as_of)
         values = inputs_by_instrument or {}
         contexts = action_context_by_instrument or {}
+        provenance = evidence_context_by_instrument or {}
         if set(values) - set(PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS):
             raise ValueError("SIX_GATES_ACTIVATION_REQUIRES_EXACT_PORTFOLIO_FIVE")
         if set(contexts) - set(PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS):
             raise ValueError("SIX_GATES_ACTIVATION_REQUIRES_EXACT_PORTFOLIO_FIVE")
+        if set(provenance) - set(PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS):
+            raise ValueError("SIX_GATES_ACTIVATION_REQUIRES_EXACT_PORTFOLIO_FIVE")
         outcomes = tuple(
-            self._materialize_one(instrument_id, execution_as_of, values.get(instrument_id), contexts.get(instrument_id))
+            self._materialize_one(instrument_id, execution_as_of, values.get(instrument_id), contexts.get(instrument_id), provenance.get(instrument_id))
             for instrument_id in PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS
         )
         return CanonicalSixGatesActivationRun(execution_as_of, outcomes)
 
     def _materialize_one(
         self, instrument_id: str, execution_as_of: datetime, inputs: GateInput | None,
-        action_context: ActionContext | None,
+        action_context: ActionContext | None, evidence_context=None,
     ):
         stored_scores = tuple(self._governance.list_canonical_decision_scorecards(instrument_id))
         require_gate_source(inputs)
@@ -105,6 +110,7 @@ class CanonicalPortfolioSixGatesActivator:
             registry_version=score.registry_version, scoring_configuration_version=score.configuration_version,
             action_context=action_context, as_of_timestamp=execution_as_of,
             evaluated_at=execution_as_of, inputs=inputs,
+            candidate_score_evidence=score_evidence(score), evidence_context=evidence_context,
         )
         value = canonical_execution_gate_evaluation_from(evaluation, score=score)
         existing = self._governance.get_canonical_execution_gate_evaluation(value.evaluation.id)

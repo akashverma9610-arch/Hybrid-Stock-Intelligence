@@ -7,18 +7,21 @@ from app.gates.engine import ActionContext, ExecutionGateEngine
 from app.services.audit_reconstruction_service import AuditReconstructionService
 from tests.integration.test_decision_scorecard_persistence import persisted
 from tests.unit.test_execution_gates import ASOF, CALENDAR, CONFIG, inputs
+from tests.fixtures.gate_provenance import synthetic_evaluate
+from app.gates.score_provenance import score_evidence
 
 
 def gate_evaluation(card):
     asof = card.as_of_timestamp
     base = inputs()
-    data = replace(base, scorecard_id=card.id, snapshot_as_of_timestamp=asof,
+    data = replace(base, scorecard_id=card.id, raw_decision_score=card.final_score, snapshot_as_of_timestamp=asof,
         surveillance=replace(base.surveillance, effective_at=asof),
         earnings_scheduled_at=asof + timedelta(days=13), earnings_schedule_verified_at=asof)
-    return ExecutionGateEngine(CONFIG, CALENDAR).evaluate(
+    return synthetic_evaluate(ExecutionGateEngine(CONFIG, CALENDAR),
         instrument_id=card.instrument_id, strategy_version=card.strategy_version, registry_version=card.registry_version,
         scoring_configuration_version=card.configuration_version, action_context=ActionContext.FRESH_ENTRY,
         as_of_timestamp=asof, evaluated_at=asof, inputs=data,
+        candidate_score_evidence=score_evidence(card),
     )
 
 

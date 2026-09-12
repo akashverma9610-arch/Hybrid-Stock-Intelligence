@@ -52,8 +52,26 @@ def _fixture(tmp_path, *, raw_score=Decimal("8.5"), config=GATE_CONFIG):
     return repo, run, candidate, original, cloned_score, state
 
 
-def _context(repo, identifier, score=None, *, candidate_id=None):
-    context = HistoricalHoldingGateContext(identifier, "incumbent", candidate_id, "7.0", score, .82,
+def _context(repo, identifier, score=None, *, candidate_id=None, config=GATE_CONFIG):
+    if score is not None and candidate_id is None:
+        # Explicit isolated incumbent artifacts replace the formerly unlinked
+        # raw string. Preserve every original comparison value/outcome.
+        from app.domain.models import Instrument
+        repo.save_instrument(Instrument("incumbent", "INCUMBENT", "MOCK"))
+        source = repo.list_historical_analytical_evaluations("history-run", 1)[0]
+        card = replace(repo.get_decision_scorecard(source.decision_scorecard_id),
+            id=identifier+"-card", instrument_id="incumbent", final_score=Decimal(score), score_status="COMPLETE")
+        repo.save_decision_scorecard(card)
+        result = replace(repo.get_execution_gate_evaluation(source.execution_gate_evaluation_id),
+            id=identifier+"-gate", instrument_id="incumbent", scorecard_id=card.id,
+            raw_decision_score=card.final_score, comparison_score=card.final_score,
+            rotation_adjustment=Decimal("0"), gate_configuration_version=config.version)
+        repo.save_execution_gate_evaluation(result)
+        source = replace(source, evaluation_id=identifier+"-analytics", instrument_id="incumbent",
+            decision_scorecard_id=card.id, execution_gate_evaluation_id=result.id, gate_config_version=config.version)
+        repo.save_historical_analytical_evaluation(source)
+        candidate_id = source.evaluation_id
+    context = HistoricalHoldingGateContext(identifier, "incumbent", candidate_id, score or "7.0", score, .82,
         "2.1", "0", "TECH", ("MISSING_STOP",) if score is None else ())
     repo.save_historical_holding_gate_context(context)
     return context
@@ -88,7 +106,8 @@ def test_portfolio_context_gate_one_and_gate_five_canonical_semantics(tmp_path):
     strict_run = replace(strict_run, fingerprint=backtest_run_fingerprint(strict_run)); repo.save_backtest_run(strict_run)
     repo.append_backtest_event(BacktestEvent("context-strict:event:000001", strict_run.backtest_run_id, BacktestEventType.REPLAY_STARTED, candidate.evaluation_timestamp, 1, candidate.evaluation_timestamp, (), "started", {}, candidate.evaluation_timestamp))
     strict_state = replace(state, backtest_portfolio_state_id="context-strict-state", backtest_run_id=strict_run.backtest_run_id); repo.save_backtest_portfolio_state(strict_state)
-    _strict, result = _evaluate(repo, strict_run, candidate, original, strict_state, strict, (above_context,))
+    strict_context = _context(repo, "strict-source", "7.0", config=strict)
+    _strict, result = _evaluate(repo, strict_run, candidate, original, strict_state, strict, (strict_context,))
     assert _gate(result, "GATE_1_ROTATION").outcome is GateOutcome.INSUFFICIENT_DATA
     assert repo.get_execution_gate_evaluation(original.id) == original and repo.get_decision_scorecard(scorecard.id) == scorecard
 

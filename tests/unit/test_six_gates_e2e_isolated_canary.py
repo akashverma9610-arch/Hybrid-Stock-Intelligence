@@ -14,6 +14,8 @@ from pathlib import Path
 import re
 
 import pytest
+from tests.fixtures.gate_provenance import synthetic_evaluate
+from app.gates.score_provenance import score_evidence
 
 from app.domain.canonical_diagnostic_strategy import (
     CanonicalDiagnosticDefinitionStatus,
@@ -173,12 +175,13 @@ class _CanaryContext:
             repository=self.repository, calendar=ExchangeCalendar("NSE-synthetic-canary"),
             as_of=EXECUTION_AS_OF,
         )
-        return engine.evaluate(
+        return synthetic_evaluate(engine,
             instrument_id=CANARY_INSTRUMENT_ID, strategy_version=self.score.strategy_version,
             registry_version=DIAGNOSTIC_REGISTRY_VERSION,
             scoring_configuration_version=self.score.configuration_version,
             action_context=action_context, as_of_timestamp=EXECUTION_AS_OF,
             evaluated_at=EXECUTION_AS_OF, inputs=self.base_input(**changes),
+            candidate_score_evidence=score_evidence(self.score),
         )
 
 

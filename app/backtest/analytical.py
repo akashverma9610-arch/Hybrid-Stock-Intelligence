@@ -12,6 +12,9 @@ from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
 from app.domain.models import AsOfSnapshot, FinancialObservation, MarketObservation, StrategyVersionReference
 from app.gates.engine import ActionContext, ExecutionGateConfig, ExecutionGateEngine, GateInput, SurveillanceObservation
 from app.gates.version_compatibility import require_gate_source
+from app.gates.score_provenance import score_evidence
+from app.gates.version_compatibility import domain_lineage, gate_evidence_context
+from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.historical.guard import BacktestLookaheadGuard, manifest_fingerprint
 from app.historical.models import HistoricalFact
 from app.registry.canonical import DIAGNOSTIC_REGISTRY_VERSION, DIAGNOSTIC_RULES
@@ -149,7 +152,9 @@ class HistoricalAnalyticalReplayService:
         return ExecutionGateEngine(self.config.gate_config, self.config.calendar).evaluate(
             instrument_id=instrument, strategy_version=self.config.strategy_reference, registry_version=run.registry_version,
             scoring_configuration_version=run.scoring_config_version, action_context=self.config.action_context,
-            as_of_timestamp=at, evaluated_at=at, inputs=gate_input)
+            as_of_timestamp=at, evaluated_at=at, inputs=gate_input,
+            candidate_score_evidence=score_evidence(scorecard),
+            evidence_context=_market_gate_context(snapshot, gate_input, self.config.gate_config, instrument))
 
     def _event(self, run, event_type, context, instrument, *artifact_ids):
         event = BacktestEvent(f"{run.backtest_run_id}:event:{len(self.repository.list_backtest_events(run.backtest_run_id))+1:06d}", run.backtest_run_id,
@@ -203,4 +208,37 @@ def _earnings_schedule(snapshot, instrument):
                 or any(key in item.payload for key in ("period_end", "filing_date", "publication_timestamp"))):
             raise ValueError("GATE_EARNINGS_FINANCIAL_SOURCE_FORBIDDEN")
     item = max(candidates, key=lambda x: x.provenance.market_timestamp)
-    return _as_datetime(item.payload.get("earnings_scheduled_at")), _as_datetime(item.payload.get("earnings_schedule_verified_at")) or item.provenance.market_timestamp
+    # No financial filing or unverified observation timestamp can fill this field.
+    verified = _as_datetime(item.payload.get("earnings_schedule_verified_at"))
+    return (_as_datetime(item.payload.get("earnings_scheduled_at")), verified) if verified is not None else (None, None)
+
+
+def _market_gate_context(snapshot, inputs, config, instrument):
+    refs = []
+    for field in ("surveillance", "earnings_scheduled_at", "earnings_schedule_verified_at"):
+        value = getattr(inputs, field)
+        if value is None:
+            continue
+        key = "asm_stage" if field == "surveillance" else "earnings_scheduled_at"
+        candidates = tuple(x for x in snapshot.observations if x.instrument.id == instrument
+                           and isinstance(x.payload, dict) and key in x.payload)
+        source = max(candidates, key=lambda x: x.provenance.market_timestamp)
+        require_gate_source(source)
+        require_gate_source(source.payload)
+        if (source.validation is None or not source.validation.eligible_for_analysis
+                or not source.provenance.source or not source.provenance.source_identifier):
+            raise ValueError("GATE_MARKET_SOURCE_UNVERIFIED")
+        known = source.provenance.retrieved_timestamp
+        if field.startswith("earnings_"):
+            if source.kind != "corporate_event":
+                raise ValueError("GATE_EARNINGS_SOURCE_KIND_UNVERIFIED")
+            known = inputs.earnings_schedule_verified_at
+            if source.provenance.retrieved_timestamp > known:
+                # It was not known locally at the claimed verification cutoff.
+                raise ValueError("GATE_EARNINGS_KNOWN_AT_UNVERIFIED")
+        refs.append(domain_lineage(field, value, source_id=source.id,
+            source_version="MarketObservation/v1", policy_version=config.version,
+            as_of=source.provenance.market_timestamp, known_at=known,
+            source_fingerprints=(content_fingerprint(source),)))
+    return gate_evidence_context(inputs, as_of=inputs.snapshot_as_of_timestamp,
+        gate_policy_version=config.version, dependencies=tuple(refs)) if refs else None

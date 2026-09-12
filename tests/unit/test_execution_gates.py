@@ -1,6 +1,7 @@
 from dataclasses import replace
 from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
+from tests.fixtures.gate_provenance import synthetic_evaluate
 
 from app.gates.engine import (
     ActionContext, ExchangeCalendar, ExecutionEligibility, ExecutionGateConfig,
@@ -38,7 +39,7 @@ def inputs(**changes):
 
 
 def evaluate(context=ActionContext.FRESH_ENTRY, data=None, config=CONFIG):
-    return ExecutionGateEngine(config, CALENDAR).evaluate(instrument_id="mock-stock", strategy_version="strategy/0.1",
+    return synthetic_evaluate(ExecutionGateEngine(config, CALENDAR), instrument_id="mock-stock", strategy_version="strategy/0.1",
         registry_version="diagnostic-registry-v1", scoring_configuration_version="decision-score-v1", action_context=context,
         as_of_timestamp=ASOF, evaluated_at=ASOF, inputs=data or inputs())
 

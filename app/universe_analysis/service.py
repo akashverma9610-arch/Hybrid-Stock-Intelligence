@@ -820,14 +820,23 @@ def _latest_research_timestamp(snapshot: ResearchSnapshot) -> datetime | None:
 
 def _gates(config, score, diagnostics, evidence, at, strategy, supplied: GateInput | None = None):
     from app.gates.version_compatibility import require_gate_source
+    from app.gates.score_provenance import score_evidence
     for source in (score, supplied, *diagnostics):
         require_gate_source(source)
+    # The existing internal input factory may supply an explicit provenance
+    # pair. Raw legacy values never receive manufactured source metadata.
+    binding = None
+    if type(supplied) is tuple:
+        if len(supplied) != 2:
+            raise UniverseAnalysisError("GATE_BOUND_INPUT_UNVERIFIED")
+        supplied, binding = supplied
     values = supplied or GateInput(score.id, score.final_score, evidence.snapshot.id, at, diagnostic_ids=tuple(item.record.id for item in diagnostics))
     if values.scorecard_id != score.id or values.snapshot_id != evidence.snapshot.id or values.snapshot_as_of_timestamp != at:
         raise UniverseAnalysisError("Gate inputs must remain bound to this instrument's frozen analysis snapshot and scorecard.")
     return ExecutionGateEngine(config, ExchangeCalendar("NSE")).evaluate(instrument_id=evidence.instrument_id, strategy_version=strategy,
         registry_version=DIAGNOSTIC_REGISTRY_VERSION, scoring_configuration_version=score.configuration_version,
-        action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=at, evaluated_at=at, inputs=values)
+        action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=at, evaluated_at=at, inputs=values,
+        candidate_score_evidence=score_evidence(score), evidence_context=binding)
 
 
 def _stock_result(instrument, output, score, gates, at):

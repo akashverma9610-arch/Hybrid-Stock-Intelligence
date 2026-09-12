@@ -1,7 +1,7 @@
 """Pure, rejection-only registry admission; compatibility is not gate clearance.
 
-Legacy nominal inputs remain V1. Optional lineage binds supplied dependencies
-to the complete input; it cannot replace inputs or confer execution authority.
+Nominal validation does not assign source provenance. Domain lineage binds
+supplied dependencies to the complete input; it cannot confer authority.
 No registry loading, clock, repository or action implementation lives here.
 """
 from dataclasses import dataclass, fields
@@ -92,8 +92,8 @@ def gate_input_fingerprint(inputs):
 class GateEvidenceLineage:
     """Descriptive provenance for one named GateInput field; no evidence value."""
     input_field: str
-    registry_version: str
-    mode: RegistryMode
+    registry_version: str | None
+    mode: RegistryMode | None
     strategy_version: StrategyVersionReference | None
     policy_version: str | None
     as_of: datetime
@@ -101,13 +101,30 @@ class GateEvidenceLineage:
     score_eligible: bool
     execution_eligible: bool
     portfolio_action_eligible: bool
+    evidence_family: str = "DIAGNOSTIC_SCORE"
+    source_id: str | None = None
+    source_version: str | None = None
+    known_at: datetime | None = None
+    value_fingerprint: str | None = None
 
     def __post_init__(self):
         from app.gates.engine import GateInput
         if self.input_field not in {f.name for f in fields(GateInput)}:
             raise GateVersionBlocked("GATE_LINEAGE_INPUT_FIELD_UNKNOWN")
-        if self.registry_version not in (DIAGNOSTIC_REGISTRY_VERSION, V2_VERSION) or type(self.mode) is not RegistryMode:
-            raise GateVersionBlocked(CROSS_REGISTRY)
+        if self.evidence_family == "DIAGNOSTIC_SCORE":
+            if self.registry_version not in (DIAGNOSTIC_REGISTRY_VERSION, V2_VERSION) or type(self.mode) is not RegistryMode:
+                raise GateVersionBlocked(CROSS_REGISTRY)
+        else:
+            if self.evidence_family != DOMAIN_FIELDS.get(self.input_field):
+                raise GateVersionBlocked("GATE_AUTHORITY_DOMAIN_MISMATCH")
+            if self.registry_version is not None or self.mode is not None or self.strategy_version is not None:
+                raise GateVersionBlocked("GATE_NON_REGISTRY_FALSE_PROVENANCE")
+            if (not _text(self.source_id) or not _text(self.source_version) or not _text(self.policy_version)
+                    or not _fingerprint(self.value_fingerprint)):
+                raise GateVersionBlocked("GATE_DOMAIN_SOURCE_REQUIRED")
+            if self.score_eligible is not False or self.portfolio_action_eligible is not False:
+                raise GateVersionBlocked("GATE_DOMAIN_AUTHORITY_CONTRADICTION")
+            object.__setattr__(self, "known_at", _utc(self.known_at))
         if self.strategy_version is not None and (type(self.strategy_version) is not StrategyVersionReference
                 or not _text(self.strategy_version.strategy_id) or not _text(self.strategy_version.version)):
             raise GateVersionBlocked("GATE_LINEAGE_STRATEGY_INVALID")
@@ -147,7 +164,7 @@ class GateEvidenceContext:
             if type(item) is not GateEvidenceLineage:
                 raise GateVersionBlocked("GATE_LINEAGE_DEPENDENCY_INVALID")
             item.__post_init__()
-            if item.as_of > self.as_of:
+            if item.as_of > self.as_of or (item.known_at is not None and item.known_at > self.as_of):
                 raise GateVersionBlocked("GATE_LINEAGE_FUTURE_EVIDENCE")
         keys = tuple(item.input_field for item in self.dependencies)
         if len(set(keys)) != len(keys):
@@ -227,4 +244,57 @@ def require_gate_inputs(inputs, *, registry_version=DIAGNOSTIC_REGISTRY_VERSION,
                 or evidence_context.input_fingerprint != gate_input_fingerprint(inputs)):
             raise GateVersionBlocked("GATE_LINEAGE_BINDING_MISMATCH")
         for source in evidence_context.dependencies:
-            require_gate_source(source)
+            if source.evidence_family == "DIAGNOSTIC_SCORE":
+                require_gate_source(source)
+            elif source.execution_eligible is not True:
+                raise GateVersionBlocked("GATE_DOMAIN_EXECUTION_INELIGIBLE")
+
+
+# These inputs have independent governed authority, not a diagnostic registry.
+DOMAIN_FIELDS = {
+    "expected_incremental_return": "USER_APPROVED_CONTEXT",
+    "modeled_switching_friction": "USER_APPROVED_CONTEXT",
+    "holding_entry_date": "PORTFOLIO_STATE",
+    "atr_expansion": "MARKET_DATA",
+    "surveillance": "SURVEILLANCE",
+    "trade_plan": "TRADE_PLAN",
+    "exposure": "RISK_ALLOCATION",
+    "earnings_scheduled_at": "EARNINGS_CALENDAR",
+    "earnings_schedule_verified_at": "EARNINGS_CALENDAR",
+}
+
+
+def field_fingerprint(value):
+    return content_fingerprint(value.isoformat() if type(value) is date else value)
+
+
+def domain_lineage(field, value, *, source_id, source_version, policy_version,
+                   as_of, known_at, source_fingerprints):
+    """Explicit source-domain binding. No diagnostic version is synthesized.
+
+    Internal producers must obtain the authority metadata from their original
+    source. This content receipt is not an authenticated external attestation.
+    """
+    return GateEvidenceLineage(field, None, None, None, policy_version, as_of,
+                               source_fingerprints, False, True, False,
+                               DOMAIN_FIELDS[field], source_id, source_version, known_at,
+                               field_fingerprint(value))
+
+
+def require_domain_provenance(inputs, *, evidence_context):
+    dependencies = {} if evidence_context is None else {x.input_field: x for x in evidence_context.dependencies}
+    for name, family in DOMAIN_FIELDS.items():
+        value = getattr(inputs, name)
+        if value is None:
+            continue  # Missing evidence keeps the exact existing gate semantics.
+        ref = dependencies.get(name)
+        if ref is None or ref.evidence_family != family:
+            raise GateVersionBlocked("GATE_DOMAIN_PROVENANCE_REQUIRED:" + name)
+        if ref.value_fingerprint != field_fingerprint(value):
+            raise GateVersionBlocked("GATE_DOMAIN_VALUE_MISMATCH:" + name)
+        if name == "surveillance" and ref.source_id != value.id:
+            raise GateVersionBlocked("GATE_SURVEILLANCE_IDENTITY_MISMATCH")
+        if name == "trade_plan" and ref.source_id != value.id:
+            raise GateVersionBlocked("GATE_PLAN_IDENTITY_MISMATCH")
+        if name == "earnings_schedule_verified_at" and value != ref.known_at:
+            raise GateVersionBlocked("GATE_CALENDAR_KNOWN_AT_MISMATCH")

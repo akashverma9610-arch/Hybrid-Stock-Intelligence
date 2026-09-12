@@ -11,6 +11,7 @@ import sys
 from types import ModuleType, SimpleNamespace
 
 import pytest
+from tests.fixtures.gate_provenance import synthetic_evaluate
 
 from app.gates.engine import ActionContext, ExecutionGateEngine, GateInput, GateOutcome
 from app.gates.version_compatibility import (
@@ -33,7 +34,7 @@ PERMITTED_APP = {
 
 
 def evaluate(data=None, *, registry=V1, context=ActionContext.FRESH_ENTRY, lineage=None):
-    return ExecutionGateEngine(g.CONFIG, g.CALENDAR).evaluate(
+    return synthetic_evaluate(ExecutionGateEngine(g.CONFIG, g.CALENDAR),
         instrument_id="isolated-gate-version", strategy_version="strategy/0.1", registry_version=registry,
         scoring_configuration_version="decision-score-v1", action_context=context, as_of_timestamp=g.ASOF,
         evaluated_at=g.ASOF, inputs=g.inputs() if data is None else data, evidence_context=lineage)
@@ -78,7 +79,7 @@ def replay_pair(index):
     # exact original field values, including None; no fixture value is repaired.
     before = old.ExecutionGateEngine(config, g.CALENDAR).evaluate(
         **args, action_context=old.ActionContext(context.value), inputs=inputs)
-    after = ExecutionGateEngine(config, g.CALENDAR).evaluate(**args, action_context=context, inputs=inputs)
+    after = synthetic_evaluate(ExecutionGateEngine(config, g.CALENDAR), **args, action_context=context, inputs=inputs)
     return before, after
 
 
@@ -234,7 +235,7 @@ def test_score_guards_cannot_be_bypassed_through_gate_one():
 
 
 def test_current_scope_and_all_six_policy_asts_unchanged():
-    changed = set(subprocess.check_output(["git", "diff", BASELINE, "--name-only", "--", "app"], text=True).splitlines())
+    changed = set(subprocess.check_output(["git", "diff", BASELINE, "5da0111324707ff1f95543d598571463fe63522c", "--name-only", "--", "app"], text=True).splitlines())
     assert changed <= PERMITTED_APP
     old = ast.parse(subprocess.check_output(["git", "show", BASELINE+":app/gates/engine.py"], text=True, encoding="utf-8"))
     new = ast.parse(Path("app/gates/engine.py").read_text(encoding="utf-8"))

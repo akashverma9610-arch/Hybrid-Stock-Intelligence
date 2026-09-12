@@ -5,6 +5,7 @@ from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 
 import pytest
+from tests.fixtures.gate_provenance import synthetic_evaluate
 
 from app.gates.engine import (
     ActionContext, ExchangeCalendar, ExecutionGateEngine, GateInput, GateOutcome, PortfolioExposure,
@@ -82,25 +83,25 @@ def test_exact_approved_values_and_friction_require_explicit_user_costs() -> Non
 def test_gate_one_is_strictly_positive_and_gate_three_uses_eligible_sessions() -> None:
     policy = _policy()
     engine = ExecutionGateEngine(policy.gate_config, CALENDAR)
-    zero = engine.evaluate(instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.ROTATE_IN, as_of_timestamp=T, evaluated_at=T, inputs=_input(expected_incremental_return=Decimal("1"), modeled_switching_friction=Decimal("1")))
+    zero = synthetic_evaluate(engine, instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.ROTATE_IN, as_of_timestamp=T, evaluated_at=T, inputs=_input(expected_incremental_return=Decimal("1"), modeled_switching_friction=Decimal("1")))
     assert _decision(zero, "GATE_1_ROTATION").outcome is GateOutcome.FAIL
-    weekend = engine.evaluate(instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input())
+    weekend = synthetic_evaluate(engine, instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input())
     assert _decision(weekend, "GATE_3_SURVEILLANCE").outcome is GateOutcome.PASS
     for observation in (
         replace(_input().surveillance, asm_stage=2), replace(_input().surveillance, gsm_stage=1), replace(_input().surveillance, circuit_limit=Decimal("0.05")),
     ):
-        result = engine.evaluate(instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input(surveillance=observation))
+        result = synthetic_evaluate(engine, instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input(surveillance=observation))
         assert _decision(result, "GATE_3_SURVEILLANCE").outcome is GateOutcome.FAIL
 
 
 def test_tranche_heat_earnings_and_pit_contract_fail_closed() -> None:
     policy = _policy()
     engine = ExecutionGateEngine(policy.gate_config, CALENDAR)
-    invalid = engine.evaluate(instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input(trade_plan=replace(_input().trade_plan, t1_reduction=Decimal("0.40")), exposure=None))
+    invalid = synthetic_evaluate(engine, instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input(trade_plan=replace(_input().trade_plan, t1_reduction=Decimal("0.40")), exposure=None))
     assert _decision(invalid, "GATE_4_TRADE_PLAN").outcome is GateOutcome.FAIL
     assert _decision(invalid, "GATE_5_HEAT").outcome is GateOutcome.INSUFFICIENT_DATA
-    near = engine.evaluate(instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input(earnings_scheduled_at=T + timedelta(days=4)))
-    managed = engine.evaluate(instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.HOLD_EXISTING, as_of_timestamp=T, evaluated_at=T, inputs=_input(earnings_scheduled_at=T + timedelta(days=4)))
+    near = synthetic_evaluate(engine, instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=T, evaluated_at=T, inputs=_input(earnings_scheduled_at=T + timedelta(days=4)))
+    managed = synthetic_evaluate(engine, instrument_id="NSE:TEST", strategy_version="v1", registry_version="v1", scoring_configuration_version="v1", action_context=ActionContext.HOLD_EXISTING, as_of_timestamp=T, evaluated_at=T, inputs=_input(earnings_scheduled_at=T + timedelta(days=4)))
     assert _decision(near, "GATE_6_EARNINGS").outcome is GateOutcome.FAIL
     assert _decision(managed, "GATE_6_EARNINGS").outcome is GateOutcome.PASS
     with pytest.raises(ValueError, match="LOOKAHEAD"):

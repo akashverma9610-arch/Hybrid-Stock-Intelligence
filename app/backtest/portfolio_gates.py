@@ -5,8 +5,12 @@ from decimal import Decimal
 
 from app.gates.engine import ActionContext, ExecutionGateConfig, ExecutionGateEngine, GateInput, PortfolioExposure
 from app.gates.version_compatibility import require_gate_source
+from app.gates.score_provenance import score_evidence
+from app.gates.version_compatibility import GateVersionBlocked, domain_lineage, gate_evidence_context
+from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.historical.guard import manifest_fingerprint
 from .models import BacktestEvent, BacktestEventType, HistoricalPortfolioGateEvaluation
+from .portfolio import state_dump
 
 
 class HistoricalPortfolioGateReplayService:
@@ -76,16 +80,54 @@ class HistoricalPortfolioGateReplayService:
                     raise ValueError("GATE_HOLDING_SOURCE_UNVERIFIED")
                 require_gate_source(source)
             require_gate_source(context.comparison_score)
+        proofs = {}
+        for context in contexts:
+            if context.comparison_score is None:
+                continue
+            if not context.historical_analytical_evaluation_id:
+                raise GateVersionBlocked("GATE_HOLDING_SOURCE_UNVERIFIED")
+            source = self.repository.get_historical_analytical_evaluation(context.historical_analytical_evaluation_id)
+            if source.instrument_id != context.instrument_id or source.evaluation_timestamp > evaluation_timestamp:
+                raise GateVersionBlocked("GATE_HOLDING_SOURCE_UNVERIFIED")
+            card = self.repository.get_decision_scorecard(source.decision_scorecard_id)
+            result = self.repository.get_execution_gate_evaluation(source.execution_gate_evaluation_id)
+            proof = score_evidence(card, comparison_result=result)
+            if (card.instrument_id != context.instrument_id or result is None or str(result.comparison_score) != context.comparison_score
+                    or str(card.final_score) != context.raw_score):
+                raise GateVersionBlocked("GATE_HOLDING_SCORE_BINDING_MISMATCH")
+            if context.context_id in proofs:
+                raise GateVersionBlocked("GATE_HOLDING_SOURCE_DUPLICATE_OR_CONFLICTED")
+            proofs[context.context_id] = proof
+        # Preserve the pre-existing portfolio selection order. All sources above
+        # are validated, so later mixed records cannot be ignored.
         incumbent=next((x for x in contexts if x.comparison_score is not None),None)
         comparison=Decimal(incumbent.comparison_score) if incumbent else None
         exposure=self._exposure(state,candidate_sector,candidate_risk_amount,candidate_allocation)
         inputs=GateInput(scorecard.id,scorecard.final_score,state.snapshot.snapshot_id,evaluation_timestamp,comparison_score=comparison,
             expected_incremental_return=expected_incremental_return,modeled_switching_friction=modeled_switching_friction,
             exposure=exposure,evidence_ids=original.evidence_ids,diagnostic_ids=original.diagnostic_ids)
+        refs = []
+        # These are explicitly frozen hypothetical replay inputs, not claimed
+        # historical financial/registry facts or live portfolio authority.
+        scenario = content_fingerprint(dict(run=run.fingerprint, state=state.backtest_portfolio_state_id,
+            snapshot=state_dump(state), sector=candidate_sector, risk=candidate_risk_amount,
+            allocation=candidate_allocation, expected_return=expected_incremental_return,
+            friction=modeled_switching_friction))
+        for field in ("exposure", "expected_incremental_return", "modeled_switching_friction"):
+            value = getattr(inputs, field)
+            if value is not None:
+                refs.append(domain_lineage(field, value, source_id=state.snapshot.snapshot_id,
+                    source_version=run.backtest_config_version, policy_version=gate_config.version,
+                    as_of=state.evaluation_timestamp, known_at=state.evaluation_timestamp,
+                    source_fingerprints=(scenario,)))
+        binding = gate_evidence_context(inputs, as_of=evaluation_timestamp,
+            gate_policy_version=gate_config.version, dependencies=tuple(refs)) if refs else None
         return ExecutionGateEngine(gate_config,self.calendar).evaluate(instrument_id=candidate.instrument_id,
             strategy_version=scorecard.strategy_version,registry_version=run.registry_version,
             scoring_configuration_version=run.scoring_config_version,action_context=ActionContext.ROTATE_IN,
-            as_of_timestamp=evaluation_timestamp,evaluated_at=evaluation_timestamp,inputs=inputs)
+            as_of_timestamp=evaluation_timestamp,evaluated_at=evaluation_timestamp,inputs=inputs,
+            candidate_score_evidence=score_evidence(scorecard),
+            incumbent_score_evidence=proofs[incumbent.context_id] if incumbent else None, evidence_context=binding)
 
     @staticmethod
     def _exposure(state, candidate_sector, candidate_risk, candidate_allocation):

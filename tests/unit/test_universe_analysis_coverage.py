@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
+from tests.fixtures.gate_provenance import synthetic_context
 
 from app.crowd.models import CrowdCategory, CrowdObservation, NewsEvent
 from app.domain.models import (
@@ -132,6 +133,13 @@ def _gate_input(instrument, evidence, score):
                      earnings_scheduled_at=T + timedelta(days=14), earnings_schedule_verified_at=T)
 
 
+def _provenance_factory(factory):
+    def produce(instrument, evidence, score):
+        value = factory(instrument, evidence, score)
+        return value, synthetic_context(value, _gate_config())
+    return produce
+
+
 def test_rich_stored_fixture_reaches_all_61_without_private_api_exposure() -> None:
     evidence = StockDiagnosticInputAssembler(StoredFacts(rich_observations())).assemble(_instrument(), T)
     result = Canonical61DiagnosticRunner().run(evidence)
@@ -152,7 +160,7 @@ def test_coverage_preflight_is_persisted_and_missing_required_history_is_not_neu
     universe = build_universe_snapshot(snapshot_id="universe-rich", as_of=T, source="OFFICIAL", instruments=(candidate,))
     store.save_universe_snapshot(universe)
     service = UniverseAnalysisService(universe=StoredUniverse((candidate,)), assembler=StockDiagnosticInputAssembler(StoredFacts(rich_observations())),
-                                      runner=Canonical61DiagnosticRunner(), store=store, gate_config=_gate_config(), gate_input_factory=_gate_input, clock=lambda: T)
+                                      runner=Canonical61DiagnosticRunner(), store=store, gate_config=_gate_config(), gate_input_factory=_provenance_factory(_gate_input), clock=lambda: T)
     requested = service.request(universe_id="NSE", universe_as_of=T, as_of=T, universe_snapshot_id=universe.snapshot_id)
     result = service.run_next_batch()
     assert result is not None and result.stage is UniverseAnalysisStage.CANDIDATES_MATERIALIZED
@@ -206,7 +214,7 @@ def test_e2e_candidates_are_materialized_only_from_job_outputs_and_reused_by_rot
         return value
 
     service = UniverseAnalysisService(universe=StoredUniverse(instruments), assembler=StockDiagnosticInputAssembler(StoredFacts(observations)),
-                                      runner=Canonical61DiagnosticRunner(), store=store, gate_config=_gate_config(), gate_input_factory=gate_input, clock=lambda: T)
+                                      runner=Canonical61DiagnosticRunner(), store=store, gate_config=_gate_config(), gate_input_factory=_provenance_factory(gate_input), clock=lambda: T)
     requested = service.request(universe_id="NSE", universe_as_of=T, as_of=T, batch_size=2, universe_snapshot_id=universe.snapshot_id)
     while service.run_next_batch() is not None:
         pass
@@ -271,7 +279,7 @@ def test_job_stages_are_immutable_and_resume_does_not_repeat_coverage_or_candida
     universe = build_universe_snapshot(snapshot_id="universe-resume", as_of=T, source="OFFICIAL", instruments=(candidate,))
     store.save_universe_snapshot(universe)
     service = UniverseAnalysisService(universe=StoredUniverse((candidate,)), assembler=StockDiagnosticInputAssembler(StoredFacts(rich_observations())),
-                                      runner=Canonical61DiagnosticRunner(), store=store, gate_config=_gate_config(), gate_input_factory=_gate_input, clock=lambda: T)
+                                      runner=Canonical61DiagnosticRunner(), store=store, gate_config=_gate_config(), gate_input_factory=_provenance_factory(_gate_input), clock=lambda: T)
     request = service.request(universe_id="NSE", universe_as_of=T, as_of=T, batch_size=1, universe_snapshot_id=universe.snapshot_id)
     completed = service.run_next_batch()
     assert completed is not None and completed.stage is UniverseAnalysisStage.CANDIDATES_MATERIALIZED

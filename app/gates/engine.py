@@ -8,6 +8,7 @@ from typing import Mapping, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.gates.version_compatibility import GateEvidenceContext
+    from app.gates.score_provenance import GateScoreEvidence
 
 
 class ActionContext(str, Enum):
@@ -189,13 +190,22 @@ class ExecutionGateEngine:
     def evaluate(self, *, instrument_id: str, strategy_version: object, registry_version: str,
                  scoring_configuration_version: str, action_context: ActionContext,
                  as_of_timestamp: datetime, evaluated_at: datetime, inputs: GateInput,
-                 evidence_context: GateEvidenceContext | None = None) -> ExecutionGateEvaluation:
+                 evidence_context: GateEvidenceContext | None = None,
+                 candidate_score_evidence: GateScoreEvidence | None = None,
+                 incumbent_score_evidence: GateScoreEvidence | None = None) -> ExecutionGateEvaluation:
         from app.gates.version_compatibility import require_gate_inputs, require_gate_source
         require_gate_source(strategy_version)
         require_gate_inputs(inputs, registry_version=registry_version, as_of=as_of_timestamp,
                             gate_policy_version=getattr(self.config, "version", None), evidence_context=evidence_context)
         if inputs.snapshot_as_of_timestamp != as_of_timestamp:
             raise ValueError("Gate inputs must be an approved as-of snapshot matching the requested evaluation time.")
+        from app.gates.score_provenance import require_score_provenance
+        from app.gates.version_compatibility import require_domain_provenance
+        require_score_provenance(inputs, instrument_id=instrument_id, strategy_version=strategy_version,
+                                 scoring_version=scoring_configuration_version, gate_version=self.config.version,
+                                 as_of=as_of_timestamp, candidate=candidate_score_evidence,
+                                 incumbent=incumbent_score_evidence)
+        require_domain_provenance(inputs, evidence_context=evidence_context)
         unresolved = self.config.unresolved()
         decisions = (
             self._rotation(action_context, inputs, unresolved), self._velocity(action_context, as_of_timestamp, inputs, unresolved),
