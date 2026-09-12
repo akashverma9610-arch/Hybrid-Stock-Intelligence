@@ -2,9 +2,12 @@
 
 Status: `PROPOSED / NOT_ACTIVE / DOCUMENTATION_ONLY`.
 
-Candidate: `execution-gate-policy-v2-proposed / v2-proposal.1`.
+Candidate: `execution-gate-policy-v2-proposed / v2-proposal.2`.
 Parent authority: `six-gates-production-v1 / v1`.
-Audited baseline: `faa4394b3f4b77a538133a5de4f75f7d135d9e1e`.
+Repair baseline: `3543c32cd0257dfacecc2498e904b7bc40d6b1d0`.
+Supersedes proposal `.1` at that commit; its historical content remains in Git.
+The unchanged V1 source pins originate at
+`faa4394b3f4b77a538133a5de4f75f7d135d9e1e` and still match the repair baseline.
 
 This is the successor **proposal**, not approval, a registered policy, a shadow
 runtime, or an active evaluator. It records the accepted
@@ -18,6 +21,14 @@ knowledge and does not establish an earlier earnings date.
 The [machine-readable proposal](EARNINGS_BLACKOUT_POLICY_V2_PROPOSAL.json) is
 normative together with this document. Neither overrides active V1. Any conflict
 between them blocks approval; neither is permission to implement around the other.
+
+Final decision: **`B. VERIFIED_EVENT_VETO_GATE_RECOMMENDED`**.
+
+This is a material, explicit proposed risk-acceptance change: lack of a verified
+veto may cease to prohibit fresh-entry eligibility **without becoming clearance**.
+It is not a silent bypass of V1 or proposal `.1`. Human approval, a calibrated
+horizon and the activation prerequisites below are still required. No source
+research is repeated and no gate runtime is changed in this repair.
 
 ## Frozen state and versioning
 
@@ -54,17 +65,61 @@ production-policy, source-authority, and version-compatibility files. Gate 1–5
 thresholds, order, arithmetic, authority, and outcomes are unchanged. V1 Gate 6
 and its five-session configuration are also pinned, not patched.
 
+## Actual runtime aggregation and the liveness defect
+
+The audit reads [ExecutionGateEngine.evaluate](../../app/gates/engine.py), the
+[production activator](../../app/portfolio/canonical_six_gates_activation.py),
+[canonical record](../../app/portfolio/canonical_six_gates.py),
+[universe consumer](../../app/universe_analysis/service.py), and
+[signal lifecycle](../../app/signals/engine.py), not just policy documents.
+
+| Runtime question | Actual current behavior |
+| --- | --- |
+| All gates must pass? | The engine emits exactly six decisions. Any `FAIL` yields `BLOCKED`; otherwise any `INSUFFICIENT_DATA` yields `INSUFFICIENT_DATA`; only six `PASS` results yield `EXECUTABLE`. |
+| Does insufficient data inhibit entry eligibility? | Yes. It is not an abstention. A simultaneous `FAIL` takes precedence in aggregate status; both failed/insufficient ID lists remain recorded. |
+| Can a gate abstain/not-veto? | There is no such `GateOutcome`. The enum is exactly `PASS`, `FAIL`, `INSUFFICIENT_DATA`. |
+| `NOT_APPLICABLE`? | No separate gate outcome. Gate 1 non-rotation, Gate 2 no holding-management context, and Gate 6 existing-management exemptions express non-applicability as `PASS` with explanatory detail, after admission. |
+| Is a veto-only mode implemented? | No. The existing reducer could compose its explicit versioned mapping into the same three outcomes, but a Gate-6-specific approved mode and evidence adapter do not yet exist. |
+| Does a source failure automatically yield a gate result? | Not necessarily: source/version/score/domain admission precedes all formulas and can reject evaluation. Existing unavailable calendar authority must not be caught and converted to `PASS`. |
+| Is `ENTRY_READY` the engine's return enum? | No: it returns analytical `ExecutionEligibility`. Universe opportunities require `EXECUTABLE`; signals require their configured gate status plus other conditions. `STRUCTURAL_ENTRY_READY` is a separate Pre-Breakout structural state, not six-gate authorization. Brain context matching proves lineage, not eligibility. |
+
+The prior proposal maps `BLOCKED → FAIL`, `UNKNOWN → INSUFFICIENT_DATA` and has
+no supported `CLEAR`. Hence the set of possible fresh-entry Gate-6 outcomes
+contains no `PASS`. Even with Gates 1–5 all passing, **100% of fresh-entry
+evaluations would be ineligible under that proposed state space**. This is a
+logical deadlock, not an empirical estimate of source coverage or market entries.
+It persists even after approving a horizon unless the model is repaired. Existing
+management exemptions do not solve fresh-entry liveness.
+
+## Clearance versus veto: policy choice
+
+Clearance is positive proof that no blocking event exists in the governed scope.
+A veto is positive proof of a qualifying blocking event. `NO_VETO_ESTABLISHED`
+is only a statement about admitted evidence at the cutoff; neither a successful
+query nor a failed/partial one establishes absence of real earnings risk.
+
+| Model | Safety / residual risk | Source feasibility | Entries inhibited / usability / liveness |
+| --- | --- | --- | --- |
+| A — mandatory clearance | Avoids entry while earnings absence is unproven, but over-blocking/missed opportunities remain. | No approved complete negative-calendar proof exists in the accepted record. | All fresh entries structurally inhibited while `CLEAR` is unsupported; no live pilot entry path. No empirical percentage is claimed. |
+| B — verified-event veto | Blocks proven event risk; explicitly accepts unobserved-event and source-gap exposure on a no-veto path. Not equally protective as Model A and never called safe. | Can use existing positive-event/coverage/known-at contracts once their producer and mode are admitted; does not require negative completeness. | At least one future path exists. Actual veto, unknown-admission and missed-event rates require shadow data; no forecast percentage. |
+
+Recommend **B**, with source uncertainty separated from policy/admission failure.
+It preserves a usable prospective research pilot without claiming complete
+calendar certainty. Integrity conflicts and an unevaluable retained event still
+fail closed; they are not converted into no veto. This is one veto-style Gate 6,
+not a hybrid requiring negative clearance on another path or a seventh gate.
+
 ## Exact V1 → proposed V2 difference
 
 | Aspect | Existing V1 (retained) | Proposed V2 only |
 | --- | --- | --- |
-| Name | Five-Trading-Day Pre-Earnings Blackout | Verified Earnings Event Risk Window |
+| Name | Five-Trading-Day Pre-Earnings Blackout | Verified Earnings Event Veto |
 | Purpose | Prevent fresh entries immediately before scheduled earnings. | Prevent fresh-entry authorization when verified, PIT-valid imminent scheduled results carry binary gap/repricing risk inside an approved execution-risk window. |
-| Positive block | After authority admission, `_blackout` fails when scheduled time is at/after as-of and existing calendar distance is at most configured five sessions. | `BLOCKED` only when all verified-event predicates below and approved window membership hold. Never inherit five. |
+| Positive block | After authority admission, `_blackout` fails when scheduled time is at/after as-of and existing calendar distance is at most configured five sessions. | `VETO → FAIL` only when all verified-event predicates below and approved window membership hold. Never inherit five. |
 | Schedule inputs | `earnings_scheduled_at` and `earnings_schedule_verified_at` scalar datetimes; separate source-authority boundary. | Exact identity, qualifying official purpose, versioned event/payload lineage, HSI-local first observation, effective lifecycle, and governed relevant coverage/freshness. |
 | PIT | Missing/future verification is insufficient; upstream authority/lineage checks also apply. | Each positive fact and lifecycle revision is visible only at its own verified HSI-local known-at; source-public time retained separately. |
-| Absence | Missing scalar schedule/verification is `INSUFFICIENT_DATA`; official source contract has `absence_is_pass=False`. | `UNKNOWN`; never infer `CLEAR` from no row. |
-| Outside window / passed date | Admitted scalar path returns `PASS` outside configured blackout, including a past scheduled time. This is not a claim that current source admission is ready. | Removing a particular positive block does not prove no other event. Without separately approved negative clearance, fresh-entry result is `UNKNOWN / CLEAR_UNSUPPORTED`. |
+| Absence | Missing scalar schedule/verification is `INSUFFICIENT_DATA`; official source contract has `absence_is_pass=False`. | After approved mode/producer admission, `NO_VETO_ESTABLISHED → PASS` for composition, with `EARNINGS_CLEARANCE=UNVERIFIED` and source warnings. Absence is not clearance. This mapping is a new V2 policy, not V1 behavior. |
+| Outside window / passed date | Admitted scalar path returns `PASS` outside configured blackout, including a past scheduled time. This is not a claim that current source admission is ready. | A deterministically non-blocking event may yield no veto if no other retained unresolved/proven blocking event exists; clearance remains unverified. |
 | Horizon | Human-approved `blackout_sessions=5`; historical V1 unchanged. | `EVENT_RISK_HORIZON=POLICY_UNSET`; value/unit/boundary interpretation absent; calibration and approval required. |
 | Revision/cancellation | `_blackout` has no lifecycle field; repository schedule selection handles lineage separately. | Future adapter composes known-at and lifecycle before evaluation; revision/cancellation affects only its own visible linked event from its own known-at. |
 | Existing holdings | Four management action contexts are exempt from this gate. | Same scope exemption; no liquidation rule, no market-wide `CLEAR`, no all-gates pass. |
@@ -72,7 +127,7 @@ and its five-session configuration are also pinned, not patched.
 ## Candidate hard-block contract
 
 This is a declarative policy, not an implemented decision function. In an approved
-future version, **all** the following must hold for a scoped entry to be `BLOCKED`:
+future version, **all** the following must hold for a scoped entry to be `VETO`:
 
 - Exact canonical instrument match through the existing identity bridge; no
   symbol-only, fuzzy, proxy, or predicted mapping.
@@ -87,10 +142,11 @@ future version, **all** the following must hold for a scoped entry to be `BLOCKE
 - Effective, conflict-free schedule/revision lineage at that local cutoff. No
   cancelled, superseded, unresolved, or completed event may provide this positive
   future-event block. Current/source-public state cannot replace historical state.
-- Relevant source coverage and revision freshness meet an approved, effective
-  contract. Partial, stale, failed, conflicting, or unproven coverage stays unknown.
-  A complete historical archive for every company is not required to admit a
-  particular adequately covered positive event.
+- The positive event's relevant lineage and revision freshness meet an approved,
+  effective contract. Broad coverage may be partial without invalidating an
+  independently admitted positive event. A subsequent query failure cannot erase
+  a still-valid veto. If a retained event becomes stale/unevaluable, the result is
+  `UNDETERMINED`, not no veto. Complete negative coverage is not required.
 - Exact horizon policy identity/version/fingerprint, approved and effective at
   the evaluation as-of, proves membership of the event in that risk window.
   Missing/ambiguous policy or unsupported timestamp precision is not membership.
@@ -126,31 +182,110 @@ datetime does not express both. Do not convert a date-only board meeting to
 midnight, exchange open, or presumed results release time. Horizon governance
 must explicitly define accepted precision, session inclusion/exclusion and event
 end semantics using the existing exchange calendar. Until then, unsupported
-precision is `UNKNOWN`, not fabricated membership or clearance. A board-meeting
+precision is `UNDETERMINED`, not fabricated membership or clearance. A board-meeting
 date is not automatically an actual earnings-publication timestamp.
 
-## Output, scope, and causal truth table
+## Minimal separate source-state / gate-action contract
 
-Proposed presentation vocabulary is `BLOCKED / UNKNOWN / CLEAR`. Only the first
-two are conditionally supportable; `clear_support_state=CLEAR_UNSUPPORTED`.
-Reuse existing `GateOutcome`: `BLOCKED → FAIL`, `UNKNOWN → INSUFFICIENT_DATA`.
-`FAIL` means a verified **entry-risk restriction**, not a bad stock. `UNKNOWN`
-means unresolved evidence/policy; it is neither `PASS` nor `FAIL`. No new enum,
-gate, or engine is implemented. Overall execution still composes all six gates.
-Gate results remain eligibility **evidence**, not broker/order authority. This
-proposal authorizes no automatic trade, portfolio mutation, or capital deployment.
+Do not replace the canonical source states with a parallel calendar enum. Retain
+existing `CoverageState` (`COMPLETE / PARTIAL / FAILED / UNPROVEN / CONFLICTED`),
+`EarningsScheduleFreshnessState` (`FRESH / STALE / UNPROVEN / SOURCE_FAILED`),
+`EarningsScheduleAbsenceState`, event lifecycle and immutable evidence references.
+These remain descriptions of available evidence, not execution conclusions.
+Existing candidate/store `gate_eligible=False` and coverage
+`gate6_clearance=False` guards remain unchanged. A future approved gate mode must
+interpret admitted evidence; it cannot flip those guards into clearance proof.
 
-| Condition for an entry-scoped evaluation | Proposed state | Existing GateOutcome mapping / explanation |
+The only new proposed interpretation is `gate6_evaluation_mode=VERIFIED_EVENT_VETO`
+and the following mode-bound gate-action vocabulary. `execution_veto` is a
+derived display value, not a second independently settable authority field.
+
+| Proposed gate action | Derived execution veto | Existing GateOutcome | Earnings clearance |
+| --- | --- | --- | --- |
+| `VETO` | `TRUE` | `FAIL` | `UNVERIFIED` (positive risk proof is not negative clearance) |
+| `NO_VETO_ESTABLISHED` | `FALSE` (no established veto only) | `PASS` for composition only | `UNVERIFIED` |
+| `UNDETERMINED` | `UNDETERMINED` | `INSUFFICIENT_DATA` | `UNVERIFIED` |
+
+The mode must be explicitly approved, effective at as-of and carried with policy
+ID/version/fingerprint. A missing mode/horizon/adapter/trusted source-state
+receipt is **not** the no-veto case. Current `.2` is still non-active with an
+unset horizon: it cannot produce a live `PASS` or veto.
+
+After those prerequisites, use the following ordered requirements:
+
+1. Reject invalid request identity, policy/evidence integrity, source admission
+   or temporal perspective. These produce no eligible evaluation; where a
+   structured result can be represented safely, map to `UNDETERMINED`.
+2. Compose only PIT-visible evidence. Exclude future events/revisions without
+   exposing their future identities in historical warnings. A visible candidate
+   with unverifiable known-at is an unresolved admission, not proof of no event.
+3. An independent fully admitted in-window event establishes `VETO`. A source
+   gap cannot clear it. Conflict in that event's own lineage disqualifies its
+   positive proof; retain `UNDETERMINED` unless another independent event proves
+   a veto. Never choose a conflicting revision by input order.
+4. Without a proven veto, any retained possibly qualifying event with unresolved
+   identity/purpose/known-at/lifecycle/precision/freshness remains `UNDETERMINED`.
+5. Otherwise `NO_VETO_ESTABLISHED` is allowed, including an admitted observation
+   of no event, partial/unproven coverage, stale coverage, or failed source query.
+   This explicitly accepts source-gap risk; **it is not clearance**. A trusted
+   configured producer must attest the actual query/coverage state. A disabled
+   producer, missing receipt, swallowed exception or forged empty list cannot
+   masquerade as an observed source failure or produce this path.
+
+| Entry-scoped condition | Gate action / outcome | Required context |
 | --- | --- | --- |
-| All evidence admitted, approved horizon and membership proven | `BLOCKED` | `FAIL`; no order/action generated |
-| Event-risk horizon unset or approval unverifiable | `UNKNOWN` | `INSUFFICIENT_DATA`; applies to current candidate |
-| Evidence not yet known at evaluation time | `UNKNOWN` | Future evidence excluded, not a retroactive block |
-| No verified schedule, unknown known-at or ambiguous event purpose | `UNKNOWN` | No inferred earnings date |
-| Incomplete/unproven coverage, stale coverage or source failure | `UNKNOWN` | No source absence clearance |
-| Conflicting schedules, integrity failure or unresolved revision | `UNKNOWN` | Preserve evidence conflict and reason |
-| Event outside approved window or already completed/past | `UNKNOWN` | Particular block absent; general clearance unsupported |
-| Visible cancellation/supersession removes last positive event | `UNKNOWN` | Linked block removed; not global `CLEAR` |
-| Management-scope exemption | Not a clearance determination | Existing `PASS` exemption only; other gates/policies still apply |
+| Fully admitted event within approved window, including with unrelated coverage gaps | `VETO / FAIL` | Verified event lineage, window, scope and as-of |
+| Global mode/horizon/producer receipt unavailable | `UNDETERMINED / INSUFFICIENT_DATA` | Policy/admission blocker; no current activation |
+| Observed no verified event, no retained unresolved event | `NO_VETO_ESTABLISHED / PASS` | `EARNINGS_SCHEDULE_UNVERIFIED`, `EARNINGS_CLEARANCE_UNVERIFIED` |
+| Observed partial/unproven/stale/failed coverage, no retained unresolved event | `NO_VETO_ESTABLISHED / PASS` | Same warnings plus exact source-state warning; accepted residual risk |
+| Visible event has conflict, unknown known-at, ambiguous purpose, unsupported precision or stale lineage | `UNDETERMINED / INSUFFICIENT_DATA` | Preserve exact unresolved reason |
+| Valid revision proves event non-blocking under the approved window, or cancelled; no other veto/unresolved event | `NO_VETO_ESTABLISHED / PASS` | Known-at revision lineage; clearance still unverified |
+| Management-scope exemption | Existing `PASS` exemption | Scope exemption, not a market clearance or all-gates pass |
+
+`UNKNOWN` remains an epistemic description of source/clearance, not the universal
+Gate-6 action used in `.1`. It never becomes clear. `UNDETERMINED` admission still
+blocks eligibility. Neither source gaps nor a verified veto make a stock bearish,
+weak, low-score or bad-thesis. No numeric confidence penalty is introduced.
+
+### Same engine, explicit mapping and truthful presentation
+
+Keep the current aggregation rule and all six IDs: a future approved Gate-6 mode
+may emit the table's three existing outcomes, while Gates 1–5 remain unchanged.
+No generic rule to ignore `INSUFFICIENT_DATA`, no missing gate, and no second
+engine is proposed. This mode is not present in current `ExecutionGateConfig`.
+
+Reuse `GateDecisionRecord.parameters`, detail and evidence IDs for mode, veto
+state, clearance and source receipt references; preserve these in the versioned
+evaluation and its immutable fingerprint. Propagate source/clearance warnings
+into evaluation warnings and downstream research/explanation views. Do not rely
+on a consumer reading a bare `PASS`: the existing Brain projection drops some
+per-decision parameters, so lossless interpretation needs an explicit adapter
+review. Missing mode/clearance metadata must fail downstream compatibility checks.
+
+The current `_decision` helper assigns confidence `1.0` to `PASS`. A future
+no-veto adapter must **not** inherit that as earnings-certainty evidence: retain
+`confidence=None` for this new no-veto result and distinguish mode in all consumers.
+This helper and all V1 behavior remain unchanged now. No global PASS semantics
+or Gate 1–5 confidence is being weakened.
+
+Truthful no-event UX is: `Earnings Event: NOT VERIFIED`;
+`Earnings Clearance: UNVERIFIED`; `Execution Veto: NO VERIFIED VETO`;
+plus actual coverage/freshness warnings. For a verified but outside-window event,
+show the actual verified event, not “not verified,” while retaining unverified
+clearance. Prohibit `CLEAR`, `SAFE`, `NO EARNINGS SOON`, green safety assurances,
+or suppression of source warnings. No UI is implemented.
+
+A passed date or completed-status label alone cannot define an unapproved window
+end. Non-blocking membership must be established under the future approved
+horizon and timestamp-precision rules; otherwise retain `UNDETERMINED`. No
+synthetic post-event expiry or calendar-passage shortcut is introduced.
+
+**Future liveness witness:** approved/effective V2 mode and horizon, valid request
+and trusted producer observation, no proven veto or retained unresolved event,
+Gates 1–5 `PASS` → Gate 6 `NO_VETO_ESTABLISHED / PASS` → six-gate `EXECUTABLE`,
+with `EARNINGS_CLEARANCE=UNVERIFIED` and warnings retained. All other setup/signal
+requirements still apply. This proves a logically possible path, not a current
+production path, positive calendar certainty or broker/order authority.
 
 Entry scope retains exact existing `FRESH_ENTRY`, `ADD_TO_POSITION`, `ROTATE_IN`.
 Management exemptions retain `HOLD_EXISTING`, `REDUCE_EXISTING`, `EXIT_EXISTING`,
@@ -168,7 +303,7 @@ A reschedule changes the positive event's membership only after its own known-at
 A cancellation removes only its linked block from its own known-at. Another
 independently valid positive event may still block. Identical retained documents
 reuse canonical identity; no second event/alert from repeated headlines.
-Conflicting child revisions remain unknown, not last-input-wins. Append-only
+Conflicting child revisions remain `UNDETERMINED`, not last-input-wins. Append-only
 lineage is preserved; no deletion, overwrite, or backward correction of decisions.
 
 ## Separate reporting-season context
@@ -187,13 +322,14 @@ No runtime season inference, calendar query, calculation or UI is added.
 ## Research, pilot and historical replay
 
 Market, technical, fundamental, sector, valuation and portfolio research continue
-under their own evidence rules when Gate 6 is unknown. Research completion is
-not `ENTRY_READY`. In a future 25–30-user research pilot: admitted positive event
-plus approved effective window blocks a scoped entry; uncertainty withholds
-entry readiness; neither creates a trade. With horizon unset, even otherwise
-verified evidence cannot make this candidate operational. Do not bypass Gate 6
-or reinterpret unknown as pass to make the pilot usable. The resulting
-entry-readiness limitation is an explicit governance/usability decision.
+under their own evidence rules regardless of earnings source uncertainty.
+Research completion is not `ENTRY_READY`. In a future 25–30-user pilot, an
+approved veto-style mode may allow entry eligibility without verified clearance
+when its explicit no-veto conditions hold. This accepts unobserved-event risk,
+which must remain visible, not treated as bearishness or numerical score damage.
+Policy/admission failure and retained unresolved events still inhibit eligibility.
+With horizon unset, no live V2 path is enabled. Approval of this material
+source-risk acceptance is required; it is not an implicit bypass of a failed gate.
 
 Perfect historical schedule reconstruction is not a prerequisite for a
 prospective research pilot. Trusted prospective collection, policy/source
@@ -227,7 +363,7 @@ Missing observations must remain missing, not zero or synthetic trades.
 | MFE/MAE around event; drawdown | Timestamped comparable series and predeclared windows/reference prices, no future data at decision time |
 | Slippage | Actual shadow observation methodology and realistic liquidity; never treat a hypothetical fill as executed |
 | Post-event volatility | Approved sampling/window/return and adjustment convention; no metric chosen here |
-| Missed opportunity; false-block rate | Predeclared counterfactual eligibility, denominator and outcome windows; separate unknown deferrals from verified blocks |
+| Missed opportunity; false-block rate | Predeclared counterfactual eligibility, denominator and outcome windows; separate admission deferrals, verified vetoes, and no-veto entries with source warnings |
 | Schedule revision rate; known-late rate | All immutable revisions/cancellations, inclusion denominator and approved horizon for lateness; don't label T−2 inherently late under an unset V2 window |
 
 No formulas/thresholds for these calibration metrics are approved here. Their
@@ -245,9 +381,9 @@ these files. Existing implementations are not being marked unavailable.
 | Decision Score | `NO_CHANGE` | [score evidence](../../app/intelligence/decision_score_evidence.py): no score weights/points or uncertainty penalty |
 | Brain | `ADAPTER_UPDATE_REQUIRED` | [output evaluation context](../../app/intelligence/output_evaluation_context.py), [research/application](../../app/intelligence/shared_brain_application.py): preserve gate-policy/as-of provenance and distinguish unknown; research remains independent |
 | Portfolio | `POLICY_REVIEW_REQUIRED` | [canonical gates activation](../../app/portfolio/canonical_six_gates_activation.py): preserve entry/add versus management action classification; no holdings/cash writes or new exit rule |
-| Signals | `ADAPTER_UPDATE_REQUIRED` | [signal models](../../app/signals/models.py), [orchestrator](../../app/signals/engine.py): current gate-status/blackout bool cannot by itself explain V2 unknown versus verified block; preserve non-executable analytical boundary |
+| Signals | `ADAPTER_UPDATE_REQUIRED` | [signal models](../../app/signals/models.py), [orchestrator](../../app/signals/engine.py): distinguish mode-bound no-veto pass from clearance and admission failure, retain source warnings; preserve non-executable analytical boundary |
 | TradePlan | `NO_CHANGE` | Existing `TradePlan` in [signal models](../../app/signals/models.py) and `TradeManagementPlan` in [gates](../../app/gates/engine.py): entry/stop/targets/tranche policy and Gate 4 remain unchanged; eligibility consumes versioned gates outside price-plan construction |
-| Entry-ready lifecycle | `POLICY_REVIEW_REQUIRED` | [output requirement policy](../../app/brain_output_requirement_policy.py) and signal revalidation: unknown cannot become required gate status/trigger eligibility; management exemption is not clearance |
+| Entry-ready lifecycle | `POLICY_REVIEW_REQUIRED` | [output requirement policy](../../app/brain_output_requirement_policy.py) and signal revalidation: explicitly approve eligibility with unverified clearance only for mode-bound no-veto; admission failure still blocks; management exemption is not clearance |
 | Alerts | `POLICY_REVIEW_REQUIRED` | Existing signal lifecycle events are the reuse point, not a dedicated earnings-alert authority. No such delivery adapter found in scoped audit; approve wording/dedup/routing before notifications, otherwise keep disabled |
 | Outcome ledger | `CALIBRATION_REQUIRED` | [paper models](../../app/paper/models.py), [forward paper](../../app/forward_paper/models.py): retain V1 configuration IDs; prove V2 evidence/horizon linkage and predeclare calibration/counterfactual observations; no new ledger or fills |
 | Backtest | `ADAPTER_UPDATE_REQUIRED` | [analytical replay](../../app/backtest/analytical.py): scalar schedule selection needs explicit version/perspective binding and historical source semantics; fail closed if missing |
@@ -263,9 +399,9 @@ feature or relax rejection. All blockers below remain unresolved as applicable.
 | --- | --- | --- | --- |
 | A1 | Event-risk horizon/policy/calibration | `BLOCKING` | B14 research/shadow evidence, exact timing/precision/window parameters and human approval; no inherited five |
 | A2 | Schedule ingestion producer | `BLOCKING` | Trusted automatic first-observed receipts and admitted official qualifying schedules; pure source candidates alone insufficient |
-| A3 | Source coverage/freshness | `BLOCKING` | Approved relevant source/window completeness and revision/freshness contract; today's coverage vocabulary alone is not proof |
+| A3 | Source coverage/freshness interpretation | `BLOCKING` | Approve trusted observation of partial/failed/unknown coverage versus missing producer, positive-event freshness and retained-event handling; negative completeness is not a prerequisite |
 | A4 | Gate-6 runtime adapter | `BLOCKING` | Compose exact identity, local known-at and lifecycle in correct order; approved source and horizon; reject tampering/ambiguous precision |
-| A5 | Execution-state mapping | `BLOCKING` | Review unknown versus blocked, required gate status/entry-readiness and management exemption; no bypass |
+| A5 | Execution-state mapping | `BLOCKING` | Human approval of veto-style mode and source-gap risk acceptance; lossless no-veto versus clearance metadata, confidence and warning handling; no generic insufficient-data bypass |
 | A6 | Alert behavior | `NON_BLOCKING` | Optional alerts remain disabled; any later activation requires wording, dedup, late-event and revision review |
 | A7 | Outcome/calibration compatibility | `BLOCKING` | Bind policy/evidence/as-of and distinguish missed opportunities/unknowns; predeclare metrics before V2 shadow outcome claims |
 | A8 | Historical replay version isolation | `BLOCKING` | Preserve V1 records; explicit V2 provenance and effective source/regulatory semantics, fail closed on missing history |
@@ -273,9 +409,10 @@ feature or relax rejection. All blockers below remain unresolved as applicable.
 | A10 | Authoritative negative clearance | `DEFERRED_FOR_SHADOW` | `CLEAR_UNSUPPORTED` retained; later clearance needs distinct approved negative-evidence policy, never an absence shortcut |
 | A11 | Optional results-season context | `NON_BLOCKING` | Remains disabled until evidence/presentation contract approved; never a gate or score |
 
-The next approval may accept this **proposal and blockers**, not approve an
-unset duration or runtime activation. Pilot research usefulness and absent fresh
-entry clearance must both be stated truthfully.
+The next approval may accept this **proposal, risk acceptance and blockers**, not
+approve an unset duration or runtime activation. Future no-veto entry eligibility
+and absent earnings clearance must both be stated truthfully. Shadow work must
+measure event exposure after no-veto/source-gap decisions, not just false blocks.
 
 ## Deduplication and immutable artifact conventions
 
@@ -303,8 +440,10 @@ definition/implementation text, not a newly synthesized production approval ID.
 
 Test-only schema/semantic checks reject malformed structure and altered safety
 values, verify reference hashes and deterministic round-trip, and check the
-declarative scenario table. They **do not execute an unimplemented V2 gate**.
-Existing V1 gate tests validate actual runtime behavior. No full backend suite
+declarative scenario table. Test-only injection of declared gate outcomes into
+the real V1 reducer proves old deadlock and proposed composition liveness;
+this **does not implement or execute a V2 schedule evaluator**. Existing V1 gate
+tests validate actual runtime behavior. No full backend suite
 is required for this documentation/artifact/test-only change.
 
 Exact next continuation, not started:

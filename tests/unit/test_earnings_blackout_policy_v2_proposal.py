@@ -12,11 +12,15 @@ import hashlib
 import json
 from pathlib import Path
 import re
+from unittest.mock import patch
 
 import pytest
 
 from app.fundamentals.diagnostic_comparability import canonical_json, content_fingerprint
 from app.registry.canonical import EXECUTION_GATES, EXECUTION_GATE_REGISTRY_VERSION
+from app.gates.engine import ExecutionEligibility, ExecutionGateEngine, GateDecisionRecord, GateOutcome
+from app.filings.earnings_schedule_coverage import CoverageState, EarningsScheduleFreshnessState
+from tests.unit import test_execution_gates as v1_fixture
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,8 +44,21 @@ SCHEMA = {
     **{key: str for key in (
         "schema_version", "policy_id", "policy_version_candidate", "parent_policy_version",
         "parent_version", "baseline_commit", "status", "activation_status",
-        "gate_registry_version", "next_continuation", "proposal_fingerprint",
+        "gate_registry_version", "next_continuation", "proposal_fingerprint", "final_decision",
     )},
+    "supersedes": {"policy_version_candidate": str, "proposal_fingerprint": str, "commit": str},
+    "runtime_aggregation": {
+        "outcomes": [str], "precedence": [str], "abstain_supported": bool,
+        "not_applicable_outcome": str, "veto_mode_implemented": bool,
+        "admission_can_reject_before_reducer": bool, "entry_ready_is_gate_enum": bool,
+    },
+    "models": {
+        "A": {"result_mapping": {"BLOCKED": str, "UNKNOWN": str}, "clear_supported": bool,
+              "fresh_entry_liveness": bool, "inhibition": str},
+        "B": {"fresh_entry_liveness_after_activation_prerequisites": bool,
+              "negative_clearance_required": bool, "accepts_unobserved_event_risk": bool,
+              "observed_entry_block_rate": type(None)},
+    },
     "policy_lifecycle": [str], "gate_ids": [str],
     "source_fingerprints_lf": {path: str for path in SOURCE_PATHS},
     "unchanged_gates": [{
@@ -57,15 +74,33 @@ SCHEMA = {
         "gate_id": str, "name": str, "purpose": str, "entry_contexts": [str],
         "management_exemptions": [str], "management_gate_outcome": str,
         "management_exemption_is_clearance": bool,
-        "result_mapping": {"BLOCKED": str, "UNKNOWN": str}, "clear_support_state": str,
-        "unknown_is_bad_stock": bool, "unknown_allows_entry_ready": bool,
+        "evaluation_mode": str,
+        "result_mapping": {"VETO": str, "NO_VETO_ESTABLISHED": str, "UNDETERMINED": str},
+        "derived_execution_veto": {"VETO": str, "NO_VETO_ESTABLISHED": str, "UNDETERMINED": str},
+        "clear_support_state": str, "earnings_clearance": str,
+        "no_veto_pass_means_clearance": bool, "no_veto_confidence": type(None),
+        "no_veto_required_warning": str, "unknown_is_bad_stock": bool,
+        "admission_undetermined_allows_eligibility": bool, "observed_source_unknown_can_allow_no_veto": bool,
+    },
+    "source_state_contract": {
+        **{k: str for k in ("coverage", "freshness", "absence", "event_lifecycle")},
+        **{k: bool for k in ("preserve_actual_source_state", "source_unknown_is_always_gate_undetermined", "trusted_observation_required_even_for_source_failure")},
+    },
+    "state_machine": {
+        "precedence": [str], "consumer_missing_mode_or_clearance_metadata": str,
+        **{k: bool for k in (
+            "positive_and_no_veto_require_approved_effective_mode_and_horizon",
+            "missing_receipt_is_observed_failure", "failure_erases_retained_veto",
+            "unresolved_retained_event_allows_no_veto", "cancel_or_reschedule_reassesses_only_from_own_known_at",
+            "future_ids_in_historical_warnings", "reuse_existing_reducer", "change_generic_insufficient_handling",
+        )},
     },
     "required_schedule_evidence": [str],
     "known_at_basis": {
         **{k: str for k in ("perspective", "contract", "state_required", "basis", "visibility", "lifecycle_selection")},
         **{k: bool for k in ("source_public_time_retained_separately", "caller_retrieved_at_sufficient", "date_only_to_datetime_invention", "retroactive_block")},
     },
-    "unknown_reasons": [str],
+    "admission_blocker_reasons": [str], "source_warning_reasons": [str],
     "hard_block_semantics": {
         **{k: bool for k in ("requires_all_schedule_evidence", "window_operational", "policy_and_source_effective_at_or_before_as_of", "cancelled_event_provides_positive_block", "superseded_event_provides_positive_block", "earlier_legitimate_entry_invalidated")},
         "causal_condition": str, "window_formula": type(None), "revisions_effect": str,
@@ -84,7 +119,8 @@ SCHEMA = {
         "current_data_backfill", "implicit_latest_policy",
     )},
     "pilot": {k: bool for k in (
-        "research_continues_when_unknown", "unknown_bypass_allowed", "horizon_unset_blocks_activation",
+        "research_continues_when_unknown", "generic_insufficient_data_bypass_allowed", "horizon_unset_blocks_activation",
+        "no_veto_entry_path_requires_explicit_risk_acceptance", "source_warning_suppression_allowed",
         "complete_historical_calendar_required_for_prospective_research", "entry_ready_usability_requires_policy_review",
     )},
     "downstream_impact": [{"consumer": str, "classification": str, "reference": str, "requirement": str}],
@@ -144,10 +180,16 @@ def test_closed_proposal_schema_and_nonactive_governance_identity():
     value = _read()
     _schema(value, SCHEMA)
     assert (value["schema_version"], value["policy_id"], value["policy_version_candidate"]) == (
-        "earnings-blackout-policy-proposal/v1", "execution-gate-policy-v2-proposed", "v2-proposal.1",
+        "earnings-blackout-policy-proposal/v2", "execution-gate-policy-v2-proposed", "v2-proposal.2",
     )
     assert (value["parent_policy_version"], value["parent_version"]) == ("six-gates-production-v1", "v1")
-    assert value["baseline_commit"] == "faa4394b3f4b77a538133a5de4f75f7d135d9e1e"
+    assert value["baseline_commit"] == "3543c32cd0257dfacecc2498e904b7bc40d6b1d0"
+    assert value["supersedes"] == {
+        "policy_version_candidate": "v2-proposal.1",
+        "proposal_fingerprint": "sha256:a844321c60427d5fcb4201fc883a12b8196d4c1a77f674a5f2e3ff0be136e503",
+        "commit": value["baseline_commit"],
+    }
+    assert value["final_decision"] == "VERIFIED_EVENT_VETO_GATE_RECOMMENDED"
     assert (value["status"], value["activation_status"]) == ("PROPOSED", "NOT_ACTIVE")
     assert value["policy_lifecycle"] == ["PROPOSED", "GOVERNANCE_APPROVED", "SHADOW", "ACTIVE", "RETIRED"]
 
@@ -205,7 +247,7 @@ def test_proposed_hard_block_requires_all_evidence_without_a_window_number():
         "TRUSTED_OFFICIAL_PAYLOAD_LINEAGE", "VERIFIED_HSI_FIRST_OBSERVED_RECEIPT",
         "VERSIONED_EVENT_AND_REVISION_LINEAGE", "CONFLICT_FREE_EFFECTIVE_LIFECYCLE",
         "VISIBLE_NON_CANCELLED_NON_SUPERSEDED_NON_COMPLETED_EVENT",
-        "APPROVED_RELEVANT_COVERAGE_AND_FRESHNESS", "APPROVED_EFFECTIVE_HORIZON_AND_MEMBERSHIP",
+        "APPROVED_POSITIVE_EVENT_LINEAGE_AND_FRESHNESS", "APPROVED_EFFECTIVE_HORIZON_AND_MEMBERSHIP",
     ]
     assert value["horizon_policy"] == {
         "states": ["APPROVED_VALUE", "POLICY_UNSET", "CALIBRATION_REQUIRED"], "state": "POLICY_UNSET",
@@ -225,31 +267,52 @@ def test_proposed_hard_block_requires_all_evidence_without_a_window_number():
     }
 
 
-def test_declarative_unknown_blocked_table_never_claims_clear_or_evaluates_v2():
+def test_declarative_veto_table_has_exact_eligible_and_ineligible_conditions():
     value = _read()
-    cases = value["decision_cases"]
-    assert cases[0] == {
-        "case": "ALL_PREDICATES_AND_APPROVED_WINDOW", "state": "BLOCKED",
-        "gate_outcome": "FAIL", "reason": "VERIFIED_EVENT_IN_APPROVED_WINDOW",
+    groups = {
+        "VETO": ["ALL_PREDICATES_AND_APPROVED_WINDOW", "SOURCE_FAILURE_WITH_STILL_VALID_VETO"],
+        "UNDETERMINED": [
+            "HORIZON_UNSET", "MODE_NOT_APPROVED", "MISSING_PRODUCER_OR_RECEIPT", "INVALID_REQUEST_IDENTITY",
+            "CONFLICTED_SCHEDULE_WITHOUT_INDEPENDENT_VETO", "VISIBLE_CANDIDATE_UNKNOWN_KNOWN_AT",
+            "VISIBLE_CANDIDATE_AMBIGUOUS_PURPOSE", "VISIBLE_CANDIDATE_UNSUPPORTED_PRECISION",
+            "TAMPERED_LINEAGE", "UNRESOLVED_REVISION", "STALE_RETAINED_EVENT",
+        ],
+        "NO_VETO_ESTABLISHED": [
+            "ADMITTED_OBSERVATION_BEFORE_FIRST_EVENT_OBSERVATION", "ADMITTED_OBSERVATION_NO_VERIFIED_EVENT",
+            "PARTIAL_COVERAGE_NO_RETAINED_EVENT", "UNPROVEN_COVERAGE_NO_RETAINED_EVENT",
+            "STALE_COVERAGE_NO_RETAINED_EVENT", "OBSERVED_FAILED_QUERY_NO_RETAINED_EVENT",
+            "VERIFIED_OUTSIDE_WINDOW_NO_OTHER_EVENT", "VERIFIED_NONBLOCKING_COMPLETED_OR_PAST_EVENT_NO_OTHER_EVENT",
+            "VISIBLE_CANCELLATION_NO_OTHER_EVENT",
+        ],
     }
-    expected = {
-        "HORIZON_UNSET": "EVENT_RISK_HORIZON_POLICY_UNSET",
-        "BEFORE_FIRST_OBSERVATION": "EVIDENCE_NOT_YET_KNOWN", "MISSING_SCHEDULE": "SCHEDULE_UNVERIFIED",
-        "INCOMPLETE_COVERAGE": "SOURCE_COVERAGE_INCOMPLETE", "STALE_COVERAGE": "SOURCE_COVERAGE_STALE",
-        "FAILED_SOURCE": "SOURCE_FAILED", "CONFLICTED_SCHEDULE": "SCHEDULE_CONFLICTED",
-        "UNKNOWN_KNOWN_AT": "KNOWN_AT_UNAVAILABLE", "AMBIGUOUS_PURPOSE": "EVENT_PURPOSE_AMBIGUOUS",
-        "UNSUPPORTED_PRECISION": "EVENT_PRECISION_UNSUPPORTED", "OUTSIDE_WINDOW": "CLEAR_UNSUPPORTED",
-        "COMPLETED_OR_PAST_EVENT": "CLEAR_UNSUPPORTED", "LAST_POSITIVE_EVENT_CANCELLED_OR_SUPERSEDED": "CLEAR_UNSUPPORTED",
-    }
-    assert {row["case"]: row["reason"] for row in cases[1:]} == expected
-    for row in cases[1:]:
-        assert (row["state"], row["gate_outcome"]) == ("UNKNOWN", "INSUFFICIENT_DATA")
-        assert row["reason"] in value["unknown_reasons"]
+    assert len(value["decision_cases"]) == sum(len(items) for items in groups.values())
+    for state, cases in groups.items():
+        rows = [row for row in value["decision_cases"] if row["state"] == state]
+        assert [row["case"] for row in rows] == cases
+        for row in rows:
+            assert row["gate_outcome"] == value["gate6_proposed"]["result_mapping"][state]
+            if state == "UNDETERMINED":
+                assert row["reason"] in value["admission_blocker_reasons"]
+
+
+def test_no_false_clearance_confidence_or_warning_suppression():
+    value = _read()
     proposed = value["gate6_proposed"]
     assert proposed["gate_id"] == GATE_IDS[-1]
     assert proposed["clear_support_state"] == "CLEAR_UNSUPPORTED"
-    assert proposed["result_mapping"] == {"BLOCKED": "FAIL", "UNKNOWN": "INSUFFICIENT_DATA"}
-    assert proposed["unknown_is_bad_stock"] is proposed["unknown_allows_entry_ready"] is False
+    assert proposed["evaluation_mode"] == "VERIFIED_EVENT_VETO"
+    assert proposed["result_mapping"] == {"VETO": "FAIL", "NO_VETO_ESTABLISHED": "PASS", "UNDETERMINED": "INSUFFICIENT_DATA"}
+    assert proposed["derived_execution_veto"] == {"VETO": "TRUE", "NO_VETO_ESTABLISHED": "FALSE", "UNDETERMINED": "UNDETERMINED"}
+    assert proposed["earnings_clearance"] == "UNVERIFIED"
+    assert proposed["no_veto_pass_means_clearance"] is False
+    assert proposed["no_veto_confidence"] is None
+    assert proposed["no_veto_required_warning"] == "EARNINGS_CLEARANCE_UNVERIFIED"
+    assert proposed["unknown_is_bad_stock"] is proposed["admission_undetermined_allows_eligibility"] is False
+    assert proposed["observed_source_unknown_can_allow_no_veto"] is True
+    assert value["source_warning_reasons"] == [
+        "EARNINGS_SCHEDULE_UNVERIFIED", "EARNINGS_CLEARANCE_UNVERIFIED", "SOURCE_COVERAGE_INCOMPLETE",
+        "SOURCE_COVERAGE_UNPROVEN", "SOURCE_COVERAGE_STALE", "SOURCE_FAILED",
+    ]
 
 
 def test_inclusive_known_at_revision_and_late_notice_requirements_are_explicit():
@@ -276,7 +339,8 @@ def test_management_scope_is_not_clearance_and_unknown_does_not_stop_research():
     assert gate["management_gate_outcome"] == "PASS"
     assert gate["management_exemption_is_clearance"] is False
     assert value["pilot"] == {
-        "research_continues_when_unknown": True, "unknown_bypass_allowed": False,
+        "research_continues_when_unknown": True, "generic_insufficient_data_bypass_allowed": False,
+        "no_veto_entry_path_requires_explicit_risk_acceptance": True, "source_warning_suppression_allowed": False,
         "horizon_unset_blocks_activation": True, "complete_historical_calendar_required_for_prospective_research": False,
         "entry_ready_usability_requires_policy_review": True,
     }
@@ -363,5 +427,122 @@ def test_proposal_fingerprint_roundtrip_order_independence_and_tamper_detection(
     changed["gate_ids"].reverse()
     assert content_fingerprint(changed) != supplied
     changed = deepcopy(value)
-    changed["gate6_proposed"]["result_mapping"]["UNKNOWN"] = "PASS"
+    changed["gate6_proposed"]["result_mapping"]["UNDETERMINED"] = "PASS"
     assert content_fingerprint(changed) != supplied
+
+
+def _compose_declared_outcome(outcome, *, data=None):
+    """Exercise the real reducer with synthetic outcomes, NOT V2 event logic.
+
+    The existing fixture supplies isolated source proofs. No production authority
+    is replaced, no event is fetched, and no policy is registered or evaluated.
+    """
+    declared = GateDecisionRecord(
+        "GATE_6_EARNINGS", GateOutcome(outcome), "SYNTHETIC_PROPOSAL_COMPOSITION_ONLY",
+        None, ("synthetic-source-state-receipt",),
+        {"earnings_clearance": "UNVERIFIED", "evaluation_mode": "VERIFIED_EVENT_VETO"},
+    )
+    with patch.object(ExecutionGateEngine, "_blackout", return_value=declared):
+        return v1_fixture.evaluate(data=data)
+
+
+def test_actual_runtime_has_no_abstain_and_existing_scope_exemptions_are_pass():
+    value = _read()["runtime_aggregation"]
+    assert value == {
+        "outcomes": ["PASS", "FAIL", "INSUFFICIENT_DATA"],
+        "precedence": ["ANY_FAIL_BLOCKED", "ANY_INSUFFICIENT_DATA_INSUFFICIENT_DATA", "ALL_SIX_PASS_EXECUTABLE"],
+        "abstain_supported": False, "not_applicable_outcome": "PASS_WITH_SCOPE_DETAIL_AFTER_ADMISSION",
+        "veto_mode_implemented": False, "admission_can_reject_before_reducer": True,
+        "entry_ready_is_gate_enum": False,
+    }
+    assert [outcome.value for outcome in GateOutcome] == value["outcomes"]
+    result = v1_fixture.evaluate()
+    assert len(result.decisions) == 6
+    assert result.decisions[0].outcome is GateOutcome.PASS
+    assert result.decisions[1].outcome is GateOutcome.PASS
+    assert all("not applicable" in decision.detail for decision in result.decisions[:2])
+    # This pre-existing confidence helper must not later be used as calendar certainty.
+    assert ExecutionGateEngine(v1_fixture.CONFIG, v1_fixture.CALENDAR)._decision(
+        GATE_IDS[-1], GateOutcome.PASS, "existing helper only",
+    ).confidence == 1.0
+
+
+def test_prior_mandatory_pass_proposal_has_structural_deadlock_not_empirical_rate():
+    model = _read()["models"]["A"]
+    assert model == {
+        "result_mapping": {"BLOCKED": "FAIL", "UNKNOWN": "INSUFFICIENT_DATA"},
+        "clear_supported": False, "fresh_entry_liveness": False,
+        "inhibition": "ALL_STRUCTURALLY_NOT_AN_EMPIRICAL_ESTIMATE",
+    }
+    for outcome in model["result_mapping"].values():
+        result = _compose_declared_outcome(outcome)
+        assert all(item.outcome is GateOutcome.PASS for item in result.decisions[:5])
+        assert result.eligibility is not ExecutionEligibility.EXECUTABLE
+
+
+@pytest.mark.parametrize("row", _read()["decision_cases"], ids=lambda row: row["case"])
+def test_declared_proposal_actions_compose_with_actual_six_gate_reducer(row):
+    # Declaration-to-composition test only; does not verify source acquisition or
+    # compute a horizon, event veto, actual entry-ready signal or production state.
+    result = _compose_declared_outcome(row["gate_outcome"])
+    expected = {
+        "VETO": ExecutionEligibility.BLOCKED,
+        "UNDETERMINED": ExecutionEligibility.INSUFFICIENT_DATA,
+        "NO_VETO_ESTABLISHED": ExecutionEligibility.EXECUTABLE,
+    }
+    assert result.eligibility is expected[row["state"]]
+    assert [d.gate_id for d in result.decisions] == GATE_IDS
+    assert all(d.outcome is GateOutcome.PASS for d in result.decisions[:5])
+    assert result.decisions[-1].parameters["earnings_clearance"] == "UNVERIFIED"
+    assert result.decisions[-1].confidence is None
+    assert "NO_ACTION_OR_ORDER_CREATED" in result.warnings
+
+
+def test_no_veto_liveness_does_not_erase_any_other_gate_failure_or_insufficiency():
+    value = _read()
+    assert value["models"]["B"] == {
+        "fresh_entry_liveness_after_activation_prerequisites": True, "negative_clearance_required": False,
+        "accepts_unobserved_event_risk": True, "observed_entry_block_rate": None,
+    }
+    no_veto = value["gate6_proposed"]["result_mapping"]["NO_VETO_ESTABLISHED"]
+    insufficient = _compose_declared_outcome(no_veto, data=v1_fixture.inputs(surveillance=None))
+    failed = _compose_declared_outcome(no_veto, data=v1_fixture.inputs(trade_plan=None))
+    both = _compose_declared_outcome("FAIL", data=v1_fixture.inputs(surveillance=None))
+    assert insufficient.eligibility is ExecutionEligibility.INSUFFICIENT_DATA
+    assert failed.eligibility is both.eligibility is ExecutionEligibility.BLOCKED
+    assert both.failed_gate_ids == ("GATE_6_EARNINGS",)
+    assert both.insufficient_gate_ids == ("GATE_3_SURVEILLANCE",)
+
+
+def test_source_and_action_separation_preserves_existing_contracts_and_transition_precedence():
+    value = _read()
+    source = value["source_state_contract"]
+    assert source["preserve_actual_source_state"] is True
+    assert source["source_unknown_is_always_gate_undetermined"] is False
+    assert source["trusted_observation_required_even_for_source_failure"] is True
+    for key in ("coverage", "freshness", "absence", "event_lifecycle"):
+        path, symbol = source[key].split("#")
+        assert f"class {symbol}" in (ROOT / path).read_text(encoding="utf-8")
+    assert [state.value for state in CoverageState] == ["COMPLETE", "PARTIAL", "FAILED", "UNPROVEN", "CONFLICTED"]
+    assert [state.value for state in EarningsScheduleFreshnessState] == ["FRESH", "STALE", "UNPROVEN", "SOURCE_FAILED"]
+    assert value["state_machine"] == {
+        "precedence": ["GLOBAL_POLICY_OR_ADMISSION_INVALID_UNDETERMINED", "EXCLUDE_FUTURE_EVIDENCE",
+                       "ANY_INDEPENDENT_VALID_VETO", "RETAINED_UNRESOLVED_EVENT_UNDETERMINED", "OTHERWISE_NO_VETO_WITH_SOURCE_WARNINGS"],
+        "positive_and_no_veto_require_approved_effective_mode_and_horizon": True,
+        "missing_receipt_is_observed_failure": False, "failure_erases_retained_veto": False,
+        "unresolved_retained_event_allows_no_veto": False,
+        "cancel_or_reschedule_reassesses_only_from_own_known_at": True,
+        "future_ids_in_historical_warnings": False, "consumer_missing_mode_or_clearance_metadata": "REJECT_COMPATIBILITY",
+        "reuse_existing_reducer": True, "change_generic_insufficient_handling": False,
+    }
+    cases = {row["case"]: row for row in value["decision_cases"]}
+    progression = [
+        "ADMITTED_OBSERVATION_BEFORE_FIRST_EVENT_OBSERVATION", "ALL_PREDICATES_AND_APPROVED_WINDOW",
+        "SOURCE_FAILURE_WITH_STILL_VALID_VETO", "STALE_RETAINED_EVENT", "VISIBLE_CANCELLATION_NO_OTHER_EVENT",
+    ]
+    assert [cases[key]["state"] for key in progression] == [
+        "NO_VETO_ESTABLISHED", "VETO", "VETO", "UNDETERMINED", "NO_VETO_ESTABLISHED",
+    ]
+    assert cases[progression[0]]["reason"] == "NO_ADMITTED_EVENT_AS_OF"
+    assert cases["MISSING_PRODUCER_OR_RECEIPT"]["gate_outcome"] != "PASS"
+    assert cases["HORIZON_UNSET"]["gate_outcome"] != "PASS"
