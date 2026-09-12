@@ -1,0 +1,34 @@
+{
+  "audit_as_of": "2026-09-13T00:00:00+00:00",
+  "contract_id": "official-earnings-schedule-coverage-window-policy",
+  "contract_version": "v1",
+  "current_bse_identity_resolved": 31,
+  "current_nse_identity_resolved": 31,
+  "current_production_schedule_tables": [],
+  "financial_facts": 6118,
+  "corporate_filings": 455,
+  "current_admitted_positive_schedule_records": 0,
+  "current_complete_window_receipts": 0,
+  "current_partial_window_receipts": 0,
+  "current_audit_query_failures": 0,
+  "known_at_ready_positive_evidence": 0,
+  "negative_absence_proof_capability": 0,
+  "current_regulation_29_notice": {
+    "minimum": "AT_LEAST_TWO_WORKING_DAYS",
+    "exclusions": ["INTIMATION_DATE", "MEETING_DATE"],
+    "source_updated": "2025-10-24",
+    "source": "https://www.nseindia.com/static/companies-listing/compliance-information-compliance-calendar-main-board"
+  },
+  "historical_guard": "EFFECTIVE_DATED_REGULATION_REQUIRED_FOR_REPLAY",
+  "coverage_contract": {
+    "states": ["COMPLETE", "PARTIAL", "FAILED", "UNPROVEN", "CONFLICTED"],
+    "freshness_states": ["FRESH", "STALE", "UNPROVEN", "SOURCE_FAILED"],
+    "gate6_clearance": false,
+    "actionability": "WATCH_ONLY",
+    "execution_status": "NON_EXECUTABLE"
+  },
+  "result": "CURRENT_5_SESSION_BLACKOUT_INCOMPATIBLE_WITH_AUTHORITATIVE_NOTICE_LEAD_TIME",
+  "next_continuation": "EARNINGS_BLACKOUT_HORIZON_POLICY_RESEARCH_V1",
+  "next_continuation_started": false,
+  "fingerprint": "sha256:23e210247b4a1f0f8eda4e991d6b32a8c81cda0521d4df0d8039896d2260ef8c"
+}
