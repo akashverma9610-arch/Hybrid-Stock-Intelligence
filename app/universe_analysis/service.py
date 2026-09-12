@@ -819,6 +819,7 @@ def _latest_research_timestamp(snapshot: ResearchSnapshot) -> datetime | None:
 
 
 def _gates(config, score, diagnostics, evidence, at, strategy, supplied: GateInput | None = None):
+    from app.gates.source_authority import ScoringRunGateAuthority
     from app.gates.version_compatibility import require_gate_source
     from app.gates.score_provenance import score_evidence
     for source in (score, supplied, *diagnostics):
@@ -833,7 +834,8 @@ def _gates(config, score, diagnostics, evidence, at, strategy, supplied: GateInp
     values = supplied or GateInput(score.id, score.final_score, evidence.snapshot.id, at, diagnostic_ids=tuple(item.record.id for item in diagnostics))
     if values.scorecard_id != score.id or values.snapshot_id != evidence.snapshot.id or values.snapshot_as_of_timestamp != at:
         raise UniverseAnalysisError("Gate inputs must remain bound to this instrument's frozen analysis snapshot and scorecard.")
-    return ExecutionGateEngine(config, ExchangeCalendar("NSE")).evaluate(instrument_id=evidence.instrument_id, strategy_version=strategy,
+    authority = ScoringRunGateAuthority(evidence.instrument_id, strategy, at, diagnostics, score.configuration_version)
+    return ExecutionGateEngine(config, ExchangeCalendar("NSE"), source_authority=authority).evaluate(instrument_id=evidence.instrument_id, strategy_version=strategy,
         registry_version=DIAGNOSTIC_REGISTRY_VERSION, scoring_configuration_version=score.configuration_version,
         action_context=ActionContext.FRESH_ENTRY, as_of_timestamp=at, evaluated_at=at, inputs=values,
         candidate_score_evidence=score_evidence(score), evidence_context=binding)

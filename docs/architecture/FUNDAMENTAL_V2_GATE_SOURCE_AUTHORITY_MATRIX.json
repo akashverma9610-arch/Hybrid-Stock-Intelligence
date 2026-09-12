@@ -1,0 +1,625 @@
+{
+  "admitted_neutral_field_adapters": 1,
+  "admitted_score_adapters": 2,
+  "authority_composition": "trusted application constructor dependency; never supplied in evaluate/input/API data",
+  "baseline": "4027fb63b63000bd9437845d8199ffaa30d2f3dd",
+  "expanded_field_count": 36,
+  "fields": [
+    {
+      "authority_proof": "never establishes authority",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "binding/audit metadata only",
+      "evidence_family": "BINDING_METADATA",
+      "field": "scorecard_id",
+      "final_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "fingerprint_required": false,
+      "gates": [],
+      "input_field": "scorecard_id",
+      "policy_source_version_required": false,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "independent producer recalculation / canonical reader",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "DecisionScorecard / CanonicalDecisionScorecard",
+      "evidence_family": "DIAGNOSTIC_SCORE",
+      "field": "raw_decision_score",
+      "final_readiness": "INDEPENDENT_SCORE_ATTESTATION_READY",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "raw_decision_score",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": true,
+      "trusted_producer": "build_scorecard / canonical governance reader"
+    },
+    {
+      "authority_proof": "never establishes authority",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "binding/audit metadata only",
+      "evidence_family": "BINDING_METADATA",
+      "field": "snapshot_id",
+      "final_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "fingerprint_required": false,
+      "gates": [],
+      "input_field": "snapshot_id",
+      "policy_source_version_required": false,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "never establishes authority",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "binding/audit metadata only",
+      "evidence_family": "BINDING_METADATA",
+      "field": "snapshot_as_of_timestamp",
+      "final_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "fingerprint_required": false,
+      "gates": [],
+      "input_field": "snapshot_as_of_timestamp",
+      "policy_source_version_required": false,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "independent producer recalculation / canonical reader",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored incumbent scorecard + original ExecutionGateEvaluation",
+      "evidence_family": "DIAGNOSTIC_SCORE",
+      "field": "comparison_score",
+      "final_readiness": "INDEPENDENT_SCORE_ATTESTATION_READY",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "comparison_score",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": true,
+      "trusted_producer": "canonical governance reader"
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "hypothetical replay argument is not independent approval",
+      "evidence_family": "USER_APPROVED_CONTEXT",
+      "field": "expected_incremental_return",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "expected_incremental_return",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "approved friction formula exists; user scenario attestation missing",
+      "evidence_family": "USER_APPROVED_CONTEXT",
+      "field": "modeled_switching_friction",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_1_ROTATION"
+      ],
+      "input_field": "modeled_switching_friction",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "exact stored snapshot identity, content, PIT, instrument and acquisition date",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "PortfolioSnapshot.holdings.acquisition_at",
+      "evidence_family": "PORTFOLIO_STATE",
+      "field": "holding_entry_date",
+      "final_readiness": "STORED_HOLDING_BINDING_READY",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_2_VELOCITY"
+      ],
+      "input_field": "holding_entry_date",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": "canonical governance portfolio-snapshot reader"
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical market evidence exists; exact gate ATR adapter not admitted",
+      "evidence_family": "MARKET_DATA",
+      "field": "atr_expansion",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_2_VELOCITY"
+      ],
+      "input_field": "atr_expansion",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.id",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.effective_at",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.source",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.authoritative",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.asm_stage",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.gsm_stage",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.circuit_limit",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-surveillance-v1 declared; generic MarketObservation is insufficient",
+      "evidence_family": "SURVEILLANCE",
+      "field": "surveillance.evidence_ids",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_3_SURVEILLANCE"
+      ],
+      "input_field": "surveillance",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.id",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.initial_tranche",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.t1_reduction",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.stop_defined",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.t1_defined",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.breakeven_conditions",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.structural_conditions",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.strategy_version",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "stored app.signals TradePlan is not automatically a governed Gate TradeManagementPlan",
+      "evidence_family": "TRADE_PLAN",
+      "field": "trade_plan.configuration_version",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_4_TRADE_PLAN"
+      ],
+      "input_field": "trade_plan",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical portfolio risk exists; approved candidate-risk scenario binding missing",
+      "evidence_family": "RISK_ALLOCATION",
+      "field": "exposure.portfolio_equity",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical portfolio risk exists; approved candidate-risk scenario binding missing",
+      "evidence_family": "RISK_ALLOCATION",
+      "field": "exposure.existing_risk_amount",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical portfolio risk exists; approved candidate-risk scenario binding missing",
+      "evidence_family": "RISK_ALLOCATION",
+      "field": "exposure.candidate_risk_amount",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical portfolio risk exists; approved candidate-risk scenario binding missing",
+      "evidence_family": "RISK_ALLOCATION",
+      "field": "exposure.candidate_allocation",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical portfolio risk exists; approved candidate-risk scenario binding missing",
+      "evidence_family": "RISK_ALLOCATION",
+      "field": "exposure.sector_allocation",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "canonical portfolio risk exists; approved candidate-risk scenario binding missing",
+      "evidence_family": "RISK_ALLOCATION",
+      "field": "exposure.evidence_ids",
+      "final_readiness": "PRODUCER_ADAPTER_UNAVAILABLE",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_5_HEAT"
+      ],
+      "input_field": "exposure",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "official-nse-earnings-calendar-v1 declaration; no admitted future-event producer",
+      "evidence_family": "EARNINGS_CALENDAR",
+      "field": "earnings_scheduled_at",
+      "final_readiness": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_6_EARNINGS"
+      ],
+      "input_field": "earnings_scheduled_at",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "NONE: fail closed",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "same future-event record required; no filing/publication substitution",
+      "evidence_family": "EARNINGS_CALENDAR",
+      "field": "earnings_schedule_verified_at",
+      "final_readiness": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY",
+      "fingerprint_required": true,
+      "gates": [
+        "GATE_6_EARNINGS"
+      ],
+      "input_field": "earnings_schedule_verified_at",
+      "policy_source_version_required": true,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "never establishes authority",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "binding/audit metadata only",
+      "evidence_family": "BINDING_METADATA",
+      "field": "evidence_ids",
+      "final_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "fingerprint_required": false,
+      "gates": [],
+      "input_field": "evidence_ids",
+      "policy_source_version_required": false,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    },
+    {
+      "authority_proof": "never establishes authority",
+      "caller_metadata_accepted_as_authority": false,
+      "canonical_object": "binding/audit metadata only",
+      "evidence_family": "BINDING_METADATA",
+      "field": "diagnostic_ids",
+      "final_readiness": "NOT_CLEARANCE_AUTHORITY",
+      "fingerprint_required": false,
+      "gates": [],
+      "input_field": "diagnostic_ids",
+      "policy_source_version_required": false,
+      "raw_primitive_accepted_as_authority": false,
+      "registry_version_applicable": false,
+      "trusted_producer": null
+    }
+  ],
+  "fingerprint": "sha256:9ebb2f3d8cbb5803a6d62b602eb696a7122fd5d81dca508c275a9d5fbe099f36",
+  "input_field_count": 16,
+  "neutral_fields_blocked_without_adapter": [
+    "expected_incremental_return",
+    "modeled_switching_friction",
+    "atr_expansion",
+    "surveillance",
+    "trade_plan",
+    "exposure",
+    "earnings_scheduled_at",
+    "earnings_schedule_verified_at"
+  ],
+  "threat_model": "no protection against Python-code/DI replacement or canonical-store compromise; no PKI claimed",
+  "version": "six-gates-source-authority/v1"
+}

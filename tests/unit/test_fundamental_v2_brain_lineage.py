@@ -308,7 +308,7 @@ def test_current_source_boundary_and_preserved_policy_files():
     new=ast.parse(Path('app/gates/engine.py').read_text())
     def policies(t):
         engine=next(x for x in t.body if isinstance(x,ast.ClassDef) and x.name=='ExecutionGateEngine')
-        return {x.name:ast.dump(x,include_attributes=False) for x in engine.body if isinstance(x,ast.FunctionDef) and x.name!='evaluate'}
+        return {x.name:ast.dump(x,include_attributes=False) for x in engine.body if isinstance(x,ast.FunctionDef) and x.name not in {'evaluate','__init__'}}
     assert policies(old)==policies(new)
 
 

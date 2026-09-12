@@ -15,7 +15,7 @@ from app.gates.version_compatibility import (DOMAIN_FIELDS, GateVersionBlocked, 
     field_fingerprint, gate_evidence_context)
 from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.registry.versioned import V2_VERSION
-from tests.fixtures.gate_provenance import synthetic_card, synthetic_comparison, synthetic_context
+from tests.fixtures.gate_provenance import synthetic_card, synthetic_comparison, synthetic_context, fixture_engine
 from tests.unit import test_execution_gates as g
 from tests.unit.test_fundamental_v2_brain_lineage import variants
 
@@ -41,7 +41,8 @@ def proven(data=None):
 
 
 def evaluate(a):
-    return ExecutionGateEngine(g.CONFIG, g.CALENDAR).evaluate(**a)
+    # Prior tests isolate content-binding/arithmetic, not new producer authority.
+    return fixture_engine(ExecutionGateEngine(g.CONFIG, g.CALENDAR), a).evaluate(**a)
 
 
 def test_complete_source_bound_v1_replay():

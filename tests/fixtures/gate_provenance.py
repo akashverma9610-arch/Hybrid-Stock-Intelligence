@@ -11,6 +11,58 @@ from app.gates.version_compatibility import (DOMAIN_FIELDS, domain_lineage, gate
 from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.registry.canonical import DIAGNOSTIC_REGISTRY_VERSION as V1
 from app.scoring.engine import DecisionScorecard
+from app.gates.source_authority import _receipt, GateVersionBlocked
+from copy import deepcopy
+from contextlib import contextmanager, ExitStack
+from unittest.mock import patch
+from app.gates.engine import ExecutionGateEngine
+
+
+class SyntheticReplayGateEngine(ExecutionGateEngine):
+    """Legacy hypothetical replay adapter; never installs itself globally."""
+    def evaluate(self, **args):
+        return fixture_engine(self, args).evaluate(**args)
+
+
+@contextmanager
+def fixture_gate_composition():
+    """Explicit, scoped composition for frozen synthetic replay tests only."""
+    with ExitStack() as stack:
+        for module in ("app.backtest.analytical", "app.backtest.portfolio_gates",
+                       "app.portfolio.canonical_six_gates_activation", "app.universe_analysis.service"):
+            stack.enter_context(patch(module + ".ExecutionGateEngine", SyntheticReplayGateEngine))
+        yield
+
+
+class SyntheticFixtureAuthority:
+    """Explicit independent fixture store for arithmetic replay, NOT production.
+
+    Seeds are copied before admission; caller input cannot update this store.
+    This proves frozen arithmetic only. Production authenticity tests use the
+    actual reader/scoring adapters and never this fixture.
+    """
+    def __init__(self, args):
+        self.proofs = deepcopy(tuple(x for x in (args.get("candidate_score_evidence"),
+                                                args.get("incumbent_score_evidence")) if x is not None))
+        context = args.get("evidence_context")
+        self.refs = deepcopy(context.dependencies if context else ())
+
+    def attest_score(self, proof):
+        expected = next((x for x in self.proofs if x.source.id == proof.source.id), None)
+        if expected != proof:
+            raise GateVersionBlocked("SYNTHETIC_SCORE_NOT_IN_FIXTURE")
+        return _receipt(expected.source, producer="ISOLATED_SYNTHETIC_TEST_ONLY",
+            diagnostic_fingerprints=(content_fingerprint("isolated-synthetic-diagnostics"),),
+            comparison=expected.comparison_result)
+
+    def verify_domain(self, ref, value, **context):
+        if ref not in self.refs:
+            raise GateVersionBlocked("SYNTHETIC_DOMAIN_NOT_IN_FIXTURE")
+
+
+def fixture_engine(engine, args):
+    from app.gates.engine import ExecutionGateEngine
+    return ExecutionGateEngine(engine.config, engine.calendar, source_authority=SyntheticFixtureAuthority(args))
 
 
 def synthetic_card(inputs, *, instrument, strategy, scoring, at, incumbent=False):
@@ -60,4 +112,4 @@ def synthetic_evaluate(engine, **args):
             comparison_result=synthetic_comparison(incumbent, engine.config.version)))
     if inputs.snapshot_as_of_timestamp == args["as_of_timestamp"]:
         args["evidence_context"] = synthetic_context(inputs, engine.config, existing=args.get("evidence_context"))
-    return engine.evaluate(**args)
+    return fixture_engine(engine, args).evaluate(**args)

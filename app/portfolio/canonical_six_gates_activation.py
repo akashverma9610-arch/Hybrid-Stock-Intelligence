@@ -12,6 +12,7 @@ from typing import Protocol
 from app.gates.engine import ActionContext, ExecutionGateEngine, GateInput
 from app.gates.version_compatibility import require_gate_source
 from app.gates.score_provenance import score_evidence
+from app.gates.source_authority import RepositoryGateAuthority
 from app.portfolio.canonical_diagnostics_orchestration import PORTFOLIO_FIVE_CANONICAL_INSTRUMENT_IDS
 from app.portfolio.canonical_six_gates import canonical_execution_gate_evaluation_from
 
@@ -105,7 +106,10 @@ class CanonicalPortfolioSixGatesActivator:
                 instrument_id, "NOT_EVALUATED", None, None, (),
                 ("GATE_INPUT_SNAPSHOT_AS_OF_MISMATCH",),
             )
-        evaluation = self._engine.evaluate(
+        # The reader is owned by this service, never supplied in GateInput.
+        engine = ExecutionGateEngine(self._engine.config, self._engine.calendar,
+                                     source_authority=RepositoryGateAuthority(self._governance))
+        evaluation = engine.evaluate(
             instrument_id=instrument_id, strategy_version=score.strategy_version,
             registry_version=score.registry_version, scoring_configuration_version=score.configuration_version,
             action_context=action_context, as_of_timestamp=execution_as_of,

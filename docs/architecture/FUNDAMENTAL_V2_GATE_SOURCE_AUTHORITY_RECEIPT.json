@@ -1,0 +1,79 @@
+{
+  "admission_attacks": [
+    {
+      "field": "expected_incremental_return",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:expected_incremental_return"
+    },
+    {
+      "field": "modeled_switching_friction",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:modeled_switching_friction"
+    },
+    {
+      "field": "holding_entry_date",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:holding_entry_date"
+    },
+    {
+      "field": "atr_expansion",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:atr_expansion"
+    },
+    {
+      "field": "surveillance",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:surveillance"
+    },
+    {
+      "field": "trade_plan",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:trade_plan"
+    },
+    {
+      "field": "exposure",
+      "reason": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:exposure"
+    },
+    {
+      "field": "earnings_scheduled_at",
+      "reason": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY"
+    },
+    {
+      "field": "earnings_schedule_verified_at",
+      "reason": "EARNINGS_CALENDAR_AUTHORITY_NOT_READY"
+    },
+    {
+      "field": "raw-score",
+      "reason": "GATE_CANDIDATE_SCORE_PROVENANCE_REQUIRED"
+    },
+    {
+      "field": "rehashed-fake-v1",
+      "reason": "GATE_SCORE_PRODUCER_MISMATCH"
+    }
+  ],
+  "all_six_formulas_unchanged": true,
+  "attestation_fingerprint": "sha256:fe4ba4bc67563aefee3c2d54ef2177ca7043e6cb87525d818260ceae729f5cf7",
+  "b08_after": "CLOSED_FOR_SHADOW_COMPATIBILITY",
+  "b08_before": "CLOSED_FOR_SHADOW_COMPATIBILITY",
+  "b09": "STILL_BLOCKING_ACTIVATION",
+  "b14": "STILL_BLOCKING_ACTIVATION",
+  "baseline": "4027fb63b63000bd9437845d8199ffaa30d2f3dd",
+  "calendar_status": "APPROVED_SOURCE_DECLARATION_WITHOUT_ADMITTED_FUTURE_EVENT_PRODUCER",
+  "fingerprint": "sha256:457ed0db9347e8a5996d201a7fb0f03895c8e46a0e51a3a21a1ec5d7e7438884",
+  "frozen_v1_replay_cases": 21,
+  "frozen_v1_replay_fingerprint": "sha256:81943ad5cf3645f222887f640d5b9f6becd22ccadba3e187578bf9ac408c75d4",
+  "matrix_fingerprint": "sha256:9ebb2f3d8cbb5803a6d62b602eb696a7122fd5d81dca508c275a9d5fbe099f36",
+  "next_continuation": "FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_REPAIR_3",
+  "orders": 0,
+  "provider_calls": 0,
+  "remaining_blockers": [
+    "expected_incremental_return",
+    "modeled_switching_friction",
+    "atr_expansion",
+    "surveillance",
+    "trade_plan",
+    "exposure",
+    "earnings_scheduled_at",
+    "earnings_schedule_verified_at"
+  ],
+  "unsafe_self_declared_ingress_accepted": 0,
+  "v1_active": true,
+  "v2_active": false,
+  "v2_shadow_only": true,
+  "version": "six-gates-source-authority/v1",
+  "writes": 0
+}

@@ -183,9 +183,11 @@ class ExecutionGateEvaluation:
 
 
 class ExecutionGateEngine:
-    """Pure evaluator. An EXECUTABLE result is analytical permission only."""
-    def __init__(self, config: ExecutionGateConfig, calendar: ExchangeCalendar):
+    """Read-only admission and deterministic arithmetic, never order authority."""
+    def __init__(self, config: ExecutionGateConfig, calendar: ExchangeCalendar, *, source_authority=None):
         self.config, self.calendar = config, calendar
+        # Trusted application composition, never selected by GateInput metadata.
+        self.source_authority = source_authority
 
     def evaluate(self, *, instrument_id: str, strategy_version: object, registry_version: str,
                  scoring_configuration_version: str, action_context: ActionContext,
@@ -206,6 +208,10 @@ class ExecutionGateEngine:
                                  as_of=as_of_timestamp, candidate=candidate_score_evidence,
                                  incumbent=incumbent_score_evidence)
         require_domain_provenance(inputs, evidence_context=evidence_context)
+        from app.gates.source_authority import require_source_authority
+        require_source_authority(self.source_authority, inputs=inputs, candidate=candidate_score_evidence,
+            incumbent=incumbent_score_evidence, context=evidence_context, instrument_id=instrument_id,
+            as_of=as_of_timestamp, policy=self.config.version)
         unresolved = self.config.unresolved()
         decisions = (
             self._rotation(action_context, inputs, unresolved), self._velocity(action_context, as_of_timestamp, inputs, unresolved),

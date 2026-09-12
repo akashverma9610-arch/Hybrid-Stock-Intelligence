@@ -6,6 +6,7 @@ from decimal import Decimal
 from app.gates.engine import ActionContext, ExecutionGateConfig, ExecutionGateEngine, GateInput, PortfolioExposure
 from app.gates.version_compatibility import require_gate_source
 from app.gates.score_provenance import score_evidence
+from app.gates.source_authority import RepositoryGateAuthority
 from app.gates.version_compatibility import GateVersionBlocked, domain_lineage, gate_evidence_context
 from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.historical.guard import manifest_fingerprint
@@ -122,7 +123,8 @@ class HistoricalPortfolioGateReplayService:
                     source_fingerprints=(scenario,)))
         binding = gate_evidence_context(inputs, as_of=evaluation_timestamp,
             gate_policy_version=gate_config.version, dependencies=tuple(refs)) if refs else None
-        return ExecutionGateEngine(gate_config,self.calendar).evaluate(instrument_id=candidate.instrument_id,
+        return ExecutionGateEngine(gate_config,self.calendar,
+            source_authority=RepositoryGateAuthority(self.repository)).evaluate(instrument_id=candidate.instrument_id,
             strategy_version=scorecard.strategy_version,registry_version=run.registry_version,
             scoring_configuration_version=run.scoring_config_version,action_context=ActionContext.ROTATE_IN,
             as_of_timestamp=evaluation_timestamp,evaluated_at=evaluation_timestamp,inputs=inputs,

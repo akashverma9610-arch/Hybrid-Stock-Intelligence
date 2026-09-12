@@ -13,6 +13,7 @@ from app.domain.models import AsOfSnapshot, FinancialObservation, MarketObservat
 from app.gates.engine import ActionContext, ExecutionGateConfig, ExecutionGateEngine, GateInput, SurveillanceObservation
 from app.gates.version_compatibility import require_gate_source
 from app.gates.score_provenance import score_evidence
+from app.gates.source_authority import RepositoryGateAuthority
 from app.gates.version_compatibility import domain_lineage, gate_evidence_context
 from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.historical.guard import BacktestLookaheadGuard, manifest_fingerprint
@@ -149,7 +150,8 @@ class HistoricalAnalyticalReplayService:
             comparison_score=None, evidence_ids=tuple(x for component in scorecard.components for x in component.evidence_ids),
             diagnostic_ids=tuple(x.record.id for x in diagnostics), surveillance=surveillance,
             earnings_scheduled_at=earnings_at, earnings_schedule_verified_at=earnings_verified_at)
-        return ExecutionGateEngine(self.config.gate_config, self.config.calendar).evaluate(
+        return ExecutionGateEngine(self.config.gate_config, self.config.calendar,
+            source_authority=RepositoryGateAuthority(self.repository)).evaluate(
             instrument_id=instrument, strategy_version=self.config.strategy_reference, registry_version=run.registry_version,
             scoring_configuration_version=run.scoring_config_version, action_context=self.config.action_context,
             as_of_timestamp=at, evaluated_at=at, inputs=gate_input,

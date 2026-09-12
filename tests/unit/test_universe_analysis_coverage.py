@@ -4,6 +4,14 @@ from dataclasses import replace
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 from tests.fixtures.gate_provenance import synthetic_context
+from tests.fixtures.gate_provenance import fixture_gate_composition
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def isolated_universe_gate_arithmetic():
+    with fixture_gate_composition():
+        yield
 
 from app.crowd.models import CrowdCategory, CrowdObservation, NewsEvent
 from app.domain.models import (

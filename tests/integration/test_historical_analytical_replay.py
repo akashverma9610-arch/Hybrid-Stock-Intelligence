@@ -3,6 +3,15 @@ from datetime import UTC, date, datetime, timedelta
 from decimal import Decimal
 import json
 import pytest
+from tests.fixtures.gate_provenance import fixture_gate_composition
+
+
+@pytest.fixture(autouse=True)
+def isolated_historical_gate_arithmetic():
+    # These synthetic calendar/surveillance observations have no live source
+    # authority. Test frozen replay mechanics through explicit test composition.
+    with fixture_gate_composition():
+        yield
 
 from app.backtest.analytical import HistoricalAnalyticalReplayConfig, HistoricalAnalyticalReplayService
 from app.backtest.engine import BacktestReplayEngine, backtest_run_fingerprint

@@ -4,6 +4,13 @@ from decimal import Decimal
 import json
 
 import pytest
+from tests.fixtures.gate_provenance import fixture_gate_composition
+
+
+@pytest.fixture(autouse=True)
+def isolated_portfolio_gate_arithmetic():
+    with fixture_gate_composition():
+        yield
 
 from app.backtest.engine import backtest_run_fingerprint
 from app.backtest.models import BacktestEvent, BacktestEventType, BacktestRunStatus, HistoricalHoldingGateContext
@@ -19,6 +26,7 @@ def _gate(result, identifier):
     return next(item for item in result.decisions if item.gate_id == identifier)
 
 
+@fixture_gate_composition()
 def _fixture(tmp_path, *, raw_score=Decimal("8.5"), config=GATE_CONFIG):
     """Seed only frozen prerequisites; the contextual service remains the evaluator path."""
     from app.backtest.analytical import HistoricalAnalyticalReplayService
@@ -77,6 +85,7 @@ def _context(repo, identifier, score=None, *, candidate_id=None, config=GATE_CON
     return context
 
 
+@fixture_gate_composition()
 def _evaluate(repo, run, candidate, original, state, config, contexts=(), at=None, **inputs):
     return HistoricalPortfolioGateReplayService(repo, CALENDAR).evaluate(run=run, replay_step_number=1,
         evaluation_timestamp=at or candidate.evaluation_timestamp, historical_analytical_evaluation_id=candidate.evaluation_id,

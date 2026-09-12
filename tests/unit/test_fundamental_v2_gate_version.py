@@ -241,7 +241,7 @@ def test_current_scope_and_all_six_policy_asts_unchanged():
     new = ast.parse(Path("app/gates/engine.py").read_text(encoding="utf-8"))
     def policies(tree):
         engine = next(x for x in tree.body if isinstance(x, ast.ClassDef) and x.name == "ExecutionGateEngine")
-        return {x.name: ast.dump(x) for x in engine.body if isinstance(x, ast.FunctionDef) and x.name != "evaluate"}
+        return {x.name: ast.dump(x) for x in engine.body if isinstance(x, ast.FunctionDef) and x.name not in {"evaluate", "__init__"}}
     assert policies(old) == policies(new)
     for path in ("app/gates/production_policy.py", "app/scoring/engine.py", "app/diagnostics/downstream.py",
                  "app/rotation/engine.py", "app/portfolio/sell_side_policy.py", "app/portfolio/engine.py",
