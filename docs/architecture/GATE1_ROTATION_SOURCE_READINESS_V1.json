@@ -1,0 +1,154 @@
+{
+  "schema_version": "gate1-rotation-source-readiness/v1",
+  "audit_id": "gate1-rotation-source-readiness",
+  "audit_version": "v1",
+  "baseline_commit": "95c187a0adb7d8dc8942695003326460de5a7da6",
+  "status": "GATE1_ROTATION_POLICY_DEFINITION_REPAIR_REQUIRED",
+  "scope": "DOCUMENTATION_ONLY_READINESS_AUDIT",
+  "runtime_producer_active": false,
+  "policy_change_authorized": false,
+  "frozen_runtime_contract": {
+    "gate_id": "GATE_1_ROTATION",
+    "gate_policy_version": "six-gates-production-v1",
+    "action_context_required_for_economic_branch": "ROTATE_IN",
+    "non_rotation_outcome": "PASS_NOT_APPLICABLE_NO_HOLDING_REPLACED",
+    "score_advantage_formula": "raw_decision_score - comparison_score",
+    "score_advantage_unit": "DECISION_SCORE_POINTS",
+    "score_advantage_threshold": "1.00",
+    "economic_formula": "expected_incremental_return - modeled_switching_friction",
+    "economic_hurdle": "0.00",
+    "economic_comparator": "STRICTLY_GREATER_THAN",
+    "missing_score_outcome": "INSUFFICIENT_DATA",
+    "missing_economic_input_outcome": "INSUFFICIENT_DATA",
+    "score_failure_outcome": "FAIL",
+    "economic_failure_outcome": "FAIL",
+    "pass_confidence": "1.0_CONSTANT_ANNOTATION",
+    "non_pass_confidence": null,
+    "order_or_broker_authority": false
+  },
+  "active_fixed_policy": {
+    "policy_id": "six-gates-production-v1",
+    "policy_version": "v1",
+    "friction_model_id": "nse-cash-delivery-friction-v1",
+    "friction_model_version": "v1",
+    "require_economic_hurdle": true,
+    "min_score_advantage": "1.00",
+    "net_economic_hurdle": "0.00"
+  },
+  "substantive_inputs": [
+    {
+      "field": "expected_incremental_return",
+      "runtime_type": "Decimal | None",
+      "declared_domain_family": "USER_APPROVED_CONTEXT",
+      "authority_type": "DERIVED_SCENARIO",
+      "semantic_state": "POLICY_DEFINITION_MISSING",
+      "unit_state": "UNSPECIFIED",
+      "horizon_state": "HORIZON_BINDING_MISSING",
+      "producer_state": "NOT_READY",
+      "source_authority_state": "SOURCE_GOVERNANCE_REQUIRED",
+      "source_gap": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+      "calibration_state": "UNRESOLVED"
+    },
+    {
+      "field": "modeled_switching_friction",
+      "runtime_type": "Decimal | None",
+      "declared_domain_family": "USER_APPROVED_CONTEXT",
+      "authority_type": "DERIVED_SCENARIO_PLUS_POLICY_PARAMETERS",
+      "semantic_state": "PARTIAL_POLICY_FORMULA_ONLY",
+      "unit_state": "INR_ABSOLUTE_AMOUNT",
+      "horizon_state": "NOT_APPLICABLE_TO_COST_FORMULA",
+      "producer_state": "NOT_READY",
+      "source_authority_state": "SOURCE_GOVERNANCE_REQUIRED",
+      "source_gap": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+      "calibration_state": "NOT_REQUIRED_FOR_STATUTORY_COMPONENTS"
+    }
+  ],
+  "friction_formula_components": {
+    "fixed_effective_dated_policy_parameters": [
+      "stt_purchase_rate",
+      "stt_sale_rate",
+      "sebi_turnover_rate_each_side",
+      "stamp_duty_purchase_rate",
+      "gst_rate",
+      "nse_member_outflow_per_crore_each_side"
+    ],
+    "required_scenario_inputs_for_non_null_formula_output": [
+      "purchase_turnover",
+      "sale_turnover",
+      "brokerage",
+      "slippage",
+      "capital_gains_tax",
+      "gst_taxable_services"
+    ],
+    "tax_treatment": "EXPLICIT_SCENARIO_INPUT_NOT_USER_TAX_POLICY",
+    "slippage_treatment": "REQUIRED_SCENARIO_INPUT_WITH_NO_ADMITTED_MEASURE_OR_PROXY",
+    "broker_treatment": "NO_BROKER_OR_ACCOUNT_SPECIFIC_POLICY_ADMITTED"
+  },
+  "pit_and_authority": {
+    "gate_snapshot_rule": "snapshot_as_of_timestamp_equals_evaluation_as_of",
+    "lineage_rule": "every_populated_domain_input_requires_GateEvidenceLineage_with_as_of_and_known_at_not_after_evaluation_as_of",
+    "authority_rule": "caller_supplied_lineage_or_policy_hash_never_admits_a_scenario",
+    "current_authority": "UnavailableGateAuthority_or_RepositoryGateAuthority_rejects_both_inputs_before_formula",
+    "future_realized_returns_forbidden": true,
+    "runtime_clock_forbidden_for_historical_interpretation": true
+  },
+  "action_scope": {
+    "economic_rotation_branch": ["ROTATE_IN"],
+    "existing_non_rotation_exemption": ["FRESH_ENTRY", "ADD_TO_POSITION", "HOLD_EXISTING", "REDUCE_EXISTING", "EXIT_EXISTING", "RISK_MANAGEMENT"],
+    "cash_comparator_contract": "NOT_REPRESENTED_OR_DEFINED",
+    "incumbent_identity_contract": "NOT_REPRESENTED_IN_GATE_INPUT",
+    "trade_plan_contract": "SEPARATE_GATE4_AUTHORITY_NOT_A_GATE1_PRODUCER"
+  },
+  "bounded_current_data_readiness": {
+    "observation_mode": "READ_ONLY_SQLITE_METADATA_AND_ROW_COUNTS",
+    "six_gates_production_policy_approvals": 1,
+    "canonical_decision_scorecards": 3,
+    "portfolio_snapshots": 1,
+    "canonical_execution_gate_evaluations": 0,
+    "portfolio_rotation_evaluations": 0,
+    "rotation_comparisons": 0,
+    "trade_plans": 0,
+    "economic_scenario_receipts": 0,
+    "production_gate1_economic_evidence_ready": false,
+    "whole_market_scan_performed": false,
+    "portfolio_specific_requirement_created": false
+  },
+  "reuse_audit": {
+    "decision_score": "REUSED_FOR_SCORE_ADVANTAGE_ONLY_NOT_RETURN_FORECAST",
+    "nse_cash_delivery_friction_model": "REUSED_AS_FIXED_COMPONENT_FORMULA_ONLY",
+    "portfolio_rotation_challenger": "CONSUMES_UNGOVERNED_BENEFIT_AND_FRICTION_VALUES_NO_GATE1_PRODUCER",
+    "trade_plan": "SEPARATE_GATE4_CONTRACT_NO_GATE1_ECONOMIC_AUTHORITY",
+    "backtest_rotation": "CALLER_SUPPLIED_REPLAY_VALUES_NOT_PRODUCTION_PROVENANCE",
+    "new_rotation_engine": "FORBIDDEN"
+  },
+  "dominant_repair": {
+    "next_continuation": "GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1",
+    "must_define_before_a_producer": [
+      "comparator_and_action_scope",
+      "expected_incremental_return_semantics_and_dimension",
+      "horizon_and_known_at_rules",
+      "probability_or_non_probability_methodology",
+      "economic_scenario_inputs_and_pit_lineage",
+      "tax_brokerage_and_slippage_treatment",
+      "calibration_requirement_and_pilot_limitations"
+    ],
+    "must_not_do": [
+      "change_active_thresholds_or_formulas",
+      "fabricate_return_or_friction",
+      "use_ai_or_decision_score_as_a_return_forecast",
+      "create_a_second_rotation_engine",
+      "activate_composite_execution_gate_policy_v2"
+    ]
+  },
+  "protected_boundaries": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_FABRICATED_ECONOMIC_RETURN": true,
+    "NO_FABRICATED_SWITCHING_FRICTION": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false
+  },
+  "receipt_fingerprint": "sha256:b4f47b20b6beb3e5de0cd1f75e86b894a45083cd6294138eb61ff37f945c513d"
+}

@@ -89,6 +89,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Gate 3 ASM/GSM Official Complete-Export Identity Feasibility Decision V1 (known official UI exports are not machine-verifiable; current APIs remain discovery-only; no gate activation)](docs/architecture/GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1.md)
 - [Gate 3 ASM/GSM Completeness Governance Fallback V1 (retain insufficient-data boundary; operator transport conditional on mechanical product proof; no gate activation)](docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.md)
 - [NSE Execution Master Current Capture Continuity Repair V1 (complete official MII master admission; legacy partial snapshot preserved; ASM/GSM boundary unchanged)](docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md)
+- [Gate 1 Rotation Source Readiness V1 (economic scenario semantics and dimensional contract unresolved; V1 unchanged)](docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.md)
 - [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Official NSE/BSE Earnings Calendar Adapters V1 (bounded parsers/storage; live coverage partial; Gate 6 unwired)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_V1.md)
 - [Official Earnings Calendar Discovery Repair (exact joins; scoped coverage and strict PIT still blocked)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_REPAIR.md)
