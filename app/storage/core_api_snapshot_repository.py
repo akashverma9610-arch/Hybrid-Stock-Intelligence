@@ -207,6 +207,11 @@ class CoreApiSnapshotFamily(StrEnum):
     # evidence.  They retain no raw tick archive and do not activate a reader.
     PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_BAR = "PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_BAR"
     PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_CONFLICT = "PROSPECTIVE_CANONICAL_FIFTEEN_MINUTE_CONFLICT"
+    # Forward-only official earnings-schedule observations.  This family
+    # retains raw source evidence, prospective first-observed receipts, and
+    # partial coverage receipts.  It is deliberately not the Gate-6 schedule
+    # candidate store and cannot create calendar clearance.
+    EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT = "EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT"
 
 
 @dataclass(frozen=True, slots=True)

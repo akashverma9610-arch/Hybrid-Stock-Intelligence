@@ -1,10 +1,10 @@
 # Prospective Earnings Schedule Receipt Readiness V1
 
-**Status:** `PROSPECTIVE_RECEIPT_PATH_PARTIAL_ONE_BOUNDED_REPAIR_REQUIRED / DOCUMENTATION_ONLY / NOT_ACTIVE`.
+**Status:** `HISTORICAL_READINESS_AUDIT / IMPLEMENTATION_GAP_CLOSED_BY_PROSPECTIVE_RECEIPT_COLLECTOR_V1 / GATE_POLICY_V2_INACTIVE`.
 
 This bounded audit follows the [earnings blackout horizon calibration contract](EARNINGS_BLACKOUT_HORIZON_CALIBRATION_CONTRACT_V1.md), [known-at semantics](EARNINGS_CALENDAR_KNOWN_AT_SEMANTICS_V1.md), [canonical identity bridge](EARNINGS_CALENDAR_CANONICAL_IDENTITY_BRIDGE_V1.md), and [coverage/window policy](EARNINGS_CALENDAR_COVERAGE_WINDOW_POLICY_V1.md). Its machine record is the [readiness receipt artifact](EARNINGS_BLACKOUT_PROSPECTIVE_SCHEDULE_RECEIPT_READINESS_V1.json).
 
-It does not implement a collector, register a runtime job, create a table, change Gate 6 V1, activate Gate 6 V2, choose a horizon, reconstruct historical PIT, provide absence clearance, or create a signal, trade, order, portfolio mutation, or AI decision authority.
+At the time of the audit, it did not implement a collector, register a runtime job, create a table, change Gate 6 V1, activate Gate 6 V2, choose a horizon, reconstruct historical PIT, provide absence clearance, or create a signal, trade, order, portfolio mutation, or AI decision authority. The identified bounded collector is now documented in [Prospective Earnings Schedule Receipt Collector V1](EARNINGS_BLACKOUT_PROSPECTIVE_RECEIPT_COLLECTOR_V1.md). That implementation remains prospective evidence only and does not alter any Gate 6, horizon, clearance, trading, or AI boundary.
 
 ## Result and exact boundary
 

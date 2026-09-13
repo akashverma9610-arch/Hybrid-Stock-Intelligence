@@ -91,6 +91,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Earnings Blackout Policy V2 Governance Approval (conditional semantics only; activation blockers open, horizon unset, V1 unchanged)](docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.md)
 - [Earnings Blackout Horizon Calibration Contract V1 (non-active measurement design; no numeric horizon, data partial)](docs/architecture/EARNINGS_BLACKOUT_HORIZON_CALIBRATION_CONTRACT_V1.md)
 - [Prospective Earnings Schedule Receipt Readiness V1 (one bounded collector/receipt repair required; Gate 6 remains unchanged)](docs/architecture/EARNINGS_BLACKOUT_PROSPECTIVE_SCHEDULE_RECEIPT_READINESS_V1.md)
+- [Prospective Earnings Schedule Receipt Collector V1 (immutable forward-only official evidence; Gate 6 V2 remains inactive)](docs/architecture/EARNINGS_BLACKOUT_PROSPECTIVE_RECEIPT_COLLECTOR_V1.md)
 - [Canonical Benchmark / Sector Technical History Closure V1](docs/architecture/CANONICAL_BENCHMARK_SECTOR_TECHNICAL_HISTORY_CLOSURE_V1.md)
 - [Official NSE Index OHLC Availability Feasibility V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_AVAILABILITY_FEASIBILITY_V1.md)
 - [Official NSE Index OHLC Source-Name Reconciliation V1](docs/architecture/OFFICIAL_NSE_INDEX_OHLC_SOURCE_NAME_RECONCILIATION_V1.md)
