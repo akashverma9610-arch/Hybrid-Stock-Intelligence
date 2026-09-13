@@ -1,5 +1,10 @@
 # Gate 3 Surveillance Source Readiness V1
 
+Follow-up: the [policy/source-semantics repair audit](GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_V1.md)
+adds official complete-list documentation, distinguishes security from series,
+and clarifies the missing runtime status predicate and constant PASS annotation.
+This earlier audit's measured counts and machine receipt remain unchanged.
+
 **Status:** `GATE3_POLICY_SOURCE_SEMANTICS_REQUIRE_GOVERNANCE_REPAIR / DOCUMENTATION_ONLY / V1_ACTIVE / GATE_POLICY_V2_INACTIVE / NOT_ACTIVE`.
 
 **Decision:** **C — `GATE3_POLICY_SOURCE_SEMANTICS_REQUIRE_GOVERNANCE_REPAIR`.** The bounded read-only probe proves that first-party NSE surfaces are reachable and structured for prospective positive observations. It does not prove the source semantics required to admit a fresh authoritative **clear** observation to production Gate 3. No collector, parser, storage, policy, gate, API, UI, runtime job, trade, order, portfolio mutation, or source state was changed by this audit. Its machine receipt is [the source-readiness receipt](GATE3_SURVEILLANCE_SOURCE_READINESS_V1.json).

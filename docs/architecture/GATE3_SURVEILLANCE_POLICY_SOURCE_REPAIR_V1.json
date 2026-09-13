@@ -1,0 +1,171 @@
+{
+  "schema_version": "gate3-surveillance-policy-source-repair/v1",
+  "audit_id": "gate3-surveillance-policy-source-repair",
+  "audit_version": "v1",
+  "baseline_commit": "d4f39dcee5cf29c9b663065bab97c70ee85c4277",
+  "scope": "GOVERNANCE_AUDIT_ONLY",
+  "runtime_producer_active": false,
+  "production_observation_created": false,
+  "execution_venue_authority": "NSE_EXECUTION_VENUE_AUTHORITY",
+  "final_option": "D",
+  "final_decision": "GATE3_POLICY_REMAINS_UNRESOLVED",
+  "v1_pass_conclusion": "CURRENT_V1_PASS_PARTIALLY_DEFENSIBLE",
+  "series_decision": "C_MIXED",
+  "next_continuation": "GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_2",
+  "next_continuation_started": false,
+  "unresolved_contracts": [
+    "SECURITY_STATUS_CARRIER_AND_BLOCKING_MAPPING_UNDEFINED",
+    "COMPLETED_SESSION_VS_CURRENT_EFFECTIVE_SESSION_UNRESOLVED",
+    "ASM_SUBFRAMEWORK_AND_API_COMPLETE_EXPORT_BINDING_UNAPPROVED",
+    "EXACT_SERIES_AND_NONSTATIC_PRICE_REPRESENTATION_UNAPPROVED"
+  ],
+  "frozen_runtime": {
+    "coverage": ["ASM", "GSM", "PRICE_BAND", "SECURITY_STATUS"],
+    "carrier_fields": ["asm_stage", "gsm_stage", "circuit_limit"],
+    "security_status_carrier_present": false,
+    "security_status_predicate_present": false,
+    "asm_stage_gte": 2,
+    "gsm_stage_gt": 0,
+    "circuit_limit_lte": "0.05",
+    "max_age_trading_sessions": 4,
+    "absence_is_pass": false,
+    "latest_eligible_completed_session_required": true,
+    "missing_fields_checked_before_blocking_thresholds": true,
+    "gate3_action_context_exception": "NONE",
+    "pass_confidence_annotation": "1.0_CONSTANT_NOT_SOURCE_CONFIDENCE",
+    "other_outcome_confidence": null,
+    "aggregate_precedence": ["FAIL_TO_BLOCKED", "MISSING_TO_INSUFFICIENT_DATA", "ALL_PASS_TO_EXECUTABLE"],
+    "real_source_readiness": "SOURCE_NOT_IMPLEMENTED",
+    "real_source_rejection": "GATE_DOMAIN_AUTHORITY_UNAVAILABLE:surveillance",
+    "synthetic_liveness_is_official_proof": false
+  },
+  "official_sources": [
+    {
+      "id": "S1",
+      "url": "https://nsearchives.nseindia.com//web/mediaattachment/2026-08/FAQs_-_Additional_Surveillance_Measure_ASM_20260812103311.pdf",
+      "locator": "v1.2 Q6-Q7 p18, indicator table pp19-20",
+      "product": "List_of_securities_shortlisted_under_ASM.csv",
+      "documented_complete_product": true,
+      "previous_json_endpoint": "https://www.nseindia.com/api/reportASM",
+      "json_full_export_equivalence_verified": false
+    },
+    {
+      "id": "S2",
+      "url": "https://nsearchives.nseindia.com//web/mediaattachment/2026-06/FAQs_-_Graded_Surveillance_Measure_GSM_Version_1.1_20260612125858.pdf",
+      "locator": "v1.1 Q5, Q7-Q10 pp7-9; indicator table pp9-10",
+      "product": "List of scrips shortlisted in Graded Surveillance Measure",
+      "documented_complete_product": true,
+      "previous_json_endpoint": "https://www.nseindia.com/api/reportGSM",
+      "json_full_export_equivalence_verified": false
+    },
+    {
+      "id": "S3",
+      "url": "https://www.nseindia.com/static/regulations/daily-price-bands-reports",
+      "export_url": "https://nsearchives.nseindia.com/content/equities/sec_list.csv",
+      "export_http_status": 200,
+      "export_sha256": "c9a89b593df9e0b95d8d72de06f81fa29a77214179843dd181ebfcb6010f879e",
+      "columns": ["Symbol", "Series", "Security Name", "Band", "Remarks"],
+      "effective_date_column_present": false,
+      "probe_sample_rows": 3,
+      "observed_numeric_band_sample": "2",
+      "sample_series": ["BE", "EQ"],
+      "unit": "PERCENT_PER_SIDE_FOR_STATIC_NUMERIC_BAND",
+      "snapshot_gate_admitted": false
+    },
+    {
+      "id": "S4",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR73927.zip",
+      "locator": "CMTR73927.pdf pp56,92-93; PART-D.xlsx Annexures 1 and 10",
+      "archive_sha256": "11988491ecb0088222614ae240995b6ef8881628757c903a959dd79c910a7479",
+      "workbook_sha256": "30a4e37956ba5ab1acdda177411beca0146ebab0bcb155f1cd4f12576d195798",
+      "field_map": {
+        "FinInstrmId": "Token: unique symbol-series combination",
+        "TckrSymb": "Symbol",
+        "SctySrs": "Series",
+        "ISIN": "ISIN No.",
+        "TrckgInd": "SurvInd: composite surveillance indicator, not a stage",
+        "PricRg": "CreditRating: daily price range, CHAR[19]",
+        "SctyStsNrmlMkt": "SecurityStatus in NormalMkt",
+        "ElgbltyNrmlMkt": "Eligibility in Normal Market",
+        "PrtdToTrad": "PermittedToTrade: listing category, not a boolean"
+      },
+      "normal_market_status_source_codes": {
+        "1": "PREOPEN", "2": "OPEN", "3": "SUSPENDED",
+        "4": "PREOPEN_EXTENDED", "5": "STOCK_OPEN_WITH_MARKET", "6": "PRICE_DISCOVERY"
+      },
+      "normal_market_eligibility_source_codes": {"0": "NOT_ELIGIBLE", "1": "ELIGIBLE"},
+      "source_codes_are_approved_gate_predicates": false,
+      "universal_pricrg_percent_decoder_proven": false
+    },
+    {
+      "id": "S5",
+      "url": "https://nsearchives.nseindia.com/content/circulars/SURV74008.pdf",
+      "locator": "ASM/GSM frameworks; trade-for-trade BE discussion around p26"
+    }
+  ],
+  "source_readiness": [
+    {"family": "ASM", "source_type": "COMPLETE_SNAPSHOT_STATE", "authority": "READY", "complete_snapshot": "PARTIAL", "positive": "PARTIAL", "negative": "PARTIAL", "scope": "SECURITY_WITHIN_FRAMEWORK", "series": "PARTIAL", "effective_date": "PARTIAL", "first_observed_feasibility": "READY", "current_state": "PARTIAL", "historical_replay": "NOT_READY", "pilot_admission": "NOT_READY"},
+    {"family": "GSM", "source_type": "COMPLETE_SNAPSHOT_STATE", "authority": "READY", "complete_snapshot": "PARTIAL", "positive": "PARTIAL", "negative": "PARTIAL", "scope": "SECURITY_WITHIN_FRAMEWORK", "series": "PARTIAL", "effective_date": "PARTIAL", "first_observed_feasibility": "READY", "current_state": "PARTIAL", "historical_replay": "NOT_READY", "pilot_admission": "NOT_READY"},
+    {"family": "PRICE_BAND", "source_type": "COMPLETE_SNAPSHOT_STATE_OR_MASTER_REFERENCE_STATE", "authority": "READY", "complete_snapshot": "PARTIAL", "positive": "PARTIAL", "negative": "PARTIAL", "scope": "EXACT_SYMBOL_SERIES_TOKEN", "series": "READY", "effective_date": "PARTIAL", "first_observed_feasibility": "READY", "current_state": "PARTIAL", "historical_replay": "NOT_READY", "pilot_admission": "NOT_READY"},
+    {"family": "SECURITY_STATUS", "source_type": "MASTER_REFERENCE_STATE", "authority": "READY", "complete_snapshot": "PARTIAL", "positive": "PARTIAL", "negative": "NOT_READY", "scope": "EXACT_TOKEN_SERIES_MARKET", "series": "READY", "effective_date": "PARTIAL", "first_observed_feasibility": "READY", "current_state": "PARTIAL", "historical_replay": "NOT_READY", "pilot_admission": "NOT_READY"}
+  ],
+  "conditional_fixture_contract": {
+    "mode": "TEST_ONLY_NOT_A_PRODUCER_OR_SOURCE_CERTIFICATE",
+    "nonblocking_list_requirements": [
+      "official_authority", "list_contract_verified", "complete_scope", "full_file_or_all_pages",
+      "schema_valid", "exact_security", "applicability_verified", "effective_state_known",
+      "known_at_not_after_as_of", "fresh_current_state", "conflict_free",
+      "first_observed_receipt", "admission_policy_approved"
+    ],
+    "positive_requirements": [
+      "official_authority", "list_contract_verified", "schema_valid", "exact_security",
+      "applicability_verified", "effective_state_known", "known_at_not_after_as_of",
+      "fresh_current_state", "conflict_free", "first_observed_receipt", "admission_policy_approved"
+    ],
+    "snapshot_unavailable_state": "UNKNOWN",
+    "conflict_state": "CONFLICTED",
+    "component_nonblocking_is_gate_pass": false,
+    "price_or_status_absent_is_nonblocking": false,
+    "all_real_admission_available": false
+  },
+  "inherited_universe": {
+    "source_receipt": "GATE3_SURVEILLANCE_SOURCE_READINESS_V1.json",
+    "source_receipt_fingerprint": "sha256:d19f8265624b983e2992bee61b6b601a924aa93dd8af190b6d4f87d221e08539",
+    "asm_rows": 239,
+    "gsm_rows": 75,
+    "surveillance_action_rows": 35,
+    "mii_rows": 37676,
+    "unique_surveillance_isins": 314,
+    "exact_local_isin_matches": 244,
+    "outside_local_scope": 70,
+    "resolved_target_series": 0,
+    "unresolved_target_series": 314,
+    "security_level_join_candidates": 314,
+    "blanket_all_series_applicability_proven": false,
+    "approved_target_series_count": null,
+    "new_universe_scan_performed": false
+  },
+  "protected_boundaries": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_FABRICATED_SURVEILLANCE_CLEARANCE": true,
+    "NO_UNVERIFIED_CALENDAR_CLEARANCE": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false
+  },
+  "validation": {
+    "audit_tests_passed": 58,
+    "relevant_tests_passed": 189,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 2,
+    "warning_scope": "EXISTING_TESTCLIENT_DEPENDENCY_DEPRECATIONS",
+    "local_markdown_links_checked": 281,
+    "local_link_errors": 0,
+    "full_backend_run": false,
+    "runtime_changed": false
+  },
+  "receipt_fingerprint": "sha256:127557cded3186e264fc0f98721661dc38353b22cf3e4866c95e51fed1bc2b48"
+}
