@@ -84,6 +84,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Gate 3 Source Repair 2 (three formula inputs; source-status role resolved; approved timing requires versioned proposal)](docs/architecture/GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_2.md)
 - [Gate 3 V2 / Composite .3 Proposal (PIT-visible effective surveillance; exact Gate-6 carry-forward; reviewed proposal input, not active)](docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.md)
 - [Composite Execution Gate Policy V2 Governance Approval (one governed successor; Gate-3 timing and Gate-6 veto semantics; activation blocked)](docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.md)
+- [Gate 3 Prospective Source Collector V1 (immutable live capture; completeness/effectiveness blocked; no gate activation)](docs/architecture/GATE3_SURVEILLANCE_PROSPECTIVE_COLLECTOR_V1.md)
 - [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Official NSE/BSE Earnings Calendar Adapters V1 (bounded parsers/storage; live coverage partial; Gate 6 unwired)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_V1.md)
 - [Official Earnings Calendar Discovery Repair (exact joins; scoped coverage and strict PIT still blocked)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_REPAIR.md)

@@ -214,6 +214,8 @@ class CoreApiSnapshotFamily(StrEnum):
     EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT = "EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT"
     # Non-active Layer-1 observations; never a Gate-6 calendar/clearance source.
     EARNINGS_HORIZON_PROSPECTIVE_SHADOW = "EARNINGS_HORIZON_PROSPECTIVE_SHADOW"
+    # Prospective official surveillance source evidence only; never gate results.
+    NSE_SURVEILLANCE_PROSPECTIVE = "NSE_SURVEILLANCE_PROSPECTIVE"
 
 
 @dataclass(frozen=True, slots=True)

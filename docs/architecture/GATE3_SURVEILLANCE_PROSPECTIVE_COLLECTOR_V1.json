@@ -1,0 +1,27 @@
+{
+  "slice": "GATE3_SURVEILLANCE_PROSPECTIVE_COLLECTOR_V1",
+  "baseline": "1f1a4bbd358afee822c145b774841f0cb3620c5b",
+  "version": "v1",
+  "result": "GATE3_SOURCE_CAPTURE_COMPLETENESS_BLOCKED",
+  "decision": "C",
+  "authority": "NSE_EXECUTION_VENUE_AUTHORITY",
+  "collector_version": "nse-surveillance-prospective/v1",
+  "parser_version": "nse-surveillance-source-parse/v1",
+  "composite_candidate": "execution-gate-policy-v2-proposed/v2-proposal.3",
+  "live_requests": 3,
+  "replay_network_requests": 0,
+  "canary_reconciliation_fingerprint": "sha256:a672af309897309aaa8dd24989af6de14a55f8e6aa9e71b26539ace2a87ac693",
+  "identity_basis": {"universe_snapshots": 10212, "master_rows": 37155, "master_report_date": "2026-08-31", "current_execution_continuity_proven": false, "counts_are_source_rows_not_unique_companies": true},
+  "families": [
+    {"family": "ASM", "url": "https://www.nseindia.com/api/reportASM", "http_status": 200, "bytes": 63673, "rows": 239, "rejected": 0, "capture": "UNPROVEN", "product": "PRODUCT_DOCUMENTED_COMPLETE", "first_observed_at": "2026-09-13T14:17:32.300020+00:00", "resolved": 186, "outside_scope": 53, "unresolved": 0, "conflicted": 0, "explicit_values": 239, "unsupported_values": 0, "effective": "UNRESOLVED", "poll_fingerprint": "sha256:465bfe623dd73f2b9aeb5caecd338ee55c08802ec3b547e4f390eee1e5578542", "evidence_id": "surveillance-evidence:e2d99b47fbfc7480ade9b73fed7d048bc2f804746f4f05f576551671ac95dbc2", "evidence_fingerprint": "sha256:99c66ef663a4622d87da73183b8d6da2f40d7b33ec339131a2389cc4a7878d10"},
+    {"family": "GSM", "url": "https://www.nseindia.com/api/reportGSM", "http_status": 200, "bytes": 18756, "rows": 75, "rejected": 0, "capture": "UNPROVEN", "product": "PRODUCT_DOCUMENTED_COMPLETE", "first_observed_at": "2026-09-13T14:17:32.640777+00:00", "resolved": 58, "outside_scope": 17, "unresolved": 0, "conflicted": 0, "explicit_values": 39, "unsupported_values": 36, "effective": "UNRESOLVED", "poll_fingerprint": "sha256:3294ccf2aa08d5ac546a2f2795db05984003e27ef8e8334a339d6b95b469219a", "evidence_id": "surveillance-evidence:baec68a8fadf0caed9e727132b47db525b4a70ec8a3f20008cf6b8cb89da6fa6", "evidence_fingerprint": "sha256:cd3fc099a1880f07ef6c36ad372f9b9e035a734f58304626c6f444b29b75ea30"},
+    {"family": "PRICE_BAND", "url": "https://nsearchives.nseindia.com/content/equities/sec_list.csv", "http_status": 200, "bytes": 172850, "rows": 3538, "rejected": 0, "capture": "CONFLICTED", "mechanical_capture": "EXACT_COMPLETE_CSV_PARSED_TO_EOF", "product": "PRODUCT_DOCUMENTED_COMPLETE", "first_observed_at": "2026-09-13T14:17:33.253458+00:00", "resolved": 2549, "outside_scope": 986, "unresolved": 0, "conflicted": 3, "explicit_values": 2998, "unsupported_values": 540, "effective": "UNRESOLVED", "poll_fingerprint": "sha256:fe3262e3d06b1464d3492eda8c2df0ff56dea0dc4f458388b8d74df1cd0d2d15", "evidence_id": "surveillance-evidence:c16bb66f24505dfde2f89f18bc5a57d70aa3392fa32c78ac5b550427e587646d", "evidence_fingerprint": "sha256:4e1c1057006f0d945a40a75d96d986c4aeedd71bcb26c65a0573260ed7e6f0a9"}
+  ],
+  "persistence": {"store": "core_api_snapshots", "family": "NSE_SURVEILLANCE_PROSPECTIVE", "raw_records": 3, "poll_records": 3, "evidence_records": 3, "new_table": false, "new_database": false, "reopen_verified": true, "first_observation_retained": true},
+  "blockers": ["ASM_GSM_API_TO_COMPLETE_PRODUCT_EQUIVALENCE_UNPROVEN", "SOURCE_PUBLICATION_EFFECTIVE_INTERVAL_UNRESOLVED", "CURRENT_EXECUTION_MASTER_CONTINUITY_UNPROVEN", "GSM_COMPOSITE_LEGACY_VALUE_INTERPRETATION_UNSUPPORTED", "PRICE_BAND_IDENTITY_CONFLICTS_RETAINED", "ADMITTED_GATE_EVIDENCE_ADAPTER_NOT_IMPLEMENTED"],
+  "boundaries": {"V1_ACTIVE": true, "GATE_POLICY_V2_ACTIVE": false, "SIX_GATES_EXACTLY_SIX": true, "NO_FABRICATED_SURVEILLANCE_CLEARANCE": true, "NO_UNVERIFIED_CALENDAR_CLEARANCE": true, "NO_FUTURE_LEAKAGE": true, "NO_RETROACTIVE_SURVEILLANCE_STATE": true, "NO_RETROACTIVE_BLACKOUT": true, "PILOT_SIMPLICITY_RULE": "ACTIVE", "AI_DECISION_AUTHORITY": false},
+  "next_continuation": "GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1",
+  "next_continuation_started": false,
+  "fingerprint_scheme": "sha256:canonical-json:exclude-fingerprint",
+  "fingerprint": "sha256:845be7fc58f8ef58928499bb0b52f489c5155a8e28fadab3794bf4f28f58f9de"
+}
