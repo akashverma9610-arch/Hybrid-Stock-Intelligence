@@ -212,6 +212,8 @@ class CoreApiSnapshotFamily(StrEnum):
     # partial coverage receipts.  It is deliberately not the Gate-6 schedule
     # candidate store and cannot create calendar clearance.
     EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT = "EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT"
+    # Non-active Layer-1 observations; never a Gate-6 calendar/clearance source.
+    EARNINGS_HORIZON_PROSPECTIVE_SHADOW = "EARNINGS_HORIZON_PROSPECTIVE_SHADOW"
 
 
 @dataclass(frozen=True, slots=True)
