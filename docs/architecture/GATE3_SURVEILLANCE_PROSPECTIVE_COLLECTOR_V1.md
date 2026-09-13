@@ -1,8 +1,14 @@
 # Gate-3 Prospective Official Surveillance Collector V1
 
 Status: **IMPLEMENTED / SOURCE_EVIDENCE_ONLY / NON_EXECUTABLE / NOT_GATE_ACTIVE**.
-Result **C: `GATE3_SOURCE_CAPTURE_COMPLETENESS_BLOCKED`**.
+Historical result **C: `GATE3_SOURCE_CAPTURE_COMPLETENESS_BLOCKED`**.
 Baseline: `1f1a4bbd358afee822c145b774841f0cb3620c5b`, main.
+
+The later [source-capture-completeness repair](GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md)
+is the current authoritative follow-up. It retains this document's original
+measurements as immutable history, separates direct price-band file capture from
+row admissibility, and concludes Decision D without changing Gate policy or
+activation.
 
 The [composite governance approval](EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.md)
 remains authoritative for the future `execution-gate-policy-v2-proposed / v2-proposal.3`.
@@ -208,5 +214,7 @@ NO_FUTURE_LEAKAGE = TRUE; NO_RETROACTIVE_SURVEILLANCE_STATE = TRUE;
 NO_RETROACTIVE_BLACKOUT = TRUE; PILOT_SIMPLICITY_RULE = ACTIVE;
 AI_DECISION_AUTHORITY = FALSE.
 
-Exact next continuation: **`GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1`**.
-It is **not started**. Unit-test success does not upgrade this result to readiness.
+The historic next continuation was
+**`GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1`**. It is now
+completed as a separate Decision-D repair artifact; unit-test success still does
+not upgrade either historic collector measurement to Gate readiness.

@@ -1,7 +1,7 @@
 """Isolated synthetic source evidence, never a gate or live-source claim."""
 import ast
 from dataclasses import FrozenInstanceError, fields, replace
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta, timezone
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -19,7 +19,10 @@ from app.market_data.surveillance_prospective import (
     CaptureState as C, SurveillanceFamily as F, SurveillanceFetch, SurveillanceEvidenceStore as Store,
     ProspectiveSurveillanceCollector as Collector, OfficialSurveillanceTransport, SurveillanceRawSnapshot,
 )
-from app.market_data.surveillance_observations import parse_source, project_poll, summary, SurveillanceEvidenceReceipt
+from app.market_data.surveillance_observations import (
+    SurveillanceCaptureCompletenessReceipt, SurveillanceEvidenceReceipt,
+    certify_product_capture, official_product, parse_source, project_poll, summary,
+)
 from app.storage.core_api_snapshot_repository import CoreApiSnapshotFamily as SF, snapshot_json, snapshot_json_from
 from app.storage.sqlite_core_api_snapshot_repository import SQLiteCoreApiSnapshotRepository as Repo
 from app.historical.nse_mii_security_master import NseMiiSecurityMasterEvidenceStore, extract_nse_mii_security_master
@@ -351,7 +354,27 @@ def test_runner_network_free_replay_existing_store_only(tmp_path,monkeypatch,cap
     assert data['network_requests']==0 and data['restart_first_observed_verified']
     assert data['receipt_reopen_verified'] and data['gate_policy_v2_active'] is False
     assert data['master_report_date']=='2025-12-29'
-    assert data['readiness']=='GATE3_SOURCE_CAPTURE_COMPLETENESS_BLOCKED'
+    assert data['readiness']=='GATE3_SOURCE_CAPTURE_COMPLETENESS_NOT_PROVABLE_FROM_CURRENT_OFFICIAL_PATH'
+    assert [item['collector_capture_state'] for item in data['completeness_receipts']]==['UNPROVEN','UNPROVEN','COMPLETE']
+
+
+def test_runner_falls_back_to_latest_complete_master_when_newer_capture_is_partial(tmp_path):
+    from scripts import collect_gate3_surveillance as runner
+    repo, store, _ = fixture(tmp_path)
+    repo.save_snapshot(snap(master(data_as_of=T-timedelta(days=1))))
+    mii(repo)
+    incomplete = extract_nse_mii_security_master(_response(
+        report_date=date(2026, 9, 12),
+        body=_csv(
+            f"101,APARINDS,EQ,Synthetic,{ISIN},6,100,0,EQ,EQUITY,",
+            "102,EXTRA,EQ,Extra Ltd,INE000A01002,6,100,0,EQ,EQUITY,",
+        ),
+    ))
+    NseMiiSecurityMasterEvidenceStore(repo).save_rows(incomplete, offset=0, limit=1)
+    repo.close()
+    _, masters, continuity = runner.read_identity_inputs(tmp_path / 'isolated.sqlite', T)
+    assert masters[0].payload.report_date.isoformat() == '2025-12-29'
+    assert continuity == 'PARTIAL_LATEST_MASTER_CAPTURE_INCOMPLETE'
 
 
 @pytest.mark.parametrize('status', ['', 'ACTIVE', 'SUSPENDED'])
@@ -377,3 +400,75 @@ def test_runner_reopen_checks_cannot_be_disabled_by_python_optimization():
     assert not any(isinstance(n,ast.Assert) for n in ast.walk(tree))
     strings={n.value for n in ast.walk(tree) if isinstance(n,ast.Constant) and isinstance(n.value,str)}
     assert {'SURVEILLANCE_RECEIPT_REOPEN_MISMATCH','SURVEILLANCE_FIRST_OBSERVATION_REOPEN_MISMATCH'}<=strings
+
+
+def test_official_product_identity_is_fixed_not_inferred_from_endpoint_or_rows():
+    asm_product=official_product(F.ASM); gsm_product=official_product(F.GSM); band_product=official_product(F.PRICE_BAND)
+    assert asm_product.capture_endpoint.endswith('/reportASM')
+    assert gsm_product.capture_endpoint.endswith('/reportGSM')
+    assert asm_product.api_to_documented_export_bound is gsm_product.api_to_documented_export_bound is False
+    assert band_product.capture_endpoint.endswith('/sec_list.csv') and band_product.api_to_documented_export_bound is True
+    assert asm_product.expected_sections==('longterm','shortterm')
+    assert gsm_product.expected_sections==('reported_gsm_array',)
+
+
+def test_completeness_receipt_separates_documented_product_capture_and_row_admissibility(tmp_path):
+    repo,store,polls=fixture(tmp_path)
+    masters=mii(repo,isin='INE000A01001')
+    evidence=[project(store,p,masters=masters if p.family is F.PRICE_BAND else ()) for p in polls]
+    receipts=[certify_product_capture(store,p.record_id,r.record_id,clock=Clock(T+timedelta(hours=2))) for p,r in zip(polls,evidence)]
+    assert [r.collector_capture_state for r in receipts]==[C.UNPROVEN,C.UNPROVEN,C.COMPLETE]
+    assert all(r.official_product_is_complete for r in receipts)
+    assert 'API_TO_DOCUMENTED_COMPLETE_EXPORT_BINDING_UNPROVEN' in receipts[0].reason_codes
+    assert 'STAGEWISE_COMPLETE_PRODUCT_COVERAGE_UNPROVEN' in receipts[1].reason_codes
+    assert 'ROW_IDENTITY_CONFLICT_RETAINED' in receipts[2].reason_codes
+    assert dict(receipts[2].row_admissibility_counts)['CONFLICTED']==1
+    assert receipts[2].effective_state=='UNRESOLVED' and receipts[2].source_date_state=='SOURCE_DATE_UNRESOLVED'
+    assert receipts[2].record_id.startswith('surveillance-completeness:')
+    assert receipts[2].first_observed_at==polls[2].raw.first_observed_at
+    repo.close()
+
+
+@pytest.mark.parametrize('count', [1,3])
+def test_asm_row_count_never_certifies_documented_complete_export(tmp_path,count):
+    body=asm_bytes(*(asm(symbol=f'APAR{n}',isin=ISIN) for n in range(count)))
+    repo,store,polls=fixture(tmp_path,{F.ASM:body})
+    evidence=project(store,polls[0]); receipt=certify_product_capture(store,polls[0].record_id,evidence.record_id)
+    assert receipt.rows_seen==count and receipt.collector_capture_state is C.UNPROVEN
+    assert receipt.pagination_state=='API_PAGINATION_CONTRACT_UNPROVEN'
+    repo.close()
+
+
+def test_complete_price_file_isolated_from_unsupported_row_values_and_identity_conflict(tmp_path):
+    body=b'Symbol,Series,Security Name,Band,Remarks\nAPARINDS,EQ,Synthetic,No Band,-\n'
+    repo,store,polls=fixture(tmp_path,{F.PRICE_BAND:body})
+    evidence=project(store,polls[2],masters=mii(repo,isin='INE000A01001'))
+    receipt=certify_product_capture(store,polls[2].record_id,evidence.record_id)
+    assert evidence.capture_state is C.CONFLICTED
+    assert receipt.collector_capture_state is C.COMPLETE
+    counts=dict(receipt.row_admissibility_counts)
+    assert counts['CONFLICTED']==counts['UNSUPPORTED_VALUE']==1
+    assert 'ROW_IDENTITY_CONFLICT_RETAINED' in receipt.reason_codes
+    assert 'ROW_VALUE_UNSUPPORTED_RETAINED' in receipt.reason_codes
+    repo.close()
+
+
+def test_failed_poll_completeness_is_not_empty_or_clear(tmp_path):
+    repo,store,polls=fixture(tmp_path,{F.GSM:SurveillanceFetch(F.GSM,503,b'',None,False,'HTTP_REJECTED')})
+    evidence=project(store,polls[1]); receipt=certify_product_capture(store,polls[1].record_id,evidence.record_id)
+    assert evidence.capture_state is C.FAILED and receipt.collector_capture_state is C.FAILED
+    assert receipt.first_observed_at is None and receipt.rows_seen==0
+    assert 'HTTP_REJECTED' in receipt.reason_codes
+    repo.close()
+
+
+def test_completeness_reopen_idempotency_and_no_gate_or_clearance_dependency(tmp_path):
+    repo,store,polls=fixture(tmp_path); evidence=project(store,polls[2],masters=mii(repo))
+    one=certify_product_capture(store,polls[2].record_id,evidence.record_id,clock=Clock(T+timedelta(hours=2)))
+    two=certify_product_capture(store,polls[2].record_id,evidence.record_id,clock=Clock(T+timedelta(days=1)))
+    assert one == two and one.fingerprint==two.fingerprint
+    repo.close(); repo=Repo(tmp_path/'isolated.sqlite'); stored=Store(repo).get(one.record_id)
+    assert stored==one and isinstance(stored,SurveillanceCaptureCompletenessReceipt)
+    names={f.name for f in fields(SurveillanceCaptureCompletenessReceipt)}
+    assert not {'gate_result','pass','clearance','score','order','portfolio','effective_at'}&names
+    repo.close()

@@ -21,14 +21,70 @@ from app.filings.earnings_schedule_source import utc
 from app.fundamentals.diagnostic_comparability import content_fingerprint
 from app.historical.nse_mii_security_master import NseMiiSecurityMasterRow, NseMiiSecurityMasterSnapshot
 from app.market_data.surveillance_prospective import (
-    CaptureState, SurveillanceEvidenceStore, SurveillanceFamily, SurveillancePollReceipt, VERSION,
+    CaptureState, SurveillanceEvidenceStore, SurveillanceFamily, SurveillancePollReceipt, VERSION, source_url,
 )
 from app.storage.core_api_snapshot_repository import CoreApiSnapshot, CoreApiSnapshotFamily, snapshot_dump
 
 
 PARSER_VERSION = "nse-surveillance-source-parse/v1"
+COMPLETENESS_VERSION = "nse-surveillance-source-completeness/v1"
 _ROMAN = {"0": 0, "I": 1, "II": 2, "III": 3, "IV": 4}
 _BAND_HEADER = ("Symbol", "Series", "Security Name", "Band", "Remarks")
+
+
+@dataclass(frozen=True, slots=True)
+class OfficialSurveillanceProduct:
+    """The documented product is deliberately distinct from its capture path.
+
+    The first two endpoints are official live report APIs, but the retained
+    product pages/FAQs name a complete list without an independently verifiable
+    export identity.  The exact price-band CSV is itself the documented complete
+    list.  This boundary is configuration, not an inference from row count.
+    """
+
+    family: SurveillanceFamily
+    product_identity: str
+    product_reference: str
+    documented_export_identity: str
+    capture_endpoint: str
+    expected_sections: tuple[str, ...]
+    api_to_documented_export_bound: bool
+
+    def __post_init__(self):
+        if (
+            not isinstance(self.family, SurveillanceFamily)
+            or not all(isinstance(v, str) and v for v in (
+                self.product_identity, self.product_reference,
+                self.documented_export_identity, self.capture_endpoint,
+            ))
+            or self.capture_endpoint != source_url(self.family)
+            or self.expected_sections != tuple(sorted(set(self.expected_sections)))
+            or not self.expected_sections
+            or type(self.api_to_documented_export_bound) is not bool
+        ):
+            raise ValueError("SURVEILLANCE_PRODUCT_DEFINITION_INVALID")
+
+
+def official_product(family: SurveillanceFamily) -> OfficialSurveillanceProduct:
+    """Return the fixed, official product identity for one permitted family."""
+    values = {
+        SurveillanceFamily.ASM: (
+            "NSE_ASM_COMPLETE_LIST", "https://www.nseindia.com/static/regulations/additional-surveillance-measure",
+            "List_of_securities_shortlisted_under_ASM.csv", ("longterm", "shortterm"), False,
+        ),
+        SurveillanceFamily.GSM: (
+            "NSE_GSM_COMPLETE_STAGEWISE_LIST", "https://www.nseindia.com/static/regulations/graded-surveillance-measure",
+            "List_of_scrips_shortlisted_in_Graded_Surveillance_Measure", ("reported_gsm_array",), False,
+        ),
+        SurveillanceFamily.PRICE_BAND: (
+            "NSE_CM_PRICE_BAND_COMPLETE_LIST", "https://www.nseindia.com/static/regulations/daily-price-bands-reports",
+            "Complete_List_of_Price_Bands.csv", ("complete_csv",), True,
+        ),
+    }
+    if not isinstance(family, SurveillanceFamily):
+        raise ValueError("SURVEILLANCE_FAMILY_INVALID")
+    identity, reference, export, sections, bound = values[family]
+    return OfficialSurveillanceProduct(family, identity, reference, export, source_url(family), sections, bound)
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,6 +215,108 @@ class SurveillanceEvidenceReceipt:
         return content_fingerprint(self)
 
 
+@dataclass(frozen=True, slots=True)
+class SurveillanceCaptureCompletenessReceipt:
+    """Immutable product-capture conclusion, separate from row admissibility.
+
+    This receipt does not decide a Gate component and does not infer source
+    effectiveness.  In particular, a complete price-band file can retain
+    conflicted or unsupported rows without relabelling the file as incomplete.
+    """
+
+    poll_id: str
+    poll_fingerprint: str
+    evidence_id: str
+    evidence_fingerprint: str
+    family: SurveillanceFamily
+    official_product_identity: str
+    official_product_reference: str
+    documented_export_identity: str
+    capture_endpoint: str
+    expected_sections: tuple[str, ...]
+    official_product_is_complete: bool
+    collector_capture_state: CaptureState
+    section_coverage_state: str
+    pagination_state: str
+    schema_state: str
+    transfer_state: str
+    source_date_state: str
+    effective_state: str
+    first_observed_at: datetime | None
+    capture_known_at: datetime
+    processed_at: datetime
+    rows_seen: int
+    rejected_rows: int
+    row_admissibility_counts: tuple[tuple[str, int], ...]
+    reason_codes: tuple[str, ...]
+    contract_version: str = COMPLETENESS_VERSION
+
+    def __post_init__(self):
+        for name in ("first_observed_at", "capture_known_at", "processed_at"):
+            if getattr(self, name) is not None:
+                object.__setattr__(self, name, utc(getattr(self, name)))
+        product = official_product(self.family)
+        allowed_states = {
+            "SECTION_COVERAGE_PROVEN", "SECTION_COVERAGE_UNPROVEN",
+        }
+        allowed_pagination = {
+            "SINGLE_FILE_NO_PAGINATION", "API_PAGINATION_CONTRACT_UNPROVEN",
+        }
+        allowed_schema = {"SCHEMA_PROVEN", "SCHEMA_UNPROVEN", "SCHEMA_INVALID"}
+        allowed_transfer = {"FULL_BODY_EOF", "TRANSFER_INCOMPLETE"}
+        allowed_date = {"SOURCE_DATE_UNRESOLVED", "SOURCE_DATE_DATE_ONLY"}
+        if (
+            not self.poll_id.startswith("surveillance-poll:")
+            or self.poll_fingerprint != "sha256:" + self.poll_id.split(":", 1)[1]
+            or not self.evidence_id.startswith("surveillance-evidence:")
+            or not re.fullmatch(r"sha256:[0-9a-f]{64}", self.evidence_fingerprint)
+            or self.official_product_identity != product.product_identity
+            or self.official_product_reference != product.product_reference
+            or self.documented_export_identity != product.documented_export_identity
+            or self.capture_endpoint != product.capture_endpoint
+            or self.expected_sections != product.expected_sections
+            or self.official_product_is_complete is not True
+            or not isinstance(self.collector_capture_state, CaptureState)
+            or self.section_coverage_state not in allowed_states
+            or self.pagination_state not in allowed_pagination
+            or self.schema_state not in allowed_schema
+            or self.transfer_state not in allowed_transfer
+            or self.source_date_state not in allowed_date
+            or self.effective_state != "UNRESOLVED"
+            or self.processed_at < self.capture_known_at
+            or (self.first_observed_at is not None and self.first_observed_at > self.capture_known_at)
+            or min(self.rows_seen, self.rejected_rows) < 0
+            or type(self.row_admissibility_counts) is not tuple
+            or self.row_admissibility_counts != tuple(sorted(self.row_admissibility_counts))
+            or not self.row_admissibility_counts
+            or len({key for key, _ in self.row_admissibility_counts}) != len(self.row_admissibility_counts)
+            or any(not isinstance(k, str) or k not in {"RESOLVED", "OUTSIDE_HSI_SCOPE", "UNRESOLVED", "CONFLICTED", "EXPLICIT_VALUE", "UNSUPPORTED_VALUE", "UNKNOWN_VALUE"} or type(v) is not int or v < 0 for k, v in self.row_admissibility_counts)
+            or self.reason_codes != tuple(sorted(set(self.reason_codes)))
+            or not self.reason_codes
+            or self.contract_version != COMPLETENESS_VERSION
+            or (self.collector_capture_state is CaptureState.COMPLETE and (
+                self.family is not SurveillanceFamily.PRICE_BAND
+                or not product.api_to_documented_export_bound
+                or self.section_coverage_state != "SECTION_COVERAGE_PROVEN"
+                or self.pagination_state != "SINGLE_FILE_NO_PAGINATION"
+                or self.schema_state != "SCHEMA_PROVEN"
+                or self.transfer_state != "FULL_BODY_EOF"
+                or self.rejected_rows != 0
+            ))
+        ):
+            raise ValueError("SURVEILLANCE_COMPLETENESS_RECEIPT_INVALID")
+
+    @property
+    def record_id(self):
+        return "surveillance-completeness:" + content_fingerprint(
+            (self.poll_id, self.official_product_identity, self.contract_version),
+        )[7:]
+
+    @property
+    def fingerprint(self):
+        return content_fingerprint(self)
+
+
 def _object(pairs):
     result = {}
     for k, v in pairs:
@@ -211,6 +369,124 @@ def _source_row(family, section, number, raw):
             elif match:
                 state = "CONFLICTED"
     return SurveillanceSourceRow(family, section, number, fields, symbol, isin, series, stage, band, state)
+
+
+def _row_admissibility_counts(receipt: SurveillanceEvidenceReceipt) -> tuple[tuple[str, int], ...]:
+    values = {
+        state: sum(value.mapping_state == state for value in receipt.observations)
+        for state in ("RESOLVED", "OUTSIDE_HSI_SCOPE", "UNRESOLVED", "CONFLICTED")
+    }
+    values |= {
+        "EXPLICIT_VALUE": sum(value.row.value_state == "EXPLICIT" for value in receipt.observations),
+        "UNSUPPORTED_VALUE": sum(value.row.value_state == "UNSUPPORTED" for value in receipt.observations),
+        "UNKNOWN_VALUE": sum(value.row.value_state == "UNKNOWN" for value in receipt.observations),
+    }
+    return tuple(sorted(values.items()))
+
+
+def certify_product_capture(
+    store: SurveillanceEvidenceStore,
+    poll_id: str,
+    evidence_id: str,
+    *,
+    clock=None,
+) -> SurveillanceCaptureCompletenessReceipt:
+    """Create one immutable completeness conclusion for an existing poll.
+
+    Completion is proved mechanically only for the direct, documented price-band
+    export.  The API routes for ASM/GSM remain UNPROVEN until an official export
+    identity is bound to their responses.  Row values and identity conflicts are
+    deliberately counted, never promoted to file-level incompleteness.
+    """
+    from app.filings.earnings_schedule_prospective_receipt_collector import SystemUtcClock
+
+    poll = store.get(poll_id)
+    evidence = store.get(evidence_id)
+    if not isinstance(poll, SurveillancePollReceipt) or not isinstance(evidence, SurveillanceEvidenceReceipt):
+        raise ValueError("SURVEILLANCE_COMPLETENESS_PARENT_REQUIRED")
+    if evidence.poll_id != poll.record_id or evidence.poll_fingerprint != poll.fingerprint or evidence.family is not poll.family:
+        raise ValueError("SURVEILLANCE_COMPLETENESS_PARENT_MISMATCH")
+    if poll.raw is not None and (evidence.raw_id != poll.raw.record_id or evidence.first_observed_at != poll.raw.first_observed_at):
+        raise ValueError("SURVEILLANCE_COMPLETENESS_RAW_LINEAGE_INVALID")
+    product = official_product(poll.family)
+    record_id = "surveillance-completeness:" + content_fingerprint(
+        (poll.record_id, product.product_identity, COMPLETENESS_VERSION),
+    )[7:]
+    existing = store.get(record_id)
+    if existing is not None:
+        if not isinstance(existing, SurveillanceCaptureCompletenessReceipt):
+            raise ValueError("SURVEILLANCE_COMPLETENESS_RECEIPT_COLLISION")
+        return existing
+
+    if poll.raw is None or poll.http_status != 200:
+        capture_state = CaptureState.FAILED
+        section_state, pagination_state, schema_state, transfer_state = (
+            "SECTION_COVERAGE_UNPROVEN", "API_PAGINATION_CONTRACT_UNPROVEN",
+            "SCHEMA_UNPROVEN", "TRANSFER_INCOMPLETE",
+        )
+        reasons = {poll.reason or "NO_SOURCE_PAYLOAD"}
+    else:
+        _, rejected, parsed_state, proofs, parse_reasons = parse_source(poll)
+        reasons = set(parse_reasons)
+        transfer_state = "FULL_BODY_EOF" if poll.transfer_complete else "TRANSFER_INCOMPLETE"
+        if poll.family is SurveillanceFamily.PRICE_BAND:
+            section_state = "SECTION_COVERAGE_PROVEN" if "EXACT_COMPLETE_CSV_EXPORT" in proofs else "SECTION_COVERAGE_UNPROVEN"
+            pagination_state = "SINGLE_FILE_NO_PAGINATION"
+            schema_state = "SCHEMA_PROVEN" if "EXPECTED_SCHEMA" in proofs else "SCHEMA_INVALID"
+            # A complete source file may contain row-level conflicts or values
+            # that the future numeric component cannot consume.
+            capture_state = (
+                CaptureState.COMPLETE
+                if section_state == "SECTION_COVERAGE_PROVEN" and schema_state == "SCHEMA_PROVEN"
+                and transfer_state == "FULL_BODY_EOF" and rejected == 0
+                else CaptureState.PARTIAL
+            )
+            reasons.add("DIRECT_DOCUMENTED_COMPLETE_FILE_CAPTURE" if capture_state is CaptureState.COMPLETE else "PRICE_BAND_FILE_CAPTURE_INCOMPLETE")
+        else:
+            section_state = "SECTION_COVERAGE_UNPROVEN"
+            pagination_state = "API_PAGINATION_CONTRACT_UNPROVEN"
+            schema_state = "SCHEMA_PROVEN" if "ALL_RETURNED_API_SECTIONS_PARSED" in proofs else "SCHEMA_INVALID"
+            capture_state = parsed_state if parsed_state in {CaptureState.PARTIAL, CaptureState.FAILED, CaptureState.CONFLICTED} else CaptureState.UNPROVEN
+            reasons.add("API_TO_DOCUMENTED_COMPLETE_EXPORT_BINDING_UNPROVEN")
+            if poll.family is SurveillanceFamily.GSM:
+                reasons.add("STAGEWISE_COMPLETE_PRODUCT_COVERAGE_UNPROVEN")
+    if any(value.mapping_state == "CONFLICTED" for value in evidence.observations):
+        reasons.add("ROW_IDENTITY_CONFLICT_RETAINED")
+    if any(value.row.value_state == "CONFLICTED" for value in evidence.observations):
+        reasons.add("ROW_VALUE_CONFLICT_RETAINED")
+    if any(value.row.value_state == "UNSUPPORTED" for value in evidence.observations):
+        reasons.add("ROW_VALUE_UNSUPPORTED_RETAINED")
+    if any(value.row.value_state == "UNKNOWN" for value in evidence.observations):
+        reasons.add("ROW_VALUE_UNKNOWN_RETAINED")
+    processed_at = utc((clock or SystemUtcClock()).now())
+    receipt = SurveillanceCaptureCompletenessReceipt(
+        poll_id=poll.record_id,
+        poll_fingerprint=poll.fingerprint,
+        evidence_id=evidence.record_id,
+        evidence_fingerprint=evidence.fingerprint,
+        family=poll.family,
+        official_product_identity=product.product_identity,
+        official_product_reference=product.product_reference,
+        documented_export_identity=product.documented_export_identity,
+        capture_endpoint=product.capture_endpoint,
+        expected_sections=product.expected_sections,
+        official_product_is_complete=True,
+        collector_capture_state=capture_state,
+        section_coverage_state=section_state,
+        pagination_state=pagination_state,
+        schema_state=schema_state,
+        transfer_state=transfer_state,
+        source_date_state="SOURCE_DATE_UNRESOLVED",
+        effective_state="UNRESOLVED",
+        first_observed_at=poll.raw.first_observed_at if poll.raw else None,
+        capture_known_at=poll.completed_at,
+        processed_at=processed_at,
+        rows_seen=evidence.rows_seen,
+        rejected_rows=evidence.rejected_rows,
+        row_admissibility_counts=_row_admissibility_counts(evidence),
+        reason_codes=tuple(sorted(reasons | {"OFFICIAL_PRODUCT_DOCUMENTED_COMPLETE"})),
+    )
+    return store.save(receipt, receipt.processed_at)
 
 
 def parse_source(poll: SurveillancePollReceipt):
@@ -411,3 +687,31 @@ def summary(receipt: SurveillanceEvidenceReceipt) -> dict:
         capture_known_at=receipt.capture_known_at.isoformat(), processed_at=receipt.processed_at.isoformat(),
         effective_state=receipt.effective_state, capture_proofs=receipt.capture_proofs, reasons=receipt.reasons,
         execution_status=receipt.execution_status)
+
+
+def completeness_summary(receipt: SurveillanceCaptureCompletenessReceipt) -> dict:
+    receipt.__post_init__()
+    return dict(
+        receipt_id=receipt.record_id,
+        fingerprint=receipt.fingerprint,
+        family=receipt.family,
+        official_product_identity=receipt.official_product_identity,
+        official_product_reference=receipt.official_product_reference,
+        documented_export_identity=receipt.documented_export_identity,
+        capture_endpoint=receipt.capture_endpoint,
+        official_product_is_complete=receipt.official_product_is_complete,
+        collector_capture_state=receipt.collector_capture_state,
+        section_coverage_state=receipt.section_coverage_state,
+        pagination_state=receipt.pagination_state,
+        schema_state=receipt.schema_state,
+        transfer_state=receipt.transfer_state,
+        source_date_state=receipt.source_date_state,
+        effective_state=receipt.effective_state,
+        rows_seen=receipt.rows_seen,
+        rejected_rows=receipt.rejected_rows,
+        row_admissibility_counts=receipt.row_admissibility_counts,
+        first_observed_at=receipt.first_observed_at.isoformat() if receipt.first_observed_at else None,
+        capture_known_at=receipt.capture_known_at.isoformat(),
+        processed_at=receipt.processed_at.isoformat(),
+        reason_codes=receipt.reason_codes,
+    )
