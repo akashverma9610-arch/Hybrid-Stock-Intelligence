@@ -1,0 +1,64 @@
+{
+  "schema_version": "gate3-surveillance-source-readiness/v1",
+  "audit_id": "gate3-surveillance-source-readiness",
+  "audit_version": "v1",
+  "baseline_commit": "c468dbf0cb3e02a1a1a8e815616f65415e29e4c3",
+  "status": "GATE3_POLICY_SOURCE_SEMANTICS_REQUIRE_GOVERNANCE_REPAIR",
+  "scope": "DOCUMENTATION_ONLY_READINESS_AUDIT",
+  "gate_policy_v2_active": false,
+  "runtime_producer_active": false,
+  "execution_venue_authority": "NSE_EXECUTION_VENUE_AUTHORITY",
+  "frozen_gate3_contract": {
+    "source_contract_id": "official-nse-surveillance-v1",
+    "authority": "NSE",
+    "coverage": ["ASM", "GSM", "PRICE_BAND", "SECURITY_STATUS"],
+    "absence_is_pass": false,
+    "latest_eligible_completed_session_required": true,
+    "required_carrier_fields": ["asm_stage", "gsm_stage", "circuit_limit"],
+    "fail_thresholds": {"asm_stage_gte": 2, "gsm_stage_gt": 0, "circuit_limit_lte": "0.05"},
+    "max_age": {"value": 4, "basis": "trading_sessions"},
+    "missing_or_stale_result": "INSUFFICIENT_DATA",
+    "action_context_exception": "NONE_IN_CURRENT_RUNTIME",
+    "gate3_confidence_formula": "NONE"
+  },
+  "bounded_probe": {
+    "observed_at_utc": "2026-09-13T07:27:02.239215Z",
+    "mode": "ONE_BOUNDED_READ_ONLY_HOST_NETWORK_PROBE_PER_NSE_FAMILY",
+    "persisted": false,
+    "first_observed_created": false,
+    "source_publication_or_effective_time_asserted": false,
+    "sources": [
+      {"id": "NSE_REPORT_ASM", "url": "https://www.nseindia.com/api/reportASM", "http_status": 200, "shape": "json_object", "rows": {"longterm": 149, "shortterm": 90}, "response_sha256": "8a26bf2815b5dbd1ae7061458d4fdc44cc8cd790f4adb727884682592e1f011f", "positive": "PARTIAL", "negative": "NOT_READY"},
+      {"id": "NSE_REPORT_GSM", "url": "https://www.nseindia.com/api/reportGSM", "http_status": 200, "shape": "json_array", "rows": 75, "response_sha256": "7f56f4162fc3a934c67ca20a14d3f8e784573a43ff1a4725c82657c6f43f688c", "positive": "PARTIAL", "negative": "PARTIAL_SOURCE_LIST_ONLY"},
+      {"id": "NSE_SURVEILLANCE_ACTIONS", "url": "https://www.nseindia.com/api/eqsurvactions", "http_status": 200, "shape": "json_array", "rows": 35, "positive": "PARTIAL", "negative": "NOT_READY"},
+      {"id": "NSE_CM_MII_SECURITY_11092026", "url": "https://nsearchives.nseindia.com/content/cm/NSE_CM_security_11092026.csv.gz", "http_status": 200, "shape": "gzip_csv", "rows": 37676, "response_sha256": "f5f57d64af5db378531c65b181cac7c0417effcd0b6c9c6fb299e493d909b0ab", "positive": "PARTIAL", "negative": "NOT_READY"}
+    ],
+    "no_last_modified_or_source_revision_identifier_observed": true
+  },
+  "identity_reconciliation": {
+    "unique_source_isins": 314,
+    "exact_isin_in_current_hsi_scope": 244,
+    "outside_current_hsi_scope": 70,
+    "name_fallback_used": false,
+    "source_series_resolved": 0,
+    "source_series_ambiguous": 314,
+    "cash_equity_series_admission": "NOT_READY"
+  },
+  "family_scope": {
+    "approved": ["ASM", "GSM", "PRICE_BAND", "SECURITY_STATUS"],
+    "not_promoted_from_raw_composite_labels": ["ESM", "TRADE_TO_TRADE", "IBC_RECEIPT"]
+  },
+  "historical_readiness": "NOT_READY_FOR_COMPLETE_CANONICAL_GATE3_STATE",
+  "next_continuation": "GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_V1",
+  "protected_boundaries": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_FABRICATED_SURVEILLANCE_CLEARANCE": true,
+    "NO_UNVERIFIED_CALENDAR_CLEARANCE": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false
+  },
+  "receipt_fingerprint": "sha256:d19f8265624b983e2992bee61b6b601a924aa93dd8af190b6d4f87d221e08539"
+}
