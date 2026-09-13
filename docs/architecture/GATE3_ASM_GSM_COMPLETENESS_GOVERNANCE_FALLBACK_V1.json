@@ -1,0 +1,394 @@
+{
+  "schema_version": "gate3-asm-gsm-completeness-governance-fallback/v1",
+  "slice": "GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1",
+  "baseline_commit": "cf4bd84aea7fffd6e4d4b4fbbe2cc9375ed4c8a1",
+  "status": "DECIDED_GOVERNANCE_ONLY_NOT_ACTIVE",
+  "authority": {
+    "basis": "USER_DELEGATED_BOUNDED_GOVERNANCE_REVIEW",
+    "directive_id": "b93618da-ad13-47bf-ac48-5bcfaf2389a7",
+    "source_authority": "NSE_OFFICIAL_PRODUCT",
+    "human_signature_claimed": false
+  },
+  "decision": "C",
+  "result": "KEEP_GATE3_BLOCKED_UNTIL_MACHINE_COMPLETE",
+  "reviewed_files_lf": {
+    "docs/architecture/GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1.json": "sha256:6110cfa6e82f8db7b7cb9d193573d2641e93f4bc606c867b665aa95c589c71df",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.json": "sha256:12bd0ba83077d2943c6aa37f99799aadf594dd0a26aceb3ae89b0bd6ebbae6db",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/market_data/surveillance_prospective.py": "sha256:437338747718c326eb98fa46091b8f114fa70156f64d9fbf9c3c774d78fcb932",
+    "app/market_data/surveillance_observations.py": "sha256:0e9f39b7410307997e9fec6a524975b4652437673e093f9a1de4f1be32e5d1cf",
+    "scripts/collect_gate3_surveillance.py": "sha256:e6681771aba2833d336de8ab441ca371ce032e3860eb05a46dde0f0006bb31da"
+  },
+  "current_evidence": {
+    "origin": "ACCEPTED_PRIOR_RECEIPTS_NO_NEW_PRODUCTION_MEASUREMENT",
+    "official_products_documented_complete": [
+      "ASM",
+      "GSM"
+    ],
+    "asm_capture": "UNPROVEN",
+    "gsm_capture": "UNPROVEN",
+    "price_band_file_capture": "COMPLETE",
+    "official_ui_export_bytes_validated": false,
+    "asm_export_scope_proven": false,
+    "gsm_complete_component_manifest_proven": false,
+    "source_effective_semantics": "UNRESOLVED",
+    "execution_master_continuity": "OPEN",
+    "execution_master_scope": "SEPARATE_OPEN_BLOCKER"
+  },
+  "frozen_policy": {
+    "candidate_id": "execution-gate-policy-v2-proposed",
+    "candidate_version": "v2-proposal.3",
+    "governance": "GOVERNANCE_APPROVED_WITH_ACTIVATION_BLOCKERS",
+    "activation": "NOT_ACTIVE",
+    "formula_inputs": [
+      "ASM",
+      "GSM",
+      "PRICE_BAND"
+    ],
+    "blocking_thresholds": {
+      "asm_stage_gte": 2,
+      "gsm_stage_gt": 0,
+      "static_circuit_fraction_lte": "0.05"
+    },
+    "freshness": {
+      "max_age": 4,
+      "unit": "trading_sessions",
+      "boundary_inclusive": true,
+      "current_applicability_also_required": true
+    },
+    "security_status": "DESCRIPTIVE_ONLY",
+    "all_three_components_required": true,
+    "blocking_plus_missing": "INSUFFICIENT_DATA",
+    "independent_positive_veto": false,
+    "selected_fallback_execution_policy_change": "NONE",
+    "hypothetical_controlled_transport_change": "SOURCE_GOVERNANCE_ADDENDUM",
+    "hypothetical_positive_only_change": "COMPOSITE_POLICY_AMENDMENT_REQUIRED"
+  },
+  "controlled_transport": {
+    "status": "CONDITIONAL_REQUIREMENTS_ONLY_NOT_APPROVED_OR_IMPLEMENTED",
+    "candidate_contract": "OFFICIAL_SURVEILLANCE_ARTIFACT_INGESTION_V1",
+    "source_authority": "NSE_OFFICIAL_PRODUCT",
+    "operator_authority": "TRANSPORT_ONLY",
+    "origin_state": "OFFICIAL_ORIGIN_ATTESTED",
+    "cryptographic_source_authenticity": "UNPROVEN",
+    "completeness_by_attestation": false,
+    "hash_authenticates_nse": false,
+    "operator_set_stage": false,
+    "operator_set_band": false,
+    "operator_set_clearance": false,
+    "operator_set_gate_result": false,
+    "controls_required": [
+      "AUTHENTICATED_ADMIN_RA_OR_DELEGATED_OPERATOR",
+      "MFA",
+      "ACTION_AUTHORIZATION",
+      "IMMUTABLE_AUDIT",
+      "IMMUTABLE_RAW_RETENTION",
+      "SHA256",
+      "NO_FILE_MUTATION",
+      "REPLAY_IDEMPOTENCY",
+      "BOUNDED_SCHEMA_VALIDATION"
+    ],
+    "receipt_fields_required": [
+      "OFFICIAL_PRODUCT_ID",
+      "SOURCE_DECLARATION",
+      "RAW_BYTES",
+      "SHA256",
+      "BYTE_LENGTH",
+      "ORIGINAL_FILENAME",
+      "FILE_FORMAT",
+      "SCHEMA_VERSION",
+      "SECTION_STAGE_COVERAGE",
+      "HSI_FIRST_OBSERVED_AT",
+      "AUTHENTICATED_OPERATOR_ID",
+      "UPLOAD_ACTION_AUDIT_ID",
+      "VALIDATION_KNOWN_AT",
+      "RECEIPT_FINGERPRINT"
+    ],
+    "required_artifact_proofs": [
+      "EXACT_OFFICIAL_PRODUCT_BINDING",
+      "FULL_PARSE_EOF",
+      "ZERO_REJECTED_ROWS",
+      "ALL_SOURCE_DECLARED_COMPONENTS",
+      "EXACT_IDENTITY_LINEAGE",
+      "DUPLICATES_CONFLICTS_RETAINED"
+    ],
+    "asm_required_scope": [
+      "longterm",
+      "shortterm"
+    ],
+    "gsm_required_scope": "SOURCE_DEFINED_COMBINED_PRODUCT_OR_EXHAUSTIVE_MANIFEST_UNPROVEN",
+    "row_count_only_proof": false,
+    "hidden_omissions_detectable_from_plain_schema": false,
+    "completeness_implies_gate_admission": false,
+    "security_controls_currently_verified": false,
+    "future_automation": "REPLACE_TRANSPORT_PRESERVE_CANONICAL_EVIDENCE_AND_GATE_SEMANTICS"
+  },
+  "first_observed": {
+    "source": "AUTOMATIC_HSI_COMPLETE_PAYLOAD_INGESTION_TIME",
+    "disallowed_sources": [
+      "FILE_CREATION_TIME",
+      "FILE_MODIFICATION_TIME",
+      "OPERATOR_DOWNLOAD_TIME",
+      "NSE_PUBLICATION_DATE",
+      "OPERATOR_HISTORICAL_TIMESTAMP",
+      "REQUEST_START_TIME"
+    ],
+    "inclusive_as_of": true,
+    "later_validation_requires_own_known_at": true,
+    "identical_reupload": "REUSE_EARLIEST_RAW_OBSERVATION_NEW_ACTION_AUDIT",
+    "reupload_renews_effective_age": false,
+    "retroactive_rewrite": false
+  },
+  "api_role": {
+    "role": "DISCOVERY_ONLY",
+    "permitted_uses": [
+      "POSITIVE_EVIDENCE_CORROBORATION",
+      "CHANGE_DETECTION_HINT"
+    ],
+    "negative_evidence_allowed": false,
+    "raw_positive_is_gate_veto": false,
+    "api_positive_missing_in_artifact": [
+      "CONFLICTED",
+      "INSUFFICIENT_DATA"
+    ],
+    "unknown_applicability": [
+      "UNKNOWN",
+      "INSUFFICIENT_DATA"
+    ],
+    "future_evidence": "EXCLUDE_BEFORE_CONFLICT_AND_LINEAGE",
+    "precedence": "ONLY_VERIFIED_PIT_VISIBLE_OFFICIAL_SUPERSESSION_AND_EFFECTIVE_RELATION",
+    "voting": false,
+    "row_count_preference": false,
+    "latest_timestamp_wins": false,
+    "human_override": false
+  },
+  "operating_burden": {
+    "cadence": "SOURCE_EVENT_OR_CURRENT_EVIDENCE_NEED_DRIVEN",
+    "fixed_interval": null,
+    "pre_market_file_valid_all_day": false,
+    "staffing_gap": "INSUFFICIENT_DATA",
+    "frequency": "UNMEASURED"
+  },
+  "failure_cases": [
+    {
+      "id": "MISSING_CURRENT_ARTIFACT",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "PARTIAL_FILE",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "SCHEMA_DRIFT",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "MISSING_REQUIRED_COMPONENT",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "REJECTED_ROW",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "UNPROVEN_PRODUCT_BINDING",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "MISSING_OPERATOR_PROVENANCE",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "UNAUTHORIZED_OR_NO_MFA",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "HASH_OR_LINEAGE_MISMATCH",
+      "component": "CONFLICTED",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "IDENTITY_CONFLICT",
+      "component": "CONFLICTED",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "API_ARTIFACT_MATERIAL_CONFLICT",
+      "component": "CONFLICTED",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "UNSUPPORTED_STAGE",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "STALE_OR_EFFECTIVE_STATE_UNRESOLVED",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    },
+    {
+      "id": "WELL_FORMED_OMISSION_NOT_RULED_OUT",
+      "component": "UNKNOWN",
+      "gate": "INSUFFICIENT_DATA"
+    }
+  ],
+  "threat_model": [
+    {
+      "id": "WRONG_FILE",
+      "mitigations": [
+        "PRODUCT_SCHEMA_SCOPE",
+        "AUTHENTICATED_SOURCE_DECLARATION"
+      ],
+      "residual": "FILENAME_OR_SCHEMA_DOES_NOT_PROVE_ORIGIN"
+    },
+    {
+      "id": "PRE_UPLOAD_EDIT",
+      "mitigations": [
+        "NO_EDIT_PROCEDURE",
+        "ROLE_MFA_AUDIT",
+        "EXACT_API_CORROBORATION"
+      ],
+      "residual": "VALID_PRE_UPLOAD_EDIT_CAN_RECEIVE_VALID_HASH"
+    },
+    {
+      "id": "POST_RETENTION_EDIT",
+      "mitigations": [
+        "RAW_HASH_AND_RECEIPT_REOPEN",
+        "IMMUTABLE_PARENT_LINEAGE"
+      ],
+      "residual": "PRIVILEGED_COORDINATED_REWRITE_NOT_PREVENTED_BY_HASH"
+    },
+    {
+      "id": "STALE_FILE",
+      "mitigations": [
+        "EARLIEST_RAW_OBSERVATION",
+        "SOURCE_EFFECTIVE_AND_FRESHNESS_CHECK"
+      ],
+      "residual": "REUPLOAD_IS_NOT_CURRENTNESS"
+    },
+    {
+      "id": "MALICIOUS_UPLOAD",
+      "mitigations": [
+        "ROLE_MFA_AUTHORIZATION",
+        "BOUNDED_NONEXECUTING_PARSER",
+        "NO_MACROS_OR_EXTERNAL_LINK_EXECUTION"
+      ],
+      "residual": "FUTURE_SECURITY_NOT_IMPLEMENTED_OR_CERTIFIED"
+    },
+    {
+      "id": "FALSE_SOURCE_DECLARATION",
+      "mitigations": [
+        "AUTHENTICATED_ACTOR_AND_ACTION_AUDIT",
+        "SOURCE_DECLARATION"
+      ],
+      "residual": "ATTESTATION_IS_NOT_NSE_SIGNATURE"
+    },
+    {
+      "id": "HIDDEN_OMISSION",
+      "mitigations": [
+        "SOURCE_DEFINED_WHOLE_PRODUCT_PROOF",
+        "ALL_DECLARED_COMPONENTS"
+      ],
+      "residual": "SCHEMA_HASH_COUNTS_CANNOT_PROVE_UNDECLARED_OMISSIONS"
+    }
+  ],
+  "options": [
+    {
+      "id": "CONTROLLED_OFFICIAL_EXPORT_INGESTION",
+      "current_readiness": "NOT_READY",
+      "selected": false,
+      "source_authority": "NSE_WITH_ATTESTED_TRANSPORT",
+      "truthfulness": "CONDITIONAL_COMPLETE_PRODUCT_PROOF_MISSING",
+      "pit": "AUTOMATIC_RECEIPT_AND_EFFECTIVE_PROOF_REQUIRED",
+      "pilot_usability": "POTENTIALLY_PRACTICAL_MANUAL_STEP",
+      "automation": "PARTIAL",
+      "security_risk": "OPERATOR_ORIGIN_AND_UPLOAD_RISK",
+      "complexity": "BOUNDED_IMPORTER_AND_ACCESS_CONTROLS",
+      "policy_burden": "SOURCE_GOVERNANCE_ADDENDUM",
+      "future_migration": "SAME_EVIDENCE_CONTRACT"
+    },
+    {
+      "id": "POSITIVE_ONLY_GATE3_POLICY_AMENDMENT",
+      "current_readiness": "NOT_APPROVED",
+      "selected": false,
+      "source_authority": "NSE_POSITIVES",
+      "truthfulness": "RESIDUAL_UNOBSERVED_RESTRICTION_RISK",
+      "pit": "RECEIPTS_CANNOT_REPAIR_UNPROVEN_ABSENCE",
+      "pilot_usability": "GREATER_LIVENESS_WITH_CHANGED_RISK",
+      "automation": "API_BASED",
+      "security_risk": "MISSED_RESTRICTIONS_OR_OUTAGE",
+      "complexity": "SUBSTANTIVE_POLICY_AND_DOWNSTREAM_CHANGE",
+      "policy_burden": "COMPOSITE_POLICY_AMENDMENT_REQUIRED",
+      "future_migration": "EXPLICIT_POLICY_VERSION_ISOLATION"
+    },
+    {
+      "id": "HARD_BLOCK_UNTIL_MACHINE_COMPLETE",
+      "current_readiness": "READY_AS_GOVERNANCE_DECISION",
+      "selected": true,
+      "source_authority": "NSE_REQUIRED",
+      "truthfulness": "UNKNOWN_REMAINS_INSUFFICIENT",
+      "pit": "EXISTING_RULES_UNCHANGED",
+      "pilot_usability": "RESEARCH_AVAILABLE_EXECUTION_ELIGIBILITY_WITHHELD",
+      "automation": "EXISTING_CAPTURE_ONLY",
+      "security_risk": "AVAILABILITY_OPPORTUNITY_COST",
+      "complexity": "NO_RUNTIME_CHANGE",
+      "policy_burden": "NONE",
+      "future_migration": "REVISIT_ON_MECHANICAL_PRODUCT_PROOF"
+    },
+    {
+      "id": "BROWSER_AUTOMATION",
+      "current_readiness": "UNPROVEN",
+      "selected": false,
+      "source_authority": "NSE_WITH_BROWSER_TRANSPORT",
+      "truthfulness": "DOWNLOAD_ALONE_NOT_COMPLETE_SCOPE",
+      "pit": "RECEIPT_AND_EFFECTIVE_PROOF_REQUIRED",
+      "pilot_usability": "RELIABILITY_UNPROVEN",
+      "automation": "UI_SESSION_DEPENDENT",
+      "security_risk": "FILTER_TAB_SESSION_OR_STALE_FILE",
+      "complexity": "ADDITIONAL_BROWSER_OPERATIONS",
+      "policy_burden": "SOURCE_GOVERNANCE_REVIEW",
+      "future_migration": "SAME_EVIDENCE_CONTRACT_IF_PROVEN"
+    }
+  ],
+  "decision_rule": "SELECT_ONLY_OPTION_SUPPORTED_BY_ACCEPTED_EVIDENCE_WITHOUT_WEAKENING_FROZEN_ADMISSION",
+  "conditional_price_band_composition": "INDEPENDENT_PROVENANCE_COMPATIBLE_EFFECTIVE_STATE_REQUIRED",
+  "execution_master_next_scope": "CURRENT_CAPTURE_ONLY_ASM_GSM_REMAIN_OPEN",
+  "runtime": {
+    "collector_changed": false,
+    "upload_import_implemented": false,
+    "security_implemented": false,
+    "browser_automation": false,
+    "gate3_changed": false,
+    "gate6_changed": false,
+    "production_db_access": false,
+    "source_network_requests": 0,
+    "full_backend_suite_run": false
+  },
+  "boundaries": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_FABRICATED_SURVEILLANCE_CLEARANCE": true,
+    "NO_HUMAN_GATE_OVERRIDE": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "NO_RETROACTIVE_SURVEILLANCE_STATE": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false
+  },
+  "next_continuation": "NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1",
+  "next_continuation_started": false,
+  "fingerprint_scheme": "sha256:canonical-json:exclude-fingerprint",
+  "fingerprint": "sha256:9d157795eec8233c4e36807ed943753ce3b111198f5c2cfbaef505911c547fc5"
+}
