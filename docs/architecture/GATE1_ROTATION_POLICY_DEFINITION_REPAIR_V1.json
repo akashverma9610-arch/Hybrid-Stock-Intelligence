@@ -1,0 +1,205 @@
+{
+  "schema_version": "gate1-rotation-policy-definition-repair/v1",
+  "baseline_commit": "c8842a9fcd61588c377d9d455c582a282c01cf30",
+  "status": "GATE1_VERSIONED_ECONOMIC_POLICY_CHANGE_REQUIRED",
+  "governance_status": "GOVERNANCE_REPAIR_COMPLETE / DOCUMENTATION_ONLY / NOT_ACTIVE",
+  "internal_conclusion": "V1_FORMULA_REQUIRES_VERSIONED_ECONOMIC_POLICY_CHANGE",
+  "policy_change_authorized": false,
+  "runtime_producer_active": false,
+  "origin_evidence": [
+    {
+      "commit": "d64bb988ad253d04f970e7cea96f775e2e9dcbf6",
+      "path": "docs/FRICTION_MODEL.md",
+      "lf_sha256": "sha256:b0ff784f65754edf0bb741e7ef2a3f648b6605af224730bb5a6a73e33d86f894",
+      "establishes": "Rotation-only economic branch; cash fresh-entry exemption; no fabricated missing economics"
+    },
+    {
+      "commit": "d64bb988ad253d04f970e7cea96f775e2e9dcbf6",
+      "path": "docs/EXECUTION_GATES.md",
+      "lf_sha256": "sha256:fcf315d91d38d8ef8060470857750c074e577264204273e871c34f1ee384b84f",
+      "establishes": "Holding score comparison and applicable friction/tax intent, not a quantitative expected-return model"
+    },
+    {
+      "commit": "9c9af08dd7fbd8f868e87131908f8d847bcd269e",
+      "path": "app/gates/production_policy.py",
+      "lf_sha256": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+      "establishes": "Explicit approved fixed formula, tax/slippage inclusion and required cost inputs, not scenario authority"
+    }
+  ],
+  "semantic_dimensions": {
+    "action_scope": "EXPLICITLY_APPROVED",
+    "score_hurdle": "EXPLICITLY_APPROVED",
+    "holding_opportunity_cost_intent": "IMPLIED_BUT_INCOMPLETE",
+    "economic_comparator": "UNKNOWN",
+    "return_quantity": "UNKNOWN",
+    "return_unit": "UNKNOWN",
+    "horizon": "UNKNOWN",
+    "capital_base": "UNKNOWN",
+    "statistical_expectation": "UNKNOWN",
+    "fixed_friction_formula": "EXPLICITLY_APPROVED",
+    "tax_calculation": "UNKNOWN",
+    "slippage_calculation": "UNKNOWN",
+    "fixture_scalar_as_forecast": "LEGACY_ASSUMPTION"
+  },
+  "unresolved_economics": {
+    "comparator": null,
+    "quantity": null,
+    "unit": null,
+    "horizon": null,
+    "capital_base": null,
+    "probability_model": null,
+    "blockers": [
+      "COMPARATOR_POLICY_MISSING",
+      "RETURN_QUANTITY_POLICY_MISSING",
+      "RETURN_UNIT_POLICY_MISSING",
+      "HORIZON_POLICY_MISSING",
+      "CAPITAL_BASE_POLICY_MISSING",
+      "EXPECTED_VALUE_MODEL_POLICY_MISSING"
+    ],
+    "target_is_expectation": false,
+    "score_is_probability": false,
+    "b09_supplies_gate1_horizon": false
+  },
+  "frozen_scalar_behavior": {
+    "policy_id": "six-gates-production-v1",
+    "strict_hurdle_since_commit": "9c9af08dd7fbd8f868e87131908f8d847bcd269e",
+    "earliest_baseline_boundary": "INCLUSIVE_LEGACY_SUPERSEDED_BY_ACCEPTED_PRODUCTION_POLICY",
+    "score_formula": "raw_decision_score - comparison_score >= 1.00",
+    "economic_formula": "expected_incremental_return - modeled_switching_friction > 0.00",
+    "require_economic_hurdle": true,
+    "missing_economics": "INSUFFICIENT_DATA_AFTER_SCORE_PRECONDITIONS",
+    "unverified_populated_economics": "REJECTED_BEFORE_FORMULA",
+    "non_rotation": "NOT_APPLICABLE_PASS_AFTER_CONFIGURATION_CHECK"
+  },
+  "action_scope": {
+    "new_position_rotation_ROTATE_IN": "IN_SCOPE",
+    "holding_to_holding_ROTATE_IN": "IN_SCOPE",
+    "partial_rotation_capital_treatment": "UNDEFINED",
+    "full_rotation_capital_treatment": "UNDEFINED",
+    "cash_funded_FRESH_ENTRY": "OUT_OF_SCOPE",
+    "add_tranche_ADD_TO_POSITION": "OUT_OF_SCOPE"
+  },
+  "friction": {
+    "model_id": "nse-cash-delivery-friction-v1",
+    "version": "v1",
+    "effective_at": "2026-03-01T00:00:00+00:00",
+    "unit": "INR_ABSOLUTE_AMOUNT_WHEN_INPUTS_ARE_INR",
+    "formula": "P*(0.001+0.000001+0.00015)+S*(0.001+0.000001)+(P+S)*307/10000000+B+L+T+G*0.18",
+    "monetary_inputs": {
+      "P": "purchase_turnover",
+      "S": "sale_turnover",
+      "B": "brokerage",
+      "L": "slippage",
+      "T": "capital_gains_tax",
+      "G": "gst_taxable_services"
+    },
+    "fixed_parameters": {
+      "stt_purchase_rate": "0.001",
+      "stt_sale_rate": "0.001",
+      "sebi_turnover_rate_each_side": "0.000001",
+      "stamp_duty_purchase_rate": "0.00015",
+      "gst_rate": "0.18",
+      "nse_member_outflow_per_crore_each_side": "307"
+    },
+    "missing_any_B_L_T_G": "NONE_NOT_ZERO",
+    "negative_complete_inputs": "REJECTED",
+    "explicit_zero_confers_source_authority": false,
+    "tax_inclusion": "EXPLICIT_CURRENT_POLICY",
+    "tax_calculation_policy": "UNKNOWN",
+    "slippage_required": true,
+    "slippage_producer": "NOT_READY",
+    "slippage_methodology": "POLICY_UNDEFINED",
+    "separate_spread_impact_liquidity_delay_components": false,
+    "such_costs_inside_slippage": "AMBIGUOUS",
+    "current_statutory_rates_reverified": false
+  },
+  "dimensional_consistency": {
+    "current_operands_compatible": false,
+    "current_status": "CANNOT_CERTIFY_UNDEFINED_RETURN_AGAINST_INR_FRICTION",
+    "forbidden": "INR_MINUS_PERCENTAGE",
+    "positive_common_base_algebra": "E-F>0 iff E/C-F/C>0 for C>0 without rounding",
+    "algebra_proves_semantic_compatibility": false,
+    "unit_adapter_created": false
+  },
+  "options": {
+    "A": "ABSOLUTE_INR_EXPECTATION_REQUIRES_COMPARATOR_HORIZON_MODEL_AND_CAPITAL",
+    "B": "COMMON_CAPITAL_RATE_OR_BPS_REQUIRES_DENOMINATOR_AND_SCALE",
+    "C": "SEPARATELY_NAMED_DETERMINISTIC_SCENARIO_IN_VERSIONED_SUCCESSOR",
+    "D": "KEEP_BLOCKED_PENDING_CALIBRATED_EXPECTED_VALUE_POLICY",
+    "E": "OTHER_OR_R_MULTIPLE_NOT_SUPPORTED_BY_ORIGINAL_AUTHORITY"
+  },
+  "recommended_proposal_direction": "C",
+  "recommended_direction_is_approved_model": false,
+  "provisional_unit_for_option_C_review": "INR_BECAUSE_EXISTING_COST_HELPER_USES_INR",
+  "calibration_decision": "UNRESOLVED",
+  "statistical_model_calibration_if_selected": "REQUIRED_BEFORE_ACTIVATION",
+  "future_scenario_requirements_only": [
+    "decision_as_of_utc",
+    "candidate_and_exact_governed_comparator",
+    "score_and_incumbent_provenance",
+    "portfolio_snapshot_if_used",
+    "switched_capital_currency_both_legs_and_residuals_if_used",
+    "model_required_prices_adjustments_and_endpoints",
+    "return_model_horizon_and_policy_versions",
+    "friction_rate_effectiveness_and_local_availability",
+    "tax_and_slippage_policy_evidence_if_retained",
+    "all_input_fingerprints_known_at_not_after_decision",
+    "conflict_and_duplicate_rejection",
+    "reproducible_scenario_fingerprint_binding_both_operands"
+  ],
+  "authority": {
+    "current_domain": "USER_APPROVED_CONTEXT",
+    "current_readiness": "SOURCE_GOVERNANCE_REQUIRED",
+    "current_blocker": "GATE1_FRICTION_POLICY_AUTHORITY_NOT_READY",
+    "proposed_role_only": "DETERMINISTIC_HSI_DERIVED_SCENARIO",
+    "new_authority_registered": false,
+    "user_preference_is_hard_gate_economic_fact": false,
+    "ai_or_user_return_authority": false
+  },
+  "reuse": {
+    "incumbent_identity_already_in_score_provenance": true,
+    "economic_pair_capital_horizon_binding_exists": false,
+    "rotation_contracts": "REUSE_UPSTREAM_IDENTITIES_TIMESTAMPS_SNAPSHOT_AND_COMPARISON_NOT_FINAL_GATE_DEPENDENT_OUTPUT",
+    "challenger_has_approved_capital_switch_model": false,
+    "tradeplan": "SCENARIO_ENDPOINT_NOT_EXPECTED_RETURN_NO_GATE4_PASS_DEPENDENCY",
+    "parallel_rotation_engine_created": false
+  },
+  "single_future_policy": {
+    "policy_id": "execution-gate-policy-v2-proposed",
+    "version": "v2-proposal.3",
+    "proposal_fingerprint": "sha256:57bbd7af01fe14fa95ae419187302d5dcc353e3cbd98181e43b5f691cb97ab3d",
+    "approval_fingerprint": "sha256:caad6fb766fbcf93ea4859a94454c78d57ba59551274601eba9741486ae7d30e",
+    "gate1_currently_pinned_unchanged": true,
+    "future_gate1_incorporation_requires_new_composite_governance": true,
+    "modified_or_activated_by_this_repair": false
+  },
+  "frozen_lf_sha256": {
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4"
+  },
+  "invariants": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_FABRICATED_ECONOMIC_RETURN": true,
+    "NO_FABRICATED_SWITCHING_FRICTION": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "NO_USER_ENTERED_GATE1_EXPECTED_RETURN_AUTHORITY": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false
+  },
+  "next_continuation": "GATE1_ROTATION_POLICY_V2_PROPOSAL",
+  "receipt_fingerprint": "sha256:d5c2ef20dc375a64daa3e02d5db80cc875c8ed1eaace22983db5a1c0262a4110"
+}
