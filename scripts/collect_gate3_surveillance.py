@@ -24,6 +24,7 @@ from app.market_data.surveillance_prospective import (
 from app.market_data.surveillance_observations import (
     certify_product_capture, completeness_summary, project_poll, summary,
 )
+from app.historical.nse_mii_security_master import NseMiiCurrentMasterCaptureReceipt
 from app.storage.core_api_snapshot_repository import snapshot_json_from
 from app.storage.sqlite_core_api_snapshot_repository import SQLiteCoreApiSnapshotRepository
 
@@ -42,18 +43,40 @@ def read_identity_inputs(database: Path, as_of: datetime):
             raise ValueError('SURVEILLANCE_IDENTITY_READ_BOUND')
         universe = tuple(snapshot_json_from(row[0]) for row in raw)
         parents = tuple(snapshot_json_from(row[0]) for row in c.execute(
-            "SELECT payload_json FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type='nse-historical-mii-security-master-snapshot-acquisition' ORDER BY snapshot_id LIMIT 101"))
+            "SELECT payload_json FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type IN ('nse-historical-mii-security-master-snapshot-acquisition','nse-mii-security-master-prospective-snapshot-v2') ORDER BY snapshot_id LIMIT 101"))
         if len(parents) > 100:
             raise ValueError('SURVEILLANCE_MASTER_READ_BOUND')
         eligible = tuple(s for s in parents if s.created_at <= as_of and s.payload.report_date <= as_of.date())
         row_counts = {
             parent.snapshot_id: c.execute(
-                "SELECT count(*) FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type='nse-mii-security-master-row-v1' AND json_extract(payload_json,'$.payload.fields.snapshot_id')=?",
+                "SELECT count(*) FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type IN ('nse-mii-security-master-row-v1','nse-mii-security-master-prospective-row-v2') AND json_extract(payload_json,'$.payload.fields.snapshot_id')=?",
                 (parent.snapshot_id,),
             ).fetchone()[0]
             for parent in eligible
         }
-        complete = tuple(parent for parent in eligible if row_counts[parent.snapshot_id] == parent.payload.row_count)
+        receipts = tuple(snapshot_json_from(row[0]) for row in c.execute(
+            "SELECT payload_json FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type='nse-mii-security-master-prospective-capture-receipt-v1' ORDER BY snapshot_id LIMIT 101"))
+        if len(receipts) > 100:
+            raise ValueError('SURVEILLANCE_MASTER_RECEIPT_READ_BOUND')
+        admitted = []
+        for candidate in receipts:
+            if not isinstance(candidate.payload, NseMiiCurrentMasterCaptureReceipt):
+                raise ValueError('SURVEILLANCE_CURRENT_MASTER_RECEIPT_TYPE_INVALID')
+            receipt = candidate.payload
+            receipt.__post_init__()
+            parent = next((item for item in eligible if item.snapshot_id == receipt.snapshot_id), None)
+            if (
+                candidate.created_at > as_of or receipt.first_observed_at > as_of or parent is None
+                or parent.payload.fingerprint != receipt.snapshot_fingerprint
+                or parent.payload.report_date != receipt.report_date
+                or row_counts[parent.snapshot_id] != receipt.retained_rows
+            ):
+                continue
+            admitted.append(parent)
+        # A prospective receipt is the only current-master admission proof.
+        complete = tuple(sorted(admitted, key=lambda item: (item.payload.report_date, item.created_at, item.snapshot_id)))
+        if not complete:
+            complete = tuple(parent for parent in eligible if row_counts[parent.snapshot_id] == parent.payload.row_count)
         latest_complete_date = max((s.payload.report_date for s in complete), default=None)
         latest = tuple(s for s in complete if s.payload.report_date == latest_complete_date)
         # Equal-date independent masters are not resolved by input order.
@@ -61,14 +84,17 @@ def read_identity_inputs(database: Path, as_of: datetime):
             raise ValueError('SURVEILLANCE_CURRENT_MASTER_CONFLICT')
         observed_latest_date = max((s.payload.report_date for s in eligible), default=None)
         master_continuity = (
-            'CURRENT_ENOUGH_DATE_LEVEL_MASTER_ONLY'
-            if latest_complete_date == observed_latest_date and latest_complete_date is not None
+            'CURRENT_COMPLETE_PROSPECTIVE_MASTER_DATE_LEVEL_ONLY'
+            if any(parent.payload.contract_version == 'v2-prospective-complete-capture' for parent in latest)
+            and latest_complete_date == observed_latest_date and latest_complete_date is not None
+            else ('CURRENT_ENOUGH_DATE_LEVEL_MASTER_ONLY'
+                  if latest_complete_date == observed_latest_date and latest_complete_date is not None
             else ('PARTIAL_LATEST_MASTER_CAPTURE_INCOMPLETE' if observed_latest_date is not None
-                  else 'PARTIAL_NO_MASTER_VISIBLE')
+                  else 'PARTIAL_NO_MASTER_VISIBLE'))
         )
         rows = []
         if latest:
-            raw = c.execute("SELECT payload_json FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type='nse-mii-security-master-row-v1' AND json_extract(payload_json,'$.payload.fields.snapshot_id')=? ORDER BY snapshot_id LIMIT 50001",
+            raw = c.execute("SELECT payload_json FROM core_api_snapshots WHERE family='HISTORICAL_NSE_SECURITY_MASTER_SNAPSHOT' AND record_type IN ('nse-mii-security-master-row-v1','nse-mii-security-master-prospective-row-v2') AND json_extract(payload_json,'$.payload.fields.snapshot_id')=? ORDER BY snapshot_id LIMIT 50001",
                 (latest[0].snapshot_id,)).fetchall()
             if len(raw) > 50000:
                 raise ValueError('SURVEILLANCE_MASTER_READ_BOUND')

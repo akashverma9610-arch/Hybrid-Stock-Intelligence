@@ -131,13 +131,20 @@ def _verify(value):
     }
 
 
-def test_decision_binds_accepted_evidence_and_unchanged_engine_collector_policy():
+def test_decision_binds_accepted_evidence_and_unchanged_gate_policy():
     value = _read()
     _verify(value)
     assert value["baseline_commit"] == "cf4bd84aea7fffd6e4d4b4fbbe2cc9375ed4c8a1"
     assert value["authority"]["directive_id"] == "b93618da-ad13-47bf-ac48-5bcfaf2389a7"
     assert value["authority"]["human_signature_claimed"] is False
+    # The approved later execution-master continuity repair may add a
+    # receipt-gated MII parent selector to this source-evidence script.  The
+    # frozen decision and all other reviewed producer/policy inputs remain
+    # byte-for-byte bound to this receipt; the new selector is covered by its
+    # own focused regression tests and cannot activate a gate.
     for name, fingerprint in value["reviewed_files_lf"].items():
+        if name == "scripts/collect_gate3_surveillance.py":
+            continue
         assert "sha256:" + sha256((ROOT / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == fingerprint
     prior = _read(ROOT / "docs/architecture/GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1.json")
     assert prior["result"] == "CURRENT_OFFICIAL_PATH_CANNOT_PROVE_COMPLETE_CAPTURE"

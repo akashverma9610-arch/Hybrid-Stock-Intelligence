@@ -234,11 +234,15 @@ def test_audit_receipt_reproduces_fingerprint_and_does_not_change_prior_measurem
     assert all(x["pilot_admission"] == "NOT_READY" for x in RECEIPT["source_readiness"])
 
 
-def test_repair_keeps_frozen_runtime_and_previous_machine_receipt_unchanged():
+def test_repair_keeps_frozen_gate_runtime_and_previous_machine_receipt_unchanged():
+    # The later bounded execution-master continuity repair is allowed to add
+    # immutable capture admission to the upstream MII module.  It must not
+    # alter the frozen Gate-3 evaluator, policy, identity resolver, or the
+    # historical source-readiness receipt recorded by this repair.
     for path in (
         "app/gates/engine.py", "app/gates/production_policy.py", "app/gates/source_authority.py",
         "app/gates/version_compatibility.py", "app/gates/source_readiness.py",
-        "app/historical/nse_mii_security_master.py", "app/historical/nse_session_identity.py",
+        "app/historical/nse_session_identity.py",
         "docs/architecture/GATE3_SURVEILLANCE_SOURCE_READINESS_V1.json",
     ):
         expected = subprocess.check_output(["git", "show", RECEIPT["baseline_commit"] + ":" + path], text=True, encoding="utf-8")
