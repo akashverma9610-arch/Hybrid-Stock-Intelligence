@@ -1,0 +1,189 @@
+{
+  "schema_version": "earnings-blackout-prospective-schedule-receipt-readiness/v1",
+  "audit_id": "earnings-blackout-prospective-schedule-receipt-readiness",
+  "audit_version": "v1",
+  "baseline_commit": "75f88ff0d260fa3fb8f7c38192f4b7fe06a9cbc6",
+  "authority": {
+    "basis": "USER_DELEGATED_BOUNDED_PROSPECTIVE_SOURCE_READINESS_AUDIT",
+    "directive_id": "a0c1de10-1c3a-4eb3-9063-19338f3e0108",
+    "human_signature_claimed": false
+  },
+  "status": "PROSPECTIVE_RECEIPT_PATH_PARTIAL_ONE_BOUNDED_REPAIR_REQUIRED",
+  "scope": "DOCUMENTATION_ONLY_READINESS_AUDIT",
+  "runtime_collector_active": false,
+  "gate_policy_v2_active": false,
+  "numeric_horizon_selected": false,
+  "source_probe": {
+    "observation_date_utc": "2026-09-13",
+    "mode": "ONE_BOUNDED_READ_ONLY_REQUEST_PER_OFFICIAL_SOURCE_FAMILY",
+    "persisted_as_first_observed": false,
+    "sandbox_transport": "NETWORK_OR_TLS_UNAVAILABLE",
+    "host_transport": [
+      {"source_family": "NSE_BOARD_MEETINGS", "http_status": 200, "state": "SOURCE_PARTIAL", "reason": "ROLLING_FEED_NOT_COMPLETE", "rows": 0, "qualifying_rows": 0},
+      {"source_family": "BSE_ANNOUNCEMENTS", "http_status": 200, "state": "SOURCE_PARTIAL", "reason": "RECENT_LIST_WINDOW_COVERAGE_UNPROVEN", "rows": 10, "qualifying_rows": 0}
+    ],
+    "no_notice_conclusion_allowed": false,
+    "no_event_conclusion_allowed": false
+  },
+  "bounded_population": {
+    "identity_receipt": "docs/architecture/EARNINGS_CALENDAR_CANONICAL_IDENTITY_BRIDGE_V1_RECEIPT.json",
+    "canonical_companies": 31,
+    "current_nse_identity_resolved": 31,
+    "current_bse_identity_resolved": 31,
+    "historical_identity_reconstruction_started": false,
+    "universe_expansion_started": false
+  },
+  "source_families": [
+    {
+      "id": "NSE_BOARD_MEETINGS",
+      "adapter": "app/filings/earnings_schedule_source.py:NSEOfficialEarningsScheduleSource",
+      "positive_discovery": "PARTIAL",
+      "exact_identity": "PARTIAL",
+      "purpose_classification": "READY_FOR_OBSERVED_VARIANTS",
+      "raw_record": "RawSchedule_with_exact_linked_prior_intimation_when_present",
+      "source_native_timestamp": "RETAIN_RAW_SEMANTIC_AND_TIMEZONE_UNPROVEN",
+      "revisions": "PARTIAL",
+      "cancellations": "PARTIAL",
+      "idempotent_rediscovery": "PARTIAL",
+      "window_completeness": "UNPROVEN",
+      "negative_absence": "NOT_READY"
+    },
+    {
+      "id": "BSE_ANNOUNCEMENTS",
+      "adapter": "app/filings/earnings_schedule_discovery.py:discover_bse+app/filings/earnings_schedule_source.py:parse_bse_detail",
+      "positive_discovery": "PARTIAL",
+      "exact_identity": "PARTIAL",
+      "purpose_classification": "READY_FOR_OBSERVED_VARIANTS_AFTER_EXACT_DETAIL",
+      "raw_record": "RawSchedule_with_exact_mobile_detail_when_known_link_present",
+      "source_native_timestamp": "RETAIN_RAW_SEMANTIC_AND_TIMEZONE_UNPROVEN",
+      "revisions": "PARTIAL",
+      "cancellations": "PARTIAL",
+      "idempotent_rediscovery": "PARTIAL",
+      "window_completeness": "UNPROVEN",
+      "negative_absence": "NOT_READY"
+    }
+  ],
+  "first_observed": {
+    "contract": "app/filings/earnings_schedule_known_at.py:SystemFirstObservedReceipt",
+    "coverage_contract": "app/filings/earnings_schedule_coverage.py:SystemCoverageFirstObservedReceipt",
+    "required_origin": "AUTOMATIC_INGESTION_BOUNDARY",
+    "timestamp": "AWARE_UTC_CAPTURED_AFTER_BOUNDED_RESPONSE_BYTES_AND_BOUND_TO_RESPONSE_FINGERPRINT",
+    "existing_capture": "NOT_READY_CALLER_SUPPLIED_SOURCE_BATCH_RETRIEVED_AT",
+    "backdating_allowed": false,
+    "source_public_time_substitution_allowed": false,
+    "event_date_substitution_allowed": false,
+    "queued_processing_rule": "PERSIST_FIRST_OBSERVED_AT_THEN_RECORD_PROCESSED_AT_SEPARATELY",
+    "restart_rule": "UNCHANGED_LOGICAL_RECEIPT_PRESERVES_ORIGINAL_FIRST_OBSERVED_AT"
+  },
+  "minimum_chain": [
+    "ADMITTED_OFFICIAL_POSITIVE_DISCOVERY_PATH",
+    "EXACT_CURRENT_CANONICAL_IDENTITY",
+    "EXPLICIT_QUALIFYING_FINANCIAL_RESULTS_PURPOSE",
+    "AUTOMATIC_AWARE_UTC_HSI_FIRST_OBSERVED_AT",
+    "IMMUTABLE_SOURCE_ROW_AND_PAYLOAD_FINGERPRINT",
+    "IDEMPOTENT_LOGICAL_RECEIPT_KEY",
+    "REVISION_CONFLICT_SAFE_LINEAGE",
+    "PARTIAL_OR_FAILED_COVERAGE_RECEIPT"
+  ],
+  "later_requirements": {
+    "before_horizon_calibration": [
+      "RECONCILED_LOGICAL_EVENT",
+      "FINAL_LIFECYCLE_LINEAGE",
+      "ACTUAL_RESULT_LINKAGE",
+      "PROVEN_REACTION_SESSION",
+      "CALIBRATION_OBSERVATION_LINEAGE"
+    ],
+    "layer_2_only": ["GENUINE_PROSPECTIVE_VERSIONED_HSI_SETUP_SIGNAL_GATE_PAPER_OUTCOME_CHAIN"],
+    "optional_enrichment": ["ATR_BINDING", "SECTOR_BENCHMARK", "VOLUME_TURNOVER", "MFE_MAE_AFTER_WINDOW_GOVERNANCE", "MEASURED_OR_GOVERNED_PROXY_SLIPPAGE"]
+  },
+  "reuse": {
+    "identity": "app/filings/earnings_schedule_identity.py",
+    "purpose_and_source": "app/filings/earnings_schedule_source.py",
+    "discovery": "app/filings/earnings_schedule_discovery.py",
+    "known_at": "app/filings/earnings_schedule_known_at.py",
+    "coverage": "app/filings/earnings_schedule_coverage.py",
+    "candidate_lifecycle": "app/filings/earnings_schedule_store.py",
+    "existing_immutable_store": "app/storage/core_api_snapshot_repository.py",
+    "result_evidence": "app/filings/store.py",
+    "price_outcomes": "existing canonical daily OHLCV"
+  },
+  "persistence_decision": {
+    "state": "ONE_NEW_TYPED_FAMILY_IN_EXISTING_IMMUTABLE_SNAPSHOT_STORE_REQUIRED",
+    "new_sqlite_table": false,
+    "parallel_calendar_database": false,
+    "family": "EARNINGS_SCHEDULE_PROSPECTIVE_RECEIPT",
+    "record_types": ["ProspectiveScheduleSourceReceipt/v1", "ProspectiveScheduleCollectionRunReceipt/v1"],
+    "raw_evidence": "RETAIN_SORTED_SOURCE_ROW_FIELDS_SOURCE_REFERENCE_SOURCE_ROW_FINGERPRINT_AND_BATCH_RESPONSE_FINGERPRINT",
+    "coverage_model": "REUSE_EarningsScheduleCoverageReceipt_NO_DUPLICATE_COVERAGE_MODEL"
+  },
+  "idempotency": {
+    "logical_receipt_key": ["source_family", "source_filing_identity", "source_payload_fingerprint"],
+    "unchanged_replay": "IDENTICAL_REPLAY_PRESERVE_ORIGINAL_FIRST_OBSERVED_AT",
+    "same_source_identity_changed_payload": "RETAIN_INCOMING_IMMUTABLY_THEN_EXACT_LIFECYCLE_OR_EVIDENCE_CONFLICTED",
+    "different_source_identity": "DISTINCT_RECEIPT",
+    "deduplicate_distinct_revisions": false,
+    "overwrite_allowed": false
+  },
+  "dual_exchange": {
+    "independent_source_receipts": true,
+    "one_source_may_begin_positive_receipt": true,
+    "both_sources_required_before_recording": false,
+    "one_source_proves_other_absent": false,
+    "later_logical_event": "REQUIRES_EXACT_CANONICAL_IDENTITY_COMPATIBLE_EVENT_FIELDS_AND_EXPLICIT_RECONCILIATION_STATE",
+    "source_provenance_discard_allowed": false
+  },
+  "failure_mapping": {
+    "HTTP_TLS_TIMEOUT": "FAILED_COVERAGE_RECEIPT_NO_NEGATIVE_ABSENCE",
+    "PARSER_SCHEMA": "PARTIAL_OR_FAILED_RECEIPT_NO_FALLBACK_PARSE",
+    "PAGINATION_WINDOW": "PARTIAL_RECEIPT_COMPLETENESS_FALSE",
+    "IDENTITY": "IDENTITY_UNRESOLVED_NO_NAME_MATCH",
+    "PURPOSE": "PURPOSE_AMBIGUOUS_NOT_QUALIFYING",
+    "PAYLOAD_CONFLICT": "EVIDENCE_CONFLICTED_NO_OVERWRITE",
+    "LIFECYCLE_PARENT_UNPROVEN": "REVISION_LINEAGE_UNRESOLVED"
+  },
+  "readiness_matrix": [
+    {"input": "NSE_POSITIVE_DISCOVERY", "state": "PARTIAL"},
+    {"input": "BSE_POSITIVE_DISCOVERY", "state": "PARTIAL"},
+    {"input": "CURRENT_31_IDENTITY", "state": "READY"},
+    {"input": "PURPOSE_CLASSIFICATION", "state": "READY_FOR_OBSERVED_VARIANTS"},
+    {"input": "AUTOMATIC_FIRST_OBSERVED_CAPTURE", "state": "NOT_READY"},
+    {"input": "RAW_SOURCE_ROW_RETENTION", "state": "PARTIAL"},
+    {"input": "IDEMPOTENCY", "state": "PARTIAL"},
+    {"input": "REVISION_CANCELLATION_LINEAGE", "state": "PARTIAL"},
+    {"input": "COVERAGE_RECEIPTS", "state": "PARTIAL"},
+    {"input": "NEGATIVE_ABSENCE_PROOF", "state": "NOT_READY"},
+    {"input": "ACTUAL_RESULT_LINKAGE", "state": "PARTIAL"},
+    {"input": "PRICE_OUTCOMES", "state": "READY"},
+    {"input": "ATR", "state": "PARTIAL"},
+    {"input": "MFE_MAE", "state": "OPTIONAL_ENRICHMENT"},
+    {"input": "SLIPPAGE", "state": "OPTIONAL_ENRICHMENT"},
+    {"input": "LAYER_2_HSI_OPPORTUNITY_LINEAGE", "state": "PARTIAL"}
+  ],
+  "prospective_start_criteria": {
+    "all_required": ["ADMITTED_OFFICIAL_POSITIVE_DISCOVERY_PATH", "EXACT_CURRENT_CANONICAL_IDENTITY", "EXPLICIT_QUALIFYING_FINANCIAL_RESULTS_PURPOSE", "AUTOMATIC_FIRST_OBSERVED_CAPTURE", "IMMUTABLE_EVIDENCE_FINGERPRINT", "REVISION_SAFE_IDEMPOTENCY", "FAILURE_RECEIPT", "LATER_RESULT_LINKAGE_FEASIBLE", "PRICE_OUTCOME_PATH_FEASIBLE"],
+    "currently_satisfied": false,
+    "single_missing_boundary": "EARNINGS_BLACKOUT_PROSPECTIVE_RECEIPT_COLLECTOR_V1"
+  },
+  "canary": {
+    "status": "NOT_IMPLEMENTED",
+    "population": "EXISTING_31_CURRENT_IDENTITIES_ONLY",
+    "allowed": ["OFFICIAL_SOURCE_QUERY", "SOURCE_RECEIPT", "PARTIAL_OR_FAILED_COVERAGE_RECEIPT", "REPLAY_AND_REVISION_ASSERTION", "LATER_OUTCOME_ATTACHMENT"],
+    "forbidden": ["GATE_6_CHANGE", "SIGNAL_CHANGE", "ENTRY_READY", "PORTFOLIO_ACCESS", "BROKER_ORDER", "HORIZON_OPTIMIZATION", "UNBOUNDED_DAEMON"]
+  },
+  "boundaries": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_UNVERIFIED_CALENDAR_CLEARANCE": true,
+    "NO_RETROACTIVE_BLACKOUT": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "NO_HORIZON_GUESS": true,
+    "PROSPECTIVE_FIRST_OBSERVED_ONLY": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false
+  },
+  "next_continuation": "EARNINGS_BLACKOUT_PROSPECTIVE_RECEIPT_COLLECTOR_V1",
+  "next_continuation_started": false,
+  "fingerprint_scheme": "sha256:utf8:canonical-json-v1:exclude-audit_fingerprint",
+  "audit_fingerprint": "sha256:1c715dcbe257812b2da01ae967b1134ad662515263f415a89858989a043c2d4a"
+}
