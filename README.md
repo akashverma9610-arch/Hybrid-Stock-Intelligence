@@ -81,6 +81,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Final Six Gates authority routing closure (B08 compatibility closed; production source readiness separate and blocked)](docs/architecture/FUNDAMENTAL_V2_SIX_GATES_VERSION_COMPATIBILITY_REPAIR_3.md)
 - [Gate 3 Surveillance Source Readiness V1 (official NSE source feasibility; source-semantics repair required)](docs/architecture/GATE3_SURVEILLANCE_SOURCE_READINESS_V1.md)
 - [Gate 3 Surveillance Policy / Source Repair V1 (complete-list evidence; status/temporal admission unresolved; no collector)](docs/architecture/GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_V1.md)
+- [Gate 3 Source Repair 2 (three formula inputs; source-status role resolved; approved timing requires versioned proposal)](docs/architecture/GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_2.md)
 - [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Official NSE/BSE Earnings Calendar Adapters V1 (bounded parsers/storage; live coverage partial; Gate 6 unwired)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_V1.md)
 - [Official Earnings Calendar Discovery Repair (exact joins; scoped coverage and strict PIT still blocked)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_REPAIR.md)

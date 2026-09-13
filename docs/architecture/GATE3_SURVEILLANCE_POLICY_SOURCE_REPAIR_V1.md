@@ -2,6 +2,11 @@
 
 Status: `GOVERNANCE_AUDIT_ONLY / NOT_ACTIVE / NO_COLLECTOR`.
 
+Follow-up: [Repair 2](GATE3_SURVEILLANCE_POLICY_SOURCE_REPAIR_2.md) resolves the
+original status-role and identity questions using approval/history evidence;
+only the explicitly approved timing conflict requires a versioned proposal.
+This prior audit and its machine receipt remain historical evidence.
+
 Baseline: `d4f39dcee5cf29c9b663065bab97c70ee85c4277`, `main`.
 This follows the [source-readiness audit](GATE3_SURVEILLANCE_SOURCE_READINESS_V1.md)
 and retains its [immutable measurement receipt](GATE3_SURVEILLANCE_SOURCE_READINESS_V1.json).
