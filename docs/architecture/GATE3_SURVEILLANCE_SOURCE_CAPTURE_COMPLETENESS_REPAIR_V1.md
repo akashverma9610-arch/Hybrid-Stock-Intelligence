@@ -144,18 +144,17 @@ row observation is a non-blocking surveillance conclusion. The active
 six-gate policy is untouched; no `PASS`, `BUY`, `SELL`, `ROTATE`, or portfolio
 mutation is produced.
 
-## Exact feasibility decision required
+## Completed follow-up feasibility decision
 
-The sole official-path decision needed to leave Decision D is:
+The completed official-path feasibility decision is:
 
-**`GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1`**
+[`GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1`](GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1.md).
 
-It must determine whether NSE exposes a fixed, authorized, machine-verifiable
-complete ASM and complete stagewise GSM export/manifest, and—only if so—bind the
-existing responses or a bounded existing official retrieval to that product.
-It must define pagination/section coverage and revision identity without using
-row counts. It must not activate Gate 3, change thresholds, or infer absence.
-This feasibility decision is **not started**.
+It determined that the known official report pages expose client-side CSV
+controls but no machine-verifiable export artifact, manifest, or API binding.
+Its Decision D, `CURRENT_OFFICIAL_PATH_CANNOT_PROVE_COMPLETE_CAPTURE`, retains
+the current APIs as discovery-only evidence and authorizes no collector or Gate
+change. It did not activate Gate 3, change thresholds, or infer absence.
 
 ## Validation
 

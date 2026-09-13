@@ -429,11 +429,15 @@ def test_completeness_receipt_separates_documented_product_capture_and_row_admis
     repo.close()
 
 
-@pytest.mark.parametrize('count', [1,3])
-def test_asm_row_count_never_certifies_documented_complete_export(tmp_path,count):
-    body=asm_bytes(*(asm(symbol=f'APAR{n}',isin=ISIN) for n in range(count)))
-    repo,store,polls=fixture(tmp_path,{F.ASM:body})
-    evidence=project(store,polls[0]); receipt=certify_product_capture(store,polls[0].record_id,evidence.record_id)
+@pytest.mark.parametrize('family,count', [(F.ASM,1),(F.ASM,3),(F.GSM,1),(F.GSM,3)])
+def test_api_row_count_never_certifies_documented_complete_export(tmp_path,family,count):
+    if family is F.ASM:
+        body=asm_bytes(*(asm(symbol=f'APAR{n}',isin=ISIN) for n in range(count)))
+    else:
+        body=json.dumps([gsm(symbol=f'APAR{n}',isin=ISIN) for n in range(count)]).encode()
+    repo,store,polls=fixture(tmp_path,{family:body})
+    poll=next(p for p in polls if p.family is family)
+    evidence=project(store,poll); receipt=certify_product_capture(store,poll.record_id,evidence.record_id)
     assert receipt.rows_seen==count and receipt.collector_capture_state is C.UNPROVEN
     assert receipt.pagination_state=='API_PAGINATION_CONTRACT_UNPROVEN'
     repo.close()

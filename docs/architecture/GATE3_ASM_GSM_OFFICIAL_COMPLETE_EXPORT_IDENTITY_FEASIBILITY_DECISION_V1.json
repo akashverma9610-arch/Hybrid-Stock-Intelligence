@@ -1,0 +1,115 @@
+{
+  "schema_version": "gate3-asm-gsm-official-complete-export-feasibility-decision/v1",
+  "slice": "GATE3_ASM_GSM_OFFICIAL_COMPLETE_EXPORT_IDENTITY_FEASIBILITY_DECISION_V1",
+  "baseline_commit": "f59ce5e5356d1bf8ce8481c4404ec1e969c4cca7",
+  "decision": "D",
+  "result": "CURRENT_OFFICIAL_PATH_CANNOT_PROVE_COMPLETE_CAPTURE",
+  "scope": "PROSPECTIVE_CURRENT_STATE_ONLY",
+  "official_authority": "NSE_ONLY",
+  "direct_fetch_policy": {
+    "per_candidate_current_requests": 1,
+    "timeout_seconds": 15,
+    "follow_redirects": false,
+    "request_cookies": false,
+    "authorization": false,
+    "response_body_retained": false
+  },
+  "families": [
+    {
+      "family": "ASM",
+      "official_product_documented": true,
+      "official_product_identity": "NSE_ASM_COMPLETE_LIST",
+      "documentation_url": "https://www.nseindia.com/static/regulations/additional-surveillance-measure",
+      "documented_list_path": "https://www.nseindia.com/reports/asm",
+      "documented_export_identity": "List_of_securities_shortlisted_under_ASM.csv",
+      "current_api_endpoint": "https://www.nseindia.com/api/reportASM",
+      "complete_export_availability": "EXPORT_EXISTS_BUT_MACHINE_ACCESS_UNPROVEN",
+      "direct_fetch": {
+        "status": 200,
+        "redirect": "NONE",
+        "content_type": "text/html; charset=utf-8",
+        "content_disposition": "ABSENT",
+        "content_length": "ABSENT",
+        "file_format": "HTML_REPORT_PAGE",
+        "direct_csv_href": "NOT_EXPOSED_IN_STATIC_HTML",
+        "source_list_date": "NOT_EXPOSED",
+        "pagination_or_manifest": "NOT_EXPOSED"
+      },
+      "required_sections_or_components": ["longterm", "shortterm"],
+      "api_to_complete_export_relationship": "UNPROVEN",
+      "complete_product_capture_feasibility": "NOT_READY",
+      "current_api_retention_decision": "KEEP_AS_DISCOVERY_ONLY"
+    },
+    {
+      "family": "GSM",
+      "official_product_documented": true,
+      "official_product_identity": "NSE_GSM_COMPLETE_STAGEWISE_LIST",
+      "documentation_url": "https://www.nseindia.com/static/regulations/graded-surveillance-measure",
+      "documented_list_path": "https://www.nseindia.com/reports/gsm",
+      "documented_export_identity": "List_of_scrips_shortlisted_in_Graded_Surveillance_Measure",
+      "current_api_endpoint": "https://www.nseindia.com/api/reportGSM",
+      "complete_export_availability": "EXPORT_EXISTS_BUT_MACHINE_ACCESS_UNPROVEN",
+      "direct_fetch": {
+        "status": 200,
+        "redirect": "NONE",
+        "content_type": "text/html; charset=utf-8",
+        "content_disposition": "ABSENT",
+        "content_length": "ABSENT",
+        "file_format": "HTML_REPORT_PAGE",
+        "direct_csv_href": "NOT_EXPOSED_IN_STATIC_HTML",
+        "source_list_date": "NOT_EXPOSED",
+        "pagination_or_manifest": "NOT_EXPOSED"
+      },
+      "required_sections_or_components": ["COMPLETE_PRODUCT_COMPONENT_MANIFEST_UNPROVEN"],
+      "api_to_complete_export_relationship": "UNPROVEN",
+      "unsupported_value_interpretation": "ROW_VALUE_UNSUPPORTED_SOURCE_SEMANTICS_UNPROVEN",
+      "complete_product_capture_feasibility": "NOT_READY",
+      "current_api_retention_decision": "KEEP_AS_DISCOVERY_ONLY"
+    }
+  ],
+  "content_equivalence": {
+    "row_count_only": "PROHIBITED",
+    "current_feasibility": "NOT_READY",
+    "future_required_basis": [
+      "exact_official_export_identity",
+      "full_raw_export_bytes_and_hash",
+      "declared_complete_component_coverage",
+      "normalized_exact_security_identity_set",
+      "framework_or_stage_values",
+      "source_list_or_effective_metadata_if_supplied"
+    ]
+  },
+  "session_cookie_dependency": "UNPROVEN_FOR_UNEXPOSED_EXPORT",
+  "existing_adapter_complete_export_access": "UNPROVEN",
+  "auditability": {
+    "current_api_raw_lineage": "READY",
+    "complete_export_raw_lineage": "NOT_READY",
+    "future_retain": [
+      "request_or_export_identity",
+      "raw_bytes",
+      "content_hash",
+      "first_observed_utc",
+      "source_or_list_date_if_supplied",
+      "schema_clues",
+      "component_coverage",
+      "normalized_identity_set",
+      "receipt_fingerprint"
+    ]
+  },
+  "execution_master_continuity": "SEPARATE_OPEN_BLOCKER",
+  "no_historical_collection": true,
+  "no_gate_or_portfolio_side_effects": true,
+  "next_continuation": "GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1",
+  "invariants": {
+    "v1_active": true,
+    "gate_policy_v2_active": false,
+    "six_gates_exactly_six": true,
+    "no_fabricated_surveillance_clearance": true,
+    "no_future_leakage": true,
+    "no_retroactive_surveillance_state": true,
+    "pilot_simplicity_rule": "ACTIVE",
+    "ai_decision_authority": false
+  },
+  "fingerprint_scheme": "sha256:canonical-json:exclude-fingerprint",
+  "fingerprint": "sha256:01c5b38bb9e732c921d1fab9943b824d05ec32a6c9290f1e24f93ea00facb698"
+}
