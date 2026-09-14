@@ -1,0 +1,739 @@
+{
+  "schema_version": "execution-gate-composite-proposal/v1",
+  "proposal_id": "execution-gate-policy-v2-proposed",
+  "proposal_version": "v2-proposal.4",
+  "versioning_model": "SINGLE_COMPOSITE_SUCCESSOR_BY_PINNED_REFERENCE",
+  "baseline_commit": "33f32f5821943406f2c8d7988811d01da1e6ab74",
+  "parent_policy": {
+    "policy_id": "six-gates-production-v1",
+    "version": "v1",
+    "definition_reference": "app/gates/production_policy.py",
+    "definition_file_fingerprint_lf": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "production_approval_receipt_read": false
+  },
+  "status": "PROPOSED",
+  "activation_status": "NOT_ACTIVE",
+  "composite_approval": {
+    "required": true,
+    "approval_reference": null,
+    "effective_at": null,
+    "prior_composite_approval_transfers": false,
+    "prior_governed_candidate_remains_historical_unchanged": true
+  },
+  "prior_composite": {
+    "proposal_reference": "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json",
+    "proposal_id": "execution-gate-policy-v2-proposed",
+    "proposal_version": "v2-proposal.3",
+    "proposal_fingerprint": "sha256:57bbd7af01fe14fa95ae419187302d5dcc353e3cbd98181e43b5f691cb97ab3d",
+    "proposal_file_fingerprint_lf": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "approval_reference": "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json",
+    "approval_fingerprint": "sha256:caad6fb766fbcf93ea4859a94454c78d57ba59551274601eba9741486ae7d30e",
+    "approval_file_fingerprint_lf": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "relationship": "PROPOSED_REVISION_OF_SAME_SUCCESSOR_NOT_COMPETING_AUTHORITY",
+    "prior_artifacts_overwritten": false
+  },
+  "gate_registry_version": "execution-gate-registry-v1",
+  "gate_ids": [
+    "GATE_1_ROTATION",
+    "GATE_2_VELOCITY",
+    "GATE_3_SURVEILLANCE",
+    "GATE_4_TRADE_PLAN",
+    "GATE_5_HEAT",
+    "GATE_6_EARNINGS"
+  ],
+  "unchanged_gates": [
+    {
+      "gate_id": "GATE_2_VELOCITY",
+      "registry_id": 2,
+      "definition_reference": "app/registry/canonical.py#EXECUTION_GATES",
+      "method": "_velocity",
+      "definition_fingerprint": "sha256:2f1ff730fd7063d3d082d30e32f42b2cd90e2df8d9c2cfaf18f929e61837febc",
+      "implementation_fingerprint": "sha256:9b48e46b56dde89a4d4798822ff70ac3b89c74186326bc372dafc038b923102e"
+    },
+    {
+      "gate_id": "GATE_4_TRADE_PLAN",
+      "registry_id": 4,
+      "definition_reference": "app/registry/canonical.py#EXECUTION_GATES",
+      "method": "_plan",
+      "definition_fingerprint": "sha256:ffa9336ccfa7b39f43d30c90cbb68ac4dbeb68a84cebba2f42b47024ec98435c",
+      "implementation_fingerprint": "sha256:75dafb589bd9a5e31d996cb126677a1e3e20d9ccc0388bc7b442213ee7020592"
+    },
+    {
+      "gate_id": "GATE_5_HEAT",
+      "registry_id": 5,
+      "definition_reference": "app/registry/canonical.py#EXECUTION_GATES",
+      "method": "_heat",
+      "definition_fingerprint": "sha256:ce40443fdd6c60a3c130a85f4810735f6066a93a05e2440e98169c3af0e6e752",
+      "implementation_fingerprint": "sha256:3c86b2052463c88d43946ce8c77ee3ad19542a5d101dd810ceaf7b9224744211"
+    }
+  ],
+  "gate1_v1": {
+    "gate_id": "GATE_1_ROTATION",
+    "registry_id": 1,
+    "definition_reference": "app/registry/canonical.py#EXECUTION_GATES",
+    "method": "_rotation",
+    "definition_fingerprint": "sha256:fca2d260317c9fb36aec382547f44f082c24a037a3cc3b30b4e3135b4ac58167",
+    "implementation_fingerprint": "sha256:7f980db1eb949972b8c5c246358f823402f5efd53ecc451bff2392b4eaf5c558",
+    "policy_id": "six-gates-production-v1",
+    "version": "v1",
+    "economic_formula": "expected_incremental_return - modeled_switching_friction > 0.00",
+    "score_formula": "raw_decision_score - comparison_score >= 1.00",
+    "mutated": false,
+    "old_scalars_reinterpreted": false,
+    "prior_repair_reference": "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json",
+    "prior_repair_fingerprint": "sha256:d5c2ef20dc375a64daa3e02d5db80cc875c8ed1eaace22983db5a1c0262a4110"
+  },
+  "gate3_carry_forward": {
+    "proposal_reference": "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json",
+    "proposal_fingerprint": "sha256:57bbd7af01fe14fa95ae419187302d5dcc353e3cbd98181e43b5f691cb97ab3d",
+    "definition_pointers": [
+      "/gate3_proposed",
+      "/source_authority",
+      "/security_status_guard",
+      "/identity",
+      "/component_source_contracts",
+      "/effective_state_selector",
+      "/known_at",
+      "/result_contract",
+      "/activation_blockers"
+    ],
+    "definition_bundle_fingerprint": "sha256:61a63741aefefdf464ba1f6fd569cf73f9aad5f7cc7c2567220fdd89902605ba",
+    "approval_reference": "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json",
+    "approval_fingerprint": "sha256:caad6fb766fbcf93ea4859a94454c78d57ba59551274601eba9741486ae7d30e",
+    "approval_pointers": [
+      "/gate3_approval",
+      "/gate3_temporal_approval"
+    ],
+    "approval_bundle_fingerprint": "sha256:a8887e51ab57a4005ef987dbbb973ed4243ace3994819e77c3eed028541f016f",
+    "scope": "ALL_PINNED_GATE3_SEMANTICS_AND_CONSTRAINTS",
+    "semantic_override_fields": []
+  },
+  "gate6_carry_forward": {
+    "proposal_reference": "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json",
+    "proposal_fingerprint": "sha256:57bbd7af01fe14fa95ae419187302d5dcc353e3cbd98181e43b5f691cb97ab3d",
+    "definition_pointer": "/gate6_carry_forward",
+    "definition_fingerprint": "sha256:cb21c62f5f1c376552837667e9c3b43314828729c8a73aead819f59f3130c754",
+    "approval_reference": "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json",
+    "approval_fingerprint": "sha256:caad6fb766fbcf93ea4859a94454c78d57ba59551274601eba9741486ae7d30e",
+    "approval_pointer": "/gate6_carry_forward",
+    "approval_definition_fingerprint": "sha256:f3dc7f9df911c3b36b82df0de2b9a0bad3c924ded31947d866c863476904c38d",
+    "transitive_component_proposal": "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_PROPOSAL.json",
+    "transitive_component_fingerprint": "sha256:36c80f2ea561a4411b252e6b4749f9c73275d6e434b257e89bdeb24d83de0e21",
+    "scope": "ALL_PINNED_GATE6_SEMANTICS_RISK_ACCEPTANCE_AND_CONSTRAINTS",
+    "semantic_override_fields": []
+  },
+  "gate1_proposed": {
+    "gate_id": "GATE_1_ROTATION",
+    "semantic_delta": "EXPLICIT_DETERMINISTIC_SAME_CAPITAL_SAME_HORIZON_ROTATION_ECONOMICS",
+    "action_scope": {
+      "economic_context": "ROTATE_IN",
+      "not_applicable_contexts": [
+        "FRESH_ENTRY",
+        "ADD_TO_POSITION",
+        "HOLD_EXISTING",
+        "REDUCE_EXISTING",
+        "EXIT_EXISTING",
+        "RISK_MANAGEMENT"
+      ],
+      "new_scope": false,
+      "cash_comparator": false,
+      "partial_rotation": "ACTUAL_SELECTED_INCUMBENT_PARCEL_ONLY",
+      "full_rotation_assumed": false
+    },
+    "score_hurdle": {
+      "formula": "raw_decision_score - comparison_score >= 1.00",
+      "minimum": "1.00",
+      "unit": "SCORE_POINT",
+      "economic_conversion": false,
+      "existing_provenance_required": true
+    },
+    "economics": {
+      "quantity": "GROSS_ROTATION_SCENARIO_ADVANTAGE_INR",
+      "field": "gross_rotation_scenario_advantage_inr",
+      "unit": "INR",
+      "comparator": "CANDIDATE_ROTATION_MINUS_INCUMBENT_NO_ROTATION_CONTINUATION",
+      "gross_formula": "candidate_scenario_terminal_value_inr - incumbent_continuation_terminal_value_inr",
+      "friction_field": "modeled_switching_friction_inr",
+      "net_formula": "gross_rotation_scenario_advantage_inr - modeled_switching_friction_inr",
+      "strict_hurdle": "0.00",
+      "operator": ">",
+      "basis": "NOMINAL_UNDISCOUNTED_INR_CONDITIONAL_SCENARIO",
+      "terminal_basis": "COMMON_HORIZON_MARKED_WEALTH_NO_ASSUMED_TERMINAL_LIQUIDATION",
+      "terminal_values_nonnegative_finite": true,
+      "gross_advantage_may_be_negative": true,
+      "float_coercion_allowed": false,
+      "gross_excludes_all_included_switching_friction": true,
+      "probability_required": false,
+      "expected_value_forecast": false,
+      "realized_outcome": false,
+      "target_is_scenario_authority": false,
+      "score_is_return": false,
+      "scenario_model": "POLICY_UNSET",
+      "scenario_model_reference": null,
+      "pricing_and_rounding_policy": "POLICY_UNSET",
+      "current_positive_source_ready": false
+    },
+    "capital": {
+      "field": "switched_capital_inr",
+      "currency": "INR",
+      "required_positive": true,
+      "numeric_values_finite": true,
+      "candidate_and_incumbent_must_differ": true,
+      "meaning": "GROSS_DECISION_REFERENCE_VALUE_OF_ACTUAL_INCUMBENT_PARCEL_SELECTED_FOR_REALLOCATION_BEFORE_SWITCH_COSTS",
+      "binding": "C = selected_incumbent_quantity * incumbent_reference_price_inr",
+      "incumbent_sale_turnover_basis": "C_AT_SAME_REFERENCE_PRICE_NOT_A_BROKER_FILL",
+      "candidate_deployment_binding": "candidate_purchase_turnover_inr + candidate_residual_capital_inr = C",
+      "same_C_both_scenarios": true,
+      "portfolio_NAV_denominator": false,
+      "entire_holding_default": false,
+      "selected_quantity_must_not_exceed_canonical_holding": true,
+      "quantity_or_allocation_chosen_by_gate": false,
+      "candidate_residual_return_default": null,
+      "reference_prices_positive": true,
+      "candidate_deployment_and_residual_nonnegative": true,
+      "funding_and_residual_policy": "POLICY_UNSET",
+      "fees_deducted_from_deployment_then_subtracted_again": false,
+      "missing_funding_or_residual_reconciliation": "INSUFFICIENT_DATA",
+      "partial_cost_scaling": "MODEL_ACTUAL_SIDE_TURNOVERS_AND_CANONICAL_LOTS_NOT_PRO_RATA_FULL_HOLDING_FRICTION"
+    },
+    "horizon": {
+      "field": "rotation_evaluation_horizon",
+      "required": true,
+      "same_reference_version_fingerprint_and_endpoint": true,
+      "state": "HORIZON_BINDING_REQUIRED",
+      "value": null,
+      "unit": null,
+      "definition_reference": null,
+      "start": "decision_as_of",
+      "end": "EXPLICIT_GOVERNED_ENDPOINT_AFTER_DECISION_AS_OF",
+      "calendar_precision_and_endpoint_convention_required": true,
+      "tradeplan_label_is_binding": false,
+      "fundamental_B09_reference": {
+        "path": "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json",
+        "collection_pointer": "/activation_blockers",
+        "blocker_id": "B09"
+      },
+      "B09_role": "V2_APPLICABILITY_COMPATIBILITY_IF_THAT_REGISTRY_IS_USED_NOT_A_NUMERIC_ROTATION_HORIZON",
+      "gate6_window_is_rotation_horizon": false
+    },
+    "scenario_contract": {
+      "producer_state": "POLICY_UNSET",
+      "independent_candidate_and_incumbent_lineage": true,
+      "compatible_paired_model_versions_required": true,
+      "declared_common_assumptions_and_exceptions_required": true,
+      "same_capital_cutoff_horizon_market_state_and_valuation_basis": true,
+      "terminal_values_are_modeled_known_at_decision_not_future_observations": true,
+      "incumbent_zero_default": false,
+      "dividend_adjustment_and_residual_conventions": "POLICY_UNSET_BLOCK_IF_REQUIRED",
+      "gross_cost_reconciliation_and_funding_proof_required": true,
+      "user_or_ai_terminal_values": false,
+      "tradeplan_or_valuation_evidence_requires_separate_producer_approval": true,
+      "gate4_pass_dependency": false,
+      "no_new_engine": true
+    },
+    "friction": {
+      "field": "modeled_switching_friction_inr",
+      "unit": "INR",
+      "formula": "execution_switching_cost_inr + tax_realization_impact_inr",
+      "execution_formula": "purchase_statutory_costs_inr + sale_statutory_costs_inr + nse_member_transaction_charge_inr + brokerage_inr + slippage_inr + gst_inr",
+      "components": [
+        {
+          "id": "purchase_statutory_costs",
+          "classification": "RETAIN",
+          "includes": [
+            "STT_BUY",
+            "SEBI_BUY",
+            "STAMP_BUY"
+          ],
+          "authority": "OFFICIAL_VERSIONED_RATE_ON_EXACT_BUY_TURNOVER"
+        },
+        {
+          "id": "sale_statutory_costs",
+          "classification": "RETAIN",
+          "includes": [
+            "STT_SELL",
+            "SEBI_SELL"
+          ],
+          "authority": "OFFICIAL_VERSIONED_RATE_ON_EXACT_SELL_TURNOVER"
+        },
+        {
+          "id": "nse_member_transaction_charge",
+          "classification": "RETAIN",
+          "includes": [
+            "EXISTING_MEMBER_OUTFLOW_SCOPE"
+          ],
+          "authority": "NSE_RATE_SCOPE_AND_GST_OVERLAP_MUST_BE_VERIFIED"
+        },
+        {
+          "id": "brokerage",
+          "classification": "RETAIN",
+          "includes": [
+            "BOTH_SWITCH_LEGS_ONCE"
+          ],
+          "authority": "GOVERNED_BROKER_ACCOUNT_SCHEDULE_NOT_MARKET_DATA_OR_CALLER_NUMBER"
+        },
+        {
+          "id": "gst",
+          "classification": "RETAIN",
+          "includes": [
+            "EXPLICIT_TAXABLE_SERVICES_BASE"
+          ],
+          "authority": "OFFICIAL_RATE_AND_GOVERNED_SERVICE_INCLUSION_NO_DUPLICATE_CHARGE"
+        },
+        {
+          "id": "slippage",
+          "classification": "SEPARATE_POLICY_REQUIRED",
+          "mandatory": true,
+          "authority": "ADMITTED_SIDE_REFERENCE_PRICE_METHOD_AND_EVIDENCE"
+        },
+        {
+          "id": "capital_gains_tax",
+          "classification": "SEPARATE_POLICY_REQUIRED",
+          "mandatory": true,
+          "authority": "CANONICAL_LOT_AND_APPLICABLE_USER_TAX_SCENARIO_POLICY"
+        }
+      ],
+      "new_rate_values": {},
+      "required_rate_lineage": [
+        "rate_version",
+        "source_authority",
+        "source_evidence_fingerprint",
+        "effective_applicability",
+        "known_at",
+        "buy_sell_side",
+        "turnover_or_taxable_base",
+        "gst_overlap_and_rounding"
+      ],
+      "all_included_amounts_nonnegative": true,
+      "missing_component_is_zero": false,
+      "explicit_zero_requires_admitted_proof": true,
+      "double_count_guard": "DISJOINT_COMPONENT_MANIFEST_AND_COST_EXCLUSIVE_GROSS_SCENARIOS",
+      "separate_spread_impact_liquidity_terms": false,
+      "slippage_decomposition": "POLICY_UNSET",
+      "costs_are_due_to_switch_now_not_assumed_terminal_sales": true,
+      "discount_compounding_or_opportunity_penalty_added": false
+    },
+    "tax": {
+      "chosen_option": "T1",
+      "mandatory": true,
+      "component": "TAX_REALIZATION_IMPACT",
+      "gate_consumes": "EXECUTION_SWITCHING_COST_PLUS_TAX_REALIZATION_IMPACT",
+      "definition": "NONNEGATIVE_GOVERNED_CAPITAL_GAINS_TAX_AMOUNT_ATTRIBUTABLE_TO_SELECTED_INCUMBENT_DISPOSAL",
+      "policy_state": "POLICY_UNSET",
+      "policy_reference": null,
+      "required_evidence": [
+        "canonical_selected_tax_lots",
+        "cost_basis_and_acquisition_history",
+        "disposal_reference_basis",
+        "applicable_jurisdiction_rule_version",
+        "verified_relevant_user_tax_circumstances",
+        "decision_time_known_at_lineage"
+      ],
+      "negative_credit_netting_or_future_tax_benefit_allowed": false,
+      "T2_rejected_for_this_proposal": "SEPARATING_PRESENTATION_MUST_NOT_REMOVE_TAX_FROM_THE_HURDLE_OR_SILENTLY_CHANGE_NET_MEANING",
+      "T3": "NO_SOURCE_SUPPORTED_ALTERNATIVE_SELECTED"
+    },
+    "slippage": {
+      "mandatory": true,
+      "producer_state": "NOT_READY",
+      "method_state": "POLICY_UNSET",
+      "OHLC_proxy_allowed": false,
+      "reference_fill_is_actual_fill": false,
+      "spread_or_impact_absorption_requires_governance": true
+    },
+    "authority": {
+      "proposed_class": "DETERMINISTIC_HSI_DERIVED_SCENARIO",
+      "registered": false,
+      "independent_verifier_required": true,
+      "pair_amount_horizon_cost_and_version_binding_required": true,
+      "caller_self_hash_is_authority": false,
+      "user_preference_is_hard_fact": false,
+      "AI_populates_economics_or_gate": false,
+      "user_entered_return_or_friction_allowed": false
+    },
+    "pit": {
+      "cutoff": "EXPLICIT_TIMEZONE_AWARE_DECISION_AS_OF_NORMALIZED_UTC",
+      "known_at_boundary": "<= decision_as_of",
+      "observation_as_of_boundary": "<= decision_as_of",
+      "policy_approval_and_effectiveness_required": true,
+      "common_market_cutoff_required": true,
+      "future_filtered_before_selection": true,
+      "future_outcome_data_allowed": false,
+      "later_portfolio_state_allowed": false,
+      "publication_date_is_local_known_at": false,
+      "processing_time_changes_identity": false,
+      "assumed_effective_to_infinity": false,
+      "identical_duplicate_receipt": "IDEMPOTENT_SINGLE_REFERENCE_RETAIN_LINEAGE",
+      "same_id_different_content": "CONFLICT_INSUFFICIENT_DATA",
+      "unresolved_same_scope_candidates": "CONFLICT_INSUFFICIENT_DATA",
+      "revisions": "EXPLICIT_VISIBLE_SUPERSESSION_ONLY",
+      "required_bindings": [
+        "decision_as_of",
+        "candidate_instrument_id",
+        "incumbent_instrument_id",
+        "portfolio_snapshot_id_and_fingerprint",
+        "canonical_selected_quantity_and_tax_lots",
+        "switched_capital_inr",
+        "both_reference_price_ids_basis_and_cutoffs",
+        "common_horizon_version_and_endpoint",
+        "paired_scenario_model_versions",
+        "friction_rate_and_cost_policy_versions",
+        "tax_policy_and_evidence",
+        "slippage_method_and_evidence",
+        "all_required_evidence_ids_and_fingerprints",
+        "canonical_score_and_incumbent_provenance",
+        "funding_residual_and_rounding_conventions",
+        "scenario_fingerprint_binding_both_operands"
+      ]
+    },
+    "identity": {
+      "scheme": "SHA256_CANONICAL_JSON_VERSIONED_INPUT_MANIFEST",
+      "inputs": "ALL_REQUIRED_BINDINGS_AND_COMPOSITE_POLICY_FINGERPRINT",
+      "value_fingerprint": "COMPLETE_SCENARIO_BODY_EXCLUDING_SELF_FINGERPRINT_AND_DERIVED_ID",
+      "sets": "CANONICAL_ORDER_AFTER_DUPLICATE_AND_CONFLICT_VALIDATION",
+      "runtime_clock_input": false,
+      "signature_or_authority_claim": false
+    },
+    "result": {
+      "outcomes": [
+        "PASS",
+        "FAIL",
+        "INSUFFICIENT_DATA"
+      ],
+      "order": [
+        "REQUIRE_APPROVED_EFFECTIVE_COMPOSITE_AND_SCORE_CONFIGURATION",
+        "REJECT_UNVERIFIED_POPULATED_SOURCE_BEFORE_FORMULA",
+        "NON_ROTATE_IN_NOT_APPLICABLE_PASS",
+        "MISSING_SCORE_INSUFFICIENT",
+        "SCORE_ADVANTAGE_BELOW_1_FAIL",
+        "MISSING_OR_INVALID_REQUIRED_SCENARIO_INSUFFICIENT",
+        "NET_ADVANTAGE_LE_ZERO_FAIL",
+        "OTHERWISE_PASS"
+      ],
+      "PASS": "ADMITTED_ROTATE_IN_SCORE_AT_LEAST_1_AND_VALID_SCENARIO_NET_STRICTLY_POSITIVE",
+      "FAIL": "ADMITTED_SCORE_ADVANTAGE_BELOW_1_OR_COMPLETE_VALID_NET_NOT_POSITIVE",
+      "INSUFFICIENT_DATA": "REQUIRED_MISSING_UNSET_STALE_CONFLICTED_UNVERIFIED_INCOMPATIBLE_OR_FUTURE_ONLY_EVIDENCE",
+      "known_score_failure_may_precede_absent_economics": true,
+      "unverified_evidence_is_nonclearance_rejection": true,
+      "pass_confidence_annotation": "1.0",
+      "confidence_is_prediction_probability": false,
+      "result_is_order_authority": false,
+      "new_gate_or_abstain": false
+    }
+  },
+  "inherited_constraints": {
+    "approval_reference": "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json",
+    "approval_fingerprint": "sha256:caad6fb766fbcf93ea4859a94454c78d57ba59551274601eba9741486ae7d30e",
+    "blocker_pointer": "/blocker_register",
+    "blocker_fingerprint": "sha256:1dd5797df1ba936caf75491dcee192a196a1ab96c943a30c557d9ffddd1e8a76",
+    "cross_gate_pointer": "/cross_gate_and_liveness",
+    "cross_gate_fingerprint": "sha256:f459e5c5eb21592c7827cc8d557a26f724ba245af194d659055df8c9cbf865d7",
+    "inherit_all_gate3_gate6_risk_and_activation_constraints": true,
+    "old_gate1_unchanged_claim_applies_to_proposal3_only": true,
+    "operational_closure_reaudited": false,
+    "later_closure_receipts_require_explicit_reconciliation": true
+  },
+  "activation_blockers": [
+    {
+      "id": "G1B01",
+      "area": "COMPARATOR_AND_SCENARIO_CONTRACT",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Implement and verify exact candidate/incumbent parcel identity and symmetric, cost-exclusive terminal valuation basis."
+    },
+    {
+      "id": "G1B02",
+      "area": "COMMON_HORIZON_BINDING",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Approve common horizon definition, endpoint, precision and calendar; satisfy applicable fundamental B09 compatibility without inheriting a default."
+    },
+    {
+      "id": "G1B03",
+      "area": "SWITCHED_CAPITAL_AND_FUNDING",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Bind actual selected incumbent parcel and candidate deployment/residual to same positive INR capital; approve funding, quantity granularity and no-double-count reconciliation."
+    },
+    {
+      "id": "G1B04",
+      "area": "CANDIDATE_SCENARIO_PRODUCER",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Approve endpoint methodology and independent PIT producer; existing target or valuation alone is insufficient."
+    },
+    {
+      "id": "G1B05",
+      "area": "INCUMBENT_CONTINUATION_PRODUCER",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Govern independent no-rotation continuation for the same parcel/capital/horizon; never zero or realized future outcome by default."
+    },
+    {
+      "id": "G1B06",
+      "area": "FRICTION_COMPONENT_POLICY",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Govern a complete side-specific incremental switching-cost manifest, explicit bases, rounding and disjoint cost accounting."
+    },
+    {
+      "id": "G1B07",
+      "area": "STATUTORY_RATE_VERSIONING",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Verify official rate/source versions, effective applicability and local availability; historical V1 constants are not current-rate authority."
+    },
+    {
+      "id": "G1B08",
+      "area": "TAX_REALIZATION_POLICY",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "T1 mandatory nonnegative switching-disposal tax component requires canonical lot/cost basis and applicable tax policy; no netting, credit or personal default."
+    },
+    {
+      "id": "G1B09",
+      "area": "SLIPPAGE_PRODUCER",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Retain mandatory slippage with approved reference-price/side/decomposition methodology and independently admitted evidence."
+    },
+    {
+      "id": "G1B10",
+      "area": "DETERMINISTIC_SOURCE_AUTHORITY",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Independently reproduce and verify the shared scenario and both operands; reject user/AI values and self-attested policy labels."
+    },
+    {
+      "id": "G1B11",
+      "area": "SINGLE_GATE1_ADAPTER",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "One version-aware adapter under the existing engine, no new gate/reducer or V1 field relabelling."
+    },
+    {
+      "id": "G1B12",
+      "area": "CHALLENGER_AND_CONSUMER_COMPATIBILITY",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Pair-bind economics; review legacy inclusive friction check; preserve policy lineage through Brain/Signals/Portfolio with no circular gate clearance."
+    },
+    {
+      "id": "G1B13",
+      "area": "REPLAY_VERSION_ISOLATION",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Prove no V1 history rewrite and no future outcome or later portfolio leakage; explicit .4 identities only."
+    },
+    {
+      "id": "G1B14",
+      "area": "NEW_COMPOSITE_GOVERNANCE_AND_SELECTION",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "New .4 composite approval and effective runtime compatibility are required; .3 approval does not transfer."
+    },
+    {
+      "id": "G1B15",
+      "area": "SCENARIO_SHADOW_AND_CALIBRATION_COMPATIBILITY",
+      "classification": "BLOCKING",
+      "state": "OPEN",
+      "closure": "Before activation approve validation/limitations and outcome-compatible shadow method; statistics-dependent methods require calibration, applicable B14 remains separate."
+    },
+    {
+      "id": "G1B16",
+      "area": "COMPLETE_HISTORICAL_SCENARIO_ARCHIVES",
+      "classification": "DEFERRED_FOR_REPLAY",
+      "state": "OPEN",
+      "closure": "Required only for historical replay claims that need them; never invent prior PIT evidence."
+    },
+    {
+      "id": "G1B17",
+      "area": "EXTENDED_PROSPECTIVE_OUTCOME_ACCUMULATION",
+      "classification": "DEFERRED_FOR_SHADOW",
+      "state": "OPEN",
+      "closure": "Continue only in separately authorized shadow work; no performance claim or blocking-proof waiver."
+    },
+    {
+      "id": "G1B18",
+      "area": "OPTIONAL_ALERTS",
+      "classification": "NON_BLOCKING",
+      "state": "OPEN",
+      "closure": "Remain disabled; future wording/dedup review, no action instructions."
+    }
+  ],
+  "calibration": {
+    "decision": "BEFORE_ACTIVATION",
+    "semantic_contract_requires_empirical_calibration_before_implementation": false,
+    "numeric_score_or_zero_hurdle_changed": false,
+    "scenario_shadow_validation_required": true,
+    "statistics_dependent_model_requires_prior_calibration": true,
+    "probability_required": false,
+    "fundamental_B14_role": "CONDITIONAL_EXISTING_ECONOMIC_CLASSIFICATION_COMPATIBILITY_NOT_A_PROBABILITY_PRODUCER",
+    "B14_work_started": false,
+    "historical_perfection_required_for_prospective_pilot": false
+  },
+  "downstream_impact": [
+    {
+      "consumer": "Six-Gates orchestration",
+      "classifications": [
+        "ADAPTER_UPDATE_REQUIRED"
+      ],
+      "reference": "app/gates/source_authority.py",
+      "requirement": "Single engine; explicit .4 selection and independently verified scenario, no legacy scalar alias."
+    },
+    {
+      "consumer": "Portfolio Rotation Challenger",
+      "classifications": [
+        "ADAPTER_UPDATE_REQUIRED",
+        "POLICY_REVIEW_REQUIRED"
+      ],
+      "reference": "app/rotation/engine.py",
+      "requirement": "Reuse exact upstream pair/context; legacy inclusive friction comparison and candidate-global scalars cannot certify .4 pair-bound strict result."
+    },
+    {
+      "consumer": "Brain",
+      "classifications": [
+        "ADAPTER_UPDATE_REQUIRED"
+      ],
+      "reference": "app/intelligence/six_gates_evidence.py",
+      "requirement": "Preserve scenario/policy/as-of/limitations and inherited Gate6 metadata; no new score."
+    },
+    {
+      "consumer": "Signals",
+      "classifications": [
+        "ADAPTER_UPDATE_REQUIRED",
+        "POLICY_REVIEW_REQUIRED"
+      ],
+      "reference": "app/signals/engine.py",
+      "requirement": "Version-aware readout only; descriptive conditional advantage is not action authority."
+    },
+    {
+      "consumer": "Portfolio",
+      "classifications": [
+        "ADAPTER_UPDATE_REQUIRED",
+        "POLICY_REVIEW_REQUIRED"
+      ],
+      "reference": "app/portfolio/canonical_six_gates_activation.py",
+      "requirement": "Existing path supplies candidate score but no incumbent argument; explicit paired provenance adapter needed, no holdings mutation."
+    },
+    {
+      "consumer": "Entry-ready lifecycle",
+      "classifications": [
+        "POLICY_REVIEW_REQUIRED"
+      ],
+      "reference": "app/brain_output_requirement_policy.py",
+      "requirement": "Keep score/setup/all gates and no-veto constraints; Gate1 alone cannot imply entry readiness."
+    },
+    {
+      "consumer": "Backtest/replay",
+      "classifications": [
+        "REPLAY_UPDATE_REQUIRED"
+      ],
+      "reference": "app/backtest/analytical.py",
+      "requirement": "Separate V1 scalars from .4 scenario lineage; no current-state reconstruction or outcome-to-input leakage."
+    },
+    {
+      "consumer": "Outcome ledger",
+      "classifications": [
+        "ADAPTER_UPDATE_REQUIRED",
+        "CALIBRATION_REQUIRED"
+      ],
+      "reference": "app/paper/models.py",
+      "requirement": "Versioned scenario versus observed outcome accounting; no synthetic trade/event rows in this task."
+    },
+    {
+      "consumer": "TradePlan",
+      "classifications": [
+        "NO_CHANGE"
+      ],
+      "reference": "app/signals/models.py",
+      "requirement": "No target/entry/management calculation change; shared facts only after separate producer admission, no Gate4 PASS dependency."
+    },
+    {
+      "consumer": "Decision Score",
+      "classifications": [
+        "NO_CHANGE"
+      ],
+      "reference": "app/scoring/engine.py",
+      "requirement": "Preserve weights, provenance and score points; no return conversion."
+    },
+    {
+      "consumer": "Alerts",
+      "classifications": [
+        "POLICY_REVIEW_REQUIRED"
+      ],
+      "reference": "app/signals/models.py",
+      "requirement": "Disabled; later version-aware conditional wording/dedup, no instructions."
+    }
+  ],
+  "options": {
+    "A": "RECOMMENDED_ABSOLUTE_INR_DETERMINISTIC_SCENARIO_ACTUAL_PARCEL_NOMINAL_COST_AUDIT_NO_NORMALIZATION_OR_PROBABILITY",
+    "B": "COHERENT_ONLY_WITH_SAME_POSITIVE_CAPITAL_SCALE_ROUNDING_EXTRA_CONTRACT_NOT_SELECTED",
+    "C": "PROBABILITY_WEIGHTED_EV_REQUIRES_NEW_MODEL_DISTRIBUTION_AND_CALIBRATION_NOT_REQUIRED_BY_INTENT",
+    "D": "CURRENT_FAIL_CLOSED_STATE_RETAINED_BUT_INDEFINITE_DEFINITION_DEFERRAL_NOT_RECOMMENDED"
+  },
+  "final_policy_decision": "DETERMINISTIC_INR_ROTATION_ADVANTAGE_RECOMMENDED",
+  "replay": {
+    "V1_meaning_migration": false,
+    "implicit_latest_policy": false,
+    "old_field_alias_allowed": false,
+    "past_data_rewritten": false,
+    "paper_or_broker_side_effects": false
+  },
+  "frozen_source_fingerprints_lf": {
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3"
+  },
+  "boundaries": {
+    "V1_ACTIVE": true,
+    "GATE_POLICY_V2_ACTIVE": false,
+    "SIX_GATES_EXACTLY_SIX": true,
+    "NO_FABRICATED_SURVEILLANCE_CLEARANCE": true,
+    "NO_UNVERIFIED_CALENDAR_CLEARANCE": true,
+    "NO_FUTURE_LEAKAGE": true,
+    "NO_RETROACTIVE_SURVEILLANCE_STATE": true,
+    "NO_RETROACTIVE_BLACKOUT": true,
+    "NO_HORIZON_GUESS": true,
+    "PILOT_SIMPLICITY_RULE": "ACTIVE",
+    "AI_DECISION_AUTHORITY": false,
+    "NO_FABRICATED_ECONOMIC_RETURN": true,
+    "NO_FABRICATED_SWITCHING_FRICTION": true,
+    "NO_USER_ENTERED_GATE1_EXPECTED_RETURN_AUTHORITY": true,
+    "NO_AI_ECONOMIC_AUTHORITY": true
+  },
+  "runtime": {
+    "registered": false,
+    "activated": false,
+    "producer_implemented": false,
+    "adapter_implemented": false,
+    "production_changed": false,
+    "database_written": false,
+    "second_engine_created": false,
+    "full_backend_required": false
+  },
+  "final_result": "GATE1_V2_PROPOSAL_COHERENT_COMPOSITE_V2_4_REQUIRED",
+  "next_continuation": "EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2",
+  "next_continuation_started": false,
+  "fingerprint_scheme": "sha256:utf8:canonical-json-v1:exclude-proposal_fingerprint",
+  "proposal_fingerprint": "sha256:0be5819937f85910700b672c7238d6cc01efa4777d8dac3518606837e2454769"
+}
