@@ -1,0 +1,1158 @@
+{
+  "schema_version": "gate1-rotation-research-horizon-bootstrap-governance/v1",
+  "artifact_id": "gate1-rotation-research-horizon-bootstrap-governance",
+  "baseline_commit": "77582813c30d4a662d8c2a8db63e64f424ba7885",
+  "status": "GOVERNANCE_DESIGN_COMPLETE / PARAMETER_APPROVAL_REQUIRED / NOT_REGISTERED / NOT_ACTIVE",
+  "slice_status": "ACCEPTED/CLOSED",
+  "decision": "B",
+  "semantic_decision": "RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_READY_WITH_PARAMETER_BLOCKERS",
+  "rationale": "A prospectively pre-registered, independently human-approved research seed is a coherent experimental governance path, not empirical truth. No actual seed, unit, counting rule, terminal rule or bootstrap authority is approved. Origin/parcel and exact forward calendar/price closure also remain necessary. Decision B describes design readiness, not executable cohort readiness; Decision C would overstate current source closure.",
+  "parent": {
+    "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json",
+    "field": "artifact_fingerprint",
+    "fingerprint": "sha256:7892a8afe5d503261567d68f3144ca7eb28934a2e8b6c93bd63ce9ffbd3c8dfc"
+  },
+  "predecessors": [
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:090b3a017060f88c04e76dbd9bd69cd9f00fcbdadbea27faac23ca746b2b5864"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json",
+      "field": "audit_fingerprint",
+      "fingerprint": "sha256:aa9d4b211a5a2aba762c0b31af99b2a87fe08e0963865344104e9b87c33b0bb1"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+      "field": "protocol_fingerprint",
+      "fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+      "field": "contract_fingerprint",
+      "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+    }
+  ],
+  "frozen_findings": {
+    "source_capture_as_of": "2026-09-14T17:32:36.916818+00:00",
+    "recaptured_in_this_slice": false,
+    "paired_origins_found": 0,
+    "paired_outcomes_found": 0,
+    "paired_OOS_walk_forward_evidence_found": false,
+    "raw_bars_establish_horizon": false,
+    "POSITIONAL_numeric_mapping": false,
+    "LONG_TERM_numeric_mapping": false,
+    "effective_unit": "UNRESOLVED",
+    "counting_terminal": "UNRESOLVED",
+    "historical_calendar": "SOURCE_NOT_READY",
+    "price_alignment": "PIT_NOT_READY",
+    "independent_numeric_authority_found": false,
+    "statement": "These are retained predecessor findings at the stated audit cutoff, not a new live database census."
+  },
+  "definition": {
+    "purpose": "A provisional, independently justified, documented convention used only to prebind a prospective paired-research endpoint so future observations can mature.",
+    "is_not": [
+      "CALIBRATED_HORIZON",
+      "OPTIMAL_HORIZON",
+      "PRODUCTION_GATE1_HORIZON",
+      "STRATEGY_TRUTH",
+      "SIGNAL_EXPIRY",
+      "ACTUAL_HOLDING_MANDATE",
+      "EXPECTED_RETURN_MODEL_PARAMETER"
+    ],
+    "authority_label": "RESEARCH_BOOTSTRAP_ONLY",
+    "calibrated": false,
+    "optimal": false,
+    "production_authoritative": false,
+    "scientific_limit": "Preregistration can reduce outcome-dependent flexibility and make design bias auditable; it cannot justify an arbitrary seed, guarantee neutral data, establish predictive accuracy or remove missing-source requirements."
+  },
+  "mechanism_routes": [
+    {
+      "route": "A",
+      "name": "EXISTING_GOVERNED_STRATEGY_DURATION",
+      "assessment": "UNAVAILABLE",
+      "approved": false,
+      "evidence": "Pinned horizon audits and approved Pre-Breakout provenance contain no semantically compatible numeric paired duration.",
+      "prerequisites": "An exact same-purpose independent policy with evidence, applicability, native validity and D-visible approval would be required.",
+      "limitation": "Descriptive strategy intent, holding statistics, paper expiry, bar timeframe, blackout and business milestone windows cannot be promoted."
+    },
+    {
+      "route": "B",
+      "name": "EXTERNALLY_GOVERNED_RESEARCH_PRIOR",
+      "assessment": "CONDITIONAL_SOURCE_NOT_READY",
+      "approved": false,
+      "evidence": "COS methodology is not a financial duration prior. No independently authoritative HSI-compatible numeric external prior was established.",
+      "prerequisites": "Original source/version, publication/access chronology, method, population, limitations, category/strategy applicability, data rights and conflict disclosures; explicit HSI human adoption.",
+      "limitation": "External authors, an RA signature or analyst preference do not self-register a parameter or make it calibrated."
+    },
+    {
+      "route": "C",
+      "name": "PREREGISTERED_PROSPECTIVE_SEED_POLICY",
+      "assessment": "CONDITIONALLY_SUPPORTABLE_GOVERNANCE_PATH",
+      "approved": false,
+      "evidence": "Existing immutable human-policy lineage and source/PIT protocols can support a separate prospective research design; preregistration methodology supports transparent pre-specification.",
+      "prerequisites": "Evidence-based rationale independent of measured future returns; complete parameter/convention package; explicit human approval, registration before D, genuine origins/parcel and source closure.",
+      "limitation": "No unsupported number may be approved by AI. No collection is ready merely because governance is definable."
+    },
+    {
+      "route": "D",
+      "name": "MULTIPLE_PROSPECTIVE_RESEARCH_HORIZONS",
+      "assessment": "REJECTED_FROZEN_SEMANTICS",
+      "approved": false,
+      "evidence": "Predecessor requires exactly one canonical horizon per original pair and counts exact duplicate origins once.",
+      "prerequisites": "Would require a separately authorized predecessor-changing protocol outside this slice.",
+      "limitation": "New wrapper IDs, separate cohort names or preregistration do not legitimize multi-horizon fan-out for the same original pair."
+    },
+    {
+      "route": "E",
+      "name": "NO_BOOTSTRAP_PERMITTED",
+      "assessment": "CURRENT_OPERATIONAL_FALLBACK",
+      "approved": false,
+      "evidence": "No registered complete seed package or eligible origins exist in the retained evidence.",
+      "prerequisites": "Remain closed until all required approvals and source conditions are met.",
+      "limitation": "Design-level conditional feasibility does not remove the actual current block."
+    }
+  ],
+  "recommended_design_route": "C",
+  "activated_route": null,
+  "research_authority": {
+    "design_label": "RESEARCH_BOOTSTRAP_ONLY",
+    "current_policy_state": "PROPOSED",
+    "approved": false,
+    "registered": false,
+    "policy_instance": null,
+    "approval_ref": null,
+    "registration_ref": null,
+    "selected_producer": null,
+    "v1": {
+      "policy_id": "six-gates-production-v1",
+      "version": "v1",
+      "status": "ACTIVE"
+    },
+    "v2": {
+      "policy_id": "execution-gate-policy-v2-proposed",
+      "version": "v2-proposal.4",
+      "status": "NOT_ACTIVE"
+    },
+    "forbidden_authorizations": [
+      "LIVE_ROTATE_IN",
+      "PORTFOLIO_CAPITAL_MOVEMENT",
+      "GATE1_V2_PASS",
+      "PRODUCTION_SCENARIO_ENDPOINT",
+      "BROKER_EXECUTION"
+    ],
+    "structurally_distinct_from_production": true,
+    "enforcement_proposal": "Future bootstrap approval and reader must use distinct research-only identity/scope and positive admission checks. Never reuse production source IDs/approval enums to masquerade as production. Existing live allowlists/readers remain unchanged; no downgrade/fallback acceptance.",
+    "self_hash_is_authority": false
+  },
+  "parameters": {
+    "status": "BOOTSTRAP_PARAMETER_APPROVAL_REQUIRED",
+    "seed_value": null,
+    "seed_range": null,
+    "seed_grid": [],
+    "duration_unit": null,
+    "category_mapping": [],
+    "D_alignment_rule": null,
+    "counting_rule": null,
+    "terminal_rule": null,
+    "terminal_price_rule": null,
+    "precision_rule": null,
+    "calendar_binding": null,
+    "effective_start": null,
+    "selected_approver": null,
+    "sample_minimum": null,
+    "calibration_acceptance_threshold": null,
+    "review_cadence": null,
+    "approved_numeric_evidence_refs": []
+  },
+  "preservation": {
+    "research_only": true,
+    "start": "D",
+    "one_immutable_binding_for_both_legs": true,
+    "one_horizon_per_pair": true,
+    "exact_original_decision_required": true,
+    "selection_uses_only_D_visible_evidence": true,
+    "native_source_fingerprint_verified_before_wrapper": true,
+    "policy_approval_selection_effective_at_D_required": true,
+    "retroactive_approval": false,
+    "future_outcomes_in_duration_selection": false,
+    "nearest_bar_fallback": false,
+    "date_roll_fallback": false,
+    "current_time_interpretation": false,
+    "current_membership_backfill": false,
+    "modern_calendar_backcast": false,
+    "multi_horizon_best_result_selection": false,
+    "OOS_reused_for_selection": false,
+    "per_observation_hindsight_selection": false,
+    "historical_relabeling": false,
+    "terminal_requires_R_at_or_after_end_and_completion_and_known_price": true,
+    "late_admin_replay_metadata_not_evidence": true,
+    "unexpected_closure_may_rewrite_frozen_endpoint": false,
+    "production_reuse": "SEPARATE_EXPLICIT_APPROVAL_REQUIRED"
+  },
+  "selection_independence": {
+    "selected_before_measured_outcomes": true,
+    "registration_strictly_before_D": true,
+    "source_rationale_frozen_before_registration": true,
+    "historical_forward_return_best_window_search": false,
+    "retrospective_optimization": false,
+    "particular_observation_outcome_influences_seed": false,
+    "early_underperformance_changes_seed": false,
+    "future_calibration_dataset_justifies_own_seed": false,
+    "AI_selects_authoritative_seed": false,
+    "document_sources_and_prior_data_access": true,
+    "negative_outcomes_may_be_discarded": false,
+    "underperformance_is_not_a_seed_change_reason": true,
+    "safety_stop": "Source/integrity/legal problems may stop future admission through an explicit new governance event; retain existing versions, original denominator and exclusions. Do not hide early losses or relabel endpoints."
+  },
+  "lifecycle": {
+    "scope": "PROPOSED_DOCUMENT_VOCABULARY_ONLY_NOT_RUNTIME_ENUM",
+    "current_state": "PROPOSED",
+    "states": [
+      {
+        "state": "PROPOSED",
+        "meaning": "Draft mechanism/parameter package; no policy approval or admission.",
+        "production_authority": false
+      },
+      {
+        "state": "APPROVED_RESEARCH_ONLY",
+        "meaning": "Future explicit human approval of a complete evidenced package; approval alone is not registration or source readiness.",
+        "production_authority": false
+      },
+      {
+        "state": "ACCUMULATING_EVIDENCE",
+        "meaning": "Future separately enabled collector admits only genuine fully source-closed D-bound observations after valid pre-registration.",
+        "production_authority": false
+      },
+      {
+        "state": "UNDER_CALIBRATION_REVIEW",
+        "meaning": "Frozen cohort reviewed under separately approved split/method rules. No implied new admission or seed changes.",
+        "production_authority": false
+      },
+      {
+        "state": "SUPERSEDED",
+        "meaning": "A new independently approved prospective version replaces future use; old observations keep original bindings.",
+        "production_authority": false
+      },
+      {
+        "state": "REJECTED",
+        "meaning": "Unjustified/invalid policy is not used for new admission; original records and reasons retained.",
+        "production_authority": false
+      }
+    ],
+    "transitions": [
+      {
+        "from": "PROPOSED",
+        "to": "APPROVED_RESEARCH_ONLY",
+        "condition": "Complete evidenced parameter package and explicit attested human approval; not an automated test/hash result."
+      },
+      {
+        "from": "APPROVED_RESEARCH_ONLY",
+        "to": "ACCUMULATING_EVIDENCE",
+        "condition": "Separate registration plus source/parcel/calendar/price and collector authorization; registration < each eligible D."
+      },
+      {
+        "from": "ACCUMULATING_EVIDENCE",
+        "to": "UNDER_CALIBRATION_REVIEW",
+        "condition": "Separate predeclared sampling/split/calibration protocol; no automatic numerical adequacy rule."
+      },
+      {
+        "from": "UNDER_CALIBRATION_REVIEW",
+        "to": "SUPERSEDED",
+        "condition": "Replacement policy independently approved for future eligible D; historical version unchanged."
+      },
+      {
+        "from": "PROPOSED",
+        "to": "REJECTED",
+        "condition": "Documented human rejection."
+      },
+      {
+        "from": "APPROVED_RESEARCH_ONLY",
+        "to": "REJECTED",
+        "condition": "Documented withdrawal or source/integrity failure; do not erase former approvals."
+      },
+      {
+        "from": "ACCUMULATING_EVIDENCE",
+        "to": "REJECTED",
+        "condition": "Documented source/integrity/legal stop; retain denominator and unresolved outcomes, never performance cherry-picking."
+      },
+      {
+        "from": "UNDER_CALIBRATION_REVIEW",
+        "to": "REJECTED",
+        "condition": "Governed evidence review rejects adequacy or applicability; keep history."
+      }
+    ],
+    "transitions_are_append_only": true,
+    "auto_transition": false,
+    "no_reactivation_of_rejected_version": true,
+    "retained_seed_after_review": "If supported for future reuse, require a new explicit review/selection event under separately approved lifecycle policy; no silent UNDER_CALIBRATION_REVIEW -> accumulation or production transition.",
+    "no_in_place_numeric_edit": true
+  },
+  "evidence_classes": [
+    {
+      "evidence_class": "GOVERNED_STRATEGY_INTENT",
+      "permitted_role": "Define authentic category/strategy design purpose.",
+      "provenance_required": "Exact approved version, owner, evidence links and temporal scope; distinguish intent from holding duration.",
+      "limitations": "Does not supply a number where policy has none.",
+      "seed_role": "CONDITIONAL_RATIONALE_ONLY",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    },
+    {
+      "evidence_class": "INDEPENDENT_DOMAIN_DESIGN",
+      "permitted_role": "Explain why a proposed measurement period answers a stated research question.",
+      "provenance_required": "Original dated design document, authorship, applicability, limitations and prior-data-access disclosure.",
+      "limitations": "Cannot be analyst preference disguised as empirical calibration.",
+      "seed_role": "CONDITIONAL_RATIONALE_ONLY",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    },
+    {
+      "evidence_class": "EXTERNAL_RESEARCH",
+      "permitted_role": "Inform independent design and uncertainty.",
+      "provenance_required": "Primary identifiable study/version/method/population and data rights; applicability assessment and conflicts.",
+      "limitations": "Generic preregistration literature supplies no financial horizon.",
+      "seed_role": "CONDITIONAL_REQUIRES_APPLICABILITY_AND_HUMAN_ADOPTION",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    },
+    {
+      "evidence_class": "RA_REVIEWED_POLICY",
+      "permitted_role": "Accountable review of a documented research prior.",
+      "provenance_required": "Exact reviewed manifest, verified role/delegation and any relied-on registration claim, rationale, conflicts and immutable attestation.",
+      "limitations": "RA title/signature does not confer calibration, HSI registration or execution power.",
+      "seed_role": "CONDITIONAL_EXPLICIT_SCOPED_APPROVAL",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    },
+    {
+      "evidence_class": "PRIOR_NON_HSI_STRATEGY",
+      "permitted_role": "Possible independent comparator for a seed proposal.",
+      "provenance_required": "Original source, actual duration purpose, historic method and population, not a copied marketing description.",
+      "limitations": "Different instruments/returns/exit rules may be incompatible; no direct transfer.",
+      "seed_role": "CONDITIONAL_NO_AUTOMATIC_TRANSFER",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    },
+    {
+      "evidence_class": "BOUNDED_HISTORICAL_DESCRIPTION",
+      "permitted_role": "Identify coverage constraints, bias and design questions.",
+      "provenance_required": "Predeclared non-authoritative exploration; sources, cutoffs, all analyses and prior outcome access disclosed.",
+      "limitations": "No best-return horizon search or conversion to PIT-governed prospective cohort.",
+      "seed_role": "CONTEXT_ONLY_NOT_SEED_AUTHORITY",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    },
+    {
+      "evidence_class": "PROSPECTIVE_EXPERIMENT_DESIGN",
+      "permitted_role": "Define transparent prior, measurement objective, endpoint and future validation separation.",
+      "provenance_required": "Independent rationale plus exact complete package preregistered before D with explicit human approval.",
+      "limitations": "Pre-registration alone cannot justify an unsupported number or prove unbiased/optimal results.",
+      "seed_role": "CONDITIONAL_DESIGN_WITH_PARAMETER_APPROVAL",
+      "alone_authorizes_seed": false,
+      "production_authority": false
+    }
+  ],
+  "human_AI_RA": {
+    "human_option": "Internal HSI research-governance owner or explicitly delegated attested human may approve a documented research-only package under a future scoped policy. No such approval is recorded here.",
+    "repository_evidence": [
+      "app/strategies/pre_breakout/policy.py",
+      "app/strategies/pre_breakout/governance.py",
+      "app/strategies/pre_breakout/governance_commands.py",
+      "app/gates/production_policy.py"
+    ],
+    "attestation": "A human: prefix is a repository identifier convention, not proof of authentication, delegation, RA registration or informed parameter approval. Verify actual approval provenance; never fabricate it.",
+    "RA_option": "An RA may provide independently documented review and, if explicitly designated under HSI governance, act as a research-only approver. Verify registration/professional claim when relied on; RA title alone is not HSI authority.",
+    "RA_mandatory_from_inspected_internal_governance": false,
+    "legal_limit": "No blanket legal exemption is concluded. Applicability to client-facing research services, publication or regulated activity needs separate compliance review; this internal design neither offers recommendations nor grants a licence.",
+    "approval_requires": [
+      "exact_policy_and_values_fingerprint",
+      "scope_and_limitations",
+      "independent_rationale_and_source_lineage",
+      "approver_identity_and_delegation",
+      "explicit_research_only_decision",
+      "immutable_approval_time_and_receipt",
+      "conflicts_and_prior_data_access_disclosure"
+    ],
+    "AI_allowed": [
+      "EVIDENCE_GATHERING",
+      "LITERATURE_COMPARISON",
+      "RATIONALE_SUMMARY",
+      "INCONSISTENCY_CHECKS"
+    ],
+    "AI_forbidden": [
+      "AUTHORITATIVE_SEED_SELECTION",
+      "POLICY_APPROVAL",
+      "EMPIRICAL_SUPPORT_FABRICATION",
+      "ARBITRARY_VALUE_AUTHORIZATION",
+      "HISTORICAL_VERSION_REWRITE"
+    ],
+    "direct_user_value_self_authorizes": false,
+    "RA_signature_confers_calibration": false,
+    "approval_confers_live_authority": false
+  },
+  "registration": {
+    "status": "DESIGN_ONLY_NO_REGISTRATION_CREATED",
+    "fields": [
+      {
+        "component": "policy_manifest",
+        "field": "bootstrap_policy_id",
+        "validation": "Exact research-only policy identity distinct from production authority.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "version",
+        "validation": "Immutable policy version; no mutation or alias to later versions.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "scope",
+        "validation": "RESEARCH_BOOTSTRAP_ONLY and explicit non-production restrictions.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "category_strategy_applicability",
+        "validation": "Exact source-backed categories/strategy versions and supported venue/instrument states; no defaults.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "duration_value",
+        "validation": "Only independently justified and separately human-approved value; missing blocks registration.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "duration_unit",
+        "validation": "Separately approved exact unit, not implicit sessions/days.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "D_alignment_counting_convention",
+        "validation": "Start exactly D; explicit first/partial/special-session handling and calendar-count method.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "terminal_convention",
+        "validation": "Frozen endpoint and completion phase under explicit exception policy; no nearest bar/date roll.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "terminal_price_precision_rule",
+        "validation": "Canonical start/terminal observation, economic/adjustment basis and precision; unknowns stay blocked.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "calendar_source_binding",
+        "validation": "Canonical calendar ID/version/fingerprint, D-visible sources and bounded applicability coverage.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "evidence_rationale_fingerprint",
+        "validation": "Exact rationale and primary/design source references, prior-data-access disclosures and limitations.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "policy_manifest",
+        "field": "policy_fingerprint",
+        "validation": "Canonical manifest fingerprint excluding only its own digest; no downstream approval/registration fingerprints as circular inputs.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "approval_receipt",
+        "field": "approver_authority_provenance",
+        "validation": "Attested designated human, authority/delegation, explicit research-only decision, conflicts and approved policy fingerprint.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "approval_receipt",
+        "field": "approval_timestamp",
+        "validation": "UTC-aware true approval time, not retroactively inferred from a file date.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "approval_receipt",
+        "field": "approval_fingerprint",
+        "validation": "Canonical immutable approval content referencing the policy fingerprint, not vice versa.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "registration_receipt",
+        "field": "registered_at",
+        "validation": "True UTC pre-registration time strictly before each eligible D; no backdating.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "registration_receipt",
+        "field": "effective_start",
+        "validation": "Explicit version-validity boundary, not earlier than registration; must be effective at D.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "registration_receipt",
+        "field": "native_effectivity_rule_ref",
+        "validation": "Exact policy validity/withdrawal/supersession rule; no borrowed universal effective-to semantics.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "registration_receipt",
+        "field": "registration_fingerprint",
+        "validation": "Immutable record binding exact policy/approval fingerprints and registration/effectivity/scope.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "lifecycle_event",
+        "field": "status_and_transition_provenance",
+        "validation": "Separate append-only event with true timestamp, reason and referenced policy; never mutate approved manifest or former cohort.",
+        "required_for_issued_record": true
+      },
+      {
+        "component": "observation_binding",
+        "field": "original_pair_D_parcel_and_policy_refs",
+        "validation": "Reuse frozen paired wire/identity; identical complete horizon on both legs and original D source closure.",
+        "required_for_issued_record": true
+      }
+    ],
+    "required_chronology": [
+      "rationale_known_at <= approved_at",
+      "approved_at <= registered_at",
+      "registered_at <= effective_from",
+      "registered_at < D",
+      "effective_from <= D"
+    ],
+    "chronological_note": "Strict pre-registration before D is a proposed bootstrap-specific safeguard required by prospective-first design, not a change to native existing policy inclusive/exclusive rules. No invented epsilon or same-timestamp causal order; unresolved ordering fails closed.",
+    "native_effectivity_required": true,
+    "generic_effective_to_rule_invented": false,
+    "blank_or_missing_parameters_allowed_for_approval": false,
+    "rationale_known_no_later_than_approval": true,
+    "no_backdating": true,
+    "registry_service_required": null,
+    "privacy": "Preregistration means immutable HSI-governed evidence receipt; it does not require uploading private portfolio/source data to OSF or another public service.",
+    "source_integrity": "Verify native policy/approval/source fingerprints first; then canonical UTC serialization, stable ordered references and complete wrapper fingerprint. No repair-by-rehash.",
+    "shape_status": "DOCUMENT_REQUIREMENTS_NOT_IMPLEMENTED_SCHEMA",
+    "lifecycle_fingerprint_rule": "Events reference prior immutable policy/approval/registration objects; policy fingerprint never includes downstream objects or mutable current status. Verify native sources before any UTC wrapper; duplicate conflicting references fail closed."
+  },
+  "historical_application": {
+    "preapproval_D_eligible": false,
+    "grandfathering": false,
+    "retrospective_exploration": "POSSIBLE_SEPARATELY_GOVERNED_NON_AUTHORITATIVE_ONLY",
+    "exploratory_run_authorized_here": false,
+    "exploration_may_inform": "Data feasibility, descriptive domain context, bias and methodological questions for a future proposal, with all prior data access disclosed.",
+    "exploration_may_not": [
+      "CREATE_AUTHENTIC_ORIGINS",
+      "BECOME_GOVERNED_COHORT_EVIDENCE",
+      "SELECT_BEST_RETURN_SEED",
+      "BACKDATE_APPROVAL",
+      "CLAIM_PIT_VALIDITY_FROM_LATER_POLICY",
+      "REUSE_TEST_AS_UNTOUCHED_OOS"
+    ],
+    "distinct_dataset_labels": [
+      "PROSPECTIVE_GOVERNED_COHORT",
+      "RETROSPECTIVE_EXPLORATORY_NON_AUTHORITATIVE"
+    ],
+    "later_calibration_needs_new_prospective_validation": true
+  },
+  "cohort": {
+    "current_admission": false,
+    "current_observations": [],
+    "current_labels": [],
+    "required": [
+      "genuine_original_event_id",
+      "original_D",
+      "exact_incumbent_challenger",
+      "canonical_identity_and_strategy_category",
+      "original_D_bound_selected_parcel_and_capital",
+      "D_visible_source_archive",
+      "independent_approved_registered_bootstrap_binding_at_D",
+      "identical_complete_binding_both_legs",
+      "exact_start_price_and_basis",
+      "calendar_and_frozen_end_closure"
+    ],
+    "parcel_missing": "Raw origin archive may be retained under separately authorized source governance; not an admissible paired observation. Missing original parcel/policy proof cannot be supplied by a later choice.",
+    "original_missing": "Do not fabricate rotation events from Watch, OHLCV, AI/user hypothetical pairs or current holdings.",
+    "exclusions_source": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+    "exclusions_fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd",
+    "inherited_exclusion_codes": [
+      "INVALID_WIRE",
+      "SOURCE_TAMPERED",
+      "SOURCE_CONFLICT",
+      "ORIGIN_NOT_AUTHENTIC",
+      "CUTOFF_MISSING",
+      "INCUMBENT_MISSING",
+      "CHALLENGER_MISSING",
+      "IDENTITY_AMBIGUOUS",
+      "PARCEL_MISSING",
+      "UNSUPPORTED_EVENT",
+      "PAIR_MISMATCH",
+      "DECISION_PIT_VIOLATION",
+      "FUTURE_LABEL_LEAKAGE",
+      "HORIZON_POLICY_MISSING",
+      "HORIZON_AMBIGUOUS",
+      "HORIZON_CHANGED",
+      "CALENDAR_UNRESOLVED",
+      "NON_MATURE",
+      "INSUFFICIENT_HISTORY",
+      "START_PRICE_MISSING",
+      "TERMINAL_OBSERVATION_MISSING",
+      "OUTCOME_NOT_YET_KNOWN",
+      "CORPORATE_ACTION_AMBIGUOUS",
+      "PRICE_BASIS_MISMATCH",
+      "SUSPENSION_OR_CIRCUIT_UNRESOLVED",
+      "DELISTING_UNRESOLVED",
+      "UNITS_INVALID",
+      "FUNDING_QUANTITY_RESIDUAL_UNSET",
+      "OUTCOME_METHOD_UNSET",
+      "GROSS_LABEL_INCOMPLETE",
+      "SURVIVORSHIP_FILTER",
+      "DUPLICATE_ORIGIN",
+      "SAMPLING_POLICY_REQUIRED",
+      "SPLIT_POLICY_REQUIRED",
+      "OOS_LEAKAGE",
+      "AUTHORITY_UNAVAILABLE"
+    ],
+    "duplicate_policy": "One original logical pair counts once; retain alias receipts, no multi-horizon fan-out.",
+    "maturity_states": [
+      "UNRESOLVED",
+      "PENDING_MATURITY",
+      "MATURE"
+    ],
+    "maturity": "Retain predecessor: invalid horizon/calendar => UNRESOLVED; R before end => PENDING_MATURITY; MATURE requires R >= frozen end and exact completed-phase proof known by R. MATURE alone is not complete label/admission.",
+    "label": "Both legs, prices, corporate actions, funding/quantity/residual and versioned realized-wealth method must independently pass; otherwise no complete label.",
+    "no_synthetic_backfill": true,
+    "raw_origin_is_complete_observation": false,
+    "no_portfolio_mutation": true
+  },
+  "transition_to_calibration": {
+    "stages": [
+      "RESEARCH_BOOTSTRAP",
+      "EVIDENCE_ACCUMULATION",
+      "CALIBRATION",
+      "OOS_WALK_FORWARD_VALIDATION",
+      "POLICY_PROPOSAL",
+      "INDEPENDENT_APPROVAL",
+      "SEPARATE_POSSIBLE_PRODUCTION_AUTHORITY"
+    ],
+    "automatic_promotion": false,
+    "calibration_policy": null,
+    "minimum_sample": null,
+    "acceptance_threshold": null,
+    "possible_review_outcomes": [
+      "VALIDATE_FOR_STATED_RESEARCH_SCOPE",
+      "REPLACE_PROSPECTIVELY",
+      "SPLIT_STRATEGY_CATEGORY_PROSPECTIVELY",
+      "REJECT"
+    ],
+    "historical_bindings_rewritten": false,
+    "OOS": "Predeclare chronology, dependence, overlap/purge/embargo and untouched evaluation. Seed data informing a new policy are not that policy's untouched test data.",
+    "source_effectivity": "Later approval cannot turn historical D into authorized D. New category/strategy versions apply only prospectively after independent approval.",
+    "no_permanent_seed_by_inertia": true
+  },
+  "bias_controls": [
+    {
+      "risk": "TRUNCATION",
+      "mechanism": "Events resolving outside the seed end are unobserved or differently measured.",
+      "later_calibration_must_report": "Report endpoints, source coverage and the inability to infer unmeasured paths; do not extrapolate returns.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "DURATION_CONDITIONING",
+      "mechanism": "The seed defines the estimand and sample maturity; resulting data are not horizon-neutral.",
+      "later_calibration_must_report": "Report seed version and conditioning; a new duration needs its own prospective governance and validation.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "CENSORING",
+      "mechanism": "Unresolved prices, suspension/delistings, late evidence and immature pairs selectively disappear if filtered.",
+      "later_calibration_must_report": "Retain original denominator and all inherited exclusion/maturity states; predeclare treatment without zero/last-price filling.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "STRATEGY_MISMATCH",
+      "mechanism": "One category may combine distinct strategies or both categorical horizons.",
+      "later_calibration_must_report": "Pin exact strategy/category scope; report subgroup coverage; any later split applies prospectively, not outcome-based per pair.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "REGIME_DEPENDENCE",
+      "mechanism": "Early observations may represent one market environment.",
+      "later_calibration_must_report": "Report D-known regime/subperiod/sector coverage and uncertainty; no stationarity claim or invented adequacy threshold.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "SURVIVOR_BIAS",
+      "mechanism": "Current membership or complete-price/winner-only analysis omits failed origins.",
+      "later_calibration_must_report": "Archive original identity/universe/parcel context and missing outcomes; no synthetic backfill or dropping inconvenient origins.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "OUTSIDE_SEED_BLINDNESS",
+      "mechanism": "Official endpoints alone cannot evaluate resolution beyond that duration.",
+      "later_calibration_must_report": "State limitation; separately governed raw-path retention may inform later research but never supplies a replacement official horizon.",
+      "numeric_acceptance_threshold": null
+    },
+    {
+      "risk": "ADAPTIVE_REVIEW",
+      "mechanism": "Changing the seed after early underperformance contaminates later evaluation and erases failure evidence.",
+      "later_calibration_must_report": "Preserve every version and prior data access; independently approved prospective successor and untouched validation required, never same-cohort relabeling.",
+      "numeric_acceptance_threshold": null
+    }
+  ],
+  "raw_paths": {
+    "assessment": "COMPATIBLE_IN_PRINCIPLE_AS_NON_AUTHORITATIVE_SOURCE_DATA",
+    "collection_authorized_here": false,
+    "retention_policy": null,
+    "licence_review_required": true,
+    "official_horizons_per_pair": 1,
+    "can_create_additional_official_labels": false,
+    "can_change_official_maturity": false,
+    "can_change_frozen_end": false,
+    "data_layer": "Only separately authorized existing provider-versioned source storage may retain exact event/received/adjustment/identity/corporate-action lineage, coverage gaps and acquisition versions. No new store or collector in this slice.",
+    "use": "Later exploratory/calibration use requires explicit predeclared access/split/method governance. Record that paths were seen; no return-ranked seed, contaminated OOS or implicit fan-out.",
+    "period": "Outside-seed retention length/coverage and cadence require separate source/licence/resource approval. No indefinite path collection implied.",
+    "symmetry": "Availability of one leg's longer path does not create a second horizon or complete paired label."
+  },
+  "dependencies": [
+    {
+      "component": "DURATION_AND_CATEGORY",
+      "treatment": "SAME_FUTURE_PARAMETER_PACKAGE",
+      "requirement": "Jointly justify seed, scope and category/strategy treatment; no categorical midpoint or existing convenient window."
+    },
+    {
+      "component": "UNIT_D_COUNTING",
+      "treatment": "SAME_FUTURE_PARAMETER_PACKAGE",
+      "requirement": "Approve unit and pre-open/intraday/after-close/partial/special-session conventions together; D stays fixed."
+    },
+    {
+      "component": "ENDPOINT_PRICE_PRECISION",
+      "treatment": "SAME_FUTURE_PARAMETER_PACKAGE",
+      "requirement": "Approve exact end/price/completion/exception conventions together; absence blocks admission."
+    },
+    {
+      "component": "CALENDAR_INFRASTRUCTURE",
+      "treatment": "REUSE_UNCHANGED_WITH_SOURCE_CLOSURE",
+      "requirement": "Use canonical explicit-as-of calendar/phase and native source-verification contracts; future actual range must be covered."
+    },
+    {
+      "component": "IDENTITY_PRICE_ACTIONS",
+      "treatment": "REUSE_UNCHANGED_WITH_SOURCE_CLOSURE",
+      "requirement": "Use historical identity/lifecycle and provider-versioned temporal/adjustment evidence; closure is not supplied by governance."
+    },
+    {
+      "component": "ORIGIN_AND_PARCEL",
+      "treatment": "SEPARATE_LATER_SOURCE_PREREQUISITE",
+      "requirement": "A separately authorized original-event archival path must preserve genuine D-bound pair/parcel. No portfolio action or source synthesis."
+    },
+    {
+      "component": "REGISTRATION_AND_COLLECTION",
+      "treatment": "SEPARATE_LATER_IMPLEMENTATION_AUTHORIZATION",
+      "requirement": "No resolver, producer, schema, migration or collector here; future versioned research wrapper must not mutate frozen wire contracts."
+    },
+    {
+      "component": "CALIBRATION_AND_SPLITS",
+      "treatment": "SEPARATE_LATER_GOVERNANCE",
+      "requirement": "Define adequacy, censoring, dependence, train/validation/OOS and review thresholds independently; none supplied here."
+    },
+    {
+      "component": "RAW_PATH_RETENTION",
+      "treatment": "SEPARATE_LATER_SOURCE_LICENCE_POLICY",
+      "requirement": "If pursued, govern scope, length, access and resources without extra official horizons."
+    }
+  ],
+  "calendar": {
+    "source": "app/historical/nse_capital_market_session_evidence_2022_2026.py",
+    "calendar_id": "nse-capital-market-first-party-2022-2026-v2-ordinary-forward",
+    "coverage_start": "2022-01-01",
+    "coverage_end": "2026-12-31",
+    "ordinary_effective_from": "2026-09-05",
+    "ordinary_known_at": "2026-09-05T16:47:00+00:00",
+    "prospective_state": "DERIVABLE",
+    "historical_state": "SOURCE_NOT_READY",
+    "assessment": "Bounded prospective source facts exist, not blanket forward readiness. No effective bootstrap date or horizon is selected, so actual admission range cannot yet be certified.",
+    "conditions": [
+      "D-visible exact calendar/source versions",
+      "every required counting date and terminal phase covered",
+      "no unknown special/shortened timing",
+      "NSE cash-equity venue and security-specific continuity/tradability",
+      "exact terminal completion and price known by R"
+    ],
+    "calendar_probes": [
+      {
+        "date": "2026-09-04",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "UNKNOWN",
+        "reasons": [
+          "WEEKDAY_CONVENTION_UNAVAILABLE"
+        ],
+        "phase_count": 0
+      },
+      {
+        "date": "2026-09-14",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "HOLIDAY",
+        "reasons": [],
+        "phase_count": 0
+      },
+      {
+        "date": "2026-09-15",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "REGULAR_TRADING_DAY",
+        "reasons": [],
+        "phase_count": 1
+      },
+      {
+        "date": "2026-11-08",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "MUHURAT_TRADING",
+        "reasons": [],
+        "phase_count": 0
+      },
+      {
+        "date": "2027-01-04",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "UNKNOWN",
+        "reasons": [
+          "DATE_OUTSIDE_COVERAGE"
+        ],
+        "phase_count": 0
+      }
+    ],
+    "probe_scope": "Pure existing calendar queries at explicit fixed cutoffs; no synthetic paired events, source acquisition, fresh DB census or market-hours execution.",
+    "unexpected_closure": "Later closure cannot roll the frozen endpoint. Retain unresolved/excluded state under inherited protocol.",
+    "modern_rules_backcast": false
+  },
+  "prospective_first": {
+    "assessment": "CONDITIONALLY_FEASIBLE_DESIGN_NOT_OPERATIONALLY_READY",
+    "governance": "One new prospective cohort only after independent complete package approval/registration and source gates; do not reconstruct an authoritative old cohort.",
+    "rationale": "Breaks self-justifying outcome loop by a transparently justified prior selected before the outcomes it measures. It does not prove the prior optimal or create missing source events.",
+    "time_to_evidence": "No numerical schedule is supportable before seed/count/end approval; at least actual frozen endpoint completion and source availability are required, then enough governed data for calibration and untouched prospective validation.",
+    "limitations": [
+      "ORIGINS_AND_PARCELS_MISSING",
+      "PARAMETERS_UNSET",
+      "FORWARD_CALENDAR_RANGE_NOT_YET_SELECTED",
+      "PRICE_ACTION_PIT_UNREADY",
+      "CALIBRATION_AND_OOS_POLICY_UNSET",
+      "SEED_BIAS_NOT_NEUTRAL"
+    ],
+    "historical_bootstrap": "REJECTED_WITHOUT_DISTINCT_AUTHORIZED_EXPLORATORY_PROTOCOL"
+  },
+  "readiness": [
+    {
+      "component": "BOOTSTRAP_NECESSITY",
+      "state": "READY",
+      "basis": "Frozen circularity and missing canonical pairs establish necessity; not permission to collect."
+    },
+    {
+      "component": "INDEPENDENT_PRIOR_AVAILABILITY",
+      "state": "SOURCE_NOT_READY",
+      "basis": "No independently authoritative numeric prior in the pinned chain."
+    },
+    {
+      "component": "EXISTING_STRATEGY_DURATION",
+      "state": "SOURCE_NOT_READY",
+      "basis": "Approved Pre-Breakout governance is not paired duration authority."
+    },
+    {
+      "component": "EXTERNAL_POLICY_EVIDENCE",
+      "state": "SOURCE_NOT_READY",
+      "basis": "Methodology sources support preregistration boundaries, not an HSI seed value."
+    },
+    {
+      "component": "HUMAN_RA_APPROVAL_OPTION",
+      "state": "DERIVABLE",
+      "basis": "Existing explicit human governance pattern; new scoped approval and evidence still required. RA-specific prerequisite not established here."
+    },
+    {
+      "component": "PROSPECTIVE_REGISTRATION",
+      "state": "DERIVABLE",
+      "basis": "Immutable policy/approval/selection patterns exist; no bootstrap schema, reader or authority is registered."
+    },
+    {
+      "component": "RESEARCH_ONLY_AUTHORITY_BOUNDARY",
+      "state": "READY",
+      "basis": "Documented RESEARCH_BOOTSTRAP_ONLY; never live Gate-1 authority."
+    },
+    {
+      "component": "NUMERIC_SEED",
+      "state": "PARAMETER_REQUIRED",
+      "basis": "BOOTSTRAP_PARAMETER_APPROVAL_REQUIRED; value/range/grid remain empty."
+    },
+    {
+      "component": "DURATION_UNIT",
+      "state": "POLICY_REQUIRED",
+      "basis": "Effective unit not approved; no borrowing calendar-day or session defaults."
+    },
+    {
+      "component": "COUNTING_CONVENTION",
+      "state": "POLICY_REQUIRED",
+      "basis": "D counts, partial/special sessions and precision require same approval package."
+    },
+    {
+      "component": "TERMINAL_CONVENTION",
+      "state": "POLICY_REQUIRED",
+      "basis": "Exact endpoint/price/completion convention and exceptions not approved."
+    },
+    {
+      "component": "PROSPECTIVE_CALENDAR",
+      "state": "DERIVABLE",
+      "basis": "Conditional forward ordinary/holiday/special evidence; actual D/end range and missing phases must close before admission."
+    },
+    {
+      "component": "HISTORICAL_CALENDAR",
+      "state": "SOURCE_NOT_READY",
+      "basis": "Earlier ordinary sessions incomplete; no backcast or historical grandfathering."
+    },
+    {
+      "component": "PROSPECTIVE_DECISION_ORIGIN",
+      "state": "SOURCE_NOT_READY",
+      "basis": "Genuine original decision and exact archived pair remain prerequisites; previous inspected stores contained zero."
+    },
+    {
+      "component": "SELECTED_PARCEL",
+      "state": "SOURCE_NOT_READY",
+      "basis": "Exact original D-bound parcel/capital provenance absent; whole holding is not a default."
+    },
+    {
+      "component": "RAW_FUTURE_PATH_RETENTION",
+      "state": "POLICY_REQUIRED",
+      "basis": "Non-authoritative paths compatible in principle; separate collection, licensing, retention and calibration governance required."
+    },
+    {
+      "component": "GOVERNED_OUTCOME_MATURITY",
+      "state": "DERIVABLE",
+      "basis": "Existing UNRESOLVED/PENDING_MATURITY/MATURE boundary; maturity alone does not confer a complete label or admission."
+    },
+    {
+      "component": "TRANSITION_TO_CALIBRATION",
+      "state": "READY",
+      "basis": "Stage separation and immutable version/cohort boundary defined; no calibrated policy available."
+    },
+    {
+      "component": "OOS_WALK_FORWARD",
+      "state": "SOURCE_NOT_READY",
+      "basis": "Existing split/replay machinery but zero paired OOS/stability proof; adequacy/split policy remains unset."
+    },
+    {
+      "component": "PRODUCTION_COMPATIBILITY",
+      "state": "BLOCKED",
+      "basis": "V1 ACTIVE; V2 NOT_ACTIVE. Bootstrap is ineligible for production horizon/scenario authority."
+    }
+  ],
+  "external_sources": [
+    {
+      "id": "COS_PREREG",
+      "title": "Center for Open Science — Preregistration",
+      "url": "https://www.cos.io/initiatives/prereg",
+      "accessed_on": "2026-09-14",
+      "inspected_sections": [
+        "What is Preregistration?",
+        "Report all results",
+        "Existing data",
+        "Transparent changes"
+      ],
+      "permitted_claim": "Pre-specification distinguishes planned and exploratory analysis; outcome reuse and undisclosed changes weaken inference.",
+      "does_not_support": "No investment duration, HSI authority, empirical strategy validation or universal calendar rule.",
+      "content_fingerprint": null,
+      "fingerprint_note": "Remote bytes not retained or hashed; exact source and inspected sections recorded. Artifact checksum covers this source annotation, not the remote page."
+    },
+    {
+      "id": "SEBI_RA_2026",
+      "title": "SEBI Master Circular for Research Analysts, February 06, 2026",
+      "url": "https://www.sebi.gov.in/sebi_data/attachdocs/feb-2026/1770375507051.pdf",
+      "accessed_on": "2026-09-14",
+      "inspected_sections": [
+        "1.7 Use of Artificial Intelligence in RA services",
+        "1.8 Research services and supporting data/analysis"
+      ],
+      "permitted_claim": "RA/entity responsibility for AI-assisted client services and supporting research records is distinct from an internal HSI approval identifier.",
+      "does_not_support": "No HSI bootstrap duration, seed endorsement, trading permission or blanket internal-research legal exemption.",
+      "content_fingerprint": null,
+      "fingerprint_note": "Remote bytes not retained or hashed; cite identified circular and sections, not claimed immutable local regulatory snapshot."
+    }
+  ],
+  "sources_scope": "Targeted primary methodology/regulatory context plus pinned repository audit. Literature supports design transparency only; HSI-specific safeguards below derive from user scope and frozen protocols. No outside numerical prior found or selected.",
+  "blockers_closed": [
+    "Defined seed as research convention rather than calibrated authority",
+    "Evaluated all five routes and rejected multi-horizon workaround",
+    "Specified immutable approval/preregistration and cohort version boundary",
+    "Separated bounded forward calendar feasibility from invalid historical bootstrap",
+    "Specified prospective-only fallback and unresolved parameter/source gates"
+  ],
+  "blockers_remaining": [
+    "BOOTSTRAP_PARAMETER_APPROVAL_REQUIRED",
+    "RESEARCH_BOOTSTRAP_AUTHORITY_NOT_REGISTERED",
+    "UNIT_COUNTING_TERMINAL_PRICE_POLICY_REQUIRED",
+    "GENUINE_ORIGIN_AND_SELECTED_PARCEL_SOURCE_NOT_READY",
+    "FORWARD_CALENDAR_RANGE_AND_PRICE_PIT_CLOSURE_REQUIRED",
+    "CALIBRATION_OOS_ADEQUACY_POLICY_REQUIRED",
+    "REGULATED_PRODUCT_SCOPE_REVIEW_BEFORE_EXTERNAL_SERVICES"
+  ],
+  "runtime": {
+    "source_changed": false,
+    "bootstrap_approved": false,
+    "authority_registered": false,
+    "policy_activated": false,
+    "paired_observations_generated": false,
+    "labels_generated": false,
+    "raw_paths_collected": false,
+    "scenario_calibrated": false,
+    "scenario_model_implemented": false,
+    "database_written": false,
+    "portfolio_mutated": false,
+    "broker_order_access": false,
+    "score_tradeplan_changed": false,
+    "gates_changed": false
+  },
+  "next_continuations": [
+    "GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1"
+  ],
+  "next_continuation_started": false,
+  "next_scope": "One governance-only parameter/convention proposal: obtain or document independent category/strategy rationale for a human-reviewed seed package; specify unit, D/session counting, endpoint, price, precision, applicability and bounded forward-source coverage together. Leave unsupported values unset and return explicit approval questions if no defensible value exists. No AI-selected arbitrary seed, registration, collection, labels, calibration or activation.",
+  "inspected_file_fingerprints_lf": {
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/performance.py": "sha256:aa3f2859ab43e8d8b1a92ddf1d5879cdb8ba9fd9fdec35b525757fd8276a22e5",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/crisis/models.py": "sha256:f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/composition.py": "sha256:15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "sha256:7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_capital_market_session_evidence_2022_2026.py": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/nse_mii_session_knownness.py": "sha256:640d7c00fb6b30905b1e7eaf9d0b1e73757a186e76afb17b780d153b00588b80",
+    "app/historical/nse_session_identity.py": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/catalysts/service.py": "sha256:c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/discovery_recall_reference_matching.py": "sha256:a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/hsi_signal.py": "sha256:85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/hsi_signal_projection.py": "sha256:f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "sha256:4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro_news_evidence.py": "sha256:ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_discovery.py": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "sha256:e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/radar_diagnostic_orchestration.py": "sha256:69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/sector_economics/service.py": "sha256:5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/paper/engine.py": "sha256:2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/performance/models.py": "sha256:3fd5f22f93f161f6ef041181f581ef3903528523398994522f309a645feca5c5",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/holding_intelligence.py": "sha256:e9ee39372662d800079af409074c92254ab93c56bd3d300743fbe4196f8adc26",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/production_v1/canonical_setup_activation.py": "sha256:01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/governed_setup_source.py": "sha256:b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/research/handoff.py": "sha256:57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/runtime/cli.py": "sha256:78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/self_improvement/models.py": "sha256:588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/storage/sqlite_repository.py": "sha256:dfbc3abef762de476d7115527937048cbd7e8cca1f5af65af6739c1916a11019",
+    "app/strategies/common/models.py": "sha256:9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/pre_breakout/governance.py": "sha256:eb4b7ecb3bdd4c3726e0dcc0de39b472c65b65c8a3d50f37de1739a695fd698a",
+    "app/strategies/pre_breakout/governance_commands.py": "sha256:df6ab92a6af5061ae1482474cb5a2abb767b183d6751d908bcc529834d53d057",
+    "app/strategies/pre_breakout/policy.py": "sha256:896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+    "app/strategies/pre_breakout/research_handoff.py": "sha256:48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/universe_analysis/models.py": "sha256:53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.json": "sha256:5c2d0625ba035406d5c5146db3b594577e4371a5a671a6b93324c8da176b1c7a",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json": "sha256:7a13bcd4fcf0d9b18e977386652ec8af98951b82294c15038e811665d7dd81f8",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md": "sha256:7729396fd2fbdf0e518a487916b547ce517bcce1d83ef5e85dc7fc1eb6655f41",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json": "sha256:11e56d1e3bccf269d2d02c2b039fcbc89c8b0c17c4cfac32f3d9cce508d6d70a",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.md": "sha256:8539645cd09870ff42f547c75cef1aca17a51b3e877438cb67f6f4e769449cee",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json": "sha256:768247ab11b5d11e511fb50983633b0febb609915611801acae71facfb40cdca",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.md": "sha256:5280f9218d09b8ee2e18fece0bdb13fef42a07870a7711cc7e0c4dd061f887b1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json": "sha256:2bdc2a78fe7ec5af027d909bb38094bb5ecf79fafc3a781249b3bf0c4ac70ab0",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.md": "sha256:f007ed08f5d610fc53ae319026657d6d642a5bf9552947cfc146d1e59ef4e48c",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_paired_scenario_research_protocol.py": "sha256:4d365c1f564c8732c0200862ac7a4720a18334a68a2f597f41afad038203bd25",
+    "tests/unit/test_gate1_rotation_research_horizon_authority_policy.py": "sha256:0bdccfc30d3af66802123da530feb76e09bac11cce16199905074ca8ce63f9b1",
+    "tests/unit/test_gate1_rotation_research_horizon_mapping_evidence_feasibility.py": "sha256:90ef955d30b3c25eb858d93b553c9da30f6556787b95536e297a96c4570d026d",
+    "tests/unit/test_gate1_rotation_research_horizon_policy_proposal.py": "sha256:c68c1a868c7d3b0dc837604749feb4665d27c5e8f36e42f30e893bc6c27c6a15",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479",
+    "tests/unit/test_nse_ordinary_session_close_evidence.py": "sha256:07b201e12de0eea92af8010115a57ee92a9cfa76e97fbe1bc37222c1c44a70fb"
+  },
+  "artifact_fingerprint": "sha256:79c9626950d25266bca4dfa56ca59922bbd558681fa9daa634025f88648627c8"
+}
