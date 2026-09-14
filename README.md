@@ -95,6 +95,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Composite Execution Gate Policy V2.4 Governance Approval (single future successor; conditional INR semantics; model, funding, tax/slippage and activation blocked)](docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.md)
 - [Gate 1 Rotation Economic Scenario Contract V1 (machine-verifiable parcel, horizon, INR and provenance contract; producers unready; not active)](docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md)
 - [Gate 1 Scenario Model Source Feasibility V1 (audited inputs and methodology gaps; scenario model not yet feasible; no activation)](docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md)
+- [Gate 1 Paired Scenario Research Protocol V1 (decision/outcome separation and cohort admission; horizon and calibration policies blocked; not active)](docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md)
 - [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Official NSE/BSE Earnings Calendar Adapters V1 (bounded parsers/storage; live coverage partial; Gate 6 unwired)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_V1.md)
 - [Official Earnings Calendar Discovery Repair (exact joins; scoped coverage and strict PIT still blocked)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_REPAIR.md)

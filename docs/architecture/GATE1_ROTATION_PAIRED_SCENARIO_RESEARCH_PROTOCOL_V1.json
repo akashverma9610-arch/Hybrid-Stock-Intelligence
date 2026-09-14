@@ -1,0 +1,974 @@
+{
+  "protocol_id": "gate1-rotation-paired-scenario-research-protocol",
+  "version": "v1",
+  "schema_version": "gate1-rotation-paired-scenario-research-protocol/v1",
+  "baseline_commit": "2b303367eddf80697a5cb1bc601bfab3c731911e",
+  "status": "PROTOCOL_DEFINED_WITH_POLICY_BLOCKERS / GOVERNANCE_AND_TESTS_ONLY / NOT_ACTIVE",
+  "decision": "B",
+  "semantic_decision": "PAIRED_SCENARIO_RESEARCH_PROTOCOL_READY_WITH_POLICY_BLOCKERS",
+  "predecessor": {
+    "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+    "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3",
+    "decision": "SCENARIO_MODEL_NOT_YET_FEASIBLE"
+  },
+  "economic_contract": {
+    "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+    "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+  },
+  "data_basis": {
+    "mode": "INHERITED_IMMUTABLE_AUDIT_NOT_A_NEW_DB_CAPTURE",
+    "observed_at": "2026-09-14T15:30:56.149868+00:00",
+    "fingerprint": "sha256:16724433a155efadf2d326935671af575163d786b1d26ee49773f62ef9ba00ff",
+    "counts_are_not_coverage": true,
+    "new_observations_created": 0
+  },
+  "source_classifications": [
+    {
+      "id": "HISTORICAL_ROTATION",
+      "source": "app/backtest/models.py",
+      "schema": "HistoricalRotationEvaluation + BacktestRun + HistoricalAnalyticalSnapshot/context refs",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "CONDITIONAL",
+      "challenger": "CONDITIONAL",
+      "parcel": "NO",
+      "horizon": "CATEGORICAL_OR_CONFIG_ONLY",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "CONDITIONAL_ORIGIN_ONLY",
+      "limits": "Zero historical_rotation_evaluations in predecessor capture. Retained frozen replay event is simulated, never an actual historical portfolio decision. Resolve exact comparison and original input closure; no re-running today to fill omissions."
+    },
+    {
+      "id": "PORTFOLIO_ROTATION",
+      "source": "app/rotation/models.py",
+      "schema": "PortfolioRotationEvaluation.context / RotationComparison",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "CONDITIONAL",
+      "challenger": "YES",
+      "parcel": "NO",
+      "horizon": "PARTIAL",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "CONDITIONAL_ORIGIN_ONLY",
+      "limits": "Zero stored evaluations/comparisons in predecessor capture. Evaluation ID and cutoff exist; whole holding/allocation is not selected parcel, nor caller expected benefit a label."
+    },
+    {
+      "id": "WATCH_ROUTER",
+      "source": "app/intelligence/market_wide_watch.py",
+      "schema": "MarketWideWatchRecord + OpportunityArchetypeRouter",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "NO",
+      "challenger": "YES",
+      "parcel": "NO",
+      "horizon": "ARCHETYPE_ONLY",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "AUXILIARY_ONLY",
+      "limits": "12 run artifacts in predecessor capture, not paired events. Portfolio-record membership or same-date Watch does not establish original pairing."
+    },
+    {
+      "id": "COMPARISON_ASSURANCE",
+      "source": "app/intelligence/fast_rotation_comparison_assurance.py",
+      "schema": "FastRotationComparisonCandidate source_evaluation_id/source_comparison_id",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "CONDITIONAL",
+      "challenger": "YES",
+      "parcel": "NO",
+      "horizon": "PARTIAL",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "LINKED_ORIGIN_ONLY",
+      "limits": "Exact existing incumbent alternative required; cash alternative is not incumbent continuation. Assurance must link authentic comparison, not originate a missing pair."
+    },
+    {
+      "id": "PAPER_TRADE",
+      "source": "app/paper/models.py",
+      "schema": "PaperTrade / PaperOutcome / HistoricalPaperReplayReference",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "NO",
+      "challenger": "YES",
+      "parcel": "NO",
+      "horizon": "STRATEGY_CONFIG_ONLY",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "AUXILIARY_ONLY",
+      "limits": "Zero stored paper outcomes. Single-instrument fill/PnL and unit/fixed-notional sizing cannot replace paired parcel. An exact original rotation reference would need independent validation."
+    },
+    {
+      "id": "FORWARD_STUDY",
+      "source": "app/forward_paper/models.py",
+      "schema": "ForwardPaperStudy.admission / ForwardPaperEvent",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "NO",
+      "challenger": "YES",
+      "parcel": "NO",
+      "horizon": "TIME_STOP_NOT_ROTATION_HORIZON",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "AUXILIARY_ONLY",
+      "limits": "Zero studies/events, three run receipts in predecessor capture. time_stop_sessions is setup/paper policy, not governed common comparison horizon."
+    },
+    {
+      "id": "DECISION_AUDIT",
+      "source": "app/audit/decision.py",
+      "schema": "DecisionAuditRecord / DecisionOutcomeLink",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "CONDITIONAL",
+      "challenger": "CONDITIONAL",
+      "parcel": "NO",
+      "horizon": "VERSION_REFS_ONLY",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "LINKED_ORIGIN_ONLY",
+      "limits": "Audit and internal references may reconstruct an existing comparison; final_public_decision and outcome-link type do not prove a pair/return. Verify original canonical fingerprints and complete dependency closure."
+    },
+    {
+      "id": "PORTFOLIO_SNAPSHOT",
+      "source": "app/portfolio/models.py",
+      "schema": "PortfolioSnapshot / PortfolioTransaction",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "YES",
+      "challenger": "NO",
+      "parcel": "NO",
+      "horizon": "NONE",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "AUXILIARY_ONLY",
+      "limits": "One snapshot/five transactions in predecessor capture. Reuse exact historic ledger; no second portfolio or current-holdings substitution."
+    },
+    {
+      "id": "BACKTEST_EVENT",
+      "source": "app/backtest/models.py",
+      "schema": "BacktestEvent / HistoricalSignalReplayReference",
+      "identity": "YES",
+      "cutoff": "YES",
+      "incumbent": "CONDITIONAL",
+      "challenger": "CONDITIONAL",
+      "parcel": "NO",
+      "horizon": "FROZEN_RUN_ONLY",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "LINKED_ORIGIN_ONLY",
+      "limits": "ROTATION_EVALUATED plus frozen references may locate existing replay observation; generic signal/event does not synthesize a pair. Simulated population stays separately labelled."
+    },
+    {
+      "id": "SIGNAL_HISTORY",
+      "source": "app/signals/models.py",
+      "schema": "Signal / TradePlan with exact historical replay references",
+      "identity": "YES",
+      "cutoff": "CONDITIONAL",
+      "incumbent": "NO",
+      "challenger": "YES",
+      "parcel": "NO",
+      "horizon": "CATEGORICAL_OR_EXPIRY_ONLY",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "AUXILIARY_ONLY",
+      "limits": "Signal/entry/expiry/stop/target are not an incumbent, common horizon or expected return. P1 projections likewise do not supply a portfolio parcel."
+    },
+    {
+      "id": "RAW_PRICES",
+      "source": "app/market_data/historical.py",
+      "schema": "CanonicalOHLCVBar / historical_bars",
+      "identity": "NO",
+      "cutoff": "NO",
+      "incumbent": "NO",
+      "challenger": "NO",
+      "parcel": "NO",
+      "horizon": "NONE",
+      "pit": "CONDITIONAL",
+      "replay": "CONDITIONAL",
+      "use": "INELIGIBLE_ORIGIN",
+      "limits": "Bars may supply admitted feature/realized evidence only; neither their abundance nor later scanning creates an original rotation event."
+    }
+  ],
+  "wire_contract": {
+    "kind": "CLOSED_GOVERNANCE_SHAPES_NOT_RUNTIME_OR_SQL_SCHEMA",
+    "unknown_fields": "REJECT",
+    "types": {
+      "id": "Nonempty canonical identifier; exact source-specific validation, no fuzzy match.",
+      "fingerprint": "sha256: followed by 64 lowercase hex; legacy source digests require lossless namespaced wrapper retaining exact original digest and verifier.",
+      "utc": "Timezone-aware instant, normalized UTC ISO8601; no local/naive/default time.",
+      "decimal": "Finite canonical decimal string, nonexponent insignificant zeros removed, negative zero to zero, no implicit rounding.",
+      "positive_decimal": "Canonical decimal strictly > 0.",
+      "arrays": "Immutable ordered representation after duplicate/conflict validation; source refs sorted by role/id/version; all nulls explicit.",
+      "nullable": "? permits null only with matching unavailable state/reason; empty identity cannot replace null."
+    },
+    "shapes": {
+      "SourceRef": {
+        "id": "id",
+        "version": "id",
+        "fingerprint": "fingerprint",
+        "role": "id",
+        "event_at": "utc",
+        "known_at": "utc"
+      },
+      "PolicyRef": {
+        "id": "id",
+        "version": "id",
+        "fingerprint": "fingerprint",
+        "approved_at": "utc",
+        "known_at": "utc",
+        "effective_from": "utc",
+        "effective_to": "utc?",
+        "selection_ref": "SourceRef"
+      },
+      "Origin": {
+        "kind": "id",
+        "mode": "ARCHIVED_DECISION|FROZEN_REPLAY",
+        "record": "SourceRef",
+        "event_id": "id",
+        "comparison_ref": "id",
+        "decision_cutoff": "utc",
+        "run_ref": "id?",
+        "run_manifest_ref": "SourceRef?"
+      },
+      "DecisionSnapshot": {
+        "protocol_version": "id",
+        "origin": "Origin",
+        "incumbent_id": "id",
+        "challenger_id": "id",
+        "parcel_ref": "SourceRef",
+        "capital_basis_ref": "SourceRef",
+        "starting_capital_inr": "positive_decimal",
+        "currency": "INR",
+        "strategy_context": "Context",
+        "regime_context": "Context",
+        "sector_context": "Context",
+        "volatility_context": "Context",
+        "diagnostic_context": "Context",
+        "universe_ref": "SourceRef",
+        "horizon": "HorizonBinding?",
+        "methodology": "PolicyRef?",
+        "funding_quantity_residual_policy": "PolicyRef?",
+        "precision_policy": "PolicyRef?",
+        "evidence": "[SourceRef]",
+        "decision_fingerprint": "fingerprint"
+      },
+      "Context": {
+        "state": "AVAILABLE|UNAVAILABLE|CONFLICTED",
+        "source_refs": "[SourceRef]",
+        "reason": "id?"
+      },
+      "HorizonBinding": {
+        "policy": "PolicyRef",
+        "start": "utc",
+        "end": "utc",
+        "calendar_ref": "SourceRef",
+        "endpoint_rule_ref": "SourceRef",
+        "fingerprint": "fingerprint"
+      },
+      "PairedObservation": {
+        "observation_id": "id",
+        "protocol_version": "id",
+        "decision": "DecisionSnapshot",
+        "research_as_of": "utc",
+        "maturity": "UNRESOLVED|PENDING_MATURITY|MATURE",
+        "completion_evidence": "[SourceRef]",
+        "outcome": "Outcome?",
+        "admission": "INADMISSIBLE|PENDING_MATURITY|EXCLUDED|ADMITTED",
+        "reason_codes": "[id]",
+        "primary_reason": "id?",
+        "revision_fingerprint": "fingerprint",
+        "supersedes_revision": "fingerprint?",
+        "authority": "RESEARCH_ONLY",
+        "execution_authority": "false"
+      },
+      "Outcome": {
+        "observation_id": "id",
+        "horizon_fingerprint": "fingerprint",
+        "methodology_ref": "PolicyRef",
+        "capital_basis_ref": "SourceRef",
+        "currency": "INR",
+        "incumbent": "RealizedLeg",
+        "challenger": "RealizedLeg",
+        "evidence": "[SourceRef]",
+        "corporate_action_status": "VERIFIED_COMPARABLE|UNRESOLVED|CONFLICTED",
+        "label_state": "PARTIAL_EVIDENCE|PAIRED_GROSS_COMPLETE",
+        "incumbent_gross_pnl_inr": "decimal?",
+        "challenger_gross_pnl_inr": "decimal?",
+        "paired_gross_advantage_inr": "decimal?",
+        "auxiliary_return_percentage": "null",
+        "missing_friction_components": "[id]",
+        "net_advantage_inr": "null",
+        "matured_at": "utc",
+        "label_available_at": "utc",
+        "outcome_fingerprint": "fingerprint"
+      },
+      "RealizedLeg": {
+        "instrument_id": "id",
+        "decision_cutoff": "utc",
+        "horizon_fingerprint": "fingerprint",
+        "methodology_fingerprint": "fingerprint",
+        "capital_basis_fingerprint": "fingerprint",
+        "starting_capital_inr": "positive_decimal",
+        "start_price_ref": "SourceRef?",
+        "terminal_price_ref": "SourceRef?",
+        "terminal_gross_value_inr": "decimal?",
+        "parcel_transform_refs": "[SourceRef]",
+        "completeness": "COMPLETE|INCOMPLETE",
+        "cost_basis": "COST_EXCLUSIVE"
+      },
+      "RejectionReceipt": {
+        "receipt_id": "id",
+        "protocol_version": "id",
+        "origin_source_ref": "SourceRef?",
+        "input_fingerprint": "fingerprint",
+        "observation_id": "id?",
+        "research_as_of": "utc",
+        "reason_codes": "[id]",
+        "primary_reason": "id",
+        "disposition": "INADMISSIBLE|PENDING_MATURITY|EXCLUDED",
+        "alias_of": "id?",
+        "receipt_fingerprint": "fingerprint"
+      }
+    }
+  },
+  "identity": {
+    "observation_prefix": "gate1-paired-research:",
+    "receipt_prefix": "gate1-paired-rejection:",
+    "observation_digest": "SHA256_REPOSITORY_CANONICAL_JSON_OF_NORMALIZED_NAMED_IDENTITY_BODY_FULL_HEX",
+    "horizon_fingerprint": "SHA256 normalized complete HorizonBinding excluding only fingerprint; verifies frozen policy/calendar/start/end binding, never grants policy authority.",
+    "observation_body": [
+      "protocol_version",
+      "origin.kind",
+      "origin.mode",
+      "origin.event_id",
+      "origin.comparison_ref",
+      "origin.record.id",
+      "origin.record.version",
+      "origin.decision_cutoff",
+      "incumbent_id",
+      "challenger_id",
+      "parcel_ref",
+      "capital_basis_ref",
+      "horizon.fingerprint",
+      "methodology.fingerprint",
+      "decision_fingerprint"
+    ],
+    "incomplete_identity": "Do not mint PairedObservation if origin/pair/parcel/horizon/methodology bindings cannot be established; emit retained RejectionReceipt with observation_id=null.",
+    "receipt_body": [
+      "protocol_version",
+      "origin_source_ref",
+      "input_fingerprint",
+      "research_as_of",
+      "reason_codes",
+      "disposition",
+      "alias_of"
+    ],
+    "decision_fingerprint": "SHA256 repository canonical JSON of full normalized DecisionSnapshot excluding only decision_fingerprint; contains no outcome, maturity, research time or observation ID.",
+    "outcome_fingerprint": "SHA256 normalized complete Outcome excluding only outcome_fingerprint; includes observation_id which excludes outcomes.",
+    "revision_fingerprint": "SHA256 normalized complete PairedObservation excluding only revision_fingerprint; all nulls, reasons, research_as_of and supersedes_revision included.",
+    "receipt_fingerprint": "SHA256 normalized complete RejectionReceipt excluding receipt_id and receipt_fingerprint.",
+    "normalization": "Validate source fingerprints before transformation; UTC, exact decimals, no locale/environment/clock; use repository canonical_json/content_fingerprint. Distinguish source fingerprint formats via explicit wrapper, never rewrite original values.",
+    "duplicate_semantics": "Exact original id/version/payload repeats are aliases counted once with retained receipts; same id/version conflicting content rejects. Never silently set-deduplicate conflicting lineage.",
+    "revisions": "Same frozen decision inputs imply same observation ID across maturity/label revisions. Append immutable revisions; later correction cannot overwrite prior decision/label/cohort. Logical original event grouping prevents corrected versions inflating sample size.",
+    "no_circular_inputs": true
+  },
+  "horizon": {
+    "state": "POLICY_REQUIRED",
+    "numeric_duration": null,
+    "category_mapping": null,
+    "approved_route_found": false,
+    "findings": [
+      "B09 is conditional fundamental V2 applicability, not economic duration.",
+      "SHORT_TERM/POSITIONAL/LONG_TERM candidate durations UNSET and NOT_ACTIVE.",
+      "Paper time_stop_sessions and strategy expiry have different semantics; cannot be renamed.",
+      "Canonical calendar resolves sessions, not a holding horizon."
+    ],
+    "requirements": [
+      "Exact independent approved/selected/effective policy at D, selection known_at <= D; effective boundary semantics of that exact canonical policy reused without reinterpretation.",
+      "One identical binding per pair with D <= start < end; start/end rule, calendar version, phase, precision and same-family wealth method pinned.",
+      "No future choice using realized outcomes; unresolved exceptional-calendar/suspension/delist semantics block, not arbitrary extension or shortening.",
+      "Frozen horizon endpoint not rebound to a later calendar edition. Later proven closure/conflict produces retained unresolved/excluded revision; future exception policy separately governed.",
+      "Original calendar membership selection uses D evidence; canonical completion/realized notices may use R evidence only in research partition."
+    ]
+  },
+  "time_partitions": {
+    "decision": "All transitive features/source event-effective-known/approval-selection timestamps must satisfy their canonical source rule at D; never use latest() without explicit D.",
+    "research": "Realized economic events within the pinned outcome method/window, terminal exact endpoint, evidence available by explicit R; disclosures/corrections can arrive after end but only in research revision visible by R.",
+    "replay_origin": "ARCHIVED_DECISION requires original event available by D. FROZEN_REPLAY may be materialized later only if retained deterministic run/input manifest proves simulated decision from D-visible inputs and historically valid policy; distinct population, never real historical decision. This slice creates neither.",
+    "replay_metadata_exception": "Only the authenticated original replay record and run_manifest_ref may have creation/knownness after simulated D but <= R. They are administrative provenance with roles ORIGIN_RECORD/REPLAY_MANIFEST, not members of the predictive decision evidence array. The independently verified frozen run must resolve its complete input/configuration closure at D. No feature, outcome or policy approval may use this exception; no actual historical decision is inferred.",
+    "context": "Strategy/archetype, regime, sector, volatility and diagnostics are original decision features only; missing unavailable, conflict excluded when mandatory. No hindsight taxonomy/regime repair.",
+    "clock": "R supplied as canonical research cutoff with R >= D, never datetime.now for historical interpretation."
+  },
+  "maturity": {
+    "states": [
+      "UNRESOLVED",
+      "PENDING_MATURITY",
+      "MATURE"
+    ],
+    "rules": [
+      "Missing/invalid horizon or calendar => UNRESOLVED, no labels.",
+      "R < pinned end => PENDING_MATURITY; no realized label object or scalar.",
+      "R >= end AND exact terminal session/phase canonically completed with proof known_at <= R => MATURE.",
+      "MATURE does not imply terminal prices, both legs, cost coverage or cohort admission. Missing/conflicted completion proof => UNRESOLVED."
+    ],
+    "at_endpoint": "Equality R=end allowed only with exact completed-session proof already known; no active-session completion shortcut.",
+    "no_wall_clock": true
+  },
+  "admission": {
+    "states": [
+      "INADMISSIBLE",
+      "PENDING_MATURITY",
+      "EXCLUDED",
+      "ADMITTED"
+    ],
+    "rules": [
+      {
+        "id": "R01",
+        "rule": "Authenticate retained original event and comparison; price-derived or invented origins cannot qualify.",
+        "reason": "ORIGIN_NOT_AUTHENTIC"
+      },
+      {
+        "id": "R02",
+        "rule": "Resolve exact distinct securities, selected parcel and capital from original immutable references; no discretionary substitutions.",
+        "reason": "IDENTITY_AMBIGUOUS"
+      },
+      {
+        "id": "R03",
+        "rule": "Resolve exact policy/input closure at decision cutoff with original payload verification, source-specific temporal roles and no later evidence.",
+        "reason": "DECISION_PIT_VIOLATION"
+      },
+      {
+        "id": "R04",
+        "rule": "Bind identical cutoff, horizon, C, INR, protocol and same outcome methodology for both legs.",
+        "reason": "PAIR_MISMATCH"
+      },
+      {
+        "id": "R05",
+        "rule": "Exact horizon selection/approval/effectiveness visible at decision; category/duration unset blocks, not a default.",
+        "reason": "HORIZON_POLICY_MISSING"
+      },
+      {
+        "id": "R06",
+        "rule": "Require explicit research cutoff at/after frozen horizon end and canonical proof terminal session/phase completed; date passage alone cannot mature.",
+        "reason": "NON_MATURE"
+      },
+      {
+        "id": "R07",
+        "rule": "Realized source evidence may be future of decision but must be visible by research cutoff and never copied into decision inputs.",
+        "reason": "FUTURE_LABEL_LEAKAGE"
+      },
+      {
+        "id": "R08",
+        "rule": "Require exact governed start/end price references, source timing, identity, coverage and adjustment/economic continuity.",
+        "reason": "TERMINAL_OBSERVATION_MISSING"
+      },
+      {
+        "id": "R09",
+        "rule": "Require both legs complete and funding, quantity, residual, precision and realized-wealth policy verified; incomplete legs cannot produce a paired scalar.",
+        "reason": "GROSS_LABEL_INCOMPLETE"
+      },
+      {
+        "id": "R10",
+        "rule": "Retain authentic negative/rejected/delisted observations and all exclusions in original denominator; no current-universe filter.",
+        "reason": "SURVIVORSHIP_FILTER"
+      },
+      {
+        "id": "R11",
+        "rule": "Deduplicate exact logical origin aliases before counting; contradictions reject; overlapping independent origins remain retained and grouped for dependence review.",
+        "reason": "DUPLICATE_ORIGIN"
+      },
+      {
+        "id": "R12",
+        "rule": "Gross research admission is not net-economic or model-training eligibility; missing cost/tax/slippage remains explicit, net always null.",
+        "reason": "AUTHORITY_UNAVAILABLE"
+      },
+      {
+        "id": "R13",
+        "rule": "Model fit accepts only admitted eligible labels matured and available by fit cutoff, with frozen split/model before OOS start and no overlapping dependent leakage.",
+        "reason": "OOS_LEAKAGE"
+      }
+    ],
+    "definition": "ADMITTED means mature complete cost-exclusive paired research label only, never calibrated/model-ready/net-authoritative.",
+    "primary_reason": "All applicable unique codes retained in exclusion_taxonomy order; primary first; order is deterministic reporting precedence, not severity or authority.",
+    "invalid_input": "Malformed/unidentifiable source retained via RejectionReceipt; never invent missing observation identity.",
+    "receipt_retention": "Every reviewed source candidate and exclusion retained in future immutable research manifest; this slice writes no cohort or database."
+  },
+  "exclusion_taxonomy": [
+    {
+      "code": "INVALID_WIRE",
+      "meaning": "Malformed, empty, extra or wrongly typed contract field; nonfinite money or naive timestamp."
+    },
+    {
+      "code": "SOURCE_TAMPERED",
+      "meaning": "Exact source identity/version/content fingerprint fails original verification; never repair by rehashing."
+    },
+    {
+      "code": "SOURCE_CONFLICT",
+      "meaning": "Conflicting values/versions or incompatible equal-time provenance; no arbitrary tie-break."
+    },
+    {
+      "code": "ORIGIN_NOT_AUTHENTIC",
+      "meaning": "No retained decision-origin record and input closure; price-only, invented, AI or analyst origin."
+    },
+    {
+      "code": "CUTOFF_MISSING",
+      "meaning": "Original canonical decision cutoff is absent."
+    },
+    {
+      "code": "INCUMBENT_MISSING",
+      "meaning": "Exact original incumbent cannot be established."
+    },
+    {
+      "code": "CHALLENGER_MISSING",
+      "meaning": "Exact original challenger cannot be established."
+    },
+    {
+      "code": "IDENTITY_AMBIGUOUS",
+      "meaning": "Collision, fuzzy mapping, same security on both sides or unresolved continuity."
+    },
+    {
+      "code": "PARCEL_MISSING",
+      "meaning": "No exact decision-bound selected incumbent parcel/capital proof; whole holding is not a default."
+    },
+    {
+      "code": "UNSUPPORTED_EVENT",
+      "meaning": "Source kind/security unsupported by the applicable admitted research policy."
+    },
+    {
+      "code": "PAIR_MISMATCH",
+      "meaning": "Cutoff, capital, protocol, horizon or methodology differs between sides; benchmark substitute."
+    },
+    {
+      "code": "DECISION_PIT_VIOLATION",
+      "meaning": "Decision source/policy unavailable, future-effective or future-known at original cutoff."
+    },
+    {
+      "code": "FUTURE_LABEL_LEAKAGE",
+      "meaning": "Realized outcome, later restatement or outcome-derived feature enters frozen decision evidence."
+    },
+    {
+      "code": "HORIZON_POLICY_MISSING",
+      "meaning": "No exact approved/effective horizon authority at decision cutoff."
+    },
+    {
+      "code": "HORIZON_AMBIGUOUS",
+      "meaning": "Multiple incompatible horizons or categorical-to-duration mapping unresolved."
+    },
+    {
+      "code": "HORIZON_CHANGED",
+      "meaning": "Hindsight extension, shortening or calendar rebinding of a frozen observation."
+    },
+    {
+      "code": "CALENDAR_UNRESOLVED",
+      "meaning": "Required session/phase coverage missing or contradictory, including unexpected closure."
+    },
+    {
+      "code": "NON_MATURE",
+      "meaning": "Pinned terminal session/phase not yet proven completed at explicit research as-of."
+    },
+    {
+      "code": "INSUFFICIENT_HISTORY",
+      "meaning": "Method-required historical source coverage is not proven."
+    },
+    {
+      "code": "START_PRICE_MISSING",
+      "meaning": "Exact governed start/reference evidence absent; no nearest/last/average fallback."
+    },
+    {
+      "code": "TERMINAL_OBSERVATION_MISSING",
+      "meaning": "Exact governed terminal observation absent at research as-of."
+    },
+    {
+      "code": "OUTCOME_NOT_YET_KNOWN",
+      "meaning": "Required realized evidence not visible by research as-of, even if horizon completed."
+    },
+    {
+      "code": "CORPORATE_ACTION_AMBIGUOUS",
+      "meaning": "Split/bonus/cash/complex action treatment, coverage or economic conservation unresolved."
+    },
+    {
+      "code": "PRICE_BASIS_MISMATCH",
+      "meaning": "Mixed/unknown/undocumented adjustment or return basis."
+    },
+    {
+      "code": "SUSPENSION_OR_CIRCUIT_UNRESOLVED",
+      "meaning": "Endpoint/tradeability/fill interpretation not governed for this suspension/circuit."
+    },
+    {
+      "code": "DELISTING_UNRESOLVED",
+      "meaning": "No governed terminal economic treatment; no zero, last-price or winner-only deletion."
+    },
+    {
+      "code": "UNITS_INVALID",
+      "meaning": "Non-INR capital/endpoints or auxiliary percentage substituted for INR."
+    },
+    {
+      "code": "FUNDING_QUANTITY_RESIDUAL_UNSET",
+      "meaning": "Missing funding/quantity/residual proof; fractional shares or cash assumptions prohibited."
+    },
+    {
+      "code": "OUTCOME_METHOD_UNSET",
+      "meaning": "No versioned paired realized-wealth/precision methodology; no ad hoc arithmetic admission."
+    },
+    {
+      "code": "GROSS_LABEL_INCOMPLETE",
+      "meaning": "Only one side or incomplete input closure; partial evidence not a paired label."
+    },
+    {
+      "code": "SURVIVORSHIP_FILTER",
+      "meaning": "Present-day membership/winner filter or missing failed-origin denominator."
+    },
+    {
+      "code": "DUPLICATE_ORIGIN",
+      "meaning": "Exact logical origin already represented; retain alias receipt, count once."
+    },
+    {
+      "code": "SAMPLING_POLICY_REQUIRED",
+      "meaning": "Representativeness, dependence or adequacy policy unresolved; no calibrated claim."
+    },
+    {
+      "code": "SPLIT_POLICY_REQUIRED",
+      "meaning": "No frozen chronological split/overlap/purge/embargo/adequacy policy."
+    },
+    {
+      "code": "OOS_LEAKAGE",
+      "meaning": "Test data used in fit/selection; future-matured labels or shared event/dependent interval leaks across split."
+    },
+    {
+      "code": "AUTHORITY_UNAVAILABLE",
+      "meaning": "Claimed research/AI/self-hash provenance cannot confer Gate-1 scenario authority."
+    }
+  ],
+  "outcomes": {
+    "policy_state": "POLICY_REQUIRED",
+    "label_states": [
+      "PARTIAL_EVIDENCE",
+      "PAIRED_GROSS_COMPLETE"
+    ],
+    "partial": "After verified maturity, isolated raw leg evidence may be retained as PARTIAL_EVIDENCE. All paired PnL/advantage scalars null and admission EXCLUDED; not a training sample.",
+    "gross": "Only fully admitted identical-method legs with exact capital/quantity/residual/continuity/precision proof can supply PAIRED_GROSS_COMPLETE. Mandatory unresolved costs remain listed; no final Gate1 net result.",
+    "formulas": {
+      "incumbent_gross_pnl_inr": "incumbent_terminal_gross_value_inr - starting_capital_inr",
+      "challenger_gross_pnl_inr": "challenger_terminal_gross_value_inr - starting_capital_inr",
+      "paired_gross_advantage_inr": "challenger_terminal_gross_value_inr - incumbent_terminal_gross_value_inr"
+    },
+    "formulas_are": "Conditional accounting identities from same-C frozen predecessor, not a terminal valuation method or forecast.",
+    "net_advantage_inr": null,
+    "auxiliary_return_percentage": null,
+    "return_percentage_reason": "No research percentage precision/denominator policy selected; future auxiliary statistic cannot replace INR comparator.",
+    "friction_components": [
+      "purchase_statutory",
+      "sale_statutory",
+      "exchange_charges",
+      "brokerage",
+      "gst",
+      "slippage",
+      "capital_gains_tax"
+    ],
+    "cost_scope": "Cost-exclusive endpoints; missing costs do not prevent a fully qualified gross-only label but do block net economics. Funding/quantity/residual/wealth-method gaps DO prevent paired gross admission. No tax/slippage/fee zero fill.",
+    "tax_rate": null,
+    "slippage_default": null,
+    "expected_return": null
+  },
+  "prices_and_actions": {
+    "endpoint_policy": "Source, provider/version, normalization, instrument, market/session/phase, price field, event time, known-at, completeness, conflict and precision rules explicit in later approved outcome method. No arbitrary close/open/LTP/nearest substitution.",
+    "start": "Reference prices and starting C admitted at D. Do not use an end-of-day bar not yet known at intraday D or a future fill as a D feature.",
+    "terminal": "Exact pinned endpoint observation and complete source lineage visible at R; not any price <=R. Suspension/no bar/circuit absence stays missing, not unchanged price.",
+    "basis": "No mixed RAW/ADJUSTED/UNKNOWN endpoints; verified same economic basis and no double applying factors or adjusting both quantity and price twice.",
+    "corporate_actions": [
+      {
+        "kind": "SPLIT_BONUS",
+        "support": "Verified technical factors reusable as evidence; exact units/parcel conversion and economic-method approval still required; technical derivative alone not wealth."
+      },
+      {
+        "kind": "DIVIDEND",
+        "support": "Cash distribution/reinvestment/price-return exclusion methodology not approved; no silently omitted dividend or invented total return."
+      },
+      {
+        "kind": "MERGER_DEMERGER_RIGHTS_OTHER",
+        "support": "Consideration, successor holdings/cash and coverage unresolved; fail closed and retain reason."
+      },
+      {
+        "kind": "SYMBOL_CHANGE",
+        "support": "Exact source-backed canonical identity continuity only; symbol-string change is not a new security nor fuzzy join."
+      },
+      {
+        "kind": "DELISTING_SUSPENSION",
+        "support": "No zero, last-close or automatic horizon extension; missing terminal treatment excluded but original denominator retained."
+      }
+    ],
+    "universe": "Eligibility resolved at original D from historical membership/lifecycle evidence, never present-day membership. Out-of-universe/delisted after D not a reason to erase original event; invalid outcome retained with exclusion."
+  },
+  "sampling": {
+    "minimum_sample_size": null,
+    "adequacy_state": "CALIBRATION_POLICY_REQUIRED",
+    "true_observation_count": "Distinct authenticated original comparison keys with exact paired parcel/horizon; versions/aliases not new independent decisions.",
+    "required_reporting": [
+      "source_candidate_count",
+      "true_origin_count",
+      "admitted_pair_count",
+      "pending_count",
+      "excluded_count",
+      "primary_exclusion_counts",
+      "all_reason_incidence_counts",
+      "duplicate_alias_count",
+      "instrument_concentration",
+      "pair_concentration",
+      "strategy_archetype_counts",
+      "regime_counts",
+      "sector_counts",
+      "time_coverage",
+      "missing_context_counts",
+      "overlapping_interval_groups",
+      "origin_mode_counts"
+    ],
+    "dependence": "Same logical event aliases counted once. Distinct origins sharing either instrument over intersecting inclusive decision-to-label-maturity intervals flagged; same instrument/time/strategy exposure may remain correlated even without overlap. No invented independence, downweighting coefficient or near-duplicate cutoff.",
+    "bias": "Rejected/failed/negative/delisted originals retained before labels inspected; conditioning and minimum adequacy need later policy. Raw bar count and report-link count never sample count.",
+    "conditioning": "Preserve original nullable context; do not require regime/strategy conditioning until later sufficiency policy. Unknown group explicitly reported; no hindsight filling."
+  },
+  "splits": {
+    "state": "CALIBRATION_POLICY_REQUIRED",
+    "modes": [
+      "CHRONOLOGICAL",
+      "WALK_FORWARD"
+    ],
+    "random_split_allowed": false,
+    "numeric_percentages": null,
+    "purge_sessions": null,
+    "embargo_sessions": null,
+    "requirements": [
+      "Freeze split id/version/fingerprint, cohort/revision references, original-event grouping, time bounds, endpoint inclusivity, fit cutoff F, model version, evaluation start/end and selection timestamp.",
+      "Training/validation label maturity AND label availability <= F; decision inputs frozen at their D; F <= model/selection freeze < TEST start using existing strict pre-TEST walk-forward convention. The frozen model must also be known by each evaluated D.",
+      "All aliases and dependent overlapping information/outcome intervals remain isolated across calibration/validation/OOS or excluded under a later approved purge policy; no zero purge/embargo default.",
+      "Validation is for selection and not reused as untouched OOS; no fitting/threshold selection on test results.",
+      "OOS labels revealed only after each observation's maturity; subsequent recalibration is a new version using only labels available by its own F, never rewrites earlier predictions.",
+      "Existing WalkForwardPlan requires numeric window/purge/embargo/minimum parameters; this protocol does not populate them or run it."
+    ]
+  },
+  "readiness": [
+    {
+      "id": "EVENT_ORIGIN",
+      "state": "SOURCE_NOT_READY",
+      "blocker": "Candidate schemas exist; no verified complete paired-origin population or parcel capture in predecessor audit."
+    },
+    {
+      "id": "PAIRED_IDENTITY",
+      "state": "DERIVABLE",
+      "blocker": "Exact existing canonical identities/comparison references reusable only when resolved; no currently certified observation."
+    },
+    {
+      "id": "PARCEL",
+      "state": "POLICY_UNSET",
+      "blocker": "No exact selected-parcel selection/funding authority supplied."
+    },
+    {
+      "id": "HORIZON_AUTHORITY",
+      "state": "POLICY_REQUIRED",
+      "blocker": "B09/categorical route/paper time stop do not define common numeric duration."
+    },
+    {
+      "id": "PRICE_ENDPOINTS",
+      "state": "SOURCE_NOT_READY",
+      "blocker": "Exact policy-bound start/end and eligible paired history unproved."
+    },
+    {
+      "id": "CORPORATE_ACTIONS",
+      "state": "SOURCE_NOT_READY",
+      "blocker": "Verified split/bonus technical factors are not complete economic wealth/complex-action treatment."
+    },
+    {
+      "id": "PORTFOLIO_REPLAY",
+      "state": "DERIVABLE",
+      "blocker": "Existing immutable snapshot/ledger replay conditional on complete historical known-at closure."
+    },
+    {
+      "id": "OUTCOME_LABEL",
+      "state": "POLICY_REQUIRED",
+      "blocker": "Protocol admission requirements defined; horizon/wealth/funding/precision prerequisites absent, no real paired label."
+    },
+    {
+      "id": "FUNDING_QUANTITY_RESIDUAL",
+      "state": "POLICY_UNSET",
+      "blocker": "No fractional/default quantity or residual/fee financing inferred."
+    },
+    {
+      "id": "TRANSACTION_COSTS",
+      "state": "SOURCE_NOT_READY",
+      "blocker": "No complete historical applicable tariff/source admission."
+    },
+    {
+      "id": "TAX",
+      "state": "POLICY_UNSET",
+      "blocker": "Mandatory tax policy/lots/context unresolved; no rate invented."
+    },
+    {
+      "id": "SLIPPAGE",
+      "state": "AUTHORITY_NOT_REGISTERED",
+      "blocker": "Mandatory two-leg calibrated source absent; never zero fallback."
+    },
+    {
+      "id": "CALIBRATION_COHORT",
+      "state": "HISTORICAL_COVERAGE_INSUFFICIENT",
+      "blocker": "Raw bars not genuine paired events; zero observed stored paper outcomes/studies/events/OOS results in predecessor capture."
+    },
+    {
+      "id": "OOS_EVALUATION",
+      "state": "CALIBRATION_REQUIRED",
+      "blocker": "Walk-forward support exists; split/sample/overlap/adequacy policy unapproved."
+    },
+    {
+      "id": "AUTHORITY_REGISTRATION",
+      "state": "AUTHORITY_NOT_REGISTERED",
+      "blocker": "Research references and hashes confer no scenario authority; no producer registered."
+    }
+  ],
+  "ownership": {
+    "paired_evidence": "Future pure app/rotation research projection; existing source references only, no second portfolio/Brain.",
+    "measurement": "Existing app/calibration and app/backtest; no source of ex-ante expected values by fiat.",
+    "gate": "Independent GateSourceAuthority verification required separately; research admission is never producer registration or gate clearance.",
+    "ai_allowed": [
+      "EXPLAIN",
+      "SUMMARIZE",
+      "EXTRACTION_ASSISTANCE_NONAUTHORITATIVE"
+    ],
+    "ai_forbidden": [
+      "ORIGIN_CREATION",
+      "HORIZON_INVENTION",
+      "LABEL_CREATION_OR_EDIT",
+      "ADMISSION_OVERRIDE",
+      "PROBABILITY_AUTHORITY",
+      "PIT_OVERRIDE",
+      "PRODUCER_REGISTRATION"
+    ]
+  },
+  "unresolved_policies": [
+    "COMMON_NUMERIC_HORIZON_AUTHORITY",
+    "ORIGINAL_SELECTED_PARCEL_AND_EVENT_CAPTURE",
+    "PAIRED_REALIZED_WEALTH_AND_PRICE_PRECISION",
+    "FUNDING_QUANTITY_RESIDUAL",
+    "CORPORATE_ACTION_ECONOMIC_TREATMENT",
+    "COST_TAX_SLIPPAGE_SOURCES",
+    "SAMPLE_DEPENDENCE_AND_ADEQUACY",
+    "CHRONOLOGICAL_SPLIT_PURGE_EMBARGO",
+    "FUTURE_SCENARIO_MODEL_AND_AUTHORITY"
+  ],
+  "frozen_boundaries": {
+    "v1": "six-gates-production-v1/v1 ACTIVE",
+    "v2": "NOT_ACTIVE",
+    "score_hurdle": "raw_decision_score - comparison_score >= 1.00",
+    "economic_hurdle": "net_advantage_inr > 0.00",
+    "independent_hurdles": true,
+    "cost_exclusive": true,
+    "friction_once": true,
+    "same_parcel_cutoff_horizon_method_currency": true,
+    "ai_authority": false
+  },
+  "runtime": {
+    "implementation": false,
+    "persistence": false,
+    "db_access": false,
+    "producer_registered": false,
+    "v2_activation": false,
+    "portfolio_mutation": false,
+    "broker_orders": false,
+    "full_backend_required": false
+  },
+  "blockers_closed": {
+    "operational": [],
+    "protocol": [
+      "TWO_TIME_PARTITIONS_DEFINED",
+      "PAIRED_ADMISSION_AND_EXCLUSIONS_DEFINED",
+      "IMMUTABLE_REVISION_AND_SAMPLING_BOUNDARY_DEFINED"
+    ]
+  },
+  "next_continuations": [
+    "GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1"
+  ],
+  "next_continuation_started": false,
+  "inspected_file_fingerprints_lf": {
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479"
+  },
+  "fingerprint_scheme": "SHA256_REPOSITORY_CANONICAL_JSON_OF_COMPLETE_ARTIFACT_EXCLUDING_ONLY_PROTOCOL_FINGERPRINT",
+  "protocol_fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+}
