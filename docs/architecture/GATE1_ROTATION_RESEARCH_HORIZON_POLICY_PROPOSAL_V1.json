@@ -1,0 +1,781 @@
+{
+  "policy_id": "gate1-rotation-research-horizon-policy",
+  "version": "v1-proposed",
+  "schema_version": "gate1-rotation-research-horizon-policy-proposal/v1",
+  "baseline_commit": "328458da03756099dcc9da0d1a5f25cfcd827d22",
+  "status": "PROPOSED_WITH_UNRESOLVED_PARAMETERS / GOVERNANCE_AND_TESTS_ONLY / NOT_ACTIVE",
+  "decision": "B",
+  "semantic_decision": "RESEARCH_HORIZON_POLICY_PROPOSAL_READY_WITH_UNRESOLVED_PARAMETERS",
+  "decision_rationale": "Structure, scope, input boundaries, symmetry and fail-closed rules are proposal-ready. Numeric mapping, counting/terminal semantics, historical source closure and independent approval remain unsupported; neither complete approval readiness nor activation is claimed.",
+  "parent": {
+    "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json",
+    "field": "audit_fingerprint",
+    "fingerprint": "sha256:aa9d4b211a5a2aba762c0b31af99b2a87fe08e0963865344104e9b87c33b0bb1"
+  },
+  "predecessors": [
+    {
+      "path": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+      "field": "protocol_fingerprint",
+      "fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+      "field": "contract_fingerprint",
+      "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+    }
+  ],
+  "authority": {
+    "owner": "HSI paired-research policy governance; future deterministic read-only resolver consuming canonical sources",
+    "owner_registration_created": false,
+    "scope": "RESEARCH_ONLY",
+    "production_reuse": "SEPARATE_EXPLICIT_APPROVAL_REQUIRED",
+    "approval_ref": null,
+    "approved_at": null,
+    "effective_at": null,
+    "activation_status": "NOT_ACTIVE",
+    "registered": false,
+    "proposal_hash_confers_authority": false,
+    "ai_authority": false,
+    "user_arbitrary_duration_authority": false
+  },
+  "scope": {
+    "purpose": "One common future comparison horizon for incumbent continuation versus challenger in an authentic Gate1 paired rotation research event.",
+    "source_event": "Original ROTATE_IN-compatible paired event under predecessor origin contract, never an action emitted here.",
+    "instrument_scope": "Propose exact-source NSE cash-equity identities for both legs; actual supported strategy/instrument/state combinations remain empty until mapping approval. NseEquityInstrument defaults are not proof.",
+    "approved_scope_rows": [],
+    "excluded": [
+      "SIGNAL_EXPIRY",
+      "ACTUAL_HOLDING_PERIOD",
+      "TRADEPLAN_DURATION",
+      "GENERIC_BACKTEST_WINDOW",
+      "CALIBRATION_WINDOW",
+      "CATALYST_WINDOW",
+      "LONG_TERM_THESIS_HORIZON",
+      "LIVE_GATE1_AUTHORITY"
+    ]
+  },
+  "evidence_basis": "Repository-only pinned audit; no new DB capture, external acquisition, empirical study, outcome computation or calibration. A proposal cannot retroactively make post-D policy approval visible at D.",
+  "input_admission": [
+    {
+      "id": "ORIGINAL_DECISION",
+      "classification": "CONDITIONALLY_ALLOWED_BINDING",
+      "source": "app/rotation/models.py",
+      "fields": "PortfolioRotationEvaluation.evaluation_id / RotationEvaluationContext.as_of_timestamp; exact comparison reference",
+      "purpose": "Freeze original D and pair; never current review time or generated event.",
+      "admission": "Archive/replay event is authentic under predecessor; exact original comparison/pair/source closure.",
+      "pit_replay": "Original event and source references verified at D; later replay metadata is administrative only."
+    },
+    {
+      "id": "INSTRUMENT_STATE",
+      "classification": "CONDITIONALLY_ALLOWED_APPLICABILITY",
+      "source": "app/universe_analysis/models.py",
+      "fields": "NseEquityInstrument.instrument_id / isin / security_type / exchange / data_as_of / provenance_reference",
+      "purpose": "Confirm exact canonical identities and a supported instrument/venue/state scope.",
+      "admission": "Both legs have original D-visible identity/type/listing lineage; dataclass defaults are not source proof.",
+      "pit_replay": "Historical master/membership/source version closure required; no today-membership, fuzzy symbol or default EQUITY inference."
+    },
+    {
+      "id": "STRATEGY_PROVENANCE",
+      "classification": "CONDITIONALLY_ALLOWED_APPLICABILITY",
+      "source": "app/intelligence/hsi_signal_strategy_registry.py",
+      "fields": "WatchStrategyRoutingContext + StrategyRegistryResolution",
+      "purpose": "Exact original strategy ID/version/fingerprint and applicability context; not duration authority.",
+      "admission": "Use native verification/approval/selection at D. For Pre-Breakout, exact CURRENT_VALID_SETUP routing and policy path still required.",
+      "pit_replay": "No current lookup or claim that other archetypes have executable policies. Horizon policy is independently approved."
+    },
+    {
+      "id": "WATCH_ROUTER",
+      "classification": "CONDITIONALLY_ALLOWED_APPLICABILITY",
+      "source": "app/intelligence/opportunity_archetypes.py",
+      "fields": "OpportunityArchetype / RoutingResult; opportunity-archetype-routing-policy/v1",
+      "purpose": "Verify existing originating archetype, setup routes and evidence, not assign a numeric horizon.",
+      "admission": "Exact original Watch/run linkage and full input closure known at D; pure router expects evidence already PIT filtered.",
+      "pit_replay": "Router output alone lacks its own cutoff/known-at envelope. Do not rerun with current data or call latest() without explicit D."
+    },
+    {
+      "id": "CATEGORY_ROUTING",
+      "classification": "CONDITIONALLY_ALLOWED_MAPPING_KEY",
+      "source": "app/intelligence/multi_funnel_discovery.py",
+      "fields": "CanonicalDiscoveryLead.intended_horizons; multi-funnel-discovery/v1",
+      "purpose": "Carry a unique already-declared category, never infer it from an archetype name.",
+      "admission": "Exact lead.verify(), source/funnel version, instrument and original event linkage; every lineage known_at <= D; discovery_as_of <= D.",
+      "pit_replay": "One distinct category required in proposed first scope. A lead existing today does not establish original decision-time availability."
+    },
+    {
+      "id": "SETUP_TYPE",
+      "classification": "CONDITIONALLY_ALLOWED_APPLICABILITY",
+      "source": "app/production_v1/canonical_setup_activation.py",
+      "fields": "CanonicalSetupOpportunity / time_horizon_status",
+      "purpose": "Verify exact originating setup type/policy, not price or time-stop inputs.",
+      "admission": "Retained canonical setup and its approval/selection closure at D; no new setup calculation.",
+      "pit_replay": "time_horizon_status remains NOT_GOVERNED_FOR_SETUP_OPPORTUNITY; no duration implied."
+    },
+    {
+      "id": "PORTFOLIO_CONTEXT",
+      "classification": "ORIGIN_ONLY_NOT_DURATION_DRIVER",
+      "source": "app/rotation/models.py",
+      "fields": "Original evaluation/comparison IDs and frozen pair references",
+      "purpose": "Bind the authentic research pair only.",
+      "admission": "Consume already-frozen predecessor origin envelope; do not read current portfolio, allocations or holdings.",
+      "pit_replay": "Elapsed holding, cash, average holding period and review schedule cannot select duration."
+    },
+    {
+      "id": "MARKET_REGIME",
+      "classification": "TRACE_ONLY_NOT_DURATION_DRIVER",
+      "source": "app/intelligence/macro_news_evidence.py",
+      "fields": "Canonical stored macro/market evidence references, if original and PIT-verifiable",
+      "purpose": "Preserve optional original context, not a regime-conditioned duration.",
+      "admission": "Do not admit descriptive text/AI inference as an authoritative routing field.",
+      "pit_replay": "An adaptive regime-to-duration policy has no approved mapping; not included in first proposal's selector."
+    },
+    {
+      "id": "SECTOR_CONTEXT",
+      "classification": "TRACE_ONLY_NOT_DURATION_DRIVER",
+      "source": "app/intelligence/sector_economics/service.py",
+      "fields": "SectorEconomicImpact / SectorSensitivity.lag / original ranking lineage",
+      "purpose": "Preserve optional original context only.",
+      "admission": "No free-text lag or current sector ranking can override original category.",
+      "pit_replay": "Typed/canonical source closure is necessary for trace; no sector-dependent horizon mapping approved."
+    },
+    {
+      "id": "CATALYST_EVENT",
+      "classification": "TRACE_ONLY_NOT_DURATION_DRIVER",
+      "source": "app/intelligence/catalysts/service.py",
+      "fields": "CatalystEvent.expected_time_horizon / event and evidence lineage",
+      "purpose": "Preserve FACT/DATA/INTERPRETATION/INFERENCE boundaries and original references only.",
+      "admission": "No expected lag, narrative, freshness or priced-in inference selects duration.",
+      "pit_replay": "Future event realization and retrospective impact are forbidden selection inputs; event-specific numeric policy deferred."
+    },
+    {
+      "id": "TACTICAL_OR_SHORT_LABEL",
+      "classification": "REJECTED_AS_MAPPING_KEY",
+      "source": "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json",
+      "fields": "SHORT_TERM diagnostic candidate versus tactical product prose",
+      "purpose": "Audit vocabulary without inventing a new category or synonym.",
+      "admission": "No supported DiscoveryHorizon.SHORT_TERM/TACTICAL route currently exists.",
+      "pit_replay": "B09 candidate is not active; no tactical-to-short-term or bar-timeframe-to-duration conversion."
+    },
+    {
+      "id": "DESCRIPTIVE_OR_FUTURE_VALUES",
+      "classification": "REJECTED",
+      "source": "app/calibration/service.py",
+      "fields": "OutcomeSample.horizon and other unrelated windows identified by predecessor audit",
+      "purpose": "No duration selection.",
+      "admission": "Reject paper expiry, actual holding duration, outcome windows, unverified strings, self-hashes and AI/user arbitrary values.",
+      "pit_replay": "No future label, best return, later calibration or runtime time may affect D's choice."
+    }
+  ],
+  "categories": [
+    {
+      "category": "POSITIONAL",
+      "source": "app/intelligence/multi_funnel_discovery.py",
+      "origin": "DiscoveryHorizon.POSITIONAL; exact CanonicalDiscoveryLead.intended_horizons",
+      "semantics": "Existing positional inspection/routing context; no economic duration.",
+      "native_uses": "Pre-Breakout and sector adapters emit this category. Inflection and policy-transmission adapters may emit it alongside LONG_TERM.",
+      "supported_strategy_mapping": "UNSET; actual mapping rows must name exact supported strategy/archetype/policy refs. Native funnel membership does not activate those strategies.",
+      "at_D": "Conditional on original lead and full source closure; no retrospective reconstruction.",
+      "numeric_meaning": false,
+      "mapping_required": true,
+      "proposed_intermediate": true
+    },
+    {
+      "category": "LONG_TERM",
+      "source": "app/intelligence/multi_funnel_discovery.py",
+      "origin": "DiscoveryHorizon.LONG_TERM; exact CanonicalDiscoveryLead.intended_horizons",
+      "semantics": "Existing long-term business/research inspection context; no common numeric wealth period.",
+      "native_uses": "Compounder adapter emits this category. Inflection and policy-transmission adapters may also emit POSITIONAL.",
+      "supported_strategy_mapping": "UNSET; no long-term family becomes a positive or executable policy through this category.",
+      "at_D": "Conditional on original lead and full source closure; business outcome maturity cannot backfill D.",
+      "numeric_meaning": false,
+      "mapping_required": true,
+      "proposed_intermediate": true
+    },
+    {
+      "category": "SHORT_TERM",
+      "source": "app/intelligence/radar_diagnostic_orchestration.py",
+      "origin": "CanonicalDiagnosticHorizon.SHORT_TERM and frozen rule-horizon candidate",
+      "semantics": "Existing diagnostic context vocabulary, not an available discovery-lead category or tactical-duration synonym.",
+      "native_uses": "Radar maps only the existing POSITIONAL and LONG_TERM DiscoveryHorizon values; applicability remains POLICY_UNSET.",
+      "supported_strategy_mapping": "UNAVAILABLE_IN_FIRST_PROPOSED_SCOPE",
+      "at_D": "Diagnostic context/candidate document is insufficient authority.",
+      "numeric_meaning": false,
+      "mapping_required": true,
+      "proposed_intermediate": false
+    }
+  ],
+  "routing_contract": {
+    "allowed_intermediates": [
+      "POSITIONAL",
+      "LONG_TERM"
+    ],
+    "implicit_synonyms": [],
+    "watch_archetype_to_category_fallback": false,
+    "pre_breakout_implies_numeric_horizon": false,
+    "single_category_required": true,
+    "current_policy_identities_are_not_horizon_authority": true,
+    "unavailable_hsi_signal_horizon_repair": false,
+    "latest_without_explicit_cutoff": false,
+    "source_verification": "Native contract and raw fingerprint verification plus independent original-event linkage and known-at closure required. Do not recreate or repair a source. Source hashes carry their native scheme, not a forced replacement hash."
+  },
+  "numeric_problem": {
+    "choice": "B_FUTURE_SEPARATELY_APPROVED_MAPPING_TABLE",
+    "canonical_numeric_value_available": false,
+    "numeric_duration": null,
+    "numeric_range": null,
+    "numeric_grid": [],
+    "effective_unit": null,
+    "blocker": "HORIZON_MAPPING_POLICY_REQUIRED",
+    "empirical_support": "NOT_ESTABLISHED",
+    "unrelated_windows_borrowed": false
+  },
+  "mapping": {
+    "mapping_policy_id": "gate1-rotation-research-horizon-category-mapping",
+    "version": "v1-proposed",
+    "status": "EMPTY_UNAPPROVED_NOT_ACTIVE",
+    "rows": [],
+    "row_shape": {
+      "mapping_id": "nonempty canonical identifier",
+      "mapping_version": "nonempty immutable version",
+      "row_id": "unique row identity within mapping version",
+      "category": "POSITIONAL | LONG_TERM, exact canonical origin reference mandatory",
+      "category_source_contract_ref": "nonempty verified source contract ID/version/fingerprint scheme",
+      "supported_strategy_refs": "nonempty ordered exact ID/version/fingerprint references; no wildcard or placeholder executable policy",
+      "supported_archetypes": "nonempty ordered exact current OpportunityArchetype values",
+      "supported_instrument_state_refs": "nonempty ordered canonical applicability references for both legs",
+      "numeric_duration": "null in proposal; positive integer only if TRADING_SESSIONS becomes approved, never a default",
+      "unit": "null until independently approved; conceptual preference TRADING_SESSIONS is not an effective unit",
+      "counting_rule_ref": "null until independently approved; defines first-counted session and partial/special session treatment",
+      "terminal_rule_ref": "null until independently approved; defines phase/boundary and non-tradable exceptions",
+      "precision_rule_ref": "null until independently approved; exact timezone-aware instant representation",
+      "justification_refs": "ordered original methodological/empirical sources with identity/fingerprint and known-at",
+      "approval_ref": "null until independent human policy approval; includes scope and approving authority",
+      "selection_ref": "null until exact historical selection independently verified",
+      "effective_version": "null until approved version is selected; must equal exact mapping_version when resolved",
+      "effectivity_verifier_ref": "null until exact native approval/selection validity semantics are established",
+      "activation_status": "NOT_ACTIVE here; future activation requires separate authorized successor",
+      "supersedes_ref": "optional exact immutable prior version reference; no overwrite",
+      "fingerprint": "content fingerprint of complete normalized row excluding only fingerprint; self-hash is not approval"
+    },
+    "schema_role": "DOCUMENT_ONLY_SHAPE_NOT_RUNTIME_MODEL",
+    "validation": "Closed rows with explicit source schemes; no unknown fields, null/default-to-zero conversion, boolean-as-number, duplicate/conflicting row identity, wildcard scope or arbitrary priority. A proposal row is never effective. Future active mapping requires independently verified scope, approval, validity and unique selection at D.",
+    "selection": "Exact category + original strategy/policy/archetype + both instrument/state scopes; zero rows unavailable, multiple distinct applicable rows conflicting. Do not choose first, latest-now or greatest return.",
+    "duplicate_rule": "Retained identical source aliases counted once per predecessor semantics; same ID/version with different payload fails closed before any category collapse."
+  },
+  "duration_units": [
+    {
+      "unit": "TRADING_SESSIONS",
+      "recommendation": "PREFERRED_CONCEPT_ONLY",
+      "basis": "Both comparable market outcomes require canonical session/phase evidence; factual calendar already distinguishes trading and non-trading days.",
+      "missing": "No approved number, first-counted-session rule, partial/special-session weight, terminal phase or instrument-exception rule.",
+      "effective": false
+    },
+    {
+      "unit": "CALENDAR_DAYS",
+      "recommendation": "NOT_SELECTED",
+      "basis": "Represents elapsed calendar dates, including non-trading days; not equivalent to market opportunity.",
+      "missing": "Would need separate strategy justification and explicit tradable-terminal rule; cannot borrow cooldown days.",
+      "effective": false
+    },
+    {
+      "unit": "ELAPSED_TIMESTAMP_DURATION",
+      "recommendation": "NOT_SELECTED",
+      "basis": "Represents elapsed time, not trading-session exposure.",
+      "missing": "Would require independent rationale, timezone/precision and terminal market alignment; no simple timedeltas or nearest-price default.",
+      "effective": false
+    }
+  ],
+  "selection": {
+    "cutoff": "ORIGINAL_DECISION_D",
+    "all_decision_source_times": "event/known/approval/selection <= D as appropriate under native source semantics",
+    "effective_rule": "Exact independently verified native policy validity intervals; no new universal effective-to convention.",
+    "runtime_clock": false,
+    "forward_evidence": false,
+    "policy_version_pin": true,
+    "post_outcome_change": false,
+    "look_up_latest_now": false,
+    "unsupported_strategy": "FAIL_CLOSED",
+    "missing_routing": "FAIL_CLOSED",
+    "descriptive_duration_override": false
+  },
+  "terminal_proposal": {
+    "start": "D",
+    "start_contract_ref": "economic_contract.horizon.definition_required/start_at_decision",
+    "executable_price_alignment": "Separate D-visible capital/price methodology remains required; missing alignment is a blocker, never a later start/fill.",
+    "symbolic_rule": "If a future approved mapping supplies N TRADING_SESSIONS and an approved counting/terminal policy, form the unique ordered eligible terminal sequence from D-visible canonical calendar/phase evidence under that policy; end is its Nth terminal. This is conditional structure, not an approved N, first counted session, phase or runtime algorithm.",
+    "counting_rule_ref": null,
+    "terminal_phase": null,
+    "precision_ref": null,
+    "partial_decision_session_count": null,
+    "half_or_special_session_count": null,
+    "endpoint_rule_ref": null,
+    "end_value": null,
+    "requires_end_strictly_after_D": true,
+    "no_nearest_bar": true,
+    "no_date_roll_fallback": true,
+    "cases": [
+      {
+        "case": "NORMAL_TRADING_SESSION",
+        "proposal": "Use exact selected phase/precision and frozen approved count convention; missing rule prevents resolution."
+      },
+      {
+        "case": "HOLIDAY",
+        "proposal": "Not a trading session in a future session-count policy; exact first-party D-visible schedule required. No calendar-day duration silently rolled."
+      },
+      {
+        "case": "WEEKEND",
+        "proposal": "Use source-derived weekday and special-day resolution, not hard-coded Monday-Friday arithmetic."
+      },
+      {
+        "case": "SPECIAL_OR_HALF_SESSION",
+        "proposal": "Use exact first-party day/phase; whether/how counted remains POLICY_REQUIRED. No unit weight or normal close invented."
+      },
+      {
+        "case": "SUSPENDED_INSTRUMENT",
+        "proposal": "Exchange session does not prove security tradability. Freeze common end; retain missing exact instrument outcome as unavailable/excluded."
+      },
+      {
+        "case": "MISSING_BAR",
+        "proposal": "No nearest later/prior bar, carry-forward or zero return. No complete label."
+      },
+      {
+        "case": "DELISTING",
+        "proposal": "Require governed terminal entitlement/value and canonical identity lineage under predecessor wealth methodology, otherwise excluded without dropping the originating event."
+      },
+      {
+        "case": "CORPORATE_ACTION",
+        "proposal": "Preserve horizon; require canonical comparable parcel/adjustment lineage for each leg, no endpoint change."
+      },
+      {
+        "case": "CLOSURE_OR_OUTAGE",
+        "proposal": "Later unexpected closure cannot rewrite frozen D-selected endpoint. Missing completion remains unresolved/pending or excluded; no data-driven extension."
+      }
+    ]
+  },
+  "calendar": {
+    "contract": "canonical-market-session-calendar-and-event-time/v1",
+    "source": "app/historical/canonical_market_session_event_time.py",
+    "capability": "DERIVABLE",
+    "history": "SOURCE_NOT_READY",
+    "supported_methods": [
+      "resolve_trading_day",
+      "phases_for",
+      "adjacent_trading_session"
+    ],
+    "missing": "Economic N-session counting and terminal conventions, plus exact historical/calendar/instrument source coverage.",
+    "scope": "NSE / CAPITAL_MARKET / Asia/Kolkata",
+    "provenance": "calendar_id + calendar fingerprint + contract version + original source IDs/fingerprints; no invented mutable calendar version.",
+    "visibility": "Existing _source_visible: known_at first, otherwise exact published_at, otherwise published_on strictly before D's local date. Do not backfill exact intraday publication.",
+    "effectivity": "Existing calendar date range semantics inclusive at both defined ends; not imported as unrelated horizon-policy approval interval semantics.",
+    "required_sources": [
+      "ANNUAL_HOLIDAYS",
+      "WEEKDAY_CONVENTION",
+      "SPECIAL_DAY_WHERE_APPLICABLE",
+      "EFFECTIVE_PHASE_TIMING",
+      "EXACT_CALENDAR_COVERAGE"
+    ],
+    "unknown_means": "NO_RESOLVED_TERMINAL",
+    "instrument_tradability_not_implied": true,
+    "registration_created": false
+  },
+  "binding": {
+    "status": "PROPOSED_EXTENSION_REQUIREMENTS_ONLY",
+    "reuse": "Preserve predecessor PolicyRef/SourceRef/HorizonBinding/DecisionSnapshot wire contracts. Any future extra routing/mapping representation needs a new versioned wrapper; no mutation of old fingerprint inputs.",
+    "required": [
+      "horizon_policy_id",
+      "horizon_policy_version",
+      "policy_fingerprint",
+      "approval_selection_effectivity_refs",
+      "original_event_comparison_and_pair_refs",
+      "decision_cutoff",
+      "routing_source_refs_and_fingerprints",
+      "selected_category",
+      "mapping_id_version_row_fingerprint",
+      "numeric_duration_if_approved",
+      "unit_if_approved",
+      "counting_terminal_precision_refs",
+      "resolved_start",
+      "resolved_end",
+      "calendar_contract_id_calendar_id_and_fingerprint",
+      "calendar_source_refs",
+      "resolution_fingerprint"
+    ],
+    "same_complete_binding_both_legs": true,
+    "leg_specific_duration": false,
+    "fingerprint": "Use existing canonical_json/content_fingerprint on complete normalized versioned content, exclude only own fingerprint; verify native inputs before normalization. Exact future wrapper schema/identity requires separate approval; no circular identity/fingerprint or omitted semantic field.",
+    "identity": "Existing paired observation identity remains unchanged. New wrapper identity, if needed later, must bind original event/pair/D and pinned policy/mapping/source versions and exclude future outcome/research runtime time.",
+    "normalization": "Aware timestamps normalized to UTC, source units retained, ordered role/id/version references with explicit native fingerprint scheme; exact aliases retained without conflicting collapse.",
+    "current_binding": null
+  },
+  "multi_horizon": {
+    "proposal": "EXACTLY_ONE_CANONICAL_HORIZON_PER_PAIR",
+    "multiple_source_categories": "UNRESOLVED_CONFLICT_NO_PRIORITY",
+    "separate_observation_fanout": false,
+    "numeric_grid": [],
+    "best_return_selection": false,
+    "future_extension": "Separate versioned research design/approval required before any multi-observation approach; freeze all choices before outcomes and group same-origin events across splits."
+  },
+  "conflicts": {
+    "rule": "Any required-source disagreement or missing/unverifiable authority prevents complete admission; no winner invented.",
+    "precedence": "Checks identify all applicable reasons in stable declared order; first code is reporting-only, never an override of another blocker.",
+    "reason_order": [
+      "SOURCE_TAMPERED",
+      "INPUT_AFTER_CUTOFF",
+      "POLICY_AUTHORITY_UNAVAILABLE",
+      "ROUTING_SOURCE_MISSING",
+      "ROUTING_SOURCE_CONFLICT",
+      "CATEGORY_UNSUPPORTED",
+      "CATEGORY_AMBIGUOUS",
+      "STRATEGY_CATEGORY_CONFLICT",
+      "HORIZON_MAPPING_POLICY_REQUIRED",
+      "MAPPING_AMBIGUOUS",
+      "MAPPING_VERSION_INVALID",
+      "CALENDAR_UNRESOLVED",
+      "END_BOUNDARY_POLICY_REQUIRED",
+      "TERMINAL_OBSERVATION_UNAVAILABLE",
+      "PENDING_MATURITY"
+    ],
+    "label_when_blocked": null,
+    "fallback": false
+  },
+  "maturity": {
+    "reuse": "Predecessor protocol maturity/admission unchanged.",
+    "unresolved_horizon": "INADMISSIBLE_OR_UNRESOLVED; never a complete observation or guessed waiting duration",
+    "valid_horizon_before_end": "PENDING_MATURITY",
+    "condition": "R >= frozen end AND canonical exact session/phase completed with proof known_at <= R; outcome evidence must also be known by R.",
+    "session_complete_missing_bar": "Completion is not a complete label; retain exclusion/null outcome.",
+    "OOS": "Only eligible mature evidence enters predecessor frozen OOS methodology; no fitting or labels generated here.",
+    "outcome_can_select_duration": false
+  },
+  "historical_replay": {
+    "required_pins": [
+      "original_D",
+      "original_event_and_pair",
+      "allowed_routing_inputs",
+      "selected_category",
+      "horizon_policy_id_version_fingerprint",
+      "mapping_id_version_row_fingerprint",
+      "independent_approval_selection_effectivity",
+      "numeric_duration_if_approved",
+      "unit_counting_precision_terminal_rules",
+      "calendar_identity_and_sources",
+      "resolved_start_and_end",
+      "resolution_fingerprint"
+    ],
+    "later_policy_rewrite": false,
+    "new_version": "Explicit immutable successor; old decisions preserve old versions.",
+    "historical_backdating": false,
+    "administrative_replay": "Retained later run metadata permitted only as predecessor administrative lineage, never as D-visible approval or features.",
+    "historical_feasibility": "A policy approved after an original D cannot authorize a historical observation under the frozen protocol. No retrospective exception is introduced; prospective applicability or further governance is a genuine prerequisite."
+  },
+  "numeric_evidence_requirements": [
+    {
+      "id": "ME01",
+      "evidence": "Exact strategy-specific research question and existing governed horizon definition if any",
+      "required": "Separate planned comparison period from exit/expiry and business-fact observation. Establish relevance to both legs, not only the challenger.",
+      "source": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json"
+    },
+    {
+      "id": "ME02",
+      "evidence": "PIT-safe original setup/event cohorts and historical identities with calendar coverage",
+      "required": "Original cutoff/features/version closure, non-survivor inclusion, revisions, conflicts and missingness accounted for. Bars alone are insufficient. This slice generates no cohort.",
+      "source": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json"
+    },
+    {
+      "id": "ME03",
+      "evidence": "Predeclared strategy-specific duration/counting hypotheses and independent test design",
+      "required": "No retrospective best-return duration. Any candidate values/grid and reporting multiplicity need separate evidence justification and approval; none supplied here.",
+      "source": "app/backtest/walk_forward.py"
+    },
+    {
+      "id": "ME04",
+      "evidence": "Walk-forward/OOS evidence, maturity and overlap controls",
+      "required": "Frozen train/validation/test separation, leakage/overlap treatment, held-out review and sensitivity/stability across relevant regimes; no sample, purge or embargo number invented.",
+      "source": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json"
+    },
+    {
+      "id": "ME05",
+      "evidence": "Paired economic relevance and uncertainty/missing-data audit",
+      "required": "Same parcel/capital/horizon/method/INR; realized paired evidence and frictions separated. Single-leg win rate, self-improvement window or average holding duration is not sufficient.",
+      "source": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json"
+    },
+    {
+      "id": "ME06",
+      "evidence": "Independent authorized policy review and exact approval/selection provenance",
+      "required": "Record reviewer/authority/scope, evidence fingerprint and effective version. RA approval only where separately established as applicable; this proposal makes no new legal requirement. Approval is not performance proof.",
+      "source": "app/intelligence/hsi_signal_strategy_registry.py"
+    }
+  ],
+  "readiness": [
+    {
+      "component": "POLICY_IDENTITY",
+      "state": "READY",
+      "evidence": "Proposal identity/version and content scheme defined, not registered authority."
+    },
+    {
+      "component": "SCOPE",
+      "state": "POLICY_PROPOSED",
+      "evidence": "Research-only paired comparison; no implicit production or holding-period scope."
+    },
+    {
+      "component": "ALLOWED_DECISION_INPUTS",
+      "state": "POLICY_PROPOSED",
+      "evidence": "Closed roles, original D/source verification mandatory; no duration drivers from descriptive/future data."
+    },
+    {
+      "component": "ROUTING_SOURCE",
+      "state": "DERIVABLE",
+      "evidence": "Existing Watch/lead/strategy provenance reusable only with exact original event closure."
+    },
+    {
+      "component": "CATEGORICAL_SOURCE",
+      "state": "DERIVABLE",
+      "evidence": "POSITIONAL/LONG_TERM already exist; multi-category ambiguity fails closed; SHORT_TERM not admitted."
+    },
+    {
+      "component": "NUMERIC_DURATION",
+      "state": "POLICY_UNSET",
+      "evidence": "No numeric duration, range, average or grid supplied."
+    },
+    {
+      "component": "DURATION_UNIT",
+      "state": "POLICY_PROPOSED",
+      "evidence": "TRADING_SESSIONS is conceptual preference; effective unit remains null pending counting/terminal policy."
+    },
+    {
+      "component": "CATEGORY_MAPPING",
+      "state": "POLICY_REQUIRED",
+      "evidence": "Future versioned table structure proposed; rows empty; HORIZON_MAPPING_POLICY_REQUIRED."
+    },
+    {
+      "component": "DECISION_BINDING",
+      "state": "READY",
+      "evidence": "Inherited structural constraint: original D mandatory, selection inputs all D-visible."
+    },
+    {
+      "component": "START_BOUNDARY",
+      "state": "READY",
+      "evidence": "Inherited start exactly D, not next session/fill/close."
+    },
+    {
+      "component": "END_BOUNDARY_CONVENTION",
+      "state": "POLICY_REQUIRED",
+      "evidence": "Counting origin, phase, precision and security/closure exception rules unresolved."
+    },
+    {
+      "component": "CALENDAR_AUTHORITY",
+      "state": "DERIVABLE",
+      "evidence": "Existing factual resolver is suitable supporting capability; not a general economic N-session counting policy."
+    },
+    {
+      "component": "PAIR_SYMMETRY",
+      "state": "READY",
+      "evidence": "One complete immutable resolution and fingerprint shared by both legs."
+    },
+    {
+      "component": "MULTI_HORIZON",
+      "state": "POLICY_PROPOSED",
+      "evidence": "Exactly one selected category and bound horizon; no fan-out/grid authorized."
+    },
+    {
+      "component": "MATURITY_INTEGRATION",
+      "state": "DERIVABLE",
+      "evidence": "Reuse exact endpoint plus canonical completion/known-at proof; no labels generated."
+    },
+    {
+      "component": "PIT_REPLAY",
+      "state": "SOURCE_NOT_READY",
+      "evidence": "Original event/lead/approval/mapping/calendar closure not proved for historical pairs."
+    },
+    {
+      "component": "CONFLICT_PRECEDENCE",
+      "state": "POLICY_PROPOSED",
+      "evidence": "Reject conflicting applicable source categories/versions; no arbitrary winner or fallback."
+    },
+    {
+      "component": "PRODUCTION_COMPATIBILITY",
+      "state": "BLOCKED",
+      "evidence": "Future compatibility possible only with independent live governance/activation; no authority inherited."
+    },
+    {
+      "component": "ACTIVATION_AUTHORITY",
+      "state": "AUTHORITY_NOT_REGISTERED",
+      "evidence": "No approval, effective time or registry registration created."
+    },
+    {
+      "component": "CALENDAR_HISTORY",
+      "state": "SOURCE_NOT_READY",
+      "evidence": "No new historical coverage capture; exact D-visible schedules/phases and instrument terminal evidence still required."
+    }
+  ],
+  "blockers_closed": [
+    "DEDICATED_PROPOSAL_ID_AND_RESEARCH_SCOPE",
+    "CLOSED_INPUT_ROLES_AND_NO_IMPLICIT_CATEGORY_SYNONYMS",
+    "EMPTY_MAPPING_CONTRACT_DEFINED",
+    "CONCEPTUAL_UNIT_ALTERNATIVES_EVALUATED",
+    "SYMMETRY_CONFLICT_AND_MATURITY_PROPOSAL_DEFINED"
+  ],
+  "blockers_remaining": [
+    "NUMERIC_MAPPING_EVIDENCE_AND_INDEPENDENT_APPROVAL",
+    "FIRST_COUNTED_PARTIAL_SPECIAL_SESSION_RULE",
+    "TERMINAL_PHASE_PRECISION_AND_EXCEPTIONS",
+    "ORIGINAL_D_VISIBLE_EVENT_ROUTING_POLICY_CALENDAR_CLOSURE",
+    "HISTORICAL_BACKDATING_PROHIBITION",
+    "INSTRUMENT_TERMINAL_AND_EXECUTABLE_PRICE_ALIGNMENT",
+    "RESEARCH_AUTHORITY_NOT_REGISTERED",
+    "SEPARATE_LIVE_COMPATIBILITY_APPROVAL"
+  ],
+  "frozen_boundaries": {
+    "v1": "six-gates-production-v1/v1 ACTIVE",
+    "v2": "NOT_ACTIVE",
+    "B09": "V2_APPLICABILITY_ONLY_NOT_NUMERIC_HORIZON",
+    "start": "D",
+    "gates_1_through_6_changed": false,
+    "tradeplan_changed": false,
+    "decision_score_changed": false,
+    "paired_protocol_changed": false,
+    "ai_authority": false,
+    "user_arbitrary_duration_authority": false
+  },
+  "runtime": {
+    "horizon_policy_activated": false,
+    "producer_registered": false,
+    "scenario_model": false,
+    "research_observations": false,
+    "realized_labels": false,
+    "cohort": false,
+    "calibration": false,
+    "database_mutation": false,
+    "portfolio_mutation": false,
+    "broker_orders": false,
+    "api_ui": false,
+    "live_gate_changes": false
+  },
+  "next_continuations": [
+    "GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1"
+  ],
+  "next_continuation_started": false,
+  "inspected_file_fingerprints_lf": {
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/crisis/models.py": "sha256:f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/composition.py": "sha256:15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "sha256:7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/catalysts/service.py": "sha256:c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/discovery_recall_reference_matching.py": "sha256:a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/hsi_signal.py": "sha256:85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/hsi_signal_projection.py": "sha256:f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "sha256:4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro_news_evidence.py": "sha256:ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_discovery.py": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "sha256:e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/radar_diagnostic_orchestration.py": "sha256:69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/sector_economics/service.py": "sha256:5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/paper/engine.py": "sha256:2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/holding_intelligence.py": "sha256:e9ee39372662d800079af409074c92254ab93c56bd3d300743fbe4196f8adc26",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/production_v1/canonical_setup_activation.py": "sha256:01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/governed_setup_source.py": "sha256:b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/research/handoff.py": "sha256:57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/runtime/cli.py": "sha256:78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/self_improvement/models.py": "sha256:588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/strategies/common/models.py": "sha256:9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/pre_breakout/research_handoff.py": "sha256:48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/universe_analysis/models.py": "sha256:53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.json": "sha256:5c2d0625ba035406d5c5146db3b594577e4371a5a671a6b93324c8da176b1c7a",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json": "sha256:7a13bcd4fcf0d9b18e977386652ec8af98951b82294c15038e811665d7dd81f8",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md": "sha256:7729396fd2fbdf0e518a487916b547ce517bcce1d83ef5e85dc7fc1eb6655f41",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json": "sha256:11e56d1e3bccf269d2d02c2b039fcbc89c8b0c17c4cfac32f3d9cce508d6d70a",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.md": "sha256:8539645cd09870ff42f547c75cef1aca17a51b3e877438cb67f6f4e769449cee",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_paired_scenario_research_protocol.py": "sha256:4d365c1f564c8732c0200862ac7a4720a18334a68a2f597f41afad038203bd25",
+    "tests/unit/test_gate1_rotation_research_horizon_authority_policy.py": "sha256:0bdccfc30d3af66802123da530feb76e09bac11cce16199905074ca8ce63f9b1",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479"
+  },
+  "fingerprint_scheme": "SHA256_REPOSITORY_CANONICAL_JSON_OF_COMPLETE_PROPOSAL_EXCLUDING_ONLY_POLICY_FINGERPRINT",
+  "policy_fingerprint": "sha256:090b3a017060f88c04e76dbd9bd69cd9f00fcbdadbea27faac23ca746b2b5864"
+}
