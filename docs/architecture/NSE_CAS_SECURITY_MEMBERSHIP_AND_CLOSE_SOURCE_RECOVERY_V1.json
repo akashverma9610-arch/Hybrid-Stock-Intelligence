@@ -1,0 +1,1816 @@
+{
+  "schema_version": "nse-cas-source-recovery-governance/v1",
+  "slice": "NSE_CAS_SECURITY_MEMBERSHIP_AND_CLOSE_SOURCE_RECOVERY_V1",
+  "baseline_commit": "28fb8451208853c2705ca9b516f74e855441c581",
+  "audit_id": "nse-cas-security-membership-and-close-source-recovery",
+  "version": "v1",
+  "status": "SOURCE_RECOVERY_AUDIT / NO_PARAMETER_APPROVAL / NOT_ACTIVE",
+  "slice_status": "ACCEPTED/CLOSED",
+  "decision": "C",
+  "semantic_decision": "CAS_MEMBERSHIP_SOURCE_STILL_BLOCKED",
+  "rationale": "The three requested circular bodies and a dated, complete CAS membership payload were not recovered. Reverified global launch/modalities and a legacy field dictionary cannot establish security-level applicability or its revisions. Audit closure is not source readiness.",
+  "audit_date": "2026-09-15",
+  "audit_date_is_historical_known_at": false,
+  "parent": {
+    "path": "docs/architecture/CANONICAL_DISCOVERY_UNION_TO_BRAIN_HANDOFF_CONTRACT_V1.json",
+    "field": "contract_fingerprint",
+    "fingerprint": "sha256:731399dfbca758763dda0ad9ee1350aa50cd433ab183bb62fc710e4b5826b1e8"
+  },
+  "predecessors": [
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:e751cc6d7f4585d58b081ed9be9d876d399166059cb6d4836f7ff062ce7d8eb3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:79c9626950d25266bca4dfa56ca59922bbd558681fa9daa634025f88648627c8"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:7892a8afe5d503261567d68f3144ca7eb28934a2e8b6c93bd63ce9ffbd3c8dfc"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:090b3a017060f88c04e76dbd9bd69cd9f00fcbdadbea27faac23ca746b2b5864"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json",
+      "field": "audit_fingerprint",
+      "fingerprint": "sha256:aa9d4b211a5a2aba762c0b31af99b2a87fe08e0963865344104e9b87c33b0bb1"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+      "field": "protocol_fingerprint",
+      "fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+      "field": "contract_fingerprint",
+      "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:b2c7e7913384dce1b76691d89cb59a9b38737f9fb365eed3392a0f55292359f6"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:e587cfb98e32610f6a0485c87d62a8546400ac19498c0aef18ad0b38b22e967c"
+    },
+    {
+      "path": "docs/architecture/HSI_BRAIN_FUNNEL_RUNTIME_RECONCILIATION_AUDIT_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:224297fc6ce7bc1b7a5bf412446b69c3f71e85e9608f7906eb6fb58ea65a83ab"
+    }
+  ],
+  "authority": {
+    "scope": "RESEARCH_BOOTSTRAP_ONLY",
+    "approval_state": "UNAPPROVED",
+    "registration_state": "NOT_REGISTERED",
+    "activation_state": "NOT_ACTIVE",
+    "usable": false,
+    "approval_ref": null,
+    "registration_ref": null,
+    "producer_ref": null,
+    "forbidden": [
+      "GATE1_PASS",
+      "ROTATE_IN",
+      "CAPITAL_MOVEMENT",
+      "PRODUCTION_SCENARIO_ENDPOINT",
+      "PORTFOLIO_MUTATION",
+      "BROKER_ORDER_EXECUTION",
+      "PRODUCTION_HORIZON_AUTHORITY"
+    ],
+    "v1": {
+      "policy_id": "six-gates-production-v1",
+      "version": "v1",
+      "status": "ACTIVE"
+    },
+    "v2": {
+      "policy_id": "execution-gate-policy-v2-proposed",
+      "version": "v2-proposal.4",
+      "status": "NOT_ACTIVE"
+    }
+  },
+  "bootstrap_policy_status": "PROPOSED / UNAPPROVED / NOT_REGISTERED / NOT_ACTIVE",
+  "bootstrap_seed": "UNSET",
+  "effective_parameters": {
+    "category_mapping": null,
+    "strategy_scope": null,
+    "seed_duration": null,
+    "effective_duration_unit": null,
+    "counting_rule": null,
+    "D_session_index": null,
+    "first_counted_session": null,
+    "count_precision": null,
+    "terminal_boundary_rule": null,
+    "start_price_rule": null,
+    "start_alignment_rule": null,
+    "terminal_price_rule": null,
+    "price_precision_rule": null,
+    "calendar_binding": null,
+    "instrument_scope": null,
+    "seed_evidence_package": null,
+    "approval_receipt": null,
+    "registration_receipt": null,
+    "effective_start": null,
+    "seed_range": null,
+    "parameter_precision": null,
+    "retirement_threshold": null,
+    "review_cadence": null,
+    "sample_minimum": null
+  },
+  "preservation": {
+    "research_only": true,
+    "start": "D",
+    "one_immutable_binding_for_both_legs": true,
+    "one_horizon_per_pair": true,
+    "exact_original_decision_required": true,
+    "selection_uses_only_D_visible_evidence": true,
+    "native_source_fingerprint_verified_before_wrapper": true,
+    "policy_approval_selection_effective_at_D_required": true,
+    "retroactive_approval": false,
+    "future_outcomes_in_duration_selection": false,
+    "nearest_bar_fallback": false,
+    "date_roll_fallback": false,
+    "current_time_interpretation": false,
+    "current_membership_backfill": false,
+    "modern_calendar_backcast": false,
+    "multi_horizon_best_result_selection": false,
+    "OOS_reused_for_selection": false,
+    "per_observation_hindsight_selection": false,
+    "historical_relabeling": false,
+    "terminal_requires_R_at_or_after_end_and_completion_and_known_price": true,
+    "late_admin_replay_metadata_not_evidence": true,
+    "unexpected_closure_may_rewrite_frozen_endpoint": false,
+    "production_reuse": "SEPARATE_EXPLICIT_APPROVAL_REQUIRED"
+  },
+  "registration": {
+    "required_chronology": [
+      "rationale_known_at <= approved_at",
+      "approved_at <= registered_at",
+      "registered_at <= effective_from",
+      "registered_at < D",
+      "effective_from <= D"
+    ],
+    "actual_approved_at": null,
+    "actual_registered_at": null,
+    "actual_effective_from": null,
+    "native_effectivity_required": true,
+    "registration_equal_D_allowed": false,
+    "backdating": false,
+    "future_approval_authorizes_original_D": false
+  },
+  "runtime": {
+    "source_registration": false,
+    "CAS_ingestion": false,
+    "provider_calls": false,
+    "database_access": false,
+    "database_mutation": false,
+    "bar_derivation_changes": false,
+    "price_policy_activation": false,
+    "bootstrap_activation": false,
+    "cohort_generation": false,
+    "calibration": false,
+    "handoff_wiring": false,
+    "portfolio_access": false,
+    "broker_order_operation": false,
+    "gate_change": false
+  },
+  "source_fingerprint_scope": "Canonical JSON fingerprint of audit evidence summary only; NOT raw PDF/file bytes, exchange attestation, native HSI receipt or retrospective known-at.",
+  "sources": [
+    {
+      "id": "S01",
+      "document_id": "CMTR73845",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR73845.pdf",
+      "publication_date": "2026-04-22",
+      "publication_basis": "Date/reference on NSE CAS page and CMTR75479; body not read",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_CIRCULAR",
+      "recovery_state": "BODY_UNAVAILABLE",
+      "recovered": false,
+      "locator": "Circular reference only",
+      "findings": [
+        "Security-master modification reference; no body/schema/list contents inferred."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CMTR73845_BODY_UNAVAILABLE",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:1c0776e30022493bdfb2b9c52ef2e5dde953bf0db8f33b1128936ff47fb2c643"
+    },
+    {
+      "id": "S02",
+      "document_id": "CMTR74466",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR74466.pdf",
+      "publication_date": "2026-05-29",
+      "publication_basis": "Date/reference on NSE CAS page and CMTR75479; body not read",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_CIRCULAR",
+      "recovery_state": "BODY_UNAVAILABLE",
+      "recovered": false,
+      "locator": "Circular reference only",
+      "findings": [
+        "CAS trading-modalities reference; operational changes and effective security applicability unverified."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CMTR74466_BODY_UNAVAILABLE",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:5166910711bc2f7f1d9bb56746926d3ff5ccf0bec0a7bb67be0a237648df4ad9"
+    },
+    {
+      "id": "S03",
+      "document_id": "CMTR67774_SECTION_3_4",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR67774.pdf",
+      "publication_date": "2025-04-30",
+      "publication_basis": "CMTR73362 section 5.1.2 reference; target body not read",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_CIRCULAR",
+      "recovery_state": "BODY_UNAVAILABLE",
+      "recovered": false,
+      "locator": "Section 3.4 referenced, not recovered",
+      "findings": [
+        "Non-CAS closing calculation is delegated to this section. No derivative/index algorithm used as substitute."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CMTR67774_SECTION_3_4_UNAVAILABLE",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:4977a310fc3c5a461a7bb4b9b9e008dbd12c5c076e921bc67ab35c5dacae8d5e"
+    },
+    {
+      "id": "S04",
+      "document_id": "CMTR73362",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR73362.pdf",
+      "publication_date": "2026-03-18",
+      "publication_basis": "Circular date in recovered text",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_SOP",
+      "recovery_state": "PRIMARY_TEXT_READ",
+      "recovered": true,
+      "locator": "Sections 1, 2, 5 and 6; four-page text",
+      "findings": [
+        "Phase-one scope describes cash stocks with derivative contracts, not a dated constituent list.",
+        "Reference uses 15:00-15:15 VWAP, then same-day LTP if that window has no trade; no daily trade uses previous trading-day close with corporate-action adjusted/base provision.",
+        "Equilibrium is final close; without equilibrium reference applies. Section 5 separately specifies latest available close when there is also no trade all day.",
+        "Non-CAS calculation points to S03; indicative auction information is not a final matched-status field."
+      ],
+      "membership_semantics": "BROAD_PHASE_ONE_CRITERION_ONLY",
+      "identity_fields": [],
+      "timing_semantics": "REFERENCE_WINDOW_ONLY",
+      "close_semantics": "MATCHED_AND_REFERENCE_FINAL_BRANCHES_DISTINCT",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "PUBLIC_RULE_TEXT_READ_NOT_CURRENT_MEMBERSHIP_FEED",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CURRENT_MACHINE_CLOSE_KIND_SCHEMA_UNRECOVERED",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:b523bc93623e5a8c70aa19879a5a488a0faf40adcdd5cfde6fb90d17f9e671f4"
+    },
+    {
+      "id": "S05",
+      "document_id": "CMTR75479",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR75479.pdf",
+      "publication_date": "2026-07-30",
+      "publication_basis": "Circular date in recovered text",
+      "published_at": null,
+      "effective_from": "2026-08-03",
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_LIVE_AND_MOCK_NOTICE",
+      "recovery_state": "PRIMARY_TEXT_READ",
+      "recovered": true,
+      "locator": "Pages 1, 4 and mock annexure; six-page text",
+      "findings": [
+        "Live launch is August 3; August 1 is mock, including different DR test timings.",
+        "Master files for these sessions were to be available by August 1, 06:00 IST on /cmftp/common/ntneat.",
+        "Listed names include security.gz, nnf_security.gz and NSE_CM_security_31072026.csv.gz; contract-stream file is under /cmftp/common/tbt_masters.",
+        "Availability notice is not actual retrieval, CAS field verification or public/extranet equivalence proof."
+      ],
+      "membership_semantics": "MASTER_LOCATION_REFERENCE_ONLY",
+      "identity_fields": [],
+      "timing_semantics": "LIVE_AND_MOCK_CHRONOLOGY_DISTINCT",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "MEMBER_EXTRANET_PATH_DOCUMENTED_PUBLIC_PAYLOAD_UNVERIFIED",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "DATED_MASTER_BODY_AND_CAS_SCHEMA_UNRECOVERED",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:8f89934ecefba92e0fcb4a8dfef07f797fba36fb090f66bd8a37e3b79802e59b"
+    },
+    {
+      "id": "S06",
+      "document_id": "NSE_CAS_PRODUCT_PAGE",
+      "url": "https://www.nseindia.com/static/products-services/closing-auction-session",
+      "publication_date": null,
+      "publication_basis": "Page says updated 2026-08-12; not an exact publication time",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_PRODUCT_PAGE",
+      "recovery_state": "PRIMARY_TEXT_READ",
+      "recovered": true,
+      "locator": "Timings, modalities and circular references",
+      "findings": [
+        "CAS securities end regular trading at 15:15; non-CAS regular window remains 09:15-15:30 IST.",
+        "CAS reference/transition is 15:15-15:20; market/limit entry, modification and cancellation 15:20-15:25; limit-only period 15:25-15:30 has random closure in the final two minutes.",
+        "Matching follows entry closure, nominally 15:30-15:35; transition 15:35-15:50; post-close 15:50-16:00.",
+        "Current page is not dated per-security applicability or historical revision evidence."
+      ],
+      "membership_semantics": "BROAD_PHASE_ONE_CRITERION_ONLY",
+      "identity_fields": [],
+      "timing_semantics": "CURRENT_ORDINARY_CAS_AND_NON_CAS_WINDOWS",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CURRENT_PAGE_NOT_PIT_MEMBERSHIP",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:8d3ae3602db8a08e81b8b429b2e1a920f9fa6e5a1581f5f535468928ba2b0bd3",
+      "page_updated_on": "2026-08-12"
+    },
+    {
+      "id": "S07",
+      "document_id": "NSE_CAS_FAQ_CATALOGUE",
+      "url": "https://www.nseindia.com/static/trade/continuous-markets-FAQs",
+      "publication_date": null,
+      "publication_basis": "Page update 2026-09-04 only",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_FAQ_LANDING",
+      "recovery_state": "LANDING_ONLY",
+      "recovered": false,
+      "locator": "Closing Auction Session FAQ listing",
+      "findings": [
+        "232 KB FAQ is listed; attachment URL/body was not recovered from the page."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "FAQ_ATTACHMENT_UNAVAILABLE",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:c1ecce15a3e52829d502da0f24f1206a339b9da827a1e44a7800ec02c1d2b7c2",
+      "page_updated_on": "2026-09-04"
+    },
+    {
+      "id": "S08",
+      "document_id": "NSE_ALL_REPORTS",
+      "url": "https://www.nseindia.com/all-reports",
+      "publication_date": null,
+      "publication_basis": "No precise publication timestamp established",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_REPORT_CATALOGUE",
+      "recovery_state": "PRIMARY_TEXT_READ",
+      "recovered": true,
+      "locator": "Capital Market report categories",
+      "findings": [
+        "Catalogue lists UDiFF final bhavcopy and NSE-listed MII security files, with separate combined-universe options.",
+        "Legacy CM bhavcopy CSV reports were discontinued July 8, 2024 in favour of UDiFF.",
+        "Close-out price files are not automatically official daily-close files. No complete CAS membership schema or revision archive obtained."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "CATALOGUE_VISIBLE_PAYLOAD_AND_RETENTION_NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CATALOGUE_IS_NOT_COMPLETE_PAYLOAD",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:3f98070756258b0ffdb25fa1b8b5420e5680cee146877a70960540c4fea088b7"
+    },
+    {
+      "id": "S09",
+      "document_id": "NSE_CM_security_31072026.csv.gz",
+      "url": "https://nsearchives.nseindia.com/content/cm/NSE_CM_security_31072026.csv.gz",
+      "publication_date": null,
+      "publication_basis": "Filename date only; S05 availability applies to member masters, not proven public mirror",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_MII_CANDIDATE",
+      "recovery_state": "BODY_UNAVAILABLE",
+      "recovered": false,
+      "locator": "Existing HSI URL convention plus S05 filename",
+      "findings": [
+        "Candidate public URL could not be read. Header, membership codes, row count and equivalence to member distribution are unverified."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "DATED_COMPLETE_CAS_MEMBERSHIP_UNAVAILABLE",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:770ec15bd23603de9f851362ee0e649e628d25d5ee0676e77f6e9d282b4b78e5"
+    },
+    {
+      "id": "S10",
+      "document_id": "SEBI_HO_47_11_11_3_2025_MRD_POD2_I_2765_2026",
+      "url": "https://www.sebi.gov.in/legal/circulars/jan-2026/introduction-of-closing-auction-session-cas-in-the-equity-cash-segment-and-certain-modifications-in-the-pre-open-auction-session_99122.html",
+      "publication_date": "2026-01-16",
+      "publication_basis": "Official landing date",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "SEBI_FINAL_CIRCULAR_LANDING",
+      "recovery_state": "LANDING_ONLY",
+      "recovered": false,
+      "locator": "Landing and linked PDF reference",
+      "findings": [
+        "Final circular landing recovered; linked PDF body unavailable. No additional detailed rules inferred."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "SEBI_BODY_UNAVAILABLE",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:2fbe964b3f6984595572e5adf347b178a363420f46a1c170555e5141bee93d1c",
+      "attachment_url": "https://www.sebi.gov.in/sebi_data/attachdocs/jan-2026/1768576287344.pdf"
+    },
+    {
+      "id": "S11",
+      "document_id": "SEBI_CAS_REVIEW_CONSULTATION_2026_09_12",
+      "url": "https://www.sebi.gov.in/reports-and-statistics/reports/sep-2026/consultation-paper-on-review-of-certain-aspects-of-the-closing-auction-session-market-timings-and-settlement-methodologies-for-derivative-contracts-_104464.html",
+      "publication_date": "2026-09-12",
+      "publication_basis": "Official public-comment landing date",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "SEBI_CONSULTATION_NOT_EFFECTIVE_RULE",
+      "recovery_state": "LANDING_ONLY",
+      "recovered": false,
+      "locator": "Public-comment notice; PDF body unavailable",
+      "findings": [
+        "Later consultation exists; it is not an effective circular or proof of supersession. No change to accepted live regime."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "NOT_PROVEN",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "CONSULTATION_BODY_UNAVAILABLE_NOT_RULE_AUTHORITY",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:2ee30f6d68a4d531495a373924cb25b4770b48139e9fb5e524711d700a6b1c31",
+      "attachment_url": "https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1789202841824.pdf",
+      "effective_rule": false
+    },
+    {
+      "id": "S12",
+      "document_id": "NSE_SNAPSHOT_MDR_RT_CM_V1_21",
+      "url": "https://nsearchives.nseindia.com/web/sites/default/files/inline-files/Snapshot_MDR_RT_CM_v1.21.pdf",
+      "publication_date": "2024-08-28",
+      "publication_basis": "Document date/version",
+      "published_at": null,
+      "effective_from": null,
+      "effective_to": null,
+      "revised_at": null,
+      "superseded_by": null,
+      "source_type": "NSE_LEGACY_DATA_PRODUCT_SPECIFICATION",
+      "recovery_state": "PRIMARY_TEXT_READ",
+      "recovered": true,
+      "locator": "Sections 1, 5.1, 5.3-5.5, 8.1; relevant sections of 34-page PDF",
+      "findings": [
+        "Legacy MarketInfo distinguishes LTP, Close Price, Interval Close Price and Indicative Close Price.",
+        "EOD CMBhavcopy_DDMMYYYY.txt separately names Closing Price and Previous Close Price.",
+        "Securities.DAT describes Token Number, Symbol and Series; these identifiers and generic add/change/delete updates do not prove a CAS membership code or revision process.",
+        "SFTP product requires vendor credentials/agreement. Pre-2026 call-auction files are not established as CAS output."
+      ],
+      "membership_semantics": "NO_SECURITY_LEVEL_MEMBERSHIP_RECOVERED",
+      "identity_fields": [
+        "Token Number",
+        "Symbol",
+        "Series"
+      ],
+      "timing_semantics": "NOT_ESTABLISHED_BY_THIS_SOURCE",
+      "close_semantics": "LEGACY_CLOSE_LTP_INDICATIVE_FIELDS_DISTINCT",
+      "known_at_capability": "No native HSI known-at receipt; audit access date is not historical visibility.",
+      "native_HSI_known_at": null,
+      "historical_coverage": "NOT_PROVEN",
+      "prospective_availability": "ACCESS_AGREEMENT_REQUIRED_FOR_DESCRIBED_PRODUCT_NOT_ACCESSED",
+      "HSI_join_readiness": "IDENTITY_JOIN_SOURCE_GAP",
+      "blocker": "LEGACY_SCHEMA_NOT_CAS_COMPATIBILITY_PROOF",
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "visual_verification": false,
+      "research_authority": false,
+      "evidence_fingerprint": "sha256:83de8a940e93e3556a35561b62de7b16ecbee615f73aa0aed382a1f62ec44a21"
+    }
+  ],
+  "access_audit": [
+    {
+      "source": "S01",
+      "attempts": [
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR73845.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_SAFE_OPEN_FAILURE",
+          "detail": "is not safe to open (non-retryable error)",
+          "http_status": null
+        },
+        {
+          "route": "https://archives.nseindia.com/content/circulars/CMTR73845.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_INTERNAL_ERROR",
+          "detail": "Internal Error",
+          "http_status": null
+        },
+        {
+          "route": "https://www.nseindia.com/content/circulars/CMTR73845.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_SAFE_OPEN_FAILURE",
+          "detail": "is not safe to open (non-retryable error)",
+          "http_status": null
+        },
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR73845.pdf",
+          "method": "BOUNDED_HOST_GET_SANDBOX",
+          "result": "ConnectionError",
+          "detail": "No HTTP response recovered",
+          "http_status": null
+        },
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR73845.pdf",
+          "method": "BOUNDED_HOST_GET_AUTHORIZED_NETWORK",
+          "result": "ReadTimeout",
+          "detail": "HTTPSConnectionPool(host='nsearchives.nseindia.com', port=443): Read timed out. (read timeout=25)",
+          "http_status": null
+        }
+      ],
+      "retries_after_timeout": 0
+    },
+    {
+      "source": "S02",
+      "attempts": [
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR74466.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_SAFE_OPEN_FAILURE",
+          "detail": "is not safe to open (non-retryable error)",
+          "http_status": null
+        },
+        {
+          "route": "https://archives.nseindia.com/content/circulars/CMTR74466.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_INTERNAL_ERROR",
+          "detail": "Internal Error",
+          "http_status": null
+        },
+        {
+          "route": "https://www.nseindia.com/content/circulars/CMTR74466.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_SAFE_OPEN_FAILURE",
+          "detail": "is not safe to open (non-retryable error)",
+          "http_status": null
+        },
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR74466.pdf",
+          "method": "BOUNDED_HOST_GET_SANDBOX",
+          "result": "ConnectionError",
+          "detail": "No HTTP response recovered",
+          "http_status": null
+        },
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR74466.pdf",
+          "method": "BOUNDED_HOST_GET_AUTHORIZED_NETWORK",
+          "result": "ReadTimeout",
+          "detail": "HTTPSConnectionPool(host='nsearchives.nseindia.com', port=443): Read timed out. (read timeout=25)",
+          "http_status": null
+        }
+      ],
+      "retries_after_timeout": 0
+    },
+    {
+      "source": "S03",
+      "attempts": [
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR67774.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_SAFE_OPEN_FAILURE",
+          "detail": "is not safe to open (non-retryable error)",
+          "http_status": null
+        },
+        {
+          "route": "https://archives.nseindia.com/content/circulars/CMTR67774.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_INTERNAL_ERROR",
+          "detail": "Internal Error",
+          "http_status": null
+        },
+        {
+          "route": "https://www.nseindia.com/content/circulars/CMTR67774.pdf",
+          "method": "WEB_OPEN",
+          "result": "TOOL_SAFE_OPEN_FAILURE",
+          "detail": "is not safe to open (non-retryable error)",
+          "http_status": null
+        },
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR67774.pdf",
+          "method": "BOUNDED_HOST_GET_SANDBOX",
+          "result": "ConnectionError",
+          "detail": "No HTTP response recovered",
+          "http_status": null
+        },
+        {
+          "route": "https://nsearchives.nseindia.com/content/circulars/CMTR67774.pdf",
+          "method": "BOUNDED_HOST_GET_AUTHORIZED_NETWORK",
+          "result": "ReadTimeout",
+          "detail": "HTTPSConnectionPool(host='nsearchives.nseindia.com', port=443): Read timed out. (read timeout=25)",
+          "http_status": null
+        }
+      ],
+      "retries_after_timeout": 0
+    },
+    {
+      "source": "S09",
+      "attempts": [
+        {
+          "route": "https://nsearchives.nseindia.com/content/cm/NSE_CM_security_31072026.csv.gz",
+          "method": "WEB_OPEN",
+          "result": "TOOL_INTERNAL_ERROR",
+          "detail": "Internal Error",
+          "http_status": null
+        }
+      ]
+    }
+  ],
+  "membership_records": [],
+  "membership": {
+    "state": "SOURCE_NOT_READY",
+    "recovered_record_count": 0,
+    "count_scope": "Recovered in this audit only; no production coverage census",
+    "initial_universe": null,
+    "source_field_name": null,
+    "source_field_codes": null,
+    "revision_mechanism": null,
+    "membership_mode": "UNRESOLVED_STATIC_PERIODIC_EVENT_RULE_OR_SNAPSHOT",
+    "phase_one_criterion": "Cash securities with derivatives contracts, as broad source description only; not a dated security list",
+    "criterion_alone_proves_membership": false,
+    "required_evidence": [
+      "verified official body and versioned field dictionary",
+      "dated complete scope or explicit positive/negative row",
+      "exact canonical identity plus NSE segment/series and stable ID",
+      "raw source fingerprint and retained lineage",
+      "source publication precision and actual observation/known-at",
+      "native effective interval semantics",
+      "revision/supersession evidence visible at D",
+      "applicable live session regime",
+      "absence/conflict proof"
+    ],
+    "current_backcast": false,
+    "partial_absence_means_non_cas": false,
+    "complete_absence_without_complement_policy_means_non_cas": false,
+    "symbol_only_join": false,
+    "global_launch_implies_membership": false,
+    "classifier_implemented": false,
+    "unknown_default": null
+  },
+  "chronology": {
+    "global_live_date": "2026-08-03",
+    "mock_date": "2026-08-01",
+    "dated_master_label": "2026-07-31",
+    "notice_master_availability_by": "2026-08-01T06:00:00+05:30",
+    "master_availability_is_actual_capture": false,
+    "master_label_is_effective_date": false,
+    "record_model_status": "REQUIRED_EVIDENCE_FIELDS_ONLY_NO_SCHEMA_OR_RUNTIME",
+    "required_fields": [
+      "canonical_instrument_id",
+      "exchange_security_id_or_token",
+      "ISIN",
+      "symbol",
+      "series",
+      "segment",
+      "official_document_id",
+      "source_url",
+      "source_schema_version",
+      "raw_source_fingerprint",
+      "source_publication_time_and_precision",
+      "actual_observed_at",
+      "native_known_at",
+      "source_effective_from",
+      "source_effective_to_if_proven",
+      "applicability_start",
+      "applicability_end_if_proven",
+      "revision_or_supersession_reference",
+      "scope_completeness",
+      "raw_membership_code",
+      "verified_code_meaning",
+      "live_or_mock_session"
+    ],
+    "effective_to_unknown_is_indefinite": false,
+    "revision_boundary_rule": "Native source interval/supersession semantics required; none invented",
+    "date_only_publication": "Preserve date precision. Existing session reader excludes same-local-date use without an exact known/publication timestamp; no midnight substitution.",
+    "usage_rule": "Source must be legitimately visible and effective at D; evidence published/observed later cannot authorize the original D. Publication before effectivity is allowed but does not make effectivity early.",
+    "later_revision_rewrites_D": false,
+    "current_page_backcast": false,
+    "publication_equals_retrieval": false,
+    "accession_exit_category_rule": "Require dated authoritative membership change evidence; security suspension/delisting or symbol change alone does not prove CAS entry/exit."
+  },
+  "identity": {
+    "readiness": "IDENTITY_JOIN_SOURCE_GAP",
+    "generic_join": "IDENTITY_JOIN_DERIVABLE",
+    "stable_keys": [
+      "ISIN",
+      "exchange security ID/token with segment, series and lifecycle bounds"
+    ],
+    "symbol": "Supporting label only, never ambiguous sole key",
+    "fields_verified_for_CAS": [],
+    "generic_fields": [
+      "FinInstrmId",
+      "TckrSymb",
+      "SctySrs",
+      "ISIN"
+    ],
+    "gaps": [
+      "CAS row/schema absent",
+      "dated CAS revision evidence absent",
+      "public versus member-extranet payload equivalence unverified"
+    ],
+    "collisions": "Conflicting exact mappings fail closed; do not choose by row order.",
+    "lifecycle": "Reuse HistoricalSecurityIdentity and its PIT selector; no identity generation or source registration.",
+    "corporate_actions": "Split/bonus adjustment provenance is distinct from membership. Symbol change, merger, demerger or relisting needs exact dated identity/action evidence. Unsupported transitions remain blocked; no inferred continuity."
+  },
+  "close_semantics": {
+    "source_refs": [
+      "S04",
+      "S05",
+      "S06"
+    ],
+    "research_price_selected": null,
+    "executable_fill": false,
+    "cas": {
+      "state": "RULE_TEXT_RECOVERED_TRANSPORT_DISCRIMINATOR_MISSING",
+      "source": "S04 sections 2 and 5.1.1",
+      "reference": "VWAP over 15:00-15:15; no trades in that window uses same-day LTP; no trades all day uses prior trading-day close, adjusted close/base price for corporate action.",
+      "final": "Equilibrium is close. Without equilibrium use section 2 reference; section 5 separately says no equilibrium plus no trades all day uses latest available close.",
+      "caveat": "Keep reference and final-close clauses distinct, including corporate-action provenance; do not flatten into an HSI fallback.",
+      "published_close_may_exist_without_new_trade": true,
+      "no_equilibrium_implies_no_trade_all_day": false,
+      "no_match_is_executed_trade": false,
+      "absence_of_feed_proves_no_match": false,
+      "HSI_reference_carry_forward_allowed": false
+    },
+    "non_cas": {
+      "state": "SOURCE_NOT_READY",
+      "source": "S04 section 5.1.2 points to S03 section 3.4",
+      "regular_window_IST": "09:15-15:30",
+      "calculation": null,
+      "no_trade_rule": null,
+      "equity_derivative_or_index_formula_substituted": false
+    },
+    "matched_discriminator": "Final auction price, final matched quantity, match/no-match status and reference fields require a current authenticated-by-provenance exchange schema/payload; indicative data is not final proof.",
+    "published_to": "S04 section 5.2 identifies clearing-corporation settlement use, not a complete public dissemination API contract.",
+    "suppression_or_no_orders": "Do not infer published value or eligibility from suspension, no orders, no feed or no regular trades. Retain identity/tradability and native close-kind evidence separately."
+  },
+  "phases": {
+    "source": "S06",
+    "timezone": "Asia/Kolkata",
+    "ordinary_cas_continuous_end": "15:15",
+    "schedule": [
+      [
+        "15:15",
+        "15:20",
+        "REFERENCE_TRANSITION"
+      ],
+      [
+        "15:20",
+        "15:25",
+        "ENTRY_MODIFY_CANCEL_MARKET_AND_LIMIT"
+      ],
+      [
+        "15:25",
+        "15:30",
+        "LIMIT_ONLY_MARKET_RESTRICTED_RANDOM_END_LAST_TWO_MINUTES"
+      ],
+      [
+        "15:30",
+        "15:35",
+        "MATCHING_NOMINAL_STARTS_AFTER_ENTRY_CLOSES"
+      ],
+      [
+        "15:35",
+        "15:50",
+        "TRANSITION"
+      ],
+      [
+        "15:50",
+        "16:00",
+        "POST_CLOSE"
+      ]
+    ],
+    "final_publication_timestamp": null,
+    "random_close_is_fixed_end": false,
+    "special_rule": "Require exact official date/session notice plus security applicability. Generic regular calendar is not CAS coverage.",
+    "mock_matures_research": false,
+    "DR_implies_mock": false,
+    "session_cases": [
+      {
+        "case": "MOCK_2026_08_01",
+        "state": "EXCLUDED_FROM_RESEARCH_MATURITY",
+        "source": "S05"
+      },
+      {
+        "case": "MUHURAT",
+        "state": "DATED_LIVE_NOTICE_AND_CAS_APPLICABILITY_REQUIRED",
+        "source": "I03"
+      },
+      {
+        "case": "SPECIAL_LIVE",
+        "state": "DATED_LIVE_NOTICE_AND_CAS_APPLICABILITY_REQUIRED",
+        "source": "I03"
+      },
+      {
+        "case": "DISASTER_RECOVERY",
+        "state": "LIVE_VS_MOCK_MUST_BE_PROVEN",
+        "source": "S05"
+      },
+      {
+        "case": "TRUNCATED_OR_EXCEPTIONAL",
+        "state": "NO_REGULAR_TIMING_DEFAULT",
+        "source": "I03"
+      }
+    ]
+  },
+  "price_fields": [
+    {
+      "field": "OFFICIAL_CLOSE",
+      "exact_field": "ClsPric",
+      "source": "I04",
+      "state": "CANONICAL_SOURCE_FIELD_PRESENT_CAS_KIND_UNVERIFIED",
+      "meaning": "NSE UDiFF row; header/source lineage retained, not final CAS match proof",
+      "research_selected": false
+    },
+    {
+      "field": "LAST_TRADE",
+      "exact_field": "LastPric",
+      "source": "I04",
+      "state": "DISTINCT_FROM_OFFICIAL_CLOSE",
+      "meaning": "NSE UDiFF raw field, not selected as bar close",
+      "research_selected": false
+    },
+    {
+      "field": "PREVIOUS_CLOSE",
+      "exact_field": "PrvsClsgPric",
+      "source": "I04",
+      "state": "DISTINCT_FROM_CURRENT_CLOSE",
+      "meaning": "Not permission for HSI carry-forward",
+      "research_selected": false
+    },
+    {
+      "field": "LEGACY_PUBLISHED_CLOSE",
+      "exact_field": "Closing Price",
+      "source": "S12",
+      "state": "LEGACY_SCHEMA_ONLY",
+      "meaning": "CMBhavcopy_DDMMYYYY.txt; no current CAS semantics certified",
+      "research_selected": false
+    },
+    {
+      "field": "AUCTION_PRICE",
+      "exact_field": null,
+      "source": "S04",
+      "state": "SOURCE_NOT_READY",
+      "meaning": "Indicative equilibrium known conceptually; final machine field/schema unverified",
+      "research_selected": false
+    },
+    {
+      "field": "FINAL_MATCHED_QUANTITY",
+      "exact_field": null,
+      "source": "S04",
+      "state": "SOURCE_NOT_READY",
+      "meaning": "Indicative matched quantity is not final",
+      "research_selected": false
+    },
+    {
+      "field": "MATCH_STATUS",
+      "exact_field": null,
+      "source": "S04",
+      "state": "SOURCE_NOT_READY",
+      "meaning": "No current verified flag/code",
+      "research_selected": false
+    },
+    {
+      "field": "REFERENCE_PRICE",
+      "exact_field": null,
+      "source": "S04",
+      "state": "SOURCE_NOT_READY",
+      "meaning": "Formula text is not retained per-security reference observation",
+      "research_selected": false
+    },
+    {
+      "field": "NO_MATCH_INDICATOR",
+      "exact_field": null,
+      "source": "S04",
+      "state": "SOURCE_NOT_READY",
+      "meaning": "Cannot infer from missing feed or zero volume",
+      "research_selected": false
+    },
+    {
+      "field": "CAS_APPLICABILITY",
+      "exact_field": null,
+      "source": "S01",
+      "state": "SOURCE_NOT_READY",
+      "meaning": "No verified CAS column/code; do not invent CasFlg",
+      "research_selected": false
+    }
+  ],
+  "provider_reconciliation": [
+    {
+      "provider": "NSE_UDIFF",
+      "source": "I04",
+      "bar_close": "ClsPric",
+      "state": "PRICE_SOURCE_POLICY_REQUIRED",
+      "CAS_discriminator": false,
+      "issue": "Exchange-labelled close has raw source lineage but no current matched/reference classifier. EXCHANGE_EOD_TRADE_PRICE warning must not be read as proof every close is a matched trade. No adapter change here."
+    },
+    {
+      "provider": "NSE_LEGACY_BHAVCOPY",
+      "source": "I05",
+      "bar_close": "CLOSE_PRICE",
+      "state": "PRICE_SOURCE_POLICY_REQUIRED",
+      "CAS_discriminator": false,
+      "issue": "Legacy field/format; no homogeneous CAS claim."
+    },
+    {
+      "provider": "UPSTOX",
+      "source": "I06",
+      "bar_close": "PROVIDER_CANDLE_CLOSE",
+      "state": "PRICE_SOURCE_POLICY_REQUIRED",
+      "CAS_discriminator": false,
+      "issue": "Interval-start label, daily session-end unbound, UNKNOWN basis; exchange enrichment and policy needed."
+    },
+    {
+      "provider": "DHAN_REST_AND_LIVE",
+      "source": "I07",
+      "bar_close": null,
+      "state": "SOURCE_NOT_READY",
+      "CAS_discriminator": false,
+      "issue": "LTP/last-trade evidence differs from official final/reference close; no new daily contract inferred."
+    }
+  ],
+  "prospective": {
+    "status": "PROSPECTIVE_CAS_SOURCE_BLOCKED",
+    "ready_now": false,
+    "reusable": [
+      "complete prospective MII capture/reopen and exact identity primitives",
+      "explicit observation/known-at and immutable source lineage",
+      "source-injected calendar and prospective bar receipts"
+    ],
+    "missing": [
+      "current official CAS membership dictionary and dated complete payload",
+      "revision/effectivity/availability contract",
+      "current close-kind/match/reference field transport",
+      "special-session CAS binding",
+      "separate source/parameter governance"
+    ],
+    "retrospective_history_required_for_new_D": false,
+    "proposed_path": "After evidence recovery, separately authorize bounded capture of complete raw membership/revisions and official close metadata, retain receipt time and source precision, resolve exact identities and sessions. This slice implements/captures none."
+  },
+  "historical": {
+    "status": "HISTORICAL_CAS_SOURCE_GAP",
+    "since": "2026-08-03",
+    "recovered_membership_snapshots": 0,
+    "actual_HSI_known_at": null,
+    "retention_verified": false,
+    "calendar": "BOUNDED_NOT_SECURITY_CAS_COMPLETE",
+    "reconstruction": "Need dated initial and change files, schema versions, publication/effectivity and real first-observation evidence. Retrieval now is not historical known-at; present eligibility cannot repair this."
+  },
+  "precedence": {
+    "state": "SOURCE_PRECEDENCE_POLICY_REQUIRED",
+    "selected_price_source": null,
+    "facts": [
+      [
+        "MEMBERSHIP",
+        "NSE official dated membership dictionary and rows, not current derivatives list or broker candles"
+      ],
+      [
+        "EXCHANGE_CLOSE_FORMATION",
+        "Effective NSE cash-market rules under SEBI framework; draft consultation is not a superseding rule"
+      ],
+      [
+        "PUBLISHED_EXCHANGE_CLOSE",
+        "Verified current NSE output schema and original payload; transport identity still missing"
+      ],
+      [
+        "PROVIDER_VALUES",
+        "Provider's documented field semantics only; LTP/OHLC not proof of auction match"
+      ],
+      [
+        "CANONICAL_HSI_BARS",
+        "Retained native source lineage, not independent exchange-rule authority"
+      ]
+    ],
+    "automatic_preference": false,
+    "automatic_average": false,
+    "research_price_authority": false
+  },
+  "conflicts": [
+    {
+      "case": "DIFFERENT_EFFECTIVE_MEMBERSHIP_ROWS",
+      "observed": false,
+      "response": "SOURCE_CONFLICT; preserve versions and D-known chronology; no arbitrary winner"
+    },
+    {
+      "case": "DAILY_CLOSE_VS_INTRADAY_LTP",
+      "observed": false,
+      "response": "Different semantics are not automatically corruption; require close-kind/source policy; no fill/overwrite"
+    },
+    {
+      "case": "REFERENCE_VS_FINAL_NO_DAY_TRADE_ACTION",
+      "observed": false,
+      "response": "Preserve S04 section 2 and section 5 branches; require exact published result and action provenance"
+    },
+    {
+      "case": "SEBI_2026_09_12_CONSULTATION",
+      "observed": false,
+      "response": "Proposal landing is not effective law; no automatic supersession or source-conflict declaration"
+    }
+  ],
+  "parameter_impact": [
+    {
+      "parameter": "DURATION_UNIT",
+      "impact": "UNCHANGED",
+      "reason": "No duration or counting parameter approved.",
+      "approved": false
+    },
+    {
+      "parameter": "SESSION_COUNTING",
+      "impact": "UNCHANGED",
+      "reason": "Launch/mock separation reverified; exact security/special regime still missing.",
+      "approved": false
+    },
+    {
+      "parameter": "START_PRICE",
+      "impact": "UNCHANGED",
+      "reason": "No observation convention or fill selected.",
+      "approved": false
+    },
+    {
+      "parameter": "TERMINAL_BOUNDARY",
+      "impact": "UNCHANGED",
+      "reason": "Nominal timing is not final publication or maturity authority.",
+      "approved": false
+    },
+    {
+      "parameter": "TERMINAL_PRICE",
+      "impact": "BLOCKER_NARROWED",
+      "reason": "Distinct legacy close/LTP/indicative fields identified; current CAS match discriminator and policy still missing.",
+      "approved": false
+    },
+    {
+      "parameter": "PROSPECTIVE_CALENDAR_AUTHORITY",
+      "impact": "UNCHANGED",
+      "reason": "Generic primitives exist, no CAS authority or dated membership binding.",
+      "approved": false
+    },
+    {
+      "parameter": "INSTRUMENT_ELIGIBILITY",
+      "impact": "UNCHANGED",
+      "reason": "Core membership remains unavailable; no eligibility rule inferred.",
+      "approved": false
+    }
+  ],
+  "gate1_research": "Conditional architecture remains viable for future prospective D after source gaps, capture/binding and separate human parameter/authority approval. Source recovery alone is not research admission.",
+  "blockers_closed": [],
+  "blockers_narrowed": [
+    "Official legacy field names distinguish close, LTP and indicative close; this does not establish current CAS output compatibility.",
+    "Master publication route/filename and mock/live chronology reverified without obtaining the payload."
+  ],
+  "blockers_remaining": [
+    "CMTR73845_BODY_UNAVAILABLE",
+    "CMTR74466_BODY_UNAVAILABLE",
+    "CMTR67774_SECTION_3_4_UNAVAILABLE",
+    "DATED_COMPLETE_CAS_MEMBERSHIP_UNAVAILABLE",
+    "CAS_REVISION_AND_EFFECTIVITY_UNVERIFIED",
+    "CAS_CLOSE_MATCH_DISCRIMINATOR_UNVERIFIED",
+    "SPECIAL_SESSION_CAS_BINDING_UNAVAILABLE",
+    "HISTORICAL_KNOWN_AT_COVERAGE_UNPROVEN",
+    "SOURCE_PRECEDENCE_POLICY_REQUIRED",
+    "BOOTSTRAP_PARAMETER_AND_AUTHORITY_UNAPPROVED"
+  ],
+  "next_continuations": [
+    "NSE_CAS_PRIMARY_SOURCE_ACCESS_AND_DATED_MEMBERSHIP_EVIDENCE_RECOVERY_V1"
+  ],
+  "next_continuation_started": false,
+  "next_scope": "Recover the three exact official bodies/attachments plus a complete dated master and documented revision sample through authorized public/member access or user-supplied official files. Verify schema/effective/known-at before proposing capture. Do not repeat blind retries, request credentials, activate policy or modify runtime.",
+  "inspected_file_fingerprints_lf": {
+    "app/analysis/fundamentals.py": "sha256:df6a40297548cf5304021a2b8b0c93aad4a33c2f90f01f72a6cf4e65a5892c61",
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/api/dependencies.py": "sha256:db33d92c888bf5310d29c017c261689080348b4271c13221e6a0f9b787a01f0b",
+    "app/api/main.py": "sha256:99a5cd38d2dc613fe8e9f810e5362bed21482880c66e08c947a47f51186a52a5",
+    "app/api/routes/market_wide_watch.py": "sha256:a9ee9c11d6d1682352fff70183e03e93731cc83bce061ba388a973e82fea45df",
+    "app/api/routes/opportunities.py": "sha256:76ac7f3d2be1e88fcbbac93f5914d96168816486d9660eaaeaa06a4215c51365",
+    "app/api/routes/signals.py": "sha256:e055c788fda2c79d422d6f5f3c7d3f8eaabbd1e14b96fd6a212e37a554c05561",
+    "app/api/routes/stocks.py": "sha256:a27f3d3eaab40d7a87503a3897e05626d6bce1cbe12e2736f72bd3b7bb1e9e64",
+    "app/api/schemas/market_wide_watch.py": "sha256:677a00981286efd2fed533c788de42f024eea8a62d9084f80a06b9c9b244e0e5",
+    "app/api/schemas/stocks.py": "sha256:bbece6ec03085ed43257241108c87cc65dd0dfd8caad893bb16e97fbf439d6a4",
+    "app/api/shared_brain_query.py": "sha256:b89a3f6d9064d2e005fb6bc02f0715ce99761efb99c3e986c096b06954d162ef",
+    "app/api/signal_paper_query.py": "sha256:489a5f3b6d0722ce08f775a834c6f64172a094f5e532c9061ba2ec5630f728dc",
+    "app/api/universe_opportunity_query.py": "sha256:54f01b52a321d7a0eb20f07284ef572a06c843738342e081efea094df1dbd09f",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/performance.py": "sha256:aa3f2859ab43e8d8b1a92ddf1d5879cdb8ba9fd9fdec35b525757fd8276a22e5",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/crisis/models.py": "sha256:f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/diagnostics/downstream.py": "sha256:52dd92a52f1f4345cff64178137fbcca3af4c6ed8d0d43f7eb4abe78e366c0d3",
+    "app/diagnostics/evaluators.py": "sha256:b7aa1ad59b49a5b44f180bc3f4d96c65356a9bf3872d019639bd88caee5dfb6c",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/composition.py": "sha256:15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "sha256:7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_capital_market_session_evidence_2022_2026.py": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/nse_mii_security_master.py": "sha256:e54a3c1f1224421b15b51bd02bd9aa0639ebfa34d6ffcadf9fecab3abb430932",
+    "app/historical/nse_mii_session_knownness.py": "sha256:640d7c00fb6b30905b1e7eaf9d0b1e73757a186e76afb17b780d153b00588b80",
+    "app/historical/nse_session_identity.py": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+    "app/historical/security_identity_selector.py": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/historical_integrity/models.py": "sha256:60d0ac0758531af583efbbc761944961ebe20ca3b2d587923cabe9c752cd2fc2",
+    "app/historical_integrity/service.py": "sha256:cb0e48fa29b7fbbe1087236518dbea8e8a5909a87604182f14cb8fa6420a51c9",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/catalysts/service.py": "sha256:c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/decision_trust_envelope.py": "sha256:d503ea0834cc97b6877360b1bee8070039e215f5dc1966f844e5634451344417",
+    "app/intelligence/discovery_recall_reference_matching.py": "sha256:a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/hsi_signal.py": "sha256:85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/hsi_signal_projection.py": "sha256:f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/inflection_accounting_prospective_shadow.py": "sha256:7ad0e828545c57c9702f44c3884ccf75d4bc335b87a4b5909d5cef307e12c168",
+    "app/intelligence/internal_technical_radar.py": "sha256:60a56a526b9335f14d0b6c2bef06062ab211dbbeffb4fa271dc7caf2d558b4ec",
+    "app/intelligence/long_term_policy_transmission_research_shadow.py": "sha256:28aacdca241d6ef700d98d53a1c801e906ce73c84749da04e592860d1b28955d",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "sha256:4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro/service.py": "sha256:290f4af9db3dd708443fec6cc5d0f2752d64abe9e8212e315b450645ec92230b",
+    "app/intelligence/macro_news_evidence.py": "sha256:ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_extremes_assurance_projection.py": "sha256:636692e3316f08efc1a9f8f2cf5dd913e8d4232ce4e9eb7950d8d4b91d68f710",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_candidate_union.py": "sha256:2b9cc59af6b9ee9bbf55d53da3c879a22f33d0eef2db30dcc9d7839110ed4585",
+    "app/intelligence/multi_funnel_discovery.py": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "sha256:e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/multi_funnel_orchestration.py": "sha256:afd143eaa28e1414a75f0e6d52a1bd4d0e747d32e04e13a61535838c84c0f174",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/quality_fair_value_research_shadow.py": "sha256:e1e408322c54d2cfa46eb412bf8c7187abf93e1db0a82b0e2b16c5009a87451f",
+    "app/intelligence/radar_diagnostic_orchestration.py": "sha256:69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/sector_economics/service.py": "sha256:5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/shared_brain_application.py": "sha256:166a5fb59a8003a74cd7e187c8f1d7b69a158933c38f132161a68738c024e0e6",
+    "app/intelligence/shared_brain_production.py": "sha256:c8668020345fc8ce95c9cff046bbc043498a619d63d4479f83cdfb01c4a211f1",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/daily_technical_bar_temporal_evidence.py": "sha256:58d76bdf1bcf37e246c8a669cf604b8eb986a5c1ea53d21337b79f7304bdadc9",
+    "app/market_data/dhan.py": "sha256:541093d2f01c0b12b6a2d8592b030036bf363488531ad3c999c3d846faf07267",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/dhan_live_bar.py": "sha256:6280a96219d815d9fd5e6913e1eb06246d3b1365bad78890653dc2a3a7552bb6",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/nse_full_bhavcopy.py": "sha256:c24efeeb2cfd9fa6285edacd66321affb2055ff5789cebee43a4b579076419f9",
+    "app/market_data/nse_udiff_daily_history.py": "sha256:e75c6e621512973cb245031feada74ac6dfa9845a4c678484fd5c69a65d9f8f6",
+    "app/market_data/nse_udiff_weekly_technical_bar.py": "sha256:b67f4f1d727fee89a79b8723ccded60de68377cafbc2fe28026d56c18effffa1",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/prospective_fifteen_minute_bar.py": "sha256:91f32e2215c2edc64205bb44647c828ddfba33497e952aba5548e59f35a34db8",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/reference_data/tick_size.py": "sha256:9c7960ba60238289ad2486ff358a23058885be80c27406bbf0e045f5f6e1c4bb",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/market_data/upstox.py": "sha256:e5469bc7ff5c63a6e028d7faed830a20ebe2f2f35a6583437cef77ca30fe6740",
+    "app/paper/engine.py": "sha256:2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/performance/models.py": "sha256:3fd5f22f93f161f6ef041181f581ef3903528523398994522f309a645feca5c5",
+    "app/portfolio/canonical_decision_score_activation.py": "sha256:3d47a430f420adc8962780d6643c2cf14e76d4835c6d77cc4bfbc80292661418",
+    "app/portfolio/canonical_diagnostics_orchestration.py": "sha256:90f2f3856089d12d040426174248285c0e6c7ba57a7316037ad83f7c4ac60af1",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/holding_intelligence.py": "sha256:e9ee39372662d800079af409074c92254ab93c56bd3d300743fbe4196f8adc26",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/portfolio/sell_side_policy.py": "sha256:4d29e14ae9220ffa379832df1d7973c290bb59001314439be2677cc76af5b84b",
+    "app/portfolio/sell_side_runtime.py": "sha256:430e21e82d1c3b66bdd739c3499ad678337cbaa58c00301812082f1cba61ecd3",
+    "app/production_v1/canonical_setup_activation.py": "sha256:01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/governed_setup_source.py": "sha256:b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/production_v1/top3_opportunity_finder.py": "sha256:b0b88c858aa4b234996a87aea7a0c529e92f79fef80b6211482dd1628988b4af",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/research/handoff.py": "sha256:57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/runtime/cli.py": "sha256:78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/self_improvement/models.py": "sha256:588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/storage/sqlite_repository.py": "sha256:dfbc3abef762de476d7115527937048cbd7e8cca1f5af65af6739c1916a11019",
+    "app/strategies/common/models.py": "sha256:9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/pre_breakout/governance.py": "sha256:eb4b7ecb3bdd4c3726e0dcc0de39b472c65b65c8a3d50f37de1739a695fd698a",
+    "app/strategies/pre_breakout/governance_commands.py": "sha256:df6ab92a6af5061ae1482474cb5a2abb767b183d6751d908bcc529834d53d057",
+    "app/strategies/pre_breakout/policy.py": "sha256:896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+    "app/strategies/pre_breakout/research_handoff.py": "sha256:48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/strategies/pre_breakout/setup_assessment.py": "sha256:4808aa4a880867e63990da2c83cfb44b27a995ea4103f21d4a9e3da1eaa74bee",
+    "app/universe_analysis/models.py": "sha256:53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "app/universe_analysis/service.py": "sha256:5f0405f40961a89714a484b64eead596538052d4e9beb5ec71a7ce7417b3e28b",
+    "docs/architecture/CANONICAL_DISCOVERY_UNION_TO_BRAIN_HANDOFF_CONTRACT_V1.json": "sha256:bd9735fe4c54ab8d390b05bb2dce37bc94c3ce7675767562d41e9212257c34ae",
+    "docs/architecture/CANONICAL_DISCOVERY_UNION_TO_BRAIN_HANDOFF_CONTRACT_V1.md": "sha256:a870ed01e468b8adfb237139ba53bdfd949197b422ed2eb91c20e6406f87c9ec",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.json": "sha256:5c2d0625ba035406d5c5146db3b594577e4371a5a671a6b93324c8da176b1c7a",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json": "sha256:7a13bcd4fcf0d9b18e977386652ec8af98951b82294c15038e811665d7dd81f8",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md": "sha256:7729396fd2fbdf0e518a487916b547ce517bcce1d83ef5e85dc7fc1eb6655f41",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.json": "sha256:c2740fae1a4a54df8aa182e4359bd26674934953ba65e94c73eb712f35072fdf",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.md": "sha256:4c22e689b158ba8b8241a7ee0c6b282bd4d5b01d2a0440658e673e9fd68d62d7",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json": "sha256:ddafc5b75af81f3330c6043da4255b8d7f10c3db133b4bfa568c8e53c3d562e8",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.md": "sha256:fa9174a6a4c2e65775f6558b6e5721a295a582619367c35b243b6ed7371a74e1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json": "sha256:11e56d1e3bccf269d2d02c2b039fcbc89c8b0c17c4cfac32f3d9cce508d6d70a",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.md": "sha256:8539645cd09870ff42f547c75cef1aca17a51b3e877438cb67f6f4e769449cee",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json": "sha256:f37176854ffff603f47e85cdfb2ed9570a5d4c580adccf95a20f3247cc5aa6b6",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.md": "sha256:aa7e174fda319df62208b42067aac73bb598bd2d89b4a0d04491d055b55fc19f",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json": "sha256:768247ab11b5d11e511fb50983633b0febb609915611801acae71facfb40cdca",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.md": "sha256:5280f9218d09b8ee2e18fece0bdb13fef42a07870a7711cc7e0c4dd061f887b1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json": "sha256:2bdc2a78fe7ec5af027d909bb38094bb5ecf79fafc3a781249b3bf0c4ac70ab0",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.md": "sha256:f007ed08f5d610fc53ae319026657d6d642a5bf9552947cfc146d1e59ef4e48c",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.json": "sha256:1932d9463e4e4058d175e074361689e44e70621d4347d6f73b5135c2b3eedf67",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.md": "sha256:d658220243b12799c4030d6f1f7076a2c6fd15357d93c02f4b78cb03fdb08ca0",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/HSI_BRAIN_FUNNEL_RUNTIME_RECONCILIATION_AUDIT_V1.json": "sha256:eafea24f98ad87968ff6f0892eca60a8de6e692d1a3010e6af685ca5fbceb962",
+    "docs/architecture/HSI_BRAIN_FUNNEL_RUNTIME_RECONCILIATION_AUDIT_V1.md": "sha256:21f6a58b1ea6f484bca6767b7c121c47b4d2367f9892c9fabae76b24a8d3a88b",
+    "docs/architecture/MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md": "sha256:8f35aefab66d925f1333fe6fe4b302939790988e58aa331a5a80f3ebe9942558",
+    "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md": "sha256:4865ee8a0031417a495583962461b2d5f25bd42af86d4c93cb7a9abfba287987",
+    "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md": "sha256:5d22b111cddcf41304b16199865de8931d8325f5350bfaf49ecb161f429f8f7f",
+    "docs/architecture/MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md": "sha256:342628b427dfb9f203e4433fc61fac5066d2359e7cf7bc380b6b592458c52611",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md": "sha256:5b0dcdd09686f24b4f9f482e5ea862cd311615d9e9ec26ae5a144d9ad698a07a",
+    "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+    "docs/architecture/RADAR_TO_HSI_DIAGNOSTIC_ORCHESTRATION_V1.md": "sha256:63e2e6eb0aec17dfdc04d975ec6bd776a44291a55261fa4cfcba195e067520b5",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "frontend/src/api/httpClient.ts": "sha256:f250bbf949834c464a986d80bc14b521ad3a43ba344dffa60cc5aab43a7b1251",
+    "frontend/src/pages/DashboardPage.tsx": "sha256:158edadd7db5fa817e680599728e5e70cb0007b5edee4fb16af0aa4c9db11115",
+    "frontend/src/pages/ProductionPages.tsx": "sha256:d1fb6eb3fe49eb63d56fedab5575977342e81a17516aea5bed278f7f218dc595",
+    "frontend/src/pages/StockDetailPage.tsx": "sha256:73f59f674b3d3cda213da306481cef8814a11d4449636da41482b6c2cbb4950a",
+    "tests/unit/test_canonical_discovery_union_to_brain_handoff_contract.py": "sha256:174af541981cc7eccb0f74cb28104615931ce76c3e2f7058a96f0037a6ce9f74",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_paired_scenario_research_protocol.py": "sha256:4d365c1f564c8732c0200862ac7a4720a18334a68a2f597f41afad038203bd25",
+    "tests/unit/test_gate1_rotation_research_bootstrap_independent_prior_evidence.py": "sha256:ab920d809abb6327d0400c5f84056e82712da0358fe93a46f7ef8e4d02c292fd",
+    "tests/unit/test_gate1_rotation_research_bootstrap_parameter_policy_proposal.py": "sha256:160ccbb7065f2f199e6759f3deecd2b03ddec0e4ec13e4837d14d90d1b0eeef1",
+    "tests/unit/test_gate1_rotation_research_horizon_authority_policy.py": "sha256:0bdccfc30d3af66802123da530feb76e09bac11cce16199905074ca8ce63f9b1",
+    "tests/unit/test_gate1_rotation_research_horizon_bootstrap_governance.py": "sha256:0979d66c5ee4b68b2bdc2e57dd48db0b81b489429bd55286687fbb5a98737320",
+    "tests/unit/test_gate1_rotation_research_horizon_mapping_evidence_feasibility.py": "sha256:90ef955d30b3c25eb858d93b553c9da30f6556787b95536e297a96c4570d026d",
+    "tests/unit/test_gate1_rotation_research_horizon_policy_proposal.py": "sha256:c68c1a868c7d3b0dc837604749feb4665d27c5e8f36e42f30e893bc6c27c6a15",
+    "tests/unit/test_gate1_rotation_research_session_price_source_applicability_audit.py": "sha256:7f7b48e2e062901f8dc62111874deaf5a402c283f8d93a39f12c9c9a30ce3e8b",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479",
+    "tests/unit/test_hsi_brain_funnel_runtime_reconciliation_audit.py": "sha256:0c0a6a5a65f9b2786ccb7005215a75be0c15975028fb942362615f65f6b52137",
+    "tests/unit/test_nse_ordinary_session_close_evidence.py": "sha256:07b201e12de0eea92af8010115a57ee92a9cfa76e97fbe1bc37222c1c44a70fb"
+  },
+  "access_limits": {
+    "connect_seconds": 10,
+    "read_seconds": 25,
+    "response_size_bound": "12 MB class cap; no response body recovered",
+    "TLS_verification": true,
+    "authenticated_sessions_used": false,
+    "provider_API_used": false,
+    "parallel_downloads": false,
+    "raw_payload_saved": false,
+    "scope": "Three exact circulars, one request each per host environment; alternative public official routes via web reader.",
+    "disclaimer": "Tool safety/internal errors and connection timeouts do not establish HTTP 403/404, deletion, access entitlement or source non-existence.",
+    "PDF_visual_attempt": "Screenshot tool returned citation text only, no visible image. No visual inspection claimed."
+  },
+  "search_audit": [
+    {
+      "scope": "Exact circular IDs and alternate official archives",
+      "outcome": "No target body recovered",
+      "source_refs": [
+        "S01",
+        "S02",
+        "S03"
+      ]
+    },
+    {
+      "scope": "CAS list/flag/master/CSV/gzip and revision notices",
+      "outcome": "Rule/notice/catalogue references only, no dated complete membership",
+      "source_refs": [
+        "S05",
+        "S06",
+        "S08",
+        "S09"
+      ]
+    },
+    {
+      "scope": "FAQ and official circular landing alternatives",
+      "outcome": "CAS FAQ listing without accessible attachment body",
+      "source_refs": [
+        "S07"
+      ]
+    },
+    {
+      "scope": "Non-CAS section 3.4 and closing formula",
+      "outcome": "Derivative/index results excluded as wrong product; cash-market target still absent",
+      "source_refs": [
+        "S03",
+        "S04"
+      ]
+    },
+    {
+      "scope": "SEBI final and later consultation",
+      "outcome": "Landing dates recovered; attached bodies not safely readable; consultation not an effective amendment",
+      "source_refs": [
+        "S10",
+        "S11"
+      ]
+    },
+    {
+      "scope": "Official machine close dictionary",
+      "outcome": "2024 legacy schema recovered; no current CAS discriminator verification",
+      "source_refs": [
+        "S12"
+      ]
+    }
+  ],
+  "internal_sources": [
+    {
+      "id": "I01",
+      "path": "app/historical/nse_mii_security_master.py",
+      "version": "v1 and v2-prospective-complete-capture",
+      "finding": "Retains exact raw-row provenance; prospective complete capture/reopen exists. Required identity fields do not interpret a CAS column. v1 historical_known_at is absent; raw unknown-column hash is not semantic interpretation.",
+      "fingerprint_lf": "sha256:e54a3c1f1224421b15b51bd02bd9aa0639ebfa34d6ffcadf9fecab3abb430932",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I02",
+      "path": "app/historical/security_identity_selector.py",
+      "version": "historical-security-identity-pit-selector/v1",
+      "finding": "Exact dated identity selection; native visibility/effectivity and conflicting latest provenance guards reusable, not a CAS revision policy.",
+      "fingerprint_lf": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I03",
+      "path": "app/historical/canonical_market_session_event_time.py",
+      "version": "canonical-market-session-calendar-and-event-time/v1",
+      "finding": "Explicit as-of source visibility, date precision, bounded special sessions; generic calendar alone does not establish security CAS regime.",
+      "fingerprint_lf": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I04",
+      "path": "app/market_data/nse_udiff_daily_history.py",
+      "version": "existing parser/adapter unchanged",
+      "finding": "CM/NSE/STK source rows, FinInstrmId/ISIN identity, ClsPric close and raw LastPric. Logical daily interval is not final publication; publication-time warning retained.",
+      "fingerprint_lf": "sha256:e75c6e621512973cb245031feada74ac6dfa9845a4c678484fd5c69a65d9f8f6",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I05",
+      "path": "app/market_data/nse_full_bhavcopy.py",
+      "version": "existing parser unchanged",
+      "finding": "Legacy CLOSE_PRICE mapping with source lineage and UNKNOWN adjustment; not CAS-discriminator evidence.",
+      "fingerprint_lf": "sha256:c24efeeb2cfd9fa6285edacd66321affb2055ff5789cebee43a4b579076419f9",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I06",
+      "path": "app/market_data/upstox.py",
+      "version": "upstox-history-v4-interval-start",
+      "finding": "Provider candle close, UNKNOWN adjustment, daily session-end unbound. No official CAS match/no-match contract.",
+      "fingerprint_lf": "sha256:e5469bc7ff5c63a6e028d7faed830a20ebe2f2f35a6583437cef77ca30fe6740",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I07",
+      "path": "app/market_data/dhan.py",
+      "version": "existing adapter unchanged",
+      "finding": "REST last_price/quote semantics; LTP response lacks provider time. No live call; existing receipt handling is not exchange publication.",
+      "fingerprint_lf": "sha256:541093d2f01c0b12b6a2d8592b030036bf363488531ad3c999c3d846faf07267",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I08",
+      "path": "app/market_data/dhan_live.py",
+      "version": "existing feed unchanged",
+      "finding": "LTP and last-trade time, receive-time lineage and in-memory state do not certify auction final price.",
+      "fingerprint_lf": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I09",
+      "path": "app/market_data/dhan_live_bar.py",
+      "version": "prospective-dhan-live-bar-foundation/v1",
+      "finding": "Quote-to-minute binder requires one REGULAR_CONTINUOUS phase. Generic 15:30 end cannot make CAS membership/timing verified.",
+      "fingerprint_lf": "sha256:6280a96219d815d9fd5e6913e1eb06246d3b1365bad78890653dc2a3a7552bb6",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I10",
+      "path": "app/market_data/prospective_fifteen_minute_bar.py",
+      "version": "existing immutable aggregator unchanged",
+      "finding": "Fifteen exact minute receipts; genuine all-no-trade receipts are distinct from missing bars. No auction reference-value synthesis.",
+      "fingerprint_lf": "sha256:91f32e2215c2edc64205bb44647c828ddfba33497e952aba5548e59f35a34db8",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I11",
+      "path": "app/market_data/canonical_fifteen_minute_technical_reader.py",
+      "version": "existing reader unchanged",
+      "finding": "Prospective PIT-known receipts, not retrospective feed replay or CAS session interpretation.",
+      "fingerprint_lf": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I12",
+      "path": "app/market_data/daily_technical_bar_temporal_evidence.py",
+      "version": "existing temporal contract unchanged",
+      "finding": "Publication/observation and calendar completion evidence required, not midnight bar label as knowledge time.",
+      "fingerprint_lf": "sha256:58d76bdf1bcf37e246c8a669cf604b8eb986a5c1ea53d21337b79f7304bdadc9",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I13",
+      "path": "app/market_data/technical_price_adjustment_integrity.py",
+      "version": "existing adjustment integrity unchanged",
+      "finding": "Action-specific provenance; supported split/bonus handling is not generic merger/rights/dividend/identity continuity.",
+      "fingerprint_lf": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I14",
+      "path": "app/historical/nse_session_identity.py",
+      "version": "existing session identity unchanged",
+      "finding": "Exact dated canonical identity is not whole-interval CAS applicability or native intraday known-at.",
+      "fingerprint_lf": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I15",
+      "path": "app/historical/nse_capital_market_session_evidence_2022_2026.py",
+      "version": "existing bounded source evidence unchanged",
+      "finding": "Ordinary forward-effective calendar and bounded special notices do not backcast CAS membership or authorize every special session.",
+      "fingerprint_lf": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    },
+    {
+      "id": "I16",
+      "path": "app/historical/nse_corporate_action_coverage.py",
+      "version": "existing historical integrity unchanged",
+      "finding": "Retain separate corporate-action scope and exact dated identity; no price-based inferred adjustment.",
+      "fingerprint_lf": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+      "role": "METADATA_ONLY_READ_NOT_INVOCATION"
+    }
+  ],
+  "intraday": {
+    "state": "SOURCE_NOT_READY",
+    "classification": "REGULAR_ONLY_NOT_CAS_VERIFIED",
+    "regular_binder": "I09",
+    "aggregation": "I10",
+    "reader": "I11",
+    "membership_consulted": false,
+    "auction_reference_synthesized": false,
+    "boundary": "For CAS instruments, regular close is 15:15. A generic 15:15-15:30 bar would overlap CAS rather than prove a final regular/auction close. Existing regular-only binder has no verified security-CAS selection.",
+    "exact_last_bar_for_security": null,
+    "final_bar_equals_auction_close": false,
+    "missing_equals_no_trade": false,
+    "remedy": "Future separate source/schema/calendar binding required; no patch or ingestion in this slice."
+  },
+  "daily_close_state": "PRICE_SOURCE_POLICY_REQUIRED",
+  "source_readiness": {
+    "CMTR73845": "SOURCE_NOT_READY",
+    "CMTR74466": "SOURCE_NOT_READY",
+    "CMTR67774_SECTION_3_4": "SOURCE_NOT_READY",
+    "CAS_SECURITY_MEMBERSHIP": "SOURCE_NOT_READY",
+    "GLOBAL_LIVE_CHRONOLOGY": "SOURCE_FACT_REVERIFIED",
+    "MEMBERSHIP_REVISIONS": "SOURCE_NOT_READY",
+    "IDENTITY_JOIN": "IDENTITY_JOIN_SOURCE_GAP",
+    "CAS_CLOSE_RULE_TEXT": "SOURCE_FACT_REVERIFIED",
+    "NON_CAS_CLOSE_RULE_TEXT": "SOURCE_NOT_READY",
+    "CURRENT_CAS_PRICE_FIELDS": "SOURCE_NOT_READY",
+    "LEGACY_CLOSE_FIELD_DICTIONARY": "LEGACY_SCHEMA_ONLY",
+    "DAILY_CLOSE": "PRICE_SOURCE_POLICY_REQUIRED",
+    "INTRADAY_CAS": "SOURCE_NOT_READY",
+    "PROSPECTIVE": "PROSPECTIVE_CAS_SOURCE_BLOCKED",
+    "HISTORICAL": "HISTORICAL_CAS_SOURCE_GAP",
+    "SPECIAL_SESSION_CAS": "SOURCE_NOT_READY",
+    "SOURCE_PRECEDENCE": "SOURCE_PRECEDENCE_POLICY_REQUIRED",
+    "PIT": "HISTORICAL_KNOWN_AT_COVERAGE_UNPROVEN"
+  },
+  "safety": {
+    "current_membership_backcast": false,
+    "mock_equals_live": false,
+    "ambiguous_symbol_join": false,
+    "published_close_equals_executed_trade": false,
+    "published_close_equals_research_fill": false,
+    "start_price_selected": false,
+    "terminal_price_selected": false,
+    "nearest_bar_fallback": false,
+    "carry_forward_fallback": false,
+    "missing_feed_equals_no_trade": false,
+    "suspension_price_invented": false,
+    "source_conflict_auto_resolved": false,
+    "source_authority_registered": false,
+    "unknown_date_precision_filled": false,
+    "historical_coverage_inferred_from_current_page": false,
+    "new_schema": false,
+    "source_capture_performed": false
+  },
+  "scope_coverage": [
+    {
+      "requirement": "01",
+      "location": "sources:S01; access_audit",
+      "state": "BODY_UNAVAILABLE"
+    },
+    {
+      "requirement": "02",
+      "location": "sources:S02; access_audit",
+      "state": "BODY_UNAVAILABLE"
+    },
+    {
+      "requirement": "03",
+      "location": "sources:S03; close_semantics.non_cas",
+      "state": "BODY_UNAVAILABLE"
+    },
+    {
+      "requirement": "04",
+      "location": "membership; search_audit; sources:S08,S09",
+      "state": "SOURCE_NOT_READY"
+    },
+    {
+      "requirement": "05",
+      "location": "chronology.required_fields",
+      "state": "EVIDENCE_REQUIREMENTS_ONLY"
+    },
+    {
+      "requirement": "06",
+      "location": "identity; internal_sources:I01,I02,I14",
+      "state": "IDENTITY_JOIN_SOURCE_GAP"
+    },
+    {
+      "requirement": "07",
+      "location": "sources; chronology",
+      "state": "CHRONOLOGY_PRECISION_PRESERVED"
+    },
+    {
+      "requirement": "08",
+      "location": "membership.revision_mechanism; chronology.accession_exit_category_rule",
+      "state": "SOURCE_NOT_READY"
+    },
+    {
+      "requirement": "09",
+      "location": "phases; sources:S06",
+      "state": "ORDINARY_PHASES_REVERIFIED"
+    },
+    {
+      "requirement": "10",
+      "location": "close_semantics",
+      "state": "CAS_TEXT_ONLY_NON_CAS_GAP"
+    },
+    {
+      "requirement": "11",
+      "location": "close_semantics.cas; price_fields",
+      "state": "NO_MATCH_NOT_EXECUTED_TRADE"
+    },
+    {
+      "requirement": "12",
+      "location": "price_fields; sources:S12",
+      "state": "CURRENT_CAS_DISCRIMINATOR_MISSING"
+    },
+    {
+      "requirement": "13",
+      "location": "provider_reconciliation",
+      "state": "METADATA_ONLY"
+    },
+    {
+      "requirement": "14",
+      "location": "daily_close_state",
+      "state": "PRICE_SOURCE_POLICY_REQUIRED"
+    },
+    {
+      "requirement": "15",
+      "location": "intraday",
+      "state": "REGULAR_ONLY_NOT_CAS_VERIFIED"
+    },
+    {
+      "requirement": "16",
+      "location": "prospective",
+      "state": "PROSPECTIVE_CAS_SOURCE_BLOCKED"
+    },
+    {
+      "requirement": "17",
+      "location": "historical",
+      "state": "HISTORICAL_CAS_SOURCE_GAP"
+    },
+    {
+      "requirement": "18",
+      "location": "close_semantics.non_cas",
+      "state": "NON_CAS_CALCULATION_GAP"
+    },
+    {
+      "requirement": "19",
+      "location": "phases.session_cases",
+      "state": "SPECIAL_LIVE_REQUIRES_EXACT_NOTICE"
+    },
+    {
+      "requirement": "20",
+      "location": "close_semantics.suppression_or_no_orders; safety",
+      "state": "NO_PRICE_INVENTED"
+    },
+    {
+      "requirement": "21",
+      "location": "identity.corporate_actions; internal_sources:I13,I16",
+      "state": "EXACT_IDENTITY_AND_ACTION_EVIDENCE_REQUIRED"
+    },
+    {
+      "requirement": "22",
+      "location": "precedence",
+      "state": "SOURCE_PRECEDENCE_POLICY_REQUIRED"
+    },
+    {
+      "requirement": "23",
+      "location": "chronology; sources.native_HSI_known_at",
+      "state": "PIT_GAP_PRESERVED"
+    },
+    {
+      "requirement": "24",
+      "location": "parameter_impact",
+      "state": "NO_APPROVAL"
+    },
+    {
+      "requirement": "25",
+      "location": "gate1_research",
+      "state": "CONDITIONAL_NOT_READY"
+    },
+    {
+      "requirement": "26",
+      "location": "sources; source_readiness",
+      "state": "MACHINE_EVIDENCE_MATRIX"
+    },
+    {
+      "requirement": "27",
+      "location": "decision; semantic_decision",
+      "state": "C"
+    },
+    {
+      "requirement": "28",
+      "location": "parent; inspected_file_fingerprints_lf",
+      "state": "HANDOFF_UNCHANGED"
+    }
+  ],
+  "artifact_fingerprint": "sha256:b2fd0ba83dda8898065a43181837c675b2f46c6b27e3eb7404b68efa472b5d26"
+}
