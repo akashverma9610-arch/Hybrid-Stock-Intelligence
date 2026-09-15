@@ -1,0 +1,47 @@
+{
+  "schema_version": "hsi-agent-v1-acceptance-prompts/v1",
+  "agent_name": "Hybrid Stock Intelligence",
+  "status": "FIXTURE_AND_LIVE_OPT_IN_ACCEPTANCE_ONLY",
+  "prompts": [
+    {
+      "id": "deep_stock_analysis",
+      "prompt": "Deeply analyse NSE:INE372A01015.",
+      "required_tools": ["hsi_get_stock_intelligence", "hsi_run_diagnostics"],
+      "optional_tools": ["hsi_get_market_context", "hsi_get_news_catalysts", "hsi_get_setup"],
+      "forbidden_tools": ["hsi_scan_market"],
+      "assertions": ["separates evidence gaps from conclusions", "does not claim strict historical PIT", "does not issue a trade instruction"]
+    },
+    {
+      "id": "market_opportunities",
+      "prompt": "Find the strongest current market opportunities.",
+      "required_tools": ["hsi_scan_market"],
+      "optional_tools": ["hsi_run_diagnostics", "hsi_get_market_context"],
+      "forbidden_tools": [],
+      "assertions": ["uses one retained shared scan", "keeps partial-coverage caveats", "does not rescan per candidate"]
+    },
+    {
+      "id": "setup",
+      "prompt": "Give me the setup for NSE:INE372A01015.",
+      "required_tools": ["hsi_get_setup"],
+      "optional_tools": ["hsi_run_diagnostics", "hsi_get_market_context"],
+      "forbidden_tools": ["hsi_scan_market"],
+      "assertions": ["does not invent T2", "does not invent an extended target", "does not invent a horizon or order"]
+    },
+    {
+      "id": "portfolio",
+      "prompt": "Analyse my portfolio.",
+      "required_tools": ["hsi_get_portfolio_state", "hsi_get_market_context"],
+      "optional_tools": ["hsi_get_stock_intelligence", "hsi_run_diagnostics"],
+      "forbidden_tools": [],
+      "assertions": ["does not run diagnostics for every holding by default", "does not automatically sell or rotate", "retains stored-snapshot limitations"]
+    },
+    {
+      "id": "compare",
+      "prompt": "Compare NSE:INE372A01015 and NSE:INE090A01021 using the same evidence framework.",
+      "required_tools": ["hsi_get_stock_intelligence"],
+      "optional_tools": ["hsi_run_diagnostics", "hsi_get_market_context"],
+      "forbidden_tools": ["hsi_scan_market"],
+      "assertions": ["uses comparable evidence framing", "identifies per-security evidence gaps", "does not create a portfolio action"]
+    }
+  ]
+}
