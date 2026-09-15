@@ -1,0 +1,2635 @@
+{
+  "schema_version": "hsi-brain-funnel-runtime-reconciliation-audit/v1",
+  "slice": "HSI_BRAIN_FUNNEL_RUNTIME_RECONCILIATION_AUDIT_V1",
+  "baseline_commit": "f3dbb065017c1577d1dffdd0c1a3901b561f6ff9",
+  "version": "v1",
+  "status": "REPOSITORY_RECONCILIATION_AUDIT / NO_RUNTIME_INTEGRATION / NOT_ACTIVE",
+  "slice_status": "ACCEPTED/CLOSED",
+  "decision": "B",
+  "semantic_decision": "BRAIN_CAPABILITIES_EXIST_RUNTIME_WIRING_INCOMPLETE",
+  "rationale": "Registry/union and five source adapters exist; a separate bounded Radar-to-61 bridge and Core downstream services exist. No production caller binds the canonical security union to them. Two qualified policy gaps do not make fourteen absent brains. Context scope and stale descriptive registry metadata require explicit reconciliation, not a duplicate decision system.",
+  "evidence_scope": "Offline source/AST, immutable contracts and isolated tests at baseline; OPERATIONAL means implemented repository edge when explicitly invoked, not observed production execution or source completeness. No production DB contents inspected.",
+  "parent": {
+    "path": "docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.json",
+    "field": "artifact_fingerprint",
+    "fingerprint": "sha256:e587cfb98e32610f6a0485c87d62a8546400ac19498c0aef18ad0b38b22e967c"
+  },
+  "predecessors": [
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:e751cc6d7f4585d58b081ed9be9d876d399166059cb6d4836f7ff062ce7d8eb3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:79c9626950d25266bca4dfa56ca59922bbd558681fa9daa634025f88648627c8"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:7892a8afe5d503261567d68f3144ca7eb28934a2e8b6c93bd63ce9ffbd3c8dfc"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:090b3a017060f88c04e76dbd9bd69cd9f00fcbdadbea27faac23ca746b2b5864"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json",
+      "field": "audit_fingerprint",
+      "fingerprint": "sha256:aa9d4b211a5a2aba762c0b31af99b2a87fe08e0963865344104e9b87c33b0bb1"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+      "field": "protocol_fingerprint",
+      "fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+      "field": "contract_fingerprint",
+      "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:b2c7e7913384dce1b76691d89cb59a9b38737f9fb365eed3392a0f55292359f6"
+    }
+  ],
+  "authority": {
+    "scope": "RESEARCH_BOOTSTRAP_ONLY",
+    "approval_state": "UNAPPROVED",
+    "registration_state": "NOT_REGISTERED",
+    "activation_state": "NOT_ACTIVE",
+    "usable": false,
+    "approval_ref": null,
+    "registration_ref": null,
+    "producer_ref": null,
+    "forbidden": [
+      "GATE1_PASS",
+      "ROTATE_IN",
+      "CAPITAL_MOVEMENT",
+      "PRODUCTION_SCENARIO_ENDPOINT",
+      "PORTFOLIO_MUTATION",
+      "BROKER_ORDER_EXECUTION",
+      "PRODUCTION_HORIZON_AUTHORITY"
+    ],
+    "v1": {
+      "policy_id": "six-gates-production-v1",
+      "version": "v1",
+      "status": "ACTIVE"
+    },
+    "v2": {
+      "policy_id": "execution-gate-policy-v2-proposed",
+      "version": "v2-proposal.4",
+      "status": "NOT_ACTIVE"
+    }
+  },
+  "bootstrap_policy_status": "PROPOSED / UNAPPROVED / NOT_REGISTERED / NOT_ACTIVE",
+  "effective_parameters": {
+    "category_mapping": null,
+    "strategy_scope": null,
+    "seed_duration": null,
+    "effective_duration_unit": null,
+    "counting_rule": null,
+    "D_session_index": null,
+    "first_counted_session": null,
+    "count_precision": null,
+    "terminal_boundary_rule": null,
+    "start_price_rule": null,
+    "start_alignment_rule": null,
+    "terminal_price_rule": null,
+    "price_precision_rule": null,
+    "calendar_binding": null,
+    "instrument_scope": null,
+    "seed_evidence_package": null,
+    "approval_receipt": null,
+    "registration_receipt": null,
+    "effective_start": null,
+    "seed_range": null,
+    "parameter_precision": null,
+    "retirement_threshold": null,
+    "review_cadence": null,
+    "sample_minimum": null
+  },
+  "preservation": {
+    "research_only": true,
+    "start": "D",
+    "one_immutable_binding_for_both_legs": true,
+    "one_horizon_per_pair": true,
+    "exact_original_decision_required": true,
+    "selection_uses_only_D_visible_evidence": true,
+    "native_source_fingerprint_verified_before_wrapper": true,
+    "policy_approval_selection_effective_at_D_required": true,
+    "retroactive_approval": false,
+    "future_outcomes_in_duration_selection": false,
+    "nearest_bar_fallback": false,
+    "date_roll_fallback": false,
+    "current_time_interpretation": false,
+    "current_membership_backfill": false,
+    "modern_calendar_backcast": false,
+    "multi_horizon_best_result_selection": false,
+    "OOS_reused_for_selection": false,
+    "per_observation_hindsight_selection": false,
+    "historical_relabeling": false,
+    "terminal_requires_R_at_or_after_end_and_completion_and_known_price": true,
+    "late_admin_replay_metadata_not_evidence": true,
+    "unexpected_closure_may_rewrite_frozen_endpoint": false,
+    "production_reuse": "SEPARATE_EXPLICIT_APPROVAL_REQUIRED"
+  },
+  "registration": {
+    "required_chronology": [
+      "rationale_known_at <= approved_at",
+      "approved_at <= registered_at",
+      "registered_at <= effective_from",
+      "registered_at < D",
+      "effective_from <= D"
+    ],
+    "actual_approved_at": null,
+    "actual_registered_at": null,
+    "actual_effective_from": null,
+    "native_effectivity_required": true,
+    "registration_equal_D_allowed": false,
+    "backdating": false,
+    "future_approval_authorizes_original_D": false
+  },
+  "canonical_registry": {
+    "entries": [
+      {
+        "funnel_id": "COMPOUNDER",
+        "version": "v1",
+        "status": "RESEARCH_SHADOW",
+        "horizons": [
+          "LONG_TERM"
+        ],
+        "required_inputs": [
+          "PIT_ANNUAL_FINANCIAL_FACTS",
+          "PIT_COMPANY_TYPE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "RESEARCH_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "COMPOUNDER_QUALIFICATION_DEFERRED_PENDING_EMPIRICAL_VALIDATION"
+        ],
+        "temporal_mode": "PROSPECTIVE_PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.compounder_prospective_shadow_validation.run_compounder_prospective_batch",
+        "policy_identity": "compounder-prospective-shadow:v1"
+      },
+      {
+        "funnel_id": "EARNINGS_ACCELERATION",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_DIAGNOSTIC_RULE_24"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "DIAGNOSTIC_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "INDEPENDENT_EARNINGS_ACCELERATION_FUNNEL_NOT_DEFINED"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": "canonical-universe-analysis:v1"
+      },
+      {
+        "funnel_id": "EMERGING_COMPOUNDER",
+        "version": "v1",
+        "status": "NOT_IMPLEMENTED",
+        "horizons": [
+          "LONG_TERM"
+        ],
+        "required_inputs": [
+          "APPROVED_EMERGING_COMPOUNDER_POLICY"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "UNAVAILABLE",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "EMERGING_COMPOUNDER_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": null,
+        "policy_identity": null
+      },
+      {
+        "funnel_id": "FUNDAMENTAL_INFLECTION",
+        "version": "v1",
+        "status": "RESEARCH_SHADOW",
+        "horizons": [
+          "LONG_TERM",
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "PIT_COMPANY_TYPE",
+          "PIT_QUARTERLY_FINANCIAL_FACTS"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "RESEARCH_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "FILING_TIMESTAMP_TIMEZONE_COVERAGE_UNAVAILABLE",
+          "INFLECTION_QUALIFICATION_NOT_ACTIVE"
+        ],
+        "temporal_mode": "PROSPECTIVE_PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.inflection_accounting_prospective_shadow.run_inflection_accounting_prospective_batch",
+        "policy_identity": "inflection-accounting-prospective-shadow:v1"
+      },
+      {
+        "funnel_id": "HOLDING_STATE_CHANGE",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [],
+        "required_inputs": [
+          "CANONICAL_HOLDING_INTELLIGENCE"
+        ],
+        "eligibility": "EXISTING_PORTFOLIO_HOLDINGS_ONLY",
+        "output_lead_type": "CONTEXTUAL_REVIEW_LEAD",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "HOLDING_CHANGE_DISCOVERY_ADAPTER_NOT_IMPLEMENTED"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.portfolio.holding_intelligence.compose_holding_intelligence",
+        "policy_identity": null
+      },
+      {
+        "funnel_id": "MARKET_DISLOCATION",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [],
+        "required_inputs": [
+          "MARKET_EXTREMES_ASSURANCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "REGIME_CONTEXT_ONLY",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "SECURITY_LEVEL_DISLOCATION_TRIGGER_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.market_extremes_assurance_projection.project_market_extremes_assurance",
+        "policy_identity": "market-extremes-assurance:v1"
+      },
+      {
+        "funnel_id": "MOMENTUM",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_RELATIVE_STRENGTH",
+          "PIT_OHLCV"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "TECHNICAL_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "MOMENTUM_TRIGGER_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": null
+      },
+      {
+        "funnel_id": "NEWS_CATALYST",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [],
+        "required_inputs": [
+          "EXACT_COMPANY_EXPOSURE",
+          "VERIFIED_EXTERNAL_INTELLIGENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "CATALYST_INSPECTION_LEAD",
+        "source_layer": "FACT",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "EVENT_CATALYST_CALIBRATION_REQUIRED",
+          "FRESHNESS_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": null
+      },
+      {
+        "funnel_id": "ORDERBOOK_CAPEX",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_DIAGNOSTIC_RULE_27",
+          "OFFICIAL_FINANCIAL_EVIDENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "DIAGNOSTIC_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "ORDERBOOK_CAPEX_TRIGGER_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": "canonical-universe-analysis:v1"
+      },
+      {
+        "funnel_id": "POLICY_TRANSMISSION",
+        "version": "v1",
+        "status": "RESEARCH_SHADOW",
+        "horizons": [
+          "LONG_TERM",
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "EXACT_COMPANY_EXPOSURE",
+          "VERIFIED_POLICY_EVIDENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "RESEARCH_INSPECTION_LEAD",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "POLICY_TRANSMISSION_QUALIFICATION_NOT_ACTIVE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.long_term_policy_transmission_research_shadow",
+        "policy_identity": "long-term-policy-transmission-research-shadow:v1"
+      },
+      {
+        "funnel_id": "PRE_BREAKOUT",
+        "version": "v1",
+        "status": "OPERATIONAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_SECURITY_IDENTITY",
+          "GOVERNED_PREBREAKOUT_SETUP",
+          "PIT_OHLCV"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "SETUP_INSPECTION_LEAD",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "PREBREAKOUT_POLICY_UNAVAILABLE",
+          "SETUP_DATA_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.production_v1.top3_opportunity_finder.Top3OpportunityFinderService",
+        "policy_identity": "pre-breakout-policy:v1"
+      },
+      {
+        "funnel_id": "SECTOR_ROTATION",
+        "version": "v1",
+        "status": "OPERATIONAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CURRENT_SECTOR_RANKING",
+          "EXACT_CONSTITUENT_MAPPING"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "SECTOR_CONSTITUENT_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "SECTOR_TO_STOCK_LEAD_ADAPTER_NOT_IMPLEMENTED"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.production_v1.top3_opportunity_finder.Top3OpportunityFinderService",
+        "policy_identity": "nse-sector-ranking:v1"
+      },
+      {
+        "funnel_id": "VALUATION_RECOVERY",
+        "version": "v1",
+        "status": "POLICY_BLOCKED",
+        "horizons": [
+          "LONG_TERM"
+        ],
+        "required_inputs": [
+          "APPROVED_VALUATION_RECOVERY_POLICY",
+          "PIT_VALUATION_EVIDENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "UNAVAILABLE",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "VALUATION_RECOVERY_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": null,
+        "policy_identity": null
+      },
+      {
+        "funnel_id": "WATCHLIST_STATE_CHANGE",
+        "version": "v1",
+        "status": "NOT_IMPLEMENTED",
+        "horizons": [],
+        "required_inputs": [
+          "APPROVED_WATCHLIST_STATE_CONTRACT"
+        ],
+        "eligibility": "GOVERNED_WATCHLIST_ONLY",
+        "output_lead_type": "UNAVAILABLE",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "WATCHLIST_STATE_CONTRACT_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": null,
+        "policy_identity": null
+      }
+    ],
+    "registry_id": "hsi-multi-funnel-discovery-registry",
+    "version": "v1",
+    "fingerprint": "121b6a91d0c7a8f7fdd3da6ae02e11a56575538a876055958cbc5f7dd5e22aec"
+  },
+  "matrix": [
+    {
+      "funnel_id": "COMPOUNDER",
+      "funnel_name": "Compounder",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Bounded prospective compounder observations",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "COMPOUNDER",
+        "version": "v1",
+        "status": "RESEARCH_SHADOW",
+        "horizons": [
+          "LONG_TERM"
+        ],
+        "required_inputs": [
+          "PIT_ANNUAL_FINANCIAL_FACTS",
+          "PIT_COMPANY_TYPE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "RESEARCH_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "COMPOUNDER_QUALIFICATION_DEFERRED_PENDING_EMPIRICAL_VALIDATION"
+        ],
+        "temporal_mode": "PROSPECTIVE_PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.compounder_prospective_shadow_validation.run_compounder_prospective_batch",
+        "policy_identity": "compounder-prospective-shadow:v1"
+      },
+      "underlying_brain_capability": "Prospective observation availability; not positive compounder qualification",
+      "brain_module": "app/intelligence/compounder_prospective_shadow_validation.py",
+      "discovery_predicate_exists": true,
+      "existing_context_predicate": "Prospective observation availability; not positive compounder qualification",
+      "research_shadow_evaluator_exists": true,
+      "research_detail": "RESEARCH_SHADOW",
+      "adapter_exists": true,
+      "adapter": {
+        "path": "app/intelligence/multi_funnel_discovery_adapters.py",
+        "symbol": "adapt_compounder"
+      },
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.compounder_prospective_shadow_validation.run_compounder_prospective_batch",
+      "trigger_policy_status": "compounder-prospective-shadow:v1",
+      "output_contract": "RESEARCH_INSPECTION_LEAD",
+      "candidate_emitted": "CONDITIONAL_IN_ISOLATED_CALL_NOT_LIVE_PROOF",
+      "provenance_preserved": "ORIGINAL_LEAD_AND_LINEAGE_RETAINED",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "RESEARCH_BUILT_PROMOTION_REQUIRED",
+      "exact_missing_edges": [
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding bounded prospective compounder observations or evaluating each origin independently would duplicate work",
+      "recommended_action": "Calibration, promotion and shared runtime binding; reuse existing research",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "PIT annual facts; company type; prospective receipt; empirical validation",
+      "source_blockers": [
+        "COMPOUNDER_QUALIFICATION_DEFERRED_PENDING_EMPIRICAL_VALIDATION"
+      ],
+      "wiring_blockers": [
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md"
+    },
+    {
+      "funnel_id": "EARNINGS_ACCELERATION",
+      "funnel_name": "Earnings Acceleration",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Reported earnings/revenue acceleration inspection",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "EARNINGS_ACCELERATION",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_DIAGNOSTIC_RULE_24"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "DIAGNOSTIC_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "INDEPENDENT_EARNINGS_ACCELERATION_FUNNEL_NOT_DEFINED"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": "canonical-universe-analysis:v1"
+      },
+      "underlying_brain_capability": "Existing Router Rule 24 ACCELERATING route, not an independent funnel predicate",
+      "brain_module": "app/intelligence/opportunity_archetypes.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "Existing Router Rule 24 ACCELERATING route, not an independent funnel predicate",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "PARTIAL",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+      "trigger_policy_status": "canonical-universe-analysis:v1",
+      "output_contract": "DIAGNOSTIC_INSPECTION_LEAD",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ALREADY_IN_BRAIN_ADAPTER_REQUIRED",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding reported earnings/revenue acceleration inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Governed trigger and emitter over existing diagnostics; no replacement earnings score",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Comparable canonical financial observations; Rule 24; no fabricated EBITDA",
+      "source_blockers": [
+        "INDEPENDENT_EARNINGS_ACCELERATION_FUNNEL_NOT_DEFINED"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    },
+    {
+      "funnel_id": "EMERGING_COMPOUNDER",
+      "funnel_name": "Emerging Compounder",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Emerging-compounder qualification",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "EMERGING_COMPOUNDER",
+        "version": "v1",
+        "status": "NOT_IMPLEMENTED",
+        "horizons": [
+          "LONG_TERM"
+        ],
+        "required_inputs": [
+          "APPROVED_EMERGING_COMPOUNDER_POLICY"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "UNAVAILABLE",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "EMERGING_COMPOUNDER_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": null,
+        "policy_identity": null
+      },
+      "underlying_brain_capability": "No qualified discovery predicate; common readiness contract exists",
+      "brain_module": "app/intelligence/long_term_thesis_research_shadow.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "No qualified discovery predicate; common readiness contract exists",
+      "research_shadow_evaluator_exists": true,
+      "research_detail": "Readiness/state support only; no qualified funnel policy",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": null,
+      "trigger_policy_status": "POLICY_UNAVAILABLE",
+      "output_contract": "UNAVAILABLE",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ACTUALLY_MISSING_INTELLIGENCE",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding emerging-compounder qualification or evaluating each origin independently would duplicate work",
+      "recommended_action": "Missing qualified family policy, not missing common readiness infrastructure",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Growth path; dilution; liquidity; balance sheet; valuation; survivorship; approved family policy",
+      "source_blockers": [
+        "EMERGING_COMPOUNDER_POLICY_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md"
+    },
+    {
+      "funnel_id": "FUNDAMENTAL_INFLECTION",
+      "funnel_name": "Fundamental Inflection",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Prospective accounting inflection inspection",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "FUNDAMENTAL_INFLECTION",
+        "version": "v1",
+        "status": "RESEARCH_SHADOW",
+        "horizons": [
+          "LONG_TERM",
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "PIT_COMPANY_TYPE",
+          "PIT_QUARTERLY_FINANCIAL_FACTS"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "RESEARCH_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "FILING_TIMESTAMP_TIMEZONE_COVERAGE_UNAVAILABLE",
+          "INFLECTION_QUALIFICATION_NOT_ACTIVE"
+        ],
+        "temporal_mode": "PROSPECTIVE_PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.inflection_accounting_prospective_shadow.run_inflection_accounting_prospective_batch",
+        "policy_identity": "inflection-accounting-prospective-shadow:v1"
+      },
+      "underlying_brain_capability": "ACCOUNTING_INFLECTION_OBSERVATION_AVAILABLE receipt; not promoted qualification",
+      "brain_module": "app/intelligence/inflection_accounting_prospective_shadow.py",
+      "discovery_predicate_exists": true,
+      "existing_context_predicate": "ACCOUNTING_INFLECTION_OBSERVATION_AVAILABLE receipt; not promoted qualification",
+      "research_shadow_evaluator_exists": true,
+      "research_detail": "RESEARCH_SHADOW",
+      "adapter_exists": true,
+      "adapter": {
+        "path": "app/intelligence/multi_funnel_discovery_adapters.py",
+        "symbol": "adapt_fundamental_inflection"
+      },
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.inflection_accounting_prospective_shadow.run_inflection_accounting_prospective_batch",
+      "trigger_policy_status": "inflection-accounting-prospective-shadow:v1",
+      "output_contract": "RESEARCH_INSPECTION_LEAD",
+      "candidate_emitted": "CONDITIONAL_IN_ISOLATED_CALL_NOT_LIVE_PROOF",
+      "provenance_preserved": "ORIGINAL_LEAD_AND_LINEAGE_RETAINED",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "RESEARCH_BUILT_PROMOTION_REQUIRED",
+      "exact_missing_edges": [
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding prospective accounting inflection inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Calibration/promotion and source timestamp readiness; retain prospective limitations",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "PIT quarterly facts; exact company type; receipt; publication/timezone coverage",
+      "source_blockers": [
+        "FILING_TIMESTAMP_TIMEZONE_COVERAGE_UNAVAILABLE",
+        "INFLECTION_QUALIFICATION_NOT_ACTIVE"
+      ],
+      "wiring_blockers": [
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md"
+    },
+    {
+      "funnel_id": "HOLDING_STATE_CHANGE",
+      "funnel_name": "Holding State Change",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Changes in an existing holding's intelligence",
+      "intended_universe": "PORTFOLIO_CONTEXT_ONLY",
+      "scope_basis": "EXISTING_PORTFOLIO_HOLDINGS_ONLY; Changes in an existing holding's intelligence; not unconditional whole-NSE emission",
+      "registry_entry": {
+        "funnel_id": "HOLDING_STATE_CHANGE",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [],
+        "required_inputs": [
+          "CANONICAL_HOLDING_INTELLIGENCE"
+        ],
+        "eligibility": "EXISTING_PORTFOLIO_HOLDINGS_ONLY",
+        "output_lead_type": "CONTEXTUAL_REVIEW_LEAD",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "HOLDING_CHANGE_DISCOVERY_ADAPTER_NOT_IMPLEMENTED"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.portfolio.holding_intelligence.compose_holding_intelligence",
+        "policy_identity": null
+      },
+      "underlying_brain_capability": "Holding composition exists; change emitter absent",
+      "brain_module": "app/portfolio/holding_intelligence.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "Holding composition exists; change emitter absent",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "PARTIAL",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.portfolio.holding_intelligence.compose_holding_intelligence",
+      "trigger_policy_status": "POLICY_UNAVAILABLE",
+      "output_contract": "CONTEXTUAL_REVIEW_LEAD",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "CONTEXTUAL_ONLY",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding changes in an existing holding's intelligence or evaluating each origin independently would duplicate work",
+      "recommended_action": "Context-bound delta policy/adapter; not a whole-NSE holding scanner",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Existing holding intelligence and explicit portfolio context; no arbitrary universe expansion",
+      "source_blockers": [
+        "HOLDING_CHANGE_DISCOVERY_ADAPTER_NOT_IMPLEMENTED"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    },
+    {
+      "funnel_id": "MARKET_DISLOCATION",
+      "funnel_name": "Market Dislocation",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Market Extremes/regime context",
+      "intended_universe": "OTHER_GOVERNED_SCOPE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; Market Extremes/regime context; not unconditional whole-NSE emission",
+      "registry_entry": {
+        "funnel_id": "MARKET_DISLOCATION",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [],
+        "required_inputs": [
+          "MARKET_EXTREMES_ASSURANCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "REGIME_CONTEXT_ONLY",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "SECURITY_LEVEL_DISLOCATION_TRIGGER_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.market_extremes_assurance_projection.project_market_extremes_assurance",
+        "policy_identity": "market-extremes-assurance:v1"
+      },
+      "underlying_brain_capability": "REGIME_CONTEXT_ONLY; no security-level dislocation trigger",
+      "brain_module": "app/intelligence/market_extremes_assurance_projection.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "REGIME_CONTEXT_ONLY; no security-level dislocation trigger",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "PARTIAL",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.market_extremes_assurance_projection.project_market_extremes_assurance",
+      "trigger_policy_status": "market-extremes-assurance:v1",
+      "output_contract": "REGIME_CONTEXT_ONLY",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "CONTEXTUAL_ONLY",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding market extremes/regime context or evaluating each origin independently would duplicate work",
+      "recommended_action": "Retain regime context; any security discovery needs a separately governed predicate",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Market Extremes assurance; regime evidence; security applicability not inferred",
+      "source_blockers": [
+        "SECURITY_LEVEL_DISLOCATION_TRIGGER_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    },
+    {
+      "funnel_id": "MOMENTUM",
+      "funnel_name": "Momentum",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Relative-strength/technical leadership inspection",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "MOMENTUM",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_RELATIVE_STRENGTH",
+          "PIT_OHLCV"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "TECHNICAL_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "MOMENTUM_TRIGGER_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": null
+      },
+      "underlying_brain_capability": "Rule 6 LEADING/EMERGING_LEADER route exists; standalone momentum policy absent",
+      "brain_module": "app/intelligence/opportunity_archetypes.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "Rule 6 LEADING/EMERGING_LEADER route exists; standalone momentum policy absent",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "PARTIAL",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+      "trigger_policy_status": "POLICY_UNAVAILABLE",
+      "output_contract": "TECHNICAL_INSPECTION_LEAD",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ALREADY_IN_BRAIN_ADAPTER_REQUIRED",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding relative-strength/technical leadership inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Governed lightweight trigger/emitter, not another momentum scoring engine",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Canonical RS; PIT OHLCV; peer/benchmark readiness; technical diagnostics",
+      "source_blockers": [
+        "MOMENTUM_TRIGGER_POLICY_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    },
+    {
+      "funnel_id": "NEWS_CATALYST",
+      "funnel_name": "News Catalyst",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Exact company-exposure catalyst inspection",
+      "intended_universe": "EVENT_CONTEXT_ONLY",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; Exact company-exposure catalyst inspection; not unconditional whole-NSE emission",
+      "registry_entry": {
+        "funnel_id": "NEWS_CATALYST",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [],
+        "required_inputs": [
+          "EXACT_COMPANY_EXPOSURE",
+          "VERIFIED_EXTERNAL_INTELLIGENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "CATALYST_INSPECTION_LEAD",
+        "source_layer": "FACT",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "EVENT_CATALYST_CALIBRATION_REQUIRED",
+          "FRESHNESS_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": null
+      },
+      "underlying_brain_capability": "Existing verified CATALYST_WATCH route; no independent calibrated discovery emitter",
+      "brain_module": "app/intelligence/opportunity_archetypes.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "Existing verified CATALYST_WATCH route; no independent calibrated discovery emitter",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "PARTIAL",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+      "trigger_policy_status": "POLICY_UNAVAILABLE",
+      "output_contract": "CATALYST_INSPECTION_LEAD",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ALREADY_IN_BRAIN_ADAPTER_REQUIRED",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding exact company-exposure catalyst inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Reuse news/catalyst primitives; govern freshness/trigger and emit exact exposed NSE identities only",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Verified external event/evidence version; exact exposure; primary-source and freshness evidence",
+      "source_blockers": [
+        "EVENT_CATALYST_CALIBRATION_REQUIRED",
+        "FRESHNESS_POLICY_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    },
+    {
+      "funnel_id": "ORDERBOOK_CAPEX",
+      "funnel_name": "Orderbook Capex",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Order-book acceleration and capex evidence inspection",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "ORDERBOOK_CAPEX",
+        "version": "v1",
+        "status": "PARTIAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_DIAGNOSTIC_RULE_27",
+          "OFFICIAL_FINANCIAL_EVIDENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "DIAGNOSTIC_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "ORDERBOOK_CAPEX_TRIGGER_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+        "policy_identity": "canonical-universe-analysis:v1"
+      },
+      "underlying_brain_capability": "Rule 27 GROWING route exists; broader capex is not that rule",
+      "brain_module": "app/intelligence/opportunity_archetypes.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "Rule 27 GROWING route exists; broader capex is not that rule",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "PARTIAL",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.opportunity_archetypes.OpportunityArchetypeRouter",
+      "trigger_policy_status": "canonical-universe-analysis:v1",
+      "output_contract": "DIAGNOSTIC_INSPECTION_LEAD",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ALREADY_IN_BRAIN_ADAPTER_REQUIRED",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding order-book acceleration and capex evidence inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Governed trigger/emitter; capex interpretation and source sufficiency cannot be invented",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Official order book/inflow/revenue; comparable periods; capex filings/catalysts",
+      "source_blockers": [
+        "ORDERBOOK_CAPEX_TRIGGER_POLICY_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    },
+    {
+      "funnel_id": "POLICY_TRANSMISSION",
+      "funnel_name": "Policy Transmission",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Research policy-transmission evidence inspection",
+      "intended_universe": "EVENT_CONTEXT_ONLY",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; Research policy-transmission evidence inspection; not unconditional whole-NSE emission",
+      "registry_entry": {
+        "funnel_id": "POLICY_TRANSMISSION",
+        "version": "v1",
+        "status": "RESEARCH_SHADOW",
+        "horizons": [
+          "LONG_TERM",
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "EXACT_COMPANY_EXPOSURE",
+          "VERIFIED_POLICY_EVIDENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "RESEARCH_INSPECTION_LEAD",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "POLICY_TRANSMISSION_QUALIFICATION_NOT_ACTIVE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.intelligence.long_term_policy_transmission_research_shadow",
+        "policy_identity": "long-term-policy-transmission-research-shadow:v1"
+      },
+      "underlying_brain_capability": "POLICY_DEFINITION_MISSING research receipt may emit an inspection lead, never a qualified beneficiary",
+      "brain_module": "app/intelligence/long_term_policy_transmission_research_shadow.py",
+      "discovery_predicate_exists": true,
+      "existing_context_predicate": "POLICY_DEFINITION_MISSING research receipt may emit an inspection lead, never a qualified beneficiary",
+      "research_shadow_evaluator_exists": true,
+      "research_detail": "RESEARCH_SHADOW",
+      "adapter_exists": true,
+      "adapter": {
+        "path": "app/intelligence/multi_funnel_discovery_adapters.py",
+        "symbol": "adapt_policy_transmission"
+      },
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.intelligence.long_term_policy_transmission_research_shadow",
+      "trigger_policy_status": "long-term-policy-transmission-research-shadow:v1",
+      "output_contract": "RESEARCH_INSPECTION_LEAD",
+      "candidate_emitted": "CONDITIONAL_IN_ISOLATED_CALL_NOT_LIVE_PROOF",
+      "provenance_preserved": "ORIGINAL_LEAD_AND_LINEAGE_RETAINED",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "RESEARCH_BUILT_PROMOTION_REQUIRED",
+      "exact_missing_edges": [
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding research policy-transmission evidence inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Retain research state; policy/calibration/promotion before any qualified discovery",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Verified primary policy; exact exposure; implementation-to-cash-flow chain",
+      "source_blockers": [
+        "POLICY_TRANSMISSION_QUALIFICATION_NOT_ACTIVE"
+      ],
+      "wiring_blockers": [
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md"
+    },
+    {
+      "funnel_id": "PRE_BREAKOUT",
+      "funnel_name": "Pre Breakout",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Governed existing Pre-Breakout setup inspection",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "PRE_BREAKOUT",
+        "version": "v1",
+        "status": "OPERATIONAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CANONICAL_SECURITY_IDENTITY",
+          "GOVERNED_PREBREAKOUT_SETUP",
+          "PIT_OHLCV"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "SETUP_INSPECTION_LEAD",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "PREBREAKOUT_POLICY_UNAVAILABLE",
+          "SETUP_DATA_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.production_v1.top3_opportunity_finder.Top3OpportunityFinderService",
+        "policy_identity": "pre-breakout-policy:v1"
+      },
+      "underlying_brain_capability": "Existing CanonicalSetupOpportunity, governed assessment and policy required",
+      "brain_module": "app/production_v1/top3_opportunity_finder.py",
+      "discovery_predicate_exists": true,
+      "existing_context_predicate": "Existing CanonicalSetupOpportunity, governed assessment and policy required",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "OPERATIONAL",
+      "adapter_exists": true,
+      "adapter": {
+        "path": "app/intelligence/multi_funnel_discovery_adapters.py",
+        "symbol": "adapt_pre_breakout"
+      },
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.production_v1.top3_opportunity_finder.Top3OpportunityFinderService",
+      "trigger_policy_status": "pre-breakout-policy:v1",
+      "output_contract": "SETUP_INSPECTION_LEAD",
+      "candidate_emitted": "CONDITIONAL_IN_ISOLATED_CALL_NOT_LIVE_PROOF",
+      "provenance_preserved": "ORIGINAL_LEAD_AND_LINEAGE_RETAINED",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ALREADY_IN_BRAIN_ADAPTER_REQUIRED",
+      "exact_missing_edges": [
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding governed existing pre-breakout setup inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Adapter already exists: shared runtime handoff missing, not policy or setup rebuild",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "PIT OHLCV; current sector context; exact identity; approved selection/assessment",
+      "source_blockers": [
+        "PREBREAKOUT_POLICY_UNAVAILABLE",
+        "SETUP_DATA_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md"
+    },
+    {
+      "funnel_id": "SECTOR_ROTATION",
+      "funnel_name": "Sector Rotation",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Top-3 sector constituent-target inspection",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "SECTOR_ROTATION",
+        "version": "v1",
+        "status": "OPERATIONAL",
+        "horizons": [
+          "POSITIONAL"
+        ],
+        "required_inputs": [
+          "CURRENT_SECTOR_RANKING",
+          "EXACT_CONSTITUENT_MAPPING"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "SECTOR_CONSTITUENT_INSPECTION_LEAD",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "SECTOR_TO_STOCK_LEAD_ADAPTER_NOT_IMPLEMENTED"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": "app.production_v1.top3_opportunity_finder.Top3OpportunityFinderService",
+        "policy_identity": "nse-sector-ranking:v1"
+      },
+      "underlying_brain_capability": "Existing run.candidate_ids targets; not only valid opportunity_ids",
+      "brain_module": "app/production_v1/top3_opportunity_finder.py",
+      "discovery_predicate_exists": true,
+      "existing_context_predicate": "Existing run.candidate_ids targets; not only valid opportunity_ids",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "OPERATIONAL",
+      "adapter_exists": true,
+      "adapter": {
+        "path": "app/intelligence/multi_funnel_discovery_adapters.py",
+        "symbol": "adapt_sector_rotation"
+      },
+      "runtime_scanner_exists": false,
+      "existing_context_producer": "app.production_v1.top3_opportunity_finder.Top3OpportunityFinderService",
+      "trigger_policy_status": "nse-sector-ranking:v1",
+      "output_contract": "SECTOR_CONSTITUENT_INSPECTION_LEAD",
+      "candidate_emitted": "CONDITIONAL_IN_ISOLATED_CALL_NOT_LIVE_PROOF",
+      "provenance_preserved": "ORIGINAL_LEAD_AND_LINEAGE_RETAINED",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ALREADY_IN_BRAIN_ADAPTER_REQUIRED",
+      "exact_missing_edges": [
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding top-3 sector constituent-target inspection or evaluating each origin independently would duplicate work",
+      "recommended_action": "Adapter already exists; reconcile stale registry blocker descriptively and bind shared handoff later",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Canonical sector ranking; exact constituents; retained Top3 run",
+      "source_blockers": [
+        "SECTOR_TO_STOCK_LEAD_ADAPTER_NOT_IMPLEMENTED"
+      ],
+      "wiring_blockers": [
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md"
+    },
+    {
+      "funnel_id": "VALUATION_RECOVERY",
+      "funnel_name": "Valuation Recovery",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Valuation-recovery discovery",
+      "intended_universe": "BOUNDED_MARKET_UNIVERSE",
+      "scope_basis": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE; explicit supplied snapshot/source population; no complete NSE scan proven",
+      "registry_entry": {
+        "funnel_id": "VALUATION_RECOVERY",
+        "version": "v1",
+        "status": "POLICY_BLOCKED",
+        "horizons": [
+          "LONG_TERM"
+        ],
+        "required_inputs": [
+          "APPROVED_VALUATION_RECOVERY_POLICY",
+          "PIT_VALUATION_EVIDENCE"
+        ],
+        "eligibility": "APPROVED_NSE_EQUITY_WHERE_APPLICABLE",
+        "output_lead_type": "UNAVAILABLE",
+        "source_layer": "INTERPRETATION",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "VALUATION_RECOVERY_POLICY_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": null,
+        "policy_identity": null
+      },
+      "underlying_brain_capability": "No approved valuation-recovery predicate; quality/fair-value readiness is not recovery policy",
+      "brain_module": "app/intelligence/quality_fair_value_research_shadow.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "No approved valuation-recovery predicate; quality/fair-value readiness is not recovery policy",
+      "research_shadow_evaluator_exists": true,
+      "research_detail": "Readiness/state support only; no qualified funnel policy",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": null,
+      "trigger_policy_status": "POLICY_UNAVAILABLE",
+      "output_contract": "UNAVAILABLE",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "ACTUALLY_MISSING_INTELLIGENCE",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding valuation-recovery discovery or evaluating each origin independently would duplicate work",
+      "recommended_action": "Governed recovery semantics genuinely missing; reuse existing valuation/readiness inputs",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "PIT comparable valuation and business-type evidence; approved recovery policy",
+      "source_blockers": [
+        "VALUATION_RECOVERY_POLICY_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md"
+    },
+    {
+      "funnel_id": "WATCHLIST_STATE_CHANGE",
+      "funnel_name": "Watchlist State Change",
+      "name_origin": "DISPLAY_LABEL_OF_CANONICAL_ENUM_NOT_NEW_IDENTIFIER",
+      "purpose": "Changes inside a governed watchlist",
+      "intended_universe": "WATCHLIST_CONTEXT_ONLY",
+      "scope_basis": "GOVERNED_WATCHLIST_ONLY; Changes inside a governed watchlist; not unconditional whole-NSE emission",
+      "registry_entry": {
+        "funnel_id": "WATCHLIST_STATE_CHANGE",
+        "version": "v1",
+        "status": "NOT_IMPLEMENTED",
+        "horizons": [],
+        "required_inputs": [
+          "APPROVED_WATCHLIST_STATE_CONTRACT"
+        ],
+        "eligibility": "GOVERNED_WATCHLIST_ONLY",
+        "output_lead_type": "UNAVAILABLE",
+        "source_layer": "DATA",
+        "freshness_requirement": "SOURCE_DEFINED",
+        "trigger_semantics": "SOURCE_STATE_ONLY",
+        "fail_closed_codes": [
+          "WATCHLIST_STATE_CONTRACT_UNAVAILABLE"
+        ],
+        "temporal_mode": "PIT_AS_OF",
+        "implementation_entry_point": null,
+        "policy_identity": null
+      },
+      "underlying_brain_capability": "No governed watchlist-state contract or change adapter",
+      "brain_module": "app/intelligence/multi_funnel_discovery.py",
+      "discovery_predicate_exists": false,
+      "existing_context_predicate": "No governed watchlist-state contract or change adapter",
+      "research_shadow_evaluator_exists": false,
+      "research_detail": "NOT_IMPLEMENTED",
+      "adapter_exists": false,
+      "adapter": null,
+      "runtime_scanner_exists": false,
+      "existing_context_producer": null,
+      "trigger_policy_status": "POLICY_UNAVAILABLE",
+      "output_contract": "UNAVAILABLE",
+      "candidate_emitted": "NO_BINDING",
+      "provenance_preserved": "NOT_APPLICABLE_NO_EMITTER",
+      "provenance_fields": [
+        "canonical_instrument_id",
+        "funnel_id",
+        "funnel_version",
+        "discovery_as_of",
+        "source_layer",
+        "trigger_codes",
+        "lineage.reference_id",
+        "lineage.reference_fingerprint",
+        "lineage.kind",
+        "lineage.known_at",
+        "lead_id",
+        "fingerprint",
+        "blocker_codes",
+        "intended_horizons",
+        "issuer_id",
+        "parent_discovery_id"
+      ],
+      "candidate_union_works": "IMPLEMENTED_EXACT_SECURITY_WHEN_LEADS_SUPPLIED",
+      "brain_inspection_invoked": false,
+      "diagnosis_61_invoked": false,
+      "decision_score_invoked": false,
+      "setup_invoked": false,
+      "six_gates_invoked": false,
+      "portfolio_signal_output": "NOT_WIRED_FROM_DISCOVERY_UNION",
+      "frontend_projection": "NOT_WIRED",
+      "primary_classification": "CONTEXTUAL_ONLY",
+      "exact_missing_edges": [
+        "SOURCE_TO_CANONICAL_LEAD_BINDING",
+        "UNION_TO_ONE_CANONICAL_SECURITY_INSPECTION",
+        "INSPECTION_TO_CANONICAL_DOWNSTREAM_ARTIFACTS",
+        "CANDIDATE_PROVENANCE_TO_QUERY_UI"
+      ],
+      "duplication_risk": "No duplicate final authority found; rebuilding changes inside a governed watchlist or evaluating each origin independently would duplicate work",
+      "recommended_action": "Define only context-bound contract later; not an ordinary market-wide scanner",
+      "deep_diagnostic_boundary": "Runner reads retained source records only; no fresh 61-rule/score/setup/gate calculation. Deep diagnosis must reuse Canonical61DiagnosticRunner after security union.",
+      "provider_dependencies": "Governed watchlist membership and prior/current PIT states",
+      "source_blockers": [
+        "WATCHLIST_STATE_CONTRACT_UNAVAILABLE"
+      ],
+      "wiring_blockers": [
+        "GOVERNED_EMITTER_OR_ADAPTER_MISSING",
+        "SHARED_HANDOFF_NOT_BOUND"
+      ],
+      "documentation_source": "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md"
+    }
+  ],
+  "scope": {
+    "product_intent": "WHOLE_ELIGIBLE_NSE_UNIVERSE",
+    "actual_master": "Caller-supplied immutable UniverseSnapshot and NseEquityInstrument records; checksum/counts/PIT verified; no supplier/scanner proving all eligible NSE covered",
+    "eligibility": "exchange == NSE and security_type == EQUITY and main_board is not False; exact NSE:ISIN validated by runner",
+    "metadata_unknown": "Existing main_board=None remains eligible; not silently strengthened/relabeled",
+    "all_14_unconditional_whole_nse": false,
+    "automatic_context_expansion": false,
+    "source_observation_count_is_universe_coverage": false,
+    "classification_basis": "BOUNDED_MARKET_UNIVERSE means current implemented/supplied scope, not a new policy limiting frozen whole-NSE intent."
+  },
+  "candidate_contract": {
+    "state": "IMPLEMENTED_HANDOFF_ONLY",
+    "producer": "orchestrate_whole_market_discovery -> WholeMarketDiscoveryBatch.candidate_union",
+    "actual_status": "CANDIDATE_FOR_SHARED_BRAIN_INSPECTION",
+    "contract": "CanonicalDiscoveryPoolItem",
+    "document_alias": "BRAIN_INSPECTION_CANDIDATES",
+    "consumer_status": "NO_RUNTIME_CONSUMER",
+    "persisted": false,
+    "audit_consumers": [
+      "discovery_recall_per_security_trace",
+      "discovery_recall_reference_matching"
+    ],
+    "security": "exact NSE:ISIN; issuer lineage optional and not union key",
+    "detection": "discovery_as_of only; no independent detected_at fabricated",
+    "universe": "master batch owns snapshot/checksum/membership; individual lead does not prove whole-universe coverage",
+    "strategy": "funnel/version/horizon provenance, not archetype/strategy registry authorization",
+    "freshness": "SOURCE_DEFINED + explicit cutoff/future exclusion; no invented universal expiry or proof every old record is fresh",
+    "materiality_confidence": "No governed scalar in this envelope; no funnel-hit bonus",
+    "lineage": [
+      "canonical_instrument_id",
+      "funnel_id",
+      "funnel_version",
+      "discovery_as_of",
+      "source_layer",
+      "trigger_codes",
+      "lineage.reference_id",
+      "lineage.reference_fingerprint",
+      "lineage.kind",
+      "lineage.known_at",
+      "lead_id",
+      "fingerprint",
+      "blocker_codes",
+      "intended_horizons",
+      "issuer_id",
+      "parent_discovery_id"
+    ],
+    "missing_for_runtime": [
+      "typed canonical-source reader honoring storage-knownness",
+      "union-to-one-security evidence assembler",
+      "admission/context/horizon/PIT governance",
+      "typed diagnostic authority and downstream result binding",
+      "freshness handling per source",
+      "API/UI origin projection"
+    ],
+    "ranking": false,
+    "dedup_key": "canonical_instrument_id with exact ISIN",
+    "same_issuer_multiple_securities": "REMAIN_DISTINCT",
+    "multiple_hits": "descriptive distinct_funnel_count only; no score or priority boost",
+    "all_origins_preserved": true,
+    "trigger_evidence_preserved": true,
+    "duplicate_exact_replay": "collapsed canonically with coverage counts",
+    "conflicting_identity": "excluded/fail-closed; runner rejects conflicting source fingerprints before adapters",
+    "future_evidence": "excluded at master/lead/known_at boundary",
+    "contract_readiness": "READY_FOR_ISOLATED_UNION; ADAPTER_MISSING_FOR_CANONICAL_RUNTIME"
+  },
+  "radar_reuse": {
+    "module": "app/intelligence/radar_diagnostic_orchestration.py",
+    "symbol": "RadarToHsiDiagnosticOrchestrator",
+    "input": "CanonicalDiscoveryLead + explicit evaluation_as_of + supported DiscoveryHorizon",
+    "required_assembler": "CanonicalRadarEvidenceAssembler.assemble_for_radar; protocol only, no concrete production implementation found",
+    "registry_admission": "exact OPERATIONAL registry entry/version; currently PRE_BREAKOUT or SECTOR_ROTATION status satisfies family gate; documentation/end-to-end proof explicitly Pre-Breakout",
+    "calls": "Canonical61DiagnosticRunner.run(evidence); no governance argument supplied in this bridge",
+    "technical_boundary": "CURRENT_DESCRIPTIVE READY and STRICT_HISTORICAL_PIT NOT_READY retained; cannot claim strict historical eligibility",
+    "runtime_bound": false,
+    "dedup_key": "lead_id",
+    "security_dedup_risk": "Two distinct leads for one security can invoke runner twice; union handoff must not loop over origins as independent Brain entities",
+    "receipt": "immutable 61 references with lead/input/policy/registry fingerprints",
+    "downstream_score_setup_gates": false,
+    "persistence": false,
+    "full_brain_claim": false
+  },
+  "runtime": {
+    "source_changed": false,
+    "frontend_changed": false,
+    "scheduler_added": false,
+    "brain_invoked": false,
+    "production_db_read": false,
+    "production_db_written": false,
+    "portfolio_accessed": false,
+    "broker_order_access": false,
+    "funnel_promoted": false,
+    "V2_activated": false,
+    "Gate1_changed": false
+  },
+  "safety": {
+    "second_brain_authorized": false,
+    "duplicate_final_scoring_found": false,
+    "discovery_is_final_authority": false,
+    "discovery_can_bypass_61": false,
+    "discovery_can_bypass_score": false,
+    "discovery_can_bypass_setup": false,
+    "discovery_can_bypass_six_gates": false,
+    "automatic_trading": false,
+    "all_multi_funnel_inputs_are_source_only": true,
+    "imports_are_runtime_invocation": false,
+    "legacy_actions_are_new_authority": false
+  },
+  "pending_gate1": {
+    "continuation": "NSE_CAS_SECURITY_MEMBERSHIP_AND_CLOSE_SOURCE_RECOVERY_V1",
+    "state": "PENDING_NOT_STARTED",
+    "predecessor_decision": "SESSION_PRICE_SOURCE_APPLICABILITY_SOURCE_GAPS",
+    "disposition": "AFTER_ONE_SHARED_HANDOFF_CONTRACT_SLICE",
+    "reason": "Independent unresolved research-source work is preserved; one shared interface/governance reconciliation has higher architectural priority. CAS recovery is not a prerequisite for descriptive candidate union or permission to weaken historical/scenario admissibility.",
+    "closed": false
+  },
+  "blockers_closed": [
+    "Verified exact registry14, five real adapters and nine non-bindings",
+    "Verified runner stops at canonical union in code",
+    "Recovered existing Radar-to-61 and Core score/setup/gate/query paths",
+    "Separated source-readiness, governance and wiring deficits"
+  ],
+  "blockers_remaining": [
+    "No concrete union-to-Brain binding or scheduler",
+    "Radar per-lead dedup must not replace union per-security identity",
+    "Current-descriptive technical proof is not strict historical PIT",
+    "Context/whole-NSE coverage and per-source freshness need explicit handoff semantics",
+    "Emerging Compounder qualification and Valuation Recovery policy gaps",
+    "Research promotion and independent trigger governance remain blocked",
+    "No candidate-origin API/UI projection",
+    "Gate1 CAS source gaps and UNSET/unapproved bootstrap unchanged"
+  ],
+  "next_continuations": [
+    "CANONICAL_DISCOVERY_UNION_TO_BRAIN_HANDOFF_CONTRACT_V1"
+  ],
+  "next_continuation_started": false,
+  "next_scope": "Document and machine-verify one immutable security-union-to-existing Radar/Canonical61/SharedBrain handoff contract. Reuse existing components; specify one inspection identity per canonical security/cutoff/approved context, all origins, concrete read-only assembler requirements, current-descriptive versus strict PIT admission, policy/version lineage and downstream artifact boundaries. Do not implement runtime wiring, activate research, infer horizons or start CAS recovery in that slice.",
+  "brain_capabilities": [
+    {
+      "capability": "TECHNICAL_RELATIVE_STRENGTH",
+      "module": "app/universe_analysis/service.py",
+      "symbol": "Canonical61DiagnosticRunner / _evaluate",
+      "finding": "Rules 6/technical diagnostics reuse; peer and timeframe limits retained. No separate momentum score.",
+      "status": "PARTIAL"
+    },
+    {
+      "capability": "FUNDAMENTAL_ACCOUNTING",
+      "module": "app/analysis/fundamentals.py",
+      "symbol": "earnings_acceleration / order_book",
+      "finding": "Rule 24 is reported revenue YoY classification, not a new multi-period acceleration estimate. Rule 27 consumes order_book/order_inflow/revenue; not universal capex or all-company evidence.",
+      "status": "PARTIAL"
+    },
+    {
+      "capability": "FINANCIAL_INPUT_LINEAGE",
+      "module": "app/universe_analysis/service.py",
+      "symbol": "StockDiagnosticInputAssembler.assemble",
+      "finding": "Canonical financial/technical/benchmark inputs must match security/as_of; PointInTimeGuard selects observations. Unavailable inputs remain insufficient.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "EXTERNAL_CATALYST",
+      "module": "app/intelligence/catalysts/service.py",
+      "symbol": "CatalystService",
+      "finding": "Event cluster/source/filing lineage; order-to-revenue only with valid inputs; priced-in UNKNOWN, no action.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "COMPANY_SENSITIVITY",
+      "module": "app/intelligence/company_sensitivity/service.py",
+      "symbol": "MacroToEarningsTransmissionEngine",
+      "finding": "Exact supplied profile context; missing driver UNKNOWN; no company fact substituted from sector.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "MACRO_POLICY",
+      "module": "app/intelligence/macro/service.py",
+      "symbol": "MacroEvidence.eligible_as_of",
+      "finding": "Availability/publication/effective-time admission; does not prove complete company policy-to-cash realization.",
+      "status": "PARTIAL"
+    },
+    {
+      "capability": "MARKET_EXTREMES",
+      "module": "app/intelligence/market_extremes_assurance_projection.py",
+      "symbol": "project_market_extremes_assurance",
+      "finding": "Reusable regime assurance, not a per-security market-dislocation trigger.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "PRE_BREAKOUT",
+      "module": "app/strategies/pre_breakout/setup_assessment.py",
+      "symbol": "GovernedPreBreakoutSetupAssessmentService.assess_prebreakout_setup",
+      "finding": "Selected approved policy + technical/structural/sector evidence; eligibility is not order authority.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "COMPOUNDER",
+      "module": "app/intelligence/compounder_prospective_shadow_validation.py",
+      "symbol": "run_compounder_prospective_batch",
+      "finding": "Prospective research observations; qualification deferred, not absent code.",
+      "status": "RESEARCH_SHADOW"
+    },
+    {
+      "capability": "INFLECTION",
+      "module": "app/intelligence/inflection_accounting_prospective_shadow.py",
+      "symbol": "run_inflection_accounting_prospective_batch",
+      "finding": "Canonical accounting research; positive promoted family qualification not active.",
+      "status": "RESEARCH_SHADOW"
+    },
+    {
+      "capability": "LONG_TERM_READINESS",
+      "module": "app/intelligence/long_term_thesis_research_shadow.py",
+      "symbol": "_REQUIRED_DOMAINS",
+      "finding": "Five family readiness domains exist including asymmetric emerging; does not supply missing qualified emerging/recovery policies.",
+      "status": "RESEARCH_SHADOW"
+    },
+    {
+      "capability": "HOLDING_INTELLIGENCE",
+      "module": "app/portfolio/holding_intelligence.py",
+      "symbol": "compose_holding_intelligence",
+      "finding": "Canonical Brain-to-holding composition; scoped holding context, not all-market detection.",
+      "status": "CONTEXT_SPECIFIC"
+    },
+    {
+      "capability": "SHARED_BRAIN_COMPARABILITY",
+      "module": "app/intelligence/shared_brain_application.py",
+      "symbol": "SharedBrainApplicationService.analyze_stock",
+      "finding": "Resolves/assembles stored evidence and composes same SharedBrain production snapshot/comparability wrappers; does not call runner/score/setup/gates.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "DECISION_SCORE",
+      "module": "app/scoring/engine.py",
+      "symbol": "build_scorecard",
+      "finding": "Existing component and eligibility rules; rejected/cross-version inputs cannot become zero-score evidence.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "TRUST_ENVELOPE",
+      "module": "app/intelligence/decision_trust_envelope.py",
+      "symbol": "decision_trust_envelope_from_shared_brain",
+      "finding": "Copies compatible persisted Brain/score/setup/gates/thesis into UI-safe read model, not another score authority.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "capability": "SETUP_THESIS_INVALIDATION",
+      "module": "app/production_v1/canonical_setup_activation.py",
+      "symbol": "CanonicalSetupOpportunity.from_assessment",
+      "finding": "Approved Pre-Breakout structural candidate plus separate holding thesis/invalidation; no universal archetype setup.",
+      "status": "CONTEXT_SPECIFIC"
+    }
+  ],
+  "downstream": [
+    {
+      "stage": "EVIDENCE_ASSEMBLY",
+      "status": "ADAPTER_MISSING",
+      "module": "app/universe_analysis/service.py",
+      "symbol": "StockDiagnosticInputAssembler.assemble",
+      "reason": "Existing assembler available; concrete CanonicalRadarEvidenceAssembler port and union/security/context binding absent.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "CANONICAL_61",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "module": "app/universe_analysis/service.py",
+      "symbol": "Canonical61DiagnosticRunner.run",
+      "reason": "Synchronous exact61 DiagnosticRun with COMPLETE/PARTIAL/UNAVAILABLE; per-rule missing/error fail-closed. Runner does not persist. Governance authorization optional parameter, explicit production binding required.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "RESEARCH_COMPARABILITY",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "module": "app/intelligence/shared_brain_application.py",
+      "symbol": "SharedBrainApplicationService.analyze_stock",
+      "reason": "Stored canonical evidence to same production Brain/comparability; not invoked by union.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "DECISION_SCORE",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "module": "app/scoring/engine.py",
+      "symbol": "build_scorecard",
+      "reason": "Existing universe jobs call it after runner; exact-five portfolio activator persists canonical scores; neither consumes union.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "DECISION_TRUST_ENVELOPE",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "module": "app/intelligence/decision_trust_envelope.py",
+      "symbol": "decision_trust_envelope_from_shared_brain",
+      "reason": "Existing stock query projection; no union binding.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "SETUP_PREPARATION",
+      "status": "CONTEXT_SPECIFIC",
+      "module": "app/production_v1/top3_opportunity_finder.py",
+      "symbol": "Top3OpportunityFinderService.run",
+      "reason": "Stored-sector constituent and portfolio Pre-Breakout paths; source opportunities precede funnel adapters. Not automatically after every score.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "SIX_GATES",
+      "status": "CONTEXT_SPECIFIC",
+      "module": "app/portfolio/canonical_six_gates_activation.py",
+      "symbol": "CanonicalPortfolioSixGatesActivator",
+      "reason": "Existing governed input/evaluation path restricted to portfolio-five; universe service has its own injected gate-input path using same engine. No union path; V2 not active.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "PORTFOLIO_ROTATION",
+      "status": "CONTEXT_SPECIFIC",
+      "module": "app/universe_analysis/service.py",
+      "symbol": "PortfolioUniverseRotationService.evaluate",
+      "reason": "Snapshot/candidate/strategy/score/gate/economic comparability required; score or multi-hit count is not rotation approval.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "WATCH_SIGNAL",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "module": "app/intelligence/market_wide_watch.py",
+      "symbol": "MarketWideWatchService._record",
+      "reason": "Stored diagnostic/score/setup/gate/external evidence projected through existing Router, not candidate union.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "HSI_SIGNAL",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "module": "app/intelligence/hsi_signal_projection.py",
+      "symbol": "project_watch_to_hsi_signal",
+      "reason": "Pure P1C Watch + P1B policy resolution; WATCH_ONLY/NON_EXECUTABLE; not live /signals and not funnel union.",
+      "invoked_by_multi_funnel_runner": false
+    },
+    {
+      "stage": "SELL_SIDE",
+      "status": "CONTEXT_SPECIFIC",
+      "module": "app/portfolio/sell_side_runtime.py",
+      "symbol": "evaluate_portfolio_sell_side_action",
+      "reason": "Existing holding policy classification; no new broker authority, no multi-funnel call.",
+      "invoked_by_multi_funnel_runner": false
+    }
+  ],
+  "score": {
+    "configuration": "decision-score-v1",
+    "component_count": 10,
+    "input": "EvaluatedDiagnostic tuple, exact registry and explicit as_of/evaluated_at",
+    "all61_evaluated_by_runner": true,
+    "all61_equal_weight": false,
+    "mandatory_rules": [
+      24,
+      1,
+      2,
+      7,
+      6,
+      10,
+      11,
+      12,
+      29,
+      45,
+      8
+    ],
+    "component_rules_source": "app/scoring/engine.py:COMPONENTS",
+    "unmapped_rules_not_newly_scored": true,
+    "missing_mandatory": "component INELIGIBLE, final_score None, SCORE_INCOMPLETE",
+    "missing_optional": "component PARTIAL using admitted evidence only",
+    "unavailable_is_zero": false,
+    "future_inputs": "excluded",
+    "cross_registry": "clear all eligible evidence; no V1 fallback from mixed registry",
+    "funnel_identity_input": false,
+    "multiple_hit_bonus": false,
+    "registry_or_weights_changed": false
+  },
+  "setup": {
+    "entry": "candidate.breakout_confirmation_trigger",
+    "stop_and_structural_invalidation": "candidate.final_structural_stop",
+    "T1": "candidate.measured_move_target",
+    "T2": null,
+    "extended_target": null,
+    "rr": "candidate.reference_reward_risk",
+    "maximum_entry": "candidate.maximum_executable_entry_price",
+    "time_horizon": "NOT_GOVERNED_FOR_SETUP_OPPORTUNITY",
+    "thesis": "separate HoldingIntelligenceComposition analytics; not fabricated for unheld candidate",
+    "catalyst": "separate diagnostic/Watch context; not synthesized into Pre-Breakout setup",
+    "source": "app/intelligence/decision_trust_envelope.py:_setup",
+    "gate_dependency": "setup eligibility is before gates; no capital authorization",
+    "ordering": "Current Pre-Breakout discovery adapter reads an already-produced setup. Intended graph is logical authority flow, not permission to regenerate setup or loop its lineage."
+  },
+  "portfolio_outputs": {
+    "source": "app/portfolio/sell_side_runtime.py:evaluate_portfolio_sell_side_action",
+    "existing_vocabulary": [
+      "HOLD",
+      "EXIT_TO_CASH",
+      "ROTATE",
+      "REVIEW_REQUIRED",
+      "NO_ACTION"
+    ],
+    "trim_authorized": false,
+    "harvest_in_this_runtime": false,
+    "watch_actual_rotation_candidate_count": 0,
+    "challenger_only": "CHALLENGER_WATCH_ONLY",
+    "unscored": "UNSCORED_NOT_WEAK",
+    "comparator": "same snapshot/as_of/strategy/score/gate/economic provenance; cash UNKNOWN does not imply zero or capital authority",
+    "new_output_created": false
+  },
+  "frontend": [
+    {
+      "surface": "Market-Wide Watch API and Production Watch page",
+      "paths": [
+        "app/api/routes/market_wide_watch.py",
+        "app/api/schemas/market_wide_watch.py",
+        "frontend/src/api/httpClient.ts",
+        "frontend/src/pages/ProductionPages.tsx"
+      ],
+      "status": "PARTIAL_PROJECTION",
+      "lineage_status": "PROVENANCE_MISSING",
+      "finding": "API maps canonical Watch IDs/fingerprints, diagnostic refs, external evidence, score status/value, setup/gates states and as_of. UI renders archetypes/state/blockers, not the14 source-funnel union/origins. Read returns503 if snapshot unavailable, never launches scan."
+    },
+    {
+      "surface": "Stock SharedBrain and Decision Trust Envelope",
+      "paths": [
+        "app/api/shared_brain_query.py",
+        "app/intelligence/decision_trust_envelope.py",
+        "frontend/src/pages/ProductionPages.tsx"
+      ],
+      "status": "CANONICAL_PROJECTION",
+      "lineage_status": "PROVENANCE_MISSING",
+      "finding": "Canonical stored Brain/score/setup/gate/thesis evidence; public stock APIs expose availability/domain summaries and freshness, not the full private 61-rule inventory or multi-funnel origins."
+    },
+    {
+      "surface": "Universe opportunities",
+      "paths": [
+        "app/api/routes/opportunities.py",
+        "app/api/universe_opportunity_query.py",
+        "frontend/src/api/httpClient.ts"
+      ],
+      "status": "PARTIAL_PROJECTION",
+      "lineage_status": "PROVENANCE_MISSING",
+      "finding": "Existing universe job opportunity read model; frontend maps symbol/sector/execution/candidate status/warnings but not candidate-union origin lineage."
+    },
+    {
+      "surface": "Legacy /signals and paper views",
+      "paths": [
+        "app/api/routes/signals.py",
+        "app/api/signal_paper_query.py",
+        "frontend/src/api/httpClient.ts"
+      ],
+      "status": "LEGACY_PROJECTION",
+      "lineage_status": "PROVENANCE_MISSING",
+      "finding": "Existing SignalQueryService/paper repository route, not P1 HSISignal projection and not union consumer. No new legacy authority authorized."
+    },
+    {
+      "surface": "Multi-funnel candidate union / P1 projected signal API/UI",
+      "paths": [
+        "app/intelligence/hsi_signal_projection.py",
+        "app/intelligence/multi_funnel_orchestration.py"
+      ],
+      "status": "NOT_WIRED",
+      "lineage_status": "NOT_WIRED",
+      "finding": "Pure contracts/adapters only; no API, frontend or production runtime caller found."
+    }
+  ],
+  "frontend_field_coverage": {
+    "source_funnels": "NOT_WIRED",
+    "candidate_union_provenance": "NOT_WIRED",
+    "diagnosis_61": "AVAILABILITY_SUMMARY_ONLY; private rule inventory not exposed; Watch retains selected rule/artifact references",
+    "decision_score": "CANONICAL_VALUE_AND_STATUS_WHEN_AVAILABLE",
+    "setup": "PARTIAL; entry/structural stop/T1/RR and state; no invented T2/extended target",
+    "six_gates": "CANONICAL_STATE_AND_GATE_OUTCOMES_WHEN_AVAILABLE",
+    "state_reason": "BLOCKERS_WARNINGS_AND_AVAILABILITY",
+    "freshness": "SOURCE_AS_OF_AND_READ_MODEL_FRESHNESS; no new union expiry"
+  },
+  "scheduler": [
+    {
+      "stage": "whole-universe acquisition/scanning and cadence",
+      "status": "NOT_IMPLEMENTED",
+      "finding": "No app/api, app/runtime, scripts, tools, frontend caller of orchestrate_whole_market_discovery found. Explicit source-reader batch is not scheduled population scan."
+    },
+    {
+      "stage": "five adapter execution + canonical union",
+      "status": "IMPLEMENTED_NOT_WIRED",
+      "finding": "Pure bounded orchestrator; all14 receipts and five source bindings, no runtime/store reader configured."
+    },
+    {
+      "stage": "candidate-to-61 evidence assembly",
+      "status": "ADAPTER_MISSING",
+      "finding": "Radar bridge exists; concrete assemble_for_radar port/union consumer absent."
+    },
+    {
+      "stage": "independent existing runtime materialization",
+      "status": "CONTEXT_SPECIFIC",
+      "finding": "app/runtime/cli.py provides portfolio diagnostics, sector/Top3 and materialize-market-wide-watch operations; no new scheduler and none executed here."
+    },
+    {
+      "stage": "stored output query projections",
+      "status": "WIRED_AND_OPERATIONAL",
+      "finding": "app/api/main.py/dependencies.py wire existing stored read services; not proof new multi-funnel chain has run."
+    }
+  ],
+  "graph": {
+    "intended_nodes": [
+      "WHOLE_ELIGIBLE_NSE_UNIVERSE",
+      "14_DISCOVERY_FUNNELS",
+      "CANONICAL_UNION",
+      "BRAIN_INSPECTION_CANDIDATES",
+      "SAME_BRAIN",
+      "61_DIAGNOSIS",
+      "DECISION_SCORE",
+      "SETUP_THESIS_INVALIDATION",
+      "SIX_GATES",
+      "PORTFOLIO_ROTATION_SIGNALS_WATCH_SELL",
+      "API_UI"
+    ],
+    "actual_edges": [
+      {
+        "from": "retained canonical sources",
+        "to": "Brain intelligence primitives",
+        "state": "OPERATIONAL",
+        "evidence": "Canonical existing evidence/primitives; actual completeness not measured"
+      },
+      {
+        "from": "retained governed setup/Top3",
+        "to": "two active adapters",
+        "state": "OPERATIONAL",
+        "evidence": "Conditional pure call only; source produced independently"
+      },
+      {
+        "from": "three retained research receipts",
+        "to": "three research adapters",
+        "state": "SHADOW",
+        "evidence": "Research inspection only"
+      },
+      {
+        "from": "remaining nine registry entries",
+        "to": "canonical emitted leads",
+        "state": "MISSING",
+        "evidence": "No bound adapter; explicit unavailable receipts, not nine absent intelligences"
+      },
+      {
+        "from": "five adapters",
+        "to": "canonical candidate union",
+        "state": "OPERATIONAL",
+        "evidence": "Within pure caller-invoked batch"
+      },
+      {
+        "from": "candidate union",
+        "to": "same Brain inspection",
+        "state": "MISSING",
+        "evidence": "No runtime consumer"
+      },
+      {
+        "from": "individual admitted lead + injected assembler",
+        "to": "canonical61 via Radar",
+        "state": "IMPLEMENTED_NOT_WIRED",
+        "evidence": "Per-lead bridge, not union path"
+      },
+      {
+        "from": "existing universe job",
+        "to": "canonical61 -> score -> gates -> stored analysis",
+        "state": "OPERATIONAL",
+        "evidence": "Independent bounded service requires sources/governance; not union"
+      },
+      {
+        "from": "stored canonical artifacts",
+        "to": "SharedBrain -> TrustEnvelope / MarketWatch -> Router",
+        "state": "OPERATIONAL",
+        "evidence": "Read/composition not computation"
+      },
+      {
+        "from": "stored approved assessment",
+        "to": "PreBreakout setup opportunity",
+        "state": "OPERATIONAL",
+        "evidence": "Existing controlled sector/portfolio path, before source adapter"
+      },
+      {
+        "from": "new multi-funnel score",
+        "to": "new setup/gates",
+        "state": "MISSING",
+        "evidence": "No such materialized score/handoff"
+      },
+      {
+        "from": "existing comparable holding/candidate context",
+        "to": "rotation and sell-side classifiers",
+        "state": "OPERATIONAL",
+        "evidence": "Context-specific evidence only; no new execution authority"
+      },
+      {
+        "from": "existing stored query models",
+        "to": "API/UI",
+        "state": "OPERATIONAL",
+        "evidence": "No funnel-origin projection"
+      },
+      {
+        "from": "union provenance",
+        "to": "API/UI",
+        "state": "MISSING",
+        "evidence": "Existing Watch provenance is not union provenance"
+      },
+      {
+        "from": "holding/watchlist/regime context",
+        "to": "unconditional whole-NSE security scanner",
+        "state": "NOT_APPLICABLE",
+        "evidence": "No silent contextual scope expansion"
+      },
+      {
+        "from": "MarketWatch",
+        "to": "P1 HSISignal",
+        "state": "IMPLEMENTED_NOT_WIRED",
+        "evidence": "Pure projector not HTTP /signals"
+      }
+    ],
+    "delta": "The pure runner terminates at union. Existing downstream services form separate controlled paths. A shared handoff must reuse canonical services and preserve per-security origin lineage, context, temporal mode and typed governance; not assume full61/scoring/setup/gates already invoked.",
+    "duplicate_decision_system_found": false
+  },
+  "conflicts": [
+    {
+      "code": "WHOLE_NSE_VS_CONTEXT_SCOPE",
+      "severity": "RECONCILIATION_REQUIRED_NOT_NEW_AUTHORITY",
+      "finding": "Frozen all14 product language is an intended discovery platform, not permission to run holding/watchlist/regime contexts as unconditional security scans; current event families are exposure-conditioned and master only verifies supplied population.",
+      "resolution": "Preserve exact registry eligibility/context; record not silently expand."
+    },
+    {
+      "code": "STALE_SECTOR_ADAPTER_BLOCKER",
+      "severity": "DESCRIPTIVE_METADATA_DRIFT",
+      "finding": "Registry says SECTOR_TO_STOCK_LEAD_ADAPTER_NOT_IMPLEMENTED but adapt_sector_rotation and runner binding exist.",
+      "resolution": "Audit reports both; registry unchanged. Do not classify sector adapter absent."
+    },
+    {
+      "code": "LEAD_VS_SECURITY_DIAGNOSTIC_IDENTITY",
+      "severity": "INTEGRATION_HAZARD_NOT_EXISTING_DUPLICATE_BRAIN",
+      "finding": "Radar evaluate_leads dedups lead_id, union groups canonical security; blindly forwarding origins repeats diagnosis.",
+      "resolution": "One governed inspection identity/security/cutoff/context, retaining all origins; no multi-hit score."
+    },
+    {
+      "code": "CURRENT_DESCRIPTIVE_VS_STRICT_PIT",
+      "severity": "TEMPORAL_ADMISSION_LIMIT",
+      "finding": "Radar current technical input intentionally has strict historical PIT NOT_READY.",
+      "resolution": "Do not claim universal historical eligibility or use this receipt as scenario/horizon authority."
+    },
+    {
+      "code": "SOURCE_PROVENANCE_GRANULARITY",
+      "severity": "HANDOFF_REQUIREMENT",
+      "finding": "Sector ranking lineage reference uses Top3 run fingerprint; source-level knownness belongs to injected reader. Legacy Watch diagnostic_result text is a result token plus artifact reference, not full typed result provenance.",
+      "resolution": "Verify native source/diagnostic authority in a future handoff; do not repair/relabel retained lineage."
+    },
+    {
+      "code": "SOURCE_SETUP_PRECEDES_FUNNEL",
+      "severity": "GRAPH_ORDER_CLARIFICATION",
+      "finding": "Existing Pre-Breakout source already has setup; union is not a fresh setup request.",
+      "resolution": "Reuse approved assessment; avoid cyclic recomputation or new implied horizon."
+    }
+  ],
+  "lists": {
+    "missing_intelligence": [
+      "EMERGING_COMPOUNDER",
+      "VALUATION_RECOVERY"
+    ],
+    "wiring_or_governed_predicate_reuse": [
+      "MOMENTUM",
+      "PRE_BREAKOUT",
+      "EARNINGS_ACCELERATION",
+      "ORDERBOOK_CAPEX",
+      "SECTOR_ROTATION",
+      "NEWS_CATALYST"
+    ],
+    "strictly_wiring_ready_adapters": [
+      "PRE_BREAKOUT",
+      "SECTOR_ROTATION"
+    ],
+    "research_promotion": [
+      "COMPOUNDER",
+      "FUNDAMENTAL_INFLECTION",
+      "POLICY_TRANSMISSION"
+    ],
+    "contextual_only": [
+      "HOLDING_STATE_CHANGE",
+      "WATCHLIST_STATE_CHANGE",
+      "MARKET_DISLOCATION"
+    ],
+    "event_conditioned_not_unconditional_scanners": [
+      "NEWS_CATALYST",
+      "POLICY_TRANSMISSION"
+    ],
+    "qualification_gap_note": "The broad reuse list is not all wiring-only: Momentum, Earnings, Orderbook/Capex and News still need explicit predicate/freshness governance. Emerging and valuation already have reusable readiness primitives but no qualified named policy.",
+    "priority": [
+      "Freeze union-to-existing-Brain handoff/admission contract first",
+      "Bounded shared read-only integration only in a separately authorized slice",
+      "Close existing-intelligence emitters/predicate policies without second scoring",
+      "Promote research only through calibration/governance",
+      "Define truly missing qualified policies",
+      "Project complete provenance through existing API/UI"
+    ]
+  },
+  "inspected_file_fingerprints_lf": {
+    "app/api/schemas/stocks.py": "sha256:bbece6ec03085ed43257241108c87cc65dd0dfd8caad893bb16e97fbf439d6a4",
+    "app/api/routes/stocks.py": "sha256:a27f3d3eaab40d7a87503a3897e05626d6bce1cbe12e2736f72bd3b7bb1e9e64",
+    "frontend/src/pages/DashboardPage.tsx": "sha256:158edadd7db5fa817e680599728e5e70cb0007b5edee4fb16af0aa4c9db11115",
+    "frontend/src/pages/StockDetailPage.tsx": "sha256:73f59f674b3d3cda213da306481cef8814a11d4449636da41482b6c2cbb4950a",
+    "app/analysis/fundamentals.py": "sha256:df6a40297548cf5304021a2b8b0c93aad4a33c2f90f01f72a6cf4e65a5892c61",
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/api/dependencies.py": "sha256:db33d92c888bf5310d29c017c261689080348b4271c13221e6a0f9b787a01f0b",
+    "app/api/main.py": "sha256:99a5cd38d2dc613fe8e9f810e5362bed21482880c66e08c947a47f51186a52a5",
+    "app/api/routes/market_wide_watch.py": "sha256:a9ee9c11d6d1682352fff70183e03e93731cc83bce061ba388a973e82fea45df",
+    "app/api/routes/opportunities.py": "sha256:76ac7f3d2be1e88fcbbac93f5914d96168816486d9660eaaeaa06a4215c51365",
+    "app/api/routes/signals.py": "sha256:e055c788fda2c79d422d6f5f3c7d3f8eaabbd1e14b96fd6a212e37a554c05561",
+    "app/api/schemas/market_wide_watch.py": "sha256:677a00981286efd2fed533c788de42f024eea8a62d9084f80a06b9c9b244e0e5",
+    "app/api/shared_brain_query.py": "sha256:b89a3f6d9064d2e005fb6bc02f0715ce99761efb99c3e986c096b06954d162ef",
+    "app/api/signal_paper_query.py": "sha256:489a5f3b6d0722ce08f775a834c6f64172a094f5e532c9061ba2ec5630f728dc",
+    "app/api/universe_opportunity_query.py": "sha256:54f01b52a321d7a0eb20f07284ef572a06c843738342e081efea094df1dbd09f",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/performance.py": "sha256:aa3f2859ab43e8d8b1a92ddf1d5879cdb8ba9fd9fdec35b525757fd8276a22e5",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/crisis/models.py": "sha256:f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/diagnostics/downstream.py": "sha256:52dd92a52f1f4345cff64178137fbcca3af4c6ed8d0d43f7eb4abe78e366c0d3",
+    "app/diagnostics/evaluators.py": "sha256:b7aa1ad59b49a5b44f180bc3f4d96c65356a9bf3872d019639bd88caee5dfb6c",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/composition.py": "sha256:15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "sha256:7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_capital_market_session_evidence_2022_2026.py": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/nse_mii_security_master.py": "sha256:e54a3c1f1224421b15b51bd02bd9aa0639ebfa34d6ffcadf9fecab3abb430932",
+    "app/historical/nse_mii_session_knownness.py": "sha256:640d7c00fb6b30905b1e7eaf9d0b1e73757a186e76afb17b780d153b00588b80",
+    "app/historical/nse_session_identity.py": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+    "app/historical/security_identity_selector.py": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/historical_integrity/models.py": "sha256:60d0ac0758531af583efbbc761944961ebe20ca3b2d587923cabe9c752cd2fc2",
+    "app/historical_integrity/service.py": "sha256:cb0e48fa29b7fbbe1087236518dbea8e8a5909a87604182f14cb8fa6420a51c9",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/catalysts/service.py": "sha256:c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/decision_trust_envelope.py": "sha256:d503ea0834cc97b6877360b1bee8070039e215f5dc1966f844e5634451344417",
+    "app/intelligence/discovery_recall_reference_matching.py": "sha256:a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/hsi_signal.py": "sha256:85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/hsi_signal_projection.py": "sha256:f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/inflection_accounting_prospective_shadow.py": "sha256:7ad0e828545c57c9702f44c3884ccf75d4bc335b87a4b5909d5cef307e12c168",
+    "app/intelligence/internal_technical_radar.py": "sha256:60a56a526b9335f14d0b6c2bef06062ab211dbbeffb4fa271dc7caf2d558b4ec",
+    "app/intelligence/long_term_policy_transmission_research_shadow.py": "sha256:28aacdca241d6ef700d98d53a1c801e906ce73c84749da04e592860d1b28955d",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "sha256:4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro/service.py": "sha256:290f4af9db3dd708443fec6cc5d0f2752d64abe9e8212e315b450645ec92230b",
+    "app/intelligence/macro_news_evidence.py": "sha256:ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_extremes_assurance_projection.py": "sha256:636692e3316f08efc1a9f8f2cf5dd913e8d4232ce4e9eb7950d8d4b91d68f710",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_candidate_union.py": "sha256:2b9cc59af6b9ee9bbf55d53da3c879a22f33d0eef2db30dcc9d7839110ed4585",
+    "app/intelligence/multi_funnel_discovery.py": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "sha256:e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/multi_funnel_orchestration.py": "sha256:afd143eaa28e1414a75f0e6d52a1bd4d0e747d32e04e13a61535838c84c0f174",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/quality_fair_value_research_shadow.py": "sha256:e1e408322c54d2cfa46eb412bf8c7187abf93e1db0a82b0e2b16c5009a87451f",
+    "app/intelligence/radar_diagnostic_orchestration.py": "sha256:69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/sector_economics/service.py": "sha256:5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/shared_brain_application.py": "sha256:166a5fb59a8003a74cd7e187c8f1d7b69a158933c38f132161a68738c024e0e6",
+    "app/intelligence/shared_brain_production.py": "sha256:c8668020345fc8ce95c9cff046bbc043498a619d63d4479f83cdfb01c4a211f1",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/daily_technical_bar_temporal_evidence.py": "sha256:58d76bdf1bcf37e246c8a669cf604b8eb986a5c1ea53d21337b79f7304bdadc9",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/dhan_live_bar.py": "sha256:6280a96219d815d9fd5e6913e1eb06246d3b1365bad78890653dc2a3a7552bb6",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/nse_full_bhavcopy.py": "sha256:c24efeeb2cfd9fa6285edacd66321affb2055ff5789cebee43a4b579076419f9",
+    "app/market_data/nse_udiff_daily_history.py": "sha256:e75c6e621512973cb245031feada74ac6dfa9845a4c678484fd5c69a65d9f8f6",
+    "app/market_data/nse_udiff_weekly_technical_bar.py": "sha256:b67f4f1d727fee89a79b8723ccded60de68377cafbc2fe28026d56c18effffa1",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/prospective_fifteen_minute_bar.py": "sha256:91f32e2215c2edc64205bb44647c828ddfba33497e952aba5548e59f35a34db8",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/market_data/upstox.py": "sha256:e5469bc7ff5c63a6e028d7faed830a20ebe2f2f35a6583437cef77ca30fe6740",
+    "app/paper/engine.py": "sha256:2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/performance/models.py": "sha256:3fd5f22f93f161f6ef041181f581ef3903528523398994522f309a645feca5c5",
+    "app/portfolio/canonical_decision_score_activation.py": "sha256:3d47a430f420adc8962780d6643c2cf14e76d4835c6d77cc4bfbc80292661418",
+    "app/portfolio/canonical_diagnostics_orchestration.py": "sha256:90f2f3856089d12d040426174248285c0e6c7ba57a7316037ad83f7c4ac60af1",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/holding_intelligence.py": "sha256:e9ee39372662d800079af409074c92254ab93c56bd3d300743fbe4196f8adc26",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/portfolio/sell_side_policy.py": "sha256:4d29e14ae9220ffa379832df1d7973c290bb59001314439be2677cc76af5b84b",
+    "app/portfolio/sell_side_runtime.py": "sha256:430e21e82d1c3b66bdd739c3499ad678337cbaa58c00301812082f1cba61ecd3",
+    "app/production_v1/canonical_setup_activation.py": "sha256:01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/governed_setup_source.py": "sha256:b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/production_v1/top3_opportunity_finder.py": "sha256:b0b88c858aa4b234996a87aea7a0c529e92f79fef80b6211482dd1628988b4af",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/research/handoff.py": "sha256:57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/runtime/cli.py": "sha256:78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/self_improvement/models.py": "sha256:588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/storage/sqlite_repository.py": "sha256:dfbc3abef762de476d7115527937048cbd7e8cca1f5af65af6739c1916a11019",
+    "app/strategies/common/models.py": "sha256:9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/pre_breakout/governance.py": "sha256:eb4b7ecb3bdd4c3726e0dcc0de39b472c65b65c8a3d50f37de1739a695fd698a",
+    "app/strategies/pre_breakout/governance_commands.py": "sha256:df6ab92a6af5061ae1482474cb5a2abb767b183d6751d908bcc529834d53d057",
+    "app/strategies/pre_breakout/policy.py": "sha256:896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+    "app/strategies/pre_breakout/research_handoff.py": "sha256:48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/strategies/pre_breakout/setup_assessment.py": "sha256:4808aa4a880867e63990da2c83cfb44b27a995ea4103f21d4a9e3da1eaa74bee",
+    "app/universe_analysis/models.py": "sha256:53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "app/universe_analysis/service.py": "sha256:5f0405f40961a89714a484b64eead596538052d4e9beb5ec71a7ce7417b3e28b",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.json": "sha256:5c2d0625ba035406d5c5146db3b594577e4371a5a671a6b93324c8da176b1c7a",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json": "sha256:7a13bcd4fcf0d9b18e977386652ec8af98951b82294c15038e811665d7dd81f8",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md": "sha256:7729396fd2fbdf0e518a487916b547ce517bcce1d83ef5e85dc7fc1eb6655f41",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.json": "sha256:c2740fae1a4a54df8aa182e4359bd26674934953ba65e94c73eb712f35072fdf",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.md": "sha256:4c22e689b158ba8b8241a7ee0c6b282bd4d5b01d2a0440658e673e9fd68d62d7",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json": "sha256:ddafc5b75af81f3330c6043da4255b8d7f10c3db133b4bfa568c8e53c3d562e8",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.md": "sha256:fa9174a6a4c2e65775f6558b6e5721a295a582619367c35b243b6ed7371a74e1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json": "sha256:11e56d1e3bccf269d2d02c2b039fcbc89c8b0c17c4cfac32f3d9cce508d6d70a",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.md": "sha256:8539645cd09870ff42f547c75cef1aca17a51b3e877438cb67f6f4e769449cee",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json": "sha256:f37176854ffff603f47e85cdfb2ed9570a5d4c580adccf95a20f3247cc5aa6b6",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.md": "sha256:aa7e174fda319df62208b42067aac73bb598bd2d89b4a0d04491d055b55fc19f",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json": "sha256:768247ab11b5d11e511fb50983633b0febb609915611801acae71facfb40cdca",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.md": "sha256:5280f9218d09b8ee2e18fece0bdb13fef42a07870a7711cc7e0c4dd061f887b1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json": "sha256:2bdc2a78fe7ec5af027d909bb38094bb5ecf79fafc3a781249b3bf0c4ac70ab0",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.md": "sha256:f007ed08f5d610fc53ae319026657d6d642a5bf9552947cfc146d1e59ef4e48c",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.json": "sha256:1932d9463e4e4058d175e074361689e44e70621d4347d6f73b5135c2b3eedf67",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.md": "sha256:d658220243b12799c4030d6f1f7076a2c6fd15357d93c02f4b78cb03fdb08ca0",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md": "sha256:8f35aefab66d925f1333fe6fe4b302939790988e58aa331a5a80f3ebe9942558",
+    "docs/architecture/MULTI_FUNNEL_DISCOVERY_ADAPTERS_V1.md": "sha256:4865ee8a0031417a495583962461b2d5f25bd42af86d4c93cb7a9abfba287987",
+    "docs/architecture/MULTI_FUNNEL_DISCOVERY_CONTRACT_AND_REGISTRY_V1.md": "sha256:5d22b111cddcf41304b16199865de8931d8325f5350bfaf49ecb161f429f8f7f",
+    "docs/architecture/MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md": "sha256:342628b427dfb9f203e4433fc61fac5066d2359e7cf7bc380b6b592458c52611",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md": "sha256:5b0dcdd09686f24b4f9f482e5ea862cd311615d9e9ec26ae5a144d9ad698a07a",
+    "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+    "docs/architecture/RADAR_TO_HSI_DIAGNOSTIC_ORCHESTRATION_V1.md": "sha256:63e2e6eb0aec17dfdc04d975ec6bd776a44291a55261fa4cfcba195e067520b5",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "frontend/src/api/httpClient.ts": "sha256:f250bbf949834c464a986d80bc14b521ad3a43ba344dffa60cc5aab43a7b1251",
+    "frontend/src/pages/ProductionPages.tsx": "sha256:d1fb6eb3fe49eb63d56fedab5575977342e81a17516aea5bed278f7f218dc595",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_paired_scenario_research_protocol.py": "sha256:4d365c1f564c8732c0200862ac7a4720a18334a68a2f597f41afad038203bd25",
+    "tests/unit/test_gate1_rotation_research_bootstrap_independent_prior_evidence.py": "sha256:ab920d809abb6327d0400c5f84056e82712da0358fe93a46f7ef8e4d02c292fd",
+    "tests/unit/test_gate1_rotation_research_bootstrap_parameter_policy_proposal.py": "sha256:160ccbb7065f2f199e6759f3deecd2b03ddec0e4ec13e4837d14d90d1b0eeef1",
+    "tests/unit/test_gate1_rotation_research_horizon_authority_policy.py": "sha256:0bdccfc30d3af66802123da530feb76e09bac11cce16199905074ca8ce63f9b1",
+    "tests/unit/test_gate1_rotation_research_horizon_bootstrap_governance.py": "sha256:0979d66c5ee4b68b2bdc2e57dd48db0b81b489429bd55286687fbb5a98737320",
+    "tests/unit/test_gate1_rotation_research_horizon_mapping_evidence_feasibility.py": "sha256:90ef955d30b3c25eb858d93b553c9da30f6556787b95536e297a96c4570d026d",
+    "tests/unit/test_gate1_rotation_research_horizon_policy_proposal.py": "sha256:c68c1a868c7d3b0dc837604749feb4665d27c5e8f36e42f30e893bc6c27c6a15",
+    "tests/unit/test_gate1_rotation_research_session_price_source_applicability_audit.py": "sha256:7f7b48e2e062901f8dc62111874deaf5a402c283f8d93a39f12c9c9a30ce3e8b",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479",
+    "tests/unit/test_nse_ordinary_session_close_evidence.py": "sha256:07b201e12de0eea92af8010115a57ee92a9cfa76e97fbe1bc37222c1c44a70fb"
+  },
+  "artifact_fingerprint": "sha256:224297fc6ce7bc1b7a5bf412446b69c3f71e85e9608f7906eb6fb58ea65a83ab"
+}
