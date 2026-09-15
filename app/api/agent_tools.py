@@ -12,6 +12,7 @@ from pydantic import AwareDatetime
 
 from app.api.agent_query import diagnostics_from_existing_state
 from app.api.agent_market_scan import SharedMarketScanResponse, market_scan_response
+from app.api.agent_setup import SetupResponse, setup_response
 from app.api.errors import APIRequestError, api_request_error_handler, request_validation_error_handler
 from app.api.market_context_query import breadth_response, extremes_response
 from app.api.market_query import market_regime_response, sector_response
@@ -99,7 +100,10 @@ def create_tool_app(state_provider) -> FastAPI:
             ("hsi_scan_market", "PARTIAL" if getattr(state, "agent_market_scan_service", None) else "BLOCKED",
              "shared stored scan; explicit snapshot as-of; operator refresh required", ("SHARED_SNAPSHOT_AND_NATIVE_SOURCE_COVERAGE_REQUIRED",), True,
              "Read one shared canonical discovery snapshot. Never rescan or call providers per Agent question."),
-            ("hsi_get_setup_inputs", "NOT_EXPOSED", "deferred", ("AGENT_SETUP_TOOL_NOT_EXPOSED",), False, "Existing governed setup machinery is unchanged; not exposed by this facade."),
+            ("hsi_get_setup", "PARTIAL" if getattr(state, "decision_score_governance_repository", None) else "BLOCKED",
+             "one canonical NSE equity; explicit cutoff; latest stored governed assessment",
+             ("PER_SECURITY_STORED_SETUP_AND_GOVERNANCE_REQUIRED", "SETUP_CURRENTNESS_AND_CONTEXT_NOT_PROVEN"), True,
+             "Read canonical Pre-Breakout setup and separate stored Score/Gates references. Missing prices stay null; no calculation or execution."),
         )
         return ToolEnvelope(status="READY", data=tuple(ToolCapability(tool_id=i, readiness=r,
             supported_scope=s, blockers=b, exposed=e, description=d) for i,r,s,b,e,d in entries),
@@ -128,6 +132,13 @@ def create_tool_app(state_provider) -> FastAPI:
             return _blocked("DIAGNOSTIC_IDENTITY_GOVERNANCE_OR_EVIDENCE_UNAVAILABLE", as_of=body.as_of)
         finally:
             diagnostic_lock.release()
+
+    @app.get("/setup", operation_id="hsi_get_setup", dependencies=guarded,
+             response_model=ToolEnvelope[SetupResponse])
+    def setup(canonical_security_id: CanonicalSecurity, as_of: AwareDatetime):
+        """Read latest stored governed setup at/before explicit cutoff. Native source time and unknown freshness apply; not a live entry or trade plan."""
+        return setup_response(getattr(state_provider(), "decision_score_governance_repository", None),
+            canonical_security_id, as_of=as_of.astimezone(UTC))
 
     @app.get("/stock-intelligence", operation_id="hsi_get_stock_intelligence", dependencies=guarded,
              response_model=ToolEnvelope[SharedBrainAnalysisResponse])

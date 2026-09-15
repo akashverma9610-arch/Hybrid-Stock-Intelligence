@@ -81,13 +81,13 @@ def test_startup_reuses_existing_api_and_separate_tool_openapi():
         assert client.get("/health").status_code == 200
         assert client.get("/openapi.json").json()["paths"] == existing_app().openapi()["paths"]
     paths = doc.json()["paths"]
-    assert set(paths) == {"/capabilities", "/diagnostics", "/stock-intelligence", "/market-context", "/news-catalysts", "/portfolio-state", "/market-scan"}
+    assert set(paths) == {"/capabilities", "/diagnostics", "/stock-intelligence", "/market-context", "/news-catalysts", "/portfolio-state", "/market-scan", "/setup"}
     assert doc.json()["servers"] == [{"url": PREFIX}]
     operations = [operation for path in paths.values() for operation in path.values()]
     assert {op["operationId"] for op in operations} == {
-        "hsi_get_capabilities", "hsi_run_diagnostics", "hsi_get_stock_intelligence", "hsi_get_market_context", "hsi_get_news_catalysts", "hsi_get_portfolio_state", "hsi_scan_market"}
+        "hsi_get_capabilities", "hsi_run_diagnostics", "hsi_get_stock_intelligence", "hsi_get_market_context", "hsi_get_news_catalysts", "hsi_get_portfolio_state", "hsi_scan_market", "hsi_get_setup"}
     assert all(op["security"] == [{"HSIAgentKey": []}] for op in operations)
-    assert len(operations) == 7
+    assert len(operations) == 8
     assert paths["/diagnostics"].keys() == {"post"}
 
 
@@ -102,7 +102,7 @@ def test_missing_malformed_or_invalid_auth_fails(header):
 
 def test_all_tool_routes_require_auth_before_backend_calls():
     with TestClient(app_with_diagnostics()) as client:
-        for path in ("capabilities", "stock-intelligence", "market-context", "news-catalysts", "portfolio-state"):
+        for path in ("capabilities", "stock-intelligence", "market-context", "news-catalysts", "portfolio-state", "setup"):
             assert client.get(PREFIX + "/" + path).status_code == 401
         assert client.post(PREFIX + "/diagnostics", json=REQUEST).status_code == 401
 
@@ -134,7 +134,8 @@ def test_manifest_has_truthful_tool_gaps_and_no_placeholder_scan():
         assert entries["hsi_scan_market"]["readiness"] == "PARTIAL"
         assert entries["hsi_scan_market"]["blockers"] == ["SHARED_SNAPSHOT_AND_NATIVE_SOURCE_COVERAGE_REQUIRED"]
         assert entries["hsi_scan_market"]["exposed"] is True
-        assert entries["hsi_get_setup_inputs"]["readiness"] == "NOT_EXPOSED"
+        assert entries["hsi_get_setup"]["readiness"] == "PARTIAL"
+        assert entries["hsi_get_setup"]["exposed"] is True
         assert all(v["read_only"] and v["authority"] == "RESEARCH_READ_ONLY" for v in entries.values())
         assert client.post(PREFIX + "/market-scan", headers=AUTH).status_code == 405
         assert response.headers["cache-control"] == "no-store"
