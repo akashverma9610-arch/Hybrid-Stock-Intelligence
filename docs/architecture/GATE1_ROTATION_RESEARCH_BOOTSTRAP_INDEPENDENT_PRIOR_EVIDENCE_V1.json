@@ -1,0 +1,1421 @@
+{
+  "schema_version": "gate1-rotation-research-bootstrap-independent-prior-evidence/v1",
+  "slice": "GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1",
+  "baseline_commit": "98698bf78e1582af08a99ea0a4c12ff622957ffe",
+  "dossier_id": "gate1-rotation-research-bootstrap-independent-prior-evidence",
+  "version": "v1",
+  "status": "EVIDENCE_DOSSIER / NO_PARAMETER_APPROVAL / NOT_ACTIVE",
+  "slice_status": "ACCEPTED/CLOSED",
+  "decision": "B",
+  "semantic_decision": "INDEPENDENT_PRIOR_EVIDENCE_PARTIALLY_SUFFICIENT",
+  "rationale": "D/provenance constraints and narrower identity are defensible; neither category has an exact independent duration. Counting/start/end conventions remain unapproved and current CAS applicability exposes a bounded source gap. This closes evidence classification, not bootstrap readiness.",
+  "parent": {
+    "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json",
+    "field": "policy_fingerprint",
+    "fingerprint": "sha256:e751cc6d7f4585d58b081ed9be9d876d399166059cb6d4836f7ff062ce7d8eb3"
+  },
+  "predecessors": [
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:79c9626950d25266bca4dfa56ca59922bbd558681fa9daa634025f88648627c8"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:7892a8afe5d503261567d68f3144ca7eb28934a2e8b6c93bd63ce9ffbd3c8dfc"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:090b3a017060f88c04e76dbd9bd69cd9f00fcbdadbea27faac23ca746b2b5864"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json",
+      "field": "audit_fingerprint",
+      "fingerprint": "sha256:aa9d4b211a5a2aba762c0b31af99b2a87fe08e0963865344104e9b87c33b0bb1"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+      "field": "protocol_fingerprint",
+      "fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+      "field": "contract_fingerprint",
+      "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+    }
+  ],
+  "preservation": {
+    "research_only": true,
+    "start": "D",
+    "one_immutable_binding_for_both_legs": true,
+    "one_horizon_per_pair": true,
+    "exact_original_decision_required": true,
+    "selection_uses_only_D_visible_evidence": true,
+    "native_source_fingerprint_verified_before_wrapper": true,
+    "policy_approval_selection_effective_at_D_required": true,
+    "retroactive_approval": false,
+    "future_outcomes_in_duration_selection": false,
+    "nearest_bar_fallback": false,
+    "date_roll_fallback": false,
+    "current_time_interpretation": false,
+    "current_membership_backfill": false,
+    "modern_calendar_backcast": false,
+    "multi_horizon_best_result_selection": false,
+    "OOS_reused_for_selection": false,
+    "per_observation_hindsight_selection": false,
+    "historical_relabeling": false,
+    "terminal_requires_R_at_or_after_end_and_completion_and_known_price": true,
+    "late_admin_replay_metadata_not_evidence": true,
+    "unexpected_closure_may_rewrite_frozen_endpoint": false,
+    "production_reuse": "SEPARATE_EXPLICIT_APPROVAL_REQUIRED"
+  },
+  "inspected_file_fingerprints_lf": {
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/performance.py": "sha256:aa3f2859ab43e8d8b1a92ddf1d5879cdb8ba9fd9fdec35b525757fd8276a22e5",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/crisis/models.py": "sha256:f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/composition.py": "sha256:15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "sha256:7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_capital_market_session_evidence_2022_2026.py": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/nse_mii_session_knownness.py": "sha256:640d7c00fb6b30905b1e7eaf9d0b1e73757a186e76afb17b780d153b00588b80",
+    "app/historical/nse_session_identity.py": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+    "app/historical/security_identity_selector.py": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/catalysts/service.py": "sha256:c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/discovery_recall_reference_matching.py": "sha256:a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/hsi_signal.py": "sha256:85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/hsi_signal_projection.py": "sha256:f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "sha256:4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro_news_evidence.py": "sha256:ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_discovery.py": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "sha256:e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/radar_diagnostic_orchestration.py": "sha256:69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/sector_economics/service.py": "sha256:5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/paper/engine.py": "sha256:2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/performance/models.py": "sha256:3fd5f22f93f161f6ef041181f581ef3903528523398994522f309a645feca5c5",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/holding_intelligence.py": "sha256:e9ee39372662d800079af409074c92254ab93c56bd3d300743fbe4196f8adc26",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/portfolio/sell_side_policy.py": "sha256:4d29e14ae9220ffa379832df1d7973c290bb59001314439be2677cc76af5b84b",
+    "app/production_v1/canonical_setup_activation.py": "sha256:01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/governed_setup_source.py": "sha256:b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/research/handoff.py": "sha256:57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/runtime/cli.py": "sha256:78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/self_improvement/models.py": "sha256:588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/storage/sqlite_repository.py": "sha256:dfbc3abef762de476d7115527937048cbd7e8cca1f5af65af6739c1916a11019",
+    "app/strategies/common/models.py": "sha256:9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/pre_breakout/governance.py": "sha256:eb4b7ecb3bdd4c3726e0dcc0de39b472c65b65c8a3d50f37de1739a695fd698a",
+    "app/strategies/pre_breakout/governance_commands.py": "sha256:df6ab92a6af5061ae1482474cb5a2abb767b183d6751d908bcc529834d53d057",
+    "app/strategies/pre_breakout/policy.py": "sha256:896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+    "app/strategies/pre_breakout/research_handoff.py": "sha256:48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/universe_analysis/models.py": "sha256:53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.json": "sha256:5c2d0625ba035406d5c5146db3b594577e4371a5a671a6b93324c8da176b1c7a",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json": "sha256:7a13bcd4fcf0d9b18e977386652ec8af98951b82294c15038e811665d7dd81f8",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md": "sha256:7729396fd2fbdf0e518a487916b547ce517bcce1d83ef5e85dc7fc1eb6655f41",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json": "sha256:ddafc5b75af81f3330c6043da4255b8d7f10c3db133b4bfa568c8e53c3d562e8",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.md": "sha256:fa9174a6a4c2e65775f6558b6e5721a295a582619367c35b243b6ed7371a74e1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json": "sha256:11e56d1e3bccf269d2d02c2b039fcbc89c8b0c17c4cfac32f3d9cce508d6d70a",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.md": "sha256:8539645cd09870ff42f547c75cef1aca17a51b3e877438cb67f6f4e769449cee",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json": "sha256:f37176854ffff603f47e85cdfb2ed9570a5d4c580adccf95a20f3247cc5aa6b6",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.md": "sha256:aa7e174fda319df62208b42067aac73bb598bd2d89b4a0d04491d055b55fc19f",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json": "sha256:768247ab11b5d11e511fb50983633b0febb609915611801acae71facfb40cdca",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.md": "sha256:5280f9218d09b8ee2e18fece0bdb13fef42a07870a7711cc7e0c4dd061f887b1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json": "sha256:2bdc2a78fe7ec5af027d909bb38094bb5ecf79fafc3a781249b3bf0c4ac70ab0",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.md": "sha256:f007ed08f5d610fc53ae319026657d6d642a5bf9552947cfc146d1e59ef4e48c",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md": "sha256:5b0dcdd09686f24b4f9f482e5ea862cd311615d9e9ec26ae5a144d9ad698a07a",
+    "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_paired_scenario_research_protocol.py": "sha256:4d365c1f564c8732c0200862ac7a4720a18334a68a2f597f41afad038203bd25",
+    "tests/unit/test_gate1_rotation_research_bootstrap_parameter_policy_proposal.py": "sha256:160ccbb7065f2f199e6759f3deecd2b03ddec0e4ec13e4837d14d90d1b0eeef1",
+    "tests/unit/test_gate1_rotation_research_horizon_authority_policy.py": "sha256:0bdccfc30d3af66802123da530feb76e09bac11cce16199905074ca8ce63f9b1",
+    "tests/unit/test_gate1_rotation_research_horizon_bootstrap_governance.py": "sha256:0979d66c5ee4b68b2bdc2e57dd48db0b81b489429bd55286687fbb5a98737320",
+    "tests/unit/test_gate1_rotation_research_horizon_mapping_evidence_feasibility.py": "sha256:90ef955d30b3c25eb858d93b553c9da30f6556787b95536e297a96c4570d026d",
+    "tests/unit/test_gate1_rotation_research_horizon_policy_proposal.py": "sha256:c68c1a868c7d3b0dc837604749feb4665d27c5e8f36e42f30e893bc6c27c6a15",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479",
+    "tests/unit/test_nse_ordinary_session_close_evidence.py": "sha256:07b201e12de0eea92af8010115a57ee92a9cfa76e97fbe1bc37222c1c44a70fb"
+  },
+  "authority": {
+    "scope": "RESEARCH_BOOTSTRAP_ONLY",
+    "approval_state": "UNAPPROVED",
+    "registration_state": "NOT_REGISTERED",
+    "activation_state": "NOT_ACTIVE",
+    "usable": false,
+    "approval_ref": null,
+    "registration_ref": null,
+    "producer_ref": null,
+    "forbidden": [
+      "GATE1_PASS",
+      "ROTATE_IN",
+      "CAPITAL_MOVEMENT",
+      "PRODUCTION_SCENARIO_ENDPOINT",
+      "PORTFOLIO_MUTATION",
+      "BROKER_ORDER_EXECUTION",
+      "PRODUCTION_HORIZON_AUTHORITY"
+    ],
+    "v1": {
+      "policy_id": "six-gates-production-v1",
+      "version": "v1",
+      "status": "ACTIVE"
+    },
+    "v2": {
+      "policy_id": "execution-gate-policy-v2-proposed",
+      "version": "v2-proposal.4",
+      "status": "NOT_ACTIVE"
+    }
+  },
+  "bootstrap_policy_status": "PROPOSED / UNAPPROVED / NOT_REGISTERED / NOT_ACTIVE",
+  "effective_parameters": {
+    "category_mapping": null,
+    "strategy_scope": null,
+    "seed_duration": null,
+    "effective_duration_unit": null,
+    "counting_rule": null,
+    "D_session_index": null,
+    "first_counted_session": null,
+    "count_precision": null,
+    "terminal_boundary_rule": null,
+    "start_price_rule": null,
+    "start_alignment_rule": null,
+    "terminal_price_rule": null,
+    "price_precision_rule": null,
+    "calendar_binding": null,
+    "instrument_scope": null,
+    "seed_evidence_package": null,
+    "approval_receipt": null,
+    "registration_receipt": null,
+    "effective_start": null,
+    "seed_range": null,
+    "parameter_precision": null,
+    "retirement_threshold": null,
+    "review_cadence": null,
+    "sample_minimum": null
+  },
+  "evidence_scope": {
+    "review_date": "2026-09-15",
+    "latest_internal_commit": "98698bf78e1582af08a99ea0a4c12ff622957ffe",
+    "external_review": "BOUNDED_PRIMARY_SOURCE_FIRST_NOT_EXHAUSTIVE",
+    "empirical_methods_reviewed": [
+      "E01",
+      "E02"
+    ],
+    "screened_not_method_verified": [
+      "E03"
+    ],
+    "market_structure_reviewed": [
+      "E04"
+    ],
+    "metadata_only": [
+      "E05"
+    ],
+    "new_production_census": false,
+    "known_at_policy": "Access date is audit metadata only; no precise publication/HSI known-at inferred. Before any future approval, retain verifiable rationale/evidence known-at and source versions. No historical backdating.",
+    "raw_source_hash_claim": false,
+    "no_source_readiness_from_web_alone": true
+  },
+  "taxonomy": [
+    {
+      "id": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "admissible_role": "Binding only within original approved purpose; may constrain a compatible proposal.",
+      "may_inform_research_seed": true,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Pinned canonical policy/version, native approval/selection and original purpose."
+    },
+    {
+      "id": "INTERNAL_DESIGN_PRIOR",
+      "admissible_role": "Descriptive architecture or independently recorded design constraint; not an effective policy.",
+      "may_inform_research_seed": true,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Immutable design/version/date, original purpose and disclosed lack of parameter approval."
+    },
+    {
+      "id": "EXTERNAL_PRIMARY_EVIDENCE",
+      "admissible_role": "First-party factual market/session constraints, not a holding-period optimizer.",
+      "may_inform_research_seed": true,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Issuer, original source, dated applicability, access record and scope."
+    },
+    {
+      "id": "EXTERNAL_EMPIRICAL_RESEARCH",
+      "admissible_role": "Independent original methods may inform research design after transferability review.",
+      "may_inform_research_seed": true,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Authors, version/date, methods, universe, period, studied horizons, selection disclosure and limitations."
+    },
+    {
+      "id": "EXPERT_GOVERNANCE_PRIOR",
+      "admissible_role": "Attested prior rationale for a later complete human-governed research proposal.",
+      "may_inform_research_seed": true,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Designated reviewer, dated original reasoning, conflicts, prior-data exposure and complete package."
+    },
+    {
+      "id": "DESCRIPTIVE_CONTEXT_ONLY",
+      "admissible_role": "Terminology/context only; cannot support a numeric choice.",
+      "may_inform_research_seed": false,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Attributable source, limited claim, explicit non-authority."
+    },
+    {
+      "id": "EXPLORATORY_ONLY",
+      "admissible_role": "Hypothesis generation only; not confirmatory seed evidence.",
+      "may_inform_research_seed": false,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Exploration history, all tested alternatives, prior outcome access and limitations."
+    },
+    {
+      "id": "PIT_UNSAFE",
+      "admissible_role": "Excluded from original-D or pre-outcome support.",
+      "may_inform_research_seed": false,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Record missing/late knownness and affected claim."
+    },
+    {
+      "id": "CIRCULAR",
+      "admissible_role": "Excluded: cohort outcomes cannot justify the prior creating that cohort.",
+      "may_inform_research_seed": false,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Record outcome/selection dependency; age alone never clears it."
+    },
+    {
+      "id": "UNVERIFIED",
+      "admissible_role": "Excluded from supporting evidence until original provenance/method can be verified.",
+      "may_inform_research_seed": false,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Record unresolved source or method access."
+    },
+    {
+      "id": "INCOMPATIBLE",
+      "admissible_role": "Excluded for the incompatible claim; do not average unlike units, strategies or markets.",
+      "may_inform_research_seed": false,
+      "direct_parameter_authority": false,
+      "independent_human_approval_required": true,
+      "production_authority": false,
+      "provenance_requirements": "Record precise purpose, population, unit or instrument mismatch."
+    }
+  ],
+  "independence": {
+    "definition": "Independent for a stated claim only when generated and chosen without the future HSI paired cohort, known before its outcomes, original provenance/method recoverable, semantically compatible, reproducible to the claimed level and limitations disclosed. Age alone insufficient; authentic canon constrains its purpose but cannot justify its own missing numeric seed.",
+    "tests": [
+      "PRE_OUTCOME_KNOWNNESS",
+      "NOT_GENERATED_FROM_FUTURE_COHORT",
+      "NOT_SELECTED_USING_FUTURE_LABELS",
+      "ORIGINAL_METHOD_RECOVERABLE",
+      "TRUSTWORTHY_PROVENANCE",
+      "CLAIM_SCOPE_COMPATIBLE",
+      "NUMERIC_CONCLUSION_ACTUALLY_SUPPORTED_IF_CLAIMED",
+      "REPRODUCIBLE_TO_CLAIMED_LEVEL",
+      "LIMITATIONS_DISCLOSED"
+    ],
+    "profiles": {
+      "INTERNAL_PINNED": {
+        "chronology": "Pinned baseline before any future uncreated cohort; commit date not claimed original research date.",
+        "cohort_dependency": "NONE_FOR_STATED_SOURCE_AUDIT",
+        "method": "Source logic/document purpose recoverable",
+        "provenance": "Git/LF pins and native policy lineage; no empirical prior assumed",
+        "scope": "Only original purpose, not numeric paired seed",
+        "numeric": "NOT_SUPPORTED",
+        "reproduction": "Repository inspection, not empirical rerun",
+        "limitations": "Per-item compatibility retained"
+      },
+      "ORIGINAL_EMPIRICAL_CONTEXT": {
+        "chronology": "Published before this future cohort; historical dates do not alone prove independence",
+        "cohort_dependency": "Published method independent of uncreated HSI cohort; current selection not based on HSI returns",
+        "method": "Original sections read",
+        "provenance": "Original university/author research copy",
+        "scope": "Method context only; pair/strategy transfer not established",
+        "numeric": "Studied values attributable, no exact HSI seed",
+        "reproduction": "Method recoverable; raw licensed/source data not rerun",
+        "limitations": "Era/population/cost/PIT transfer limitations per source; no preregistration asserted"
+      },
+      "FIRST_PARTY_FACT_CONTEXT": {
+        "chronology": "Current first-party page read prospectively; no original-D knownness assumed",
+        "cohort_dependency": "Market facts not created from HSI outcomes",
+        "method": "Official regime description",
+        "provenance": "Primary page, no retained circular bytes",
+        "scope": "Market constraints only",
+        "numeric": "Clock facts, not duration",
+        "reproduction": "Page facts inspectable, historical scope capture incomplete",
+        "limitations": "Applicability/date and source policy gap retained"
+      },
+      "FIRST_PARTY_METADATA_ONLY": {
+        "chronology": "Dated landing page only",
+        "cohort_dependency": "No HSI outcome dependence",
+        "method": "Attachment not verified",
+        "provenance": "Title/date/identifier verified only",
+        "scope": "Source discovery, no operational claim",
+        "numeric": "NOT_SUPPORTED",
+        "reproduction": "Metadata only",
+        "limitations": "Not eligible to settle convention"
+      },
+      "UNVERIFIED_METHOD": {
+        "chronology": "Bibliographic date only",
+        "cohort_dependency": "Not enough to establish usable support",
+        "method": "NOT_VERIFIED",
+        "provenance": "Bibliography only",
+        "scope": "No substantive supporting claim",
+        "numeric": "NOT_VERIFIED",
+        "reproduction": "NOT_VERIFIED",
+        "limitations": "Excluded until method access"
+      }
+    }
+  },
+  "internal_evidence": [
+    {
+      "path": "app/intelligence/multi_funnel_discovery.py",
+      "last_commit": "2525296fbed614f224611f955e3bf34467f1dc31",
+      "commit_date": "2026-09-05T16:20:13+05:30",
+      "fingerprint_lf": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+      "id": "I01",
+      "version": "DiscoveryHorizon / multi-funnel-discovery registry v1",
+      "original_purpose": "Categorical discovery intent: PRE_BREAKOUT and SECTOR_ROTATION are POSITIONAL; COMPOUNDER is LONG_TERM; some funnels support both.",
+      "numeric_conclusion": "CATEGORY_CONCEPT_ONLY",
+      "observed_values_not_seed": "None; no forward economic duration.",
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "compatibility": "Independent repository intent, not independently calibrated holding policy.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/intelligence/hsi_signal_strategy_registry.py",
+      "last_commit": "24dbda2aafd64da45db1d664c622930aceb52a51",
+      "commit_date": "2026-09-02T22:06:59+05:30",
+      "fingerprint_lf": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+      "id": "I02",
+      "version": "HSI signal strategy registry v1",
+      "original_purpose": "Exact PRE_BREAKOUT plus CURRENT_VALID_SETUP and verified effective approval/selection is provenance only.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No numeric horizon; policy existence alone insufficient.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Compatible subset identity and validity only; no bootstrap authority transferred.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/strategies/pre_breakout/policy.py",
+      "last_commit": "d64bb988ad253d04f970e7cea96f775e2e9dcbf6",
+      "commit_date": "2026-08-30T21:42:22+05:30",
+      "fingerprint_lf": "sha256:896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+      "id": "I03",
+      "version": "BaseWindowValidityRule / PreBreakout policy v1",
+      "original_purpose": "Approved backward structural base eligibility ending at evaluation.",
+      "numeric_conclusion": "BOUNDED_RANGE_DIFFERENT_PURPOSE",
+      "observed_values_not_seed": "20–60 canonical sessions; governed backward base length, NOT future holding duration or candidate seed range.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Incompatible as forward duration; useful only to disprove lookback-to-horizon substitution.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/analysis/valuation_trade.py",
+      "last_commit": "d64bb988ad253d04f970e7cea96f775e2e9dcbf6",
+      "commit_date": "2026-08-30T21:42:22+05:30",
+      "fingerprint_lf": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+      "id": "I04",
+      "version": "valuation_trade / structural_stop / targets",
+      "original_purpose": "Base geometry and price-structure diagnostic levels; no deadline to reach a level.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "Pattern durations and measured price multiples exist, not numeric holding deadlines.",
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "compatibility": "Target/stop touching cannot redefine original D or become economic maturity.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/portfolio/sell_side_policy.py",
+      "last_commit": "cb0fa7ff3f4507aff69b5d247c80e566723bd86e",
+      "commit_date": "2026-08-30T23:25:13+05:30",
+      "fingerprint_lf": "sha256:4d29e14ae9220ffa379832df1d7973c290bb59001314439be2677cc76af5b84b",
+      "id": "I05",
+      "version": "portfolio-sell-side-decision-policy / v1-approved",
+      "original_purpose": "Review/invalidation evidence guards; descriptive forward-paper firewall.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No governed bootstrap duration or periodic review-to-holding conversion.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Read source only; no portfolio state accessed, action vocabulary not imported.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/intelligence/long_term_thesis_review.py",
+      "last_commit": "2eff21878fa7b342df774573cc790ca3fd563de6",
+      "commit_date": "2026-09-03T09:28:54+05:30",
+      "fingerprint_lf": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+      "id": "I06",
+      "version": "long-term-thesis-review/v1",
+      "original_purpose": "Immutable existing dossier provenance for five thesis families, fail-closed availability.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No numeric duration.",
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "compatibility": "Reusable lineage; no universal wealth horizon.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md",
+      "last_commit": "8e64a567ad77ff35784174fa603acf8f5790f286",
+      "commit_date": "2026-09-02T22:37:33+05:30",
+      "fingerprint_lf": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+      "id": "I07",
+      "version": "Product-scope catalogue / documentation-only",
+      "original_purpose": "Positional multi-session context and separate long-term thesis purposes.",
+      "numeric_conclusion": "CATEGORY_CONCEPT_ONLY",
+      "observed_values_not_seed": "Descriptive language only; no exact numeric holding policy.",
+      "evidence_class": "DESCRIPTIVE_CONTEXT_ONLY",
+      "compatibility": "Source-age and product approval are not duration approval.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md",
+      "last_commit": "d309edc0c1b16d4ca0d00f86bf4c3386f42631a0",
+      "commit_date": "2026-09-02T23:36:16+05:30",
+      "fingerprint_lf": "sha256:5b0dcdd09686f24b4f9f482e5ea862cd311615d9e9ec26ae5a144d9ad698a07a",
+      "id": "I08",
+      "version": "Long-term family proposal / not active",
+      "original_purpose": "Proposed family milestones, valuation and review questions; explicit undefined policies.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "Horizon/review cadence not numerically approved.",
+      "evidence_class": "DESCRIPTIVE_CONTEXT_ONLY",
+      "compatibility": "Do not impose POSITIONAL treatment on LONG_TERM.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/historical/canonical_market_session_event_time.py",
+      "last_commit": "d494ac1f1ef281ed72d1afb30489ed08a3e33ac1",
+      "commit_date": "2026-09-05T14:52:27+05:30",
+      "fingerprint_lf": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+      "id": "I09",
+      "version": "canonical-market-session-calendar-and-event-time/v1",
+      "original_purpose": "Source-injected day/phase facts; native known/effective time and conflict handling.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "Phase times are market facts, not N-session holding/count algorithm.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Facts usable only inside scope; instrument-specific CAS applicability not resolved.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/historical/nse_capital_market_session_evidence_2022_2026.py",
+      "last_commit": "83584db251a3cd199eb250ef90ae5530179ab999",
+      "commit_date": "2026-09-06T10:36:17+05:30",
+      "fingerprint_lf": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+      "id": "I10",
+      "version": "nse-capital-market-first-party-2022-2026-v2-ordinary-forward",
+      "original_purpose": "Retained holiday/special records and forward ordinary phase.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "Retained regular phase 09:15–15:30 IST from 2026-09-05; known 2026-09-05T16:47:00+00:00.",
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "compatibility": "Historical artifact remains valid as a record of inspection; not universal current CAS/non-CAS authority.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/market_data/daily_source_temporal_semantics.py",
+      "last_commit": "08914a6a591d07f5169a252c4ebb668100b2151f",
+      "commit_date": "2026-09-05T22:11:41+05:30",
+      "fingerprint_lf": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+      "id": "I11",
+      "version": "DailySourceTemporalFacts.forward_known_at",
+      "original_purpose": "Native daily source knownness, no backdated publication from session date.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No holding period or economic price alignment.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Necessary price PIT provenance, insufficient start/terminal field choice.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/market_data/technical_bar_contract.py",
+      "last_commit": "6be2434a321c34f886b4848cf45af14c00830fd9",
+      "commit_date": "2026-09-06T20:34:41+05:30",
+      "fingerprint_lf": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+      "id": "I12",
+      "version": "TechnicalBarCompletenessState / TechnicalBarReadiness",
+      "original_purpose": "Explicit closed-bar and PIT readiness contracts.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "A closed interval is not a holding duration.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Technical readiness is neither executable fill nor economic price authority.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/market_data/technical_price_adjustment_integrity.py",
+      "last_commit": "90970861afda53df5cbb31001f2c76758abbb406",
+      "commit_date": "2026-09-05T23:38:22+05:30",
+      "fingerprint_lf": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+      "id": "I13",
+      "version": "derive_technical_price_adjustment / audit_provider_price_basis",
+      "original_purpose": "Native split/bonus technical adjustment integrity.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No numeric research horizon.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Not total wealth, dividends/reinvestment or full corporate-action accounting.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/historical/security_identity_selector.py",
+      "last_commit": "c2e81e1ea1b19180db9ffaaaed511ce297707810",
+      "commit_date": "2026-09-04T00:47:10+05:30",
+      "fingerprint_lf": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+      "id": "I14",
+      "version": "resolve_historical_security_identity",
+      "original_purpose": "As-of identity, effective/known lifecycle and conflict resolution.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No seed or price convention.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Identity resolution alone cannot establish class, tradability or CAS membership.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "path": "app/historical/security_master.py",
+      "last_commit": "90970861afda53df5cbb31001f2c76758abbb406",
+      "commit_date": "2026-09-05T23:38:22+05:30",
+      "fingerprint_lf": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+      "id": "I15",
+      "version": "HistoricalSecurityIdentity / HistoricalCorporateAction",
+      "original_purpose": "Source-linked identity transitions and corporate actions.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "No duration; optional unknown evidence remains unknown.",
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "compatibility": "Needed for comparable paired wealth; unavailable action/effectivity cannot default.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONTEXT_OR_ORIGINAL_CANONICAL_CONSTRAINT_ONLY",
+      "supports_exact_hsi_seed": false
+    },
+    {
+      "id": "I16",
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json",
+      "last_commit": "98698bf78e1582af08a99ea0a4c12ff622957ffe",
+      "commit_date": "2026-09-15T20:26:25+05:30",
+      "fingerprint_lf": "sha256:ddafc5b75af81f3330c6043da4255b8d7f10c3db133b4bfa568c8e53c3d562e8",
+      "version": "v1-proposed",
+      "original_purpose": "Frozen complete package structure and original D; no numeric duration, range, unit or price approved.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "observed_values_not_seed": "All effective parameters null. Prior paired-protocol/economic contract fixed common D/INR/capital/method, not numeric holding horizon.",
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "compatibility": "Exact structural constraint, not independent empirical seed evidence.",
+      "independence_profile": "INTERNAL_PINNED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "admissibility": "CONSTRAINT_ONLY_NOT_VALUE_RATIONALE",
+      "supports_exact_hsi_seed": false
+    }
+  ],
+  "external_evidence": [
+    {
+      "id": "E01",
+      "title": "Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency",
+      "authors": "Narasimhan Jegadeesh; Sheridan Titman",
+      "institution": "Journal of Finance 48(1), 65–91; university-hosted original paper",
+      "publication_date": "1993-03",
+      "url": "https://www.bauer.uh.edu/rsusmel/phd/jegadeesh-titman93.pdf",
+      "locator": "Sections I–II; pp. 68–69",
+      "population": "NYSE/AMEX equities, CRSP",
+      "methodology": "Ranked winner/loser portfolios with overlapping holdings; formation and holding alternatives with/without a skipped week.",
+      "sample_period": "1965–1989 main sample; separate 1927–1964 check described.",
+      "studied_horizons": "Formation and holding 1–4 quarters, separately varied; not an HSI grid.",
+      "selection_status": "Multiple alternatives evaluated; prospective preregistration not established. No best-performing window extracted.",
+      "asset_market_compatibility": "Cash-equity context; US venues, era, liquidity, calendar and portfolio construction differ from NSE.",
+      "strategy_compatibility": "Relative-strength basket research, not exact Pre-Breakout or original incumbent/challenger pair.",
+      "limitations": "No HSI seed; no modern NSE transfer calibration; raw data/results not rerun; return findings not performance promises.",
+      "numeric_conclusion": "STUDIED_RANGE_ONLY_NOT_HSI_SEED",
+      "evidence_class": "EXTERNAL_EMPIRICAL_RESEARCH",
+      "independence_profile": "ORIGINAL_EMPIRICAL_CONTEXT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "accessed_on": "2026-09-15",
+      "raw_response_fingerprint": null,
+      "retention": "CITATION_METADATA_AND_LIMITED_PARAPHRASE_ONLY",
+      "source_bytes_retained": false,
+      "supports_exact_hsi_seed": false,
+      "production_authority": false
+    },
+    {
+      "id": "E02",
+      "title": "Four factor model in Indian equities market",
+      "authors": "Sobhesh K. Agarwalla; Joshy Jacob; Jayanth R. Varma",
+      "institution": "IIM Ahmedabad WP 2013-09-05",
+      "publication_date": "2013-09; revised 2014-09-05",
+      "url": "https://www.iima.ac.in/sites/default/files/rnpfiles/1970004922013-09-05.pdf",
+      "locator": "Cover; sections 1–3, pp. 3–9; cost caveat p. 11",
+      "population": "BSE-listed CMIE Prowess firms; liquidity filters and survivorship adjustment.",
+      "methodology": "Size/value and size/momentum factor portfolios; momentum formation excludes recent month.",
+      "sample_period": "October 1993–December 2013; some reported factor statistics start January 1994.",
+      "studied_horizons": "11-month momentum formation ending t−1; next-month returns, monthly rebalance; size/value holdings one year. Formation is not holding.",
+      "selection_status": "Established factor-method adaptation; preregistration not established; not a tested HSI holding-duration policy.",
+      "asset_market_compatibility": "Indian equity context but BSE/Prowess factor universe, not exact NSE pair.",
+      "strategy_compatibility": "Factor construction differs from Pre-Breakout and long-term thesis families.",
+      "limitations": "Retrospective database revisions, survivorship handling and differing trading costs disclosed; licensed raw dataset not independently reproduced; historical PIT unproven.",
+      "numeric_conclusion": "STUDIED_CONVENTIONS_ONLY_NOT_HSI_SEED",
+      "evidence_class": "EXTERNAL_EMPIRICAL_RESEARCH",
+      "independence_profile": "ORIGINAL_EMPIRICAL_CONTEXT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "accessed_on": "2026-09-15",
+      "raw_response_fingerprint": null,
+      "retention": "CITATION_METADATA_AND_LIMITED_PARAPHRASE_ONLY",
+      "source_bytes_retained": false,
+      "supports_exact_hsi_seed": false,
+      "production_authority": false
+    },
+    {
+      "id": "E03",
+      "title": "Contrarian Investment, Extrapolation, and Risk",
+      "authors": "Josef Lakonishok; Andrei Shleifer; Robert Vishny",
+      "institution": "Journal of Finance 49(5), 1541–78; author Harvard bibliography",
+      "publication_date": "1994",
+      "url": "https://shleifer.scholars.harvard.edu/publications/contrarian-investment-extrapolation-and-risk",
+      "locator": "Author bibliography and linked original PDF",
+      "population": null,
+      "methodology": null,
+      "sample_period": null,
+      "studied_horizons": null,
+      "selection_status": "NOT_VERIFIED",
+      "asset_market_compatibility": "NOT_ASSESSED",
+      "strategy_compatibility": "NOT_ASSESSED",
+      "limitations": "Bibliography accessible; original PDF has no extractable text and screenshots did not yield inspectable pages here. NBER copy failed and publisher denied access. Not evidence for any numeric or empirical claim.",
+      "numeric_conclusion": "UNVERIFIED",
+      "evidence_class": "UNVERIFIED",
+      "independence_profile": "UNVERIFIED_METHOD",
+      "independence_result": "NOT_ESTABLISHED",
+      "accessed_on": "2026-09-15",
+      "raw_response_fingerprint": null,
+      "retention": "CITATION_METADATA_AND_LIMITED_PARAPHRASE_ONLY",
+      "source_bytes_retained": false,
+      "supports_exact_hsi_seed": false,
+      "production_authority": false
+    },
+    {
+      "id": "E04",
+      "title": "Closing Auction Session (CAS)",
+      "authors": "National Stock Exchange of India",
+      "institution": "NSE official product/market-structure page",
+      "publication_date": "Updated 2026-08-12; not an exact original publication instant",
+      "url": "https://www.nseindia.com/static/products-services/closing-auction-session",
+      "locator": "Applicability; Session Timings; Key Features; circular list",
+      "population": "Phase 1 cash stocks with derivatives; non-CAS cash securities separately described.",
+      "methodology": "Official session and price-formation description, not empirical horizon optimization.",
+      "sample_period": "Current page inspected 2026-09-15; no historical calibration.",
+      "studied_horizons": "No holding horizons. CAS 15:15–15:35 IST; non-CAS continuous 09:15–15:30 IST.",
+      "selection_status": "NOT_APPLICABLE_MARKET_RULE",
+      "asset_market_compatibility": "Direct NSE cash-market scope, but per-instrument applicability/effective source capture still required.",
+      "strategy_compatibility": "Constrains possible observation timing, never strategy duration.",
+      "limitations": "Primary page supports regime distinction. Underlying circular bytes/effective activation and security-specific membership not captured; do not backcast page date or assume universal close/fill.",
+      "numeric_conclusion": "NO_HOLDING_DURATION",
+      "evidence_class": "EXTERNAL_PRIMARY_EVIDENCE",
+      "independence_profile": "FIRST_PARTY_FACT_CONTEXT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "accessed_on": "2026-09-15",
+      "raw_response_fingerprint": null,
+      "retention": "CITATION_METADATA_AND_LIMITED_PARAPHRASE_ONLY",
+      "source_bytes_retained": false,
+      "supports_exact_hsi_seed": false,
+      "production_authority": false
+    },
+    {
+      "id": "E05",
+      "title": "Introduction of Closing Auction Session (CAS) in the Equity Cash Segment and certain modifications in the Pre-Open Auction Session",
+      "authors": "Securities and Exchange Board of India",
+      "institution": "SEBI; HO/47/11/11(3)2025-MRD-POD2/I/2765/2026",
+      "publication_date": "2026-01-16",
+      "url": "https://www.sebi.gov.in/legal/circulars/jan-2026/introduction-of-closing-auction-session-cas-in-the-equity-cash-segment-and-certain-modifications-in-the-pre-open-auction-session_99122.html",
+      "locator": "Circular landing-page title/date/identifier only",
+      "population": "Equity cash segment per title",
+      "methodology": "Regulatory source discovery, not an empirical study.",
+      "sample_period": "NOT_APPLICABLE",
+      "studied_horizons": "NOT_VERIFIED_IN_ATTACHMENT",
+      "selection_status": "NOT_APPLICABLE",
+      "asset_market_compatibility": "Indian regulator; exact operational clauses require original attachment.",
+      "strategy_compatibility": "No seed semantics read.",
+      "limitations": "Landing page inspected; linked circular could not be retrieved. No implementation date or detailed clause inferred from title.",
+      "numeric_conclusion": "NO_NUMERIC_CONCLUSION",
+      "evidence_class": "EXTERNAL_PRIMARY_EVIDENCE",
+      "independence_profile": "FIRST_PARTY_METADATA_ONLY",
+      "independence_result": "INDEPENDENT_FOR_METADATA_ONLY",
+      "accessed_on": "2026-09-15",
+      "raw_response_fingerprint": null,
+      "retention": "CITATION_METADATA_AND_LIMITED_PARAPHRASE_ONLY",
+      "source_bytes_retained": false,
+      "supports_exact_hsi_seed": false,
+      "production_authority": false
+    }
+  ],
+  "rejected_shortcuts": [
+    "MIDPOINT_OF_RANGE",
+    "ROUND_NUMBER_CONVENIENCE",
+    "WEAK_SOURCE_VOTE",
+    "BEST_RETURN_WINDOW",
+    "PARAMETER_CHERRY_PICK",
+    "RAW_OHLCV_ALONE",
+    "FUTURE_COHORT_LABELS",
+    "AGE_ALONE",
+    "DESCRIPTIVE_TO_AUTHORITY",
+    "AI_RECOMMENDATION_ALONE",
+    "BARE_HUMAN_PREFERENCE",
+    "RA_TITLE_ALONE",
+    "LOOKBACK_AS_HOLDING_PERIOD"
+  ],
+  "strength_rules": [
+    {
+      "id": "INADMISSIBLE",
+      "rule": "First: proposed support fails provenance/PIT/independence/scope tests, or is circular/unsupported numeric selection."
+    },
+    {
+      "id": "CONFLICTED",
+      "rule": "Next: admissible same-claim evidence is materially incompatible and no existing governed resolution applies; never average or vote."
+    },
+    {
+      "id": "ABSENT",
+      "rule": "Next: no attributable evidence for the assessed claim."
+    },
+    {
+      "id": "CONTEXT_ONLY",
+      "rule": "Next: evidence verifies context but no directly transferable parameter conclusion."
+    },
+    {
+      "id": "STRONG_INDEPENDENT_SUPPORT",
+      "rule": "Exact compatible canonical constraint or original fully reproducible same-purpose independent evidence, limitations known, no unresolved material conflict. Never approval."
+    },
+    {
+      "id": "MODERATE_INDEPENDENT_SUPPORT",
+      "rule": "Direct independent support with bounded disclosed transfer/reproduction limits, no material conflict; enough only for constrained proposal deliberation."
+    },
+    {
+      "id": "LIMITED_SUPPORT",
+      "rule": "Independent partial support; essential assumptions or compatibility remain unresolved. Cannot select actual parameter."
+    }
+  ],
+  "strength_numeric_score": null,
+  "readiness_states": [
+    "EVIDENCE_SUFFICIENT_FOR_PROPOSAL",
+    "EVIDENCE_PARTIALLY_SUFFICIENT",
+    "EVIDENCE_INSUFFICIENT",
+    "CONFLICTED",
+    "SOURCE_NOT_READY",
+    "POLICY_REQUIRED",
+    "EXPERT_REVIEW_REQUIRED",
+    "BLOCKED"
+  ],
+  "parameter_evidence_matrix": [
+    {
+      "component": "CATEGORY_SCOPE",
+      "supporting_evidence_ids": [
+        "I01",
+        "I02",
+        "I07"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_PARTIALLY_SUFFICIENT",
+      "finding": "Two native categories exist; broad-category or narrowed cohort eligibility still requires explicit proposal."
+    },
+    {
+      "component": "POSITIONAL_SEED",
+      "supporting_evidence_ids": [
+        "I01",
+        "E01",
+        "E02"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "DESCRIPTIVE_CONTEXT_ONLY",
+      "strength": "CONTEXT_ONLY",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "US_AND_BSE_FACTOR_CONTEXT_NOT_NSE_PAIR",
+      "readiness": "EVIDENCE_INSUFFICIENT",
+      "finding": "Methods/context exist, no compatible exact seed. Never midpoint or copy a formation window."
+    },
+    {
+      "component": "LONG_TERM_SEED",
+      "supporting_evidence_ids": [
+        "I06",
+        "I07",
+        "I08"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "DESCRIPTIVE_CONTEXT_ONLY",
+      "strength": "CONTEXT_ONLY",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_INSUFFICIENT",
+      "finding": "Different family/evidence and censoring needs; no exact seed. Recommend deferring first-cohort inclusion, not approving exclusion here."
+    },
+    {
+      "component": "NARROWER_STRATEGY_SEED",
+      "supporting_evidence_ids": [
+        "I02",
+        "I03"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_PARTIALLY_SUFFICIENT",
+      "finding": "Exact PRE_BREAKOUT/CURRENT_VALID_SETUP improves provenance, not duration support; backward 20–60 is not a forward seed."
+    },
+    {
+      "component": "NUMERIC_DURATION",
+      "supporting_evidence_ids": [],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "DESCRIPTIVE_CONTEXT_ONLY",
+      "strength": "ABSENT",
+      "independence_result": "NO_ADMISSIBLE_SUPPORT",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_INSUFFICIENT",
+      "finding": "No compatible independent numeric conclusion or reproducible value rationale."
+    },
+    {
+      "component": "DURATION_UNIT",
+      "supporting_evidence_ids": [
+        "I09",
+        "E01",
+        "E02",
+        "E04"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "EXTERNAL_PRIMARY_EVIDENCE",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "POLICY_REQUIRED",
+      "finding": "Sessions operationally distinguish exposure; papers use months. Calendar days/elapsed time are distinct study questions; no unit selected."
+    },
+    {
+      "component": "D_BINDING",
+      "supporting_evidence_ids": [
+        "I16"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "strength": "STRONG_INDEPENDENT_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_SUFFICIENT_FOR_PROPOSAL",
+      "finding": "Original D and same immutable binding are already exact structural constraints, not empirical prior values."
+    },
+    {
+      "component": "SESSION_COUNTING",
+      "supporting_evidence_ids": [
+        "I09",
+        "I10"
+      ],
+      "contradicting_evidence_ids": [
+        "E04"
+      ],
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "strength": "CONFLICTED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "SOURCE_NOT_READY",
+      "finding": "Native day/phase facts do not choose partial/special-session counts; CAS applicability gap blocks universal timing."
+    },
+    {
+      "component": "START_PRICE",
+      "supporting_evidence_ids": [
+        "I11",
+        "I12"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_INSUFFICIENT",
+      "finding": "START_PRICE_EVIDENCE_INSUFFICIENT: known observation at/before D is not a fill; no aligned economic start-field policy."
+    },
+    {
+      "component": "TERMINAL_BOUNDARY",
+      "supporting_evidence_ids": [
+        "I16",
+        "I09"
+      ],
+      "contradicting_evidence_ids": [
+        "E04"
+      ],
+      "evidence_class": "INTERNAL_DESIGN_PRIOR",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "POLICY_REQUIRED",
+      "finding": "Exact D-bound end needed; no phase, precision or closure resolution approved."
+    },
+    {
+      "component": "TERMINAL_PRICE",
+      "supporting_evidence_ids": [
+        "I11",
+        "I12",
+        "I13"
+      ],
+      "contradicting_evidence_ids": [
+        "E04"
+      ],
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_INSUFFICIENT",
+      "finding": "No default close: source regime, aligned same-basis wealth, action handling and known maturity unresolved."
+    },
+    {
+      "component": "PROSPECTIVE_CALENDAR_SUPPORT",
+      "supporting_evidence_ids": [
+        "I09",
+        "I10"
+      ],
+      "contradicting_evidence_ids": [
+        "E04"
+      ],
+      "evidence_class": "EXTERNAL_PRIMARY_EVIDENCE",
+      "strength": "CONFLICTED",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "SOURCE_NOT_READY",
+      "finding": "Date facts bounded; retained generic ordinary phase is not a verified CAS/non-CAS regime selector."
+    },
+    {
+      "component": "INSTRUMENT_ELIGIBILITY",
+      "supporting_evidence_ids": [
+        "I14",
+        "I15"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "strength": "LIMITED_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_PARTIALLY_SUFFICIENT",
+      "finding": "Exact identities reusable; cash-class, both-leg tradability, actions and regime applicability must be independently closed."
+    },
+    {
+      "component": "EVIDENCE_PROVENANCE",
+      "supporting_evidence_ids": [
+        "I11",
+        "I16"
+      ],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "INTERNAL_CANONICAL_POLICY_PRIOR",
+      "strength": "STRONG_INDEPENDENT_SUPPORT",
+      "independence_result": "INDEPENDENT_FOR_STATED_CLAIM_ONLY",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EVIDENCE_SUFFICIENT_FOR_PROPOSAL",
+      "finding": "Native verification and pre-approval rationale chronology are exact; new web access date is not historical known-at."
+    },
+    {
+      "component": "HUMAN_APPROVAL_READINESS",
+      "supporting_evidence_ids": [],
+      "contradicting_evidence_ids": [],
+      "evidence_class": "EXPERT_GOVERNANCE_PRIOR",
+      "strength": "ABSENT",
+      "independence_result": "NO_ADMISSIBLE_SUPPORT",
+      "transferability": "CANONICAL_CONSTRAINT_OR_CONTEXT_ONLY",
+      "readiness": "EXPERT_REVIEW_REQUIRED",
+      "finding": "No actual attested compatible independent expert prior or complete parameter approval receipt inspected."
+    }
+  ],
+  "scope_options": {
+    "canonical_categories": [
+      "POSITIONAL",
+      "LONG_TERM"
+    ],
+    "narrow_subset": "OpportunityArchetype.PRE_BREAKOUT with CURRENT_VALID_SETUP and exact D-valid PreBreakout policy/approval/selection",
+    "benefit": "Existing source/governance path narrows heterogeneous strategy intent, not holding-return calibration.",
+    "stronger_numeric_support": false,
+    "selected_scope": null,
+    "long_term_first_cohort": "DEFER_RECOMMENDED_NOT_AN_APPROVED_EXCLUSION",
+    "excluded_from_narrow_option": [
+      "Other archetypes",
+      "Unsupported/future policy selections",
+      "Category-only or mixed-horizon inference",
+      "New strategies"
+    ],
+    "same_seed_for_categories": false
+  },
+  "units": {
+    "selected": null,
+    "trading_sessions": "Conditionally source-derivable market exposure clock; not chosen; CAS and complete coverage first.",
+    "calendar_days": "Elapsed civil-day research question possible only via separate rationale; weekends are not trading exposure.",
+    "elapsed_timestamp": "Needs exact timezone/precision/phase-boundary policy; not interchangeable with sessions/months.",
+    "convert_studied_months_to_sessions": false
+  },
+  "counting": {
+    "chosen_rule": null,
+    "first_counted_session": null,
+    "D_index": null,
+    "partial_weight": null,
+    "special_weight": null,
+    "cases": [
+      {
+        "case": "D_BEFORE_OPEN",
+        "fact": "Native BEFORE_REGULAR_SESSION only if exact visible applicable phase exists",
+        "decision": "POLICY_REQUIRED"
+      },
+      {
+        "case": "D_INTRADAY",
+        "fact": "Native DURING_REGULAR_SESSION, not a rule counting partial day",
+        "decision": "POLICY_REQUIRED"
+      },
+      {
+        "case": "D_AT_OR_AFTER_CLOSE",
+        "fact": "Native AFTER_REGULAR_SESSION at close inclusive; actual security regime must match",
+        "decision": "SOURCE_NOT_READY"
+      },
+      {
+        "case": "FIRST_COUNTED_SESSION",
+        "fact": "Adjacency is not research count authorization",
+        "decision": "POLICY_REQUIRED"
+      },
+      {
+        "case": "PARTIAL_SESSION",
+        "fact": "No fractional/full/ignored weighting approved",
+        "decision": "POLICY_REQUIRED"
+      },
+      {
+        "case": "SPECIAL_OR_SHORTENED_SESSION",
+        "fact": "Date facts without exact phase timing cannot certify count",
+        "decision": "SOURCE_NOT_READY"
+      },
+      {
+        "case": "INSTRUMENT_NON_TRADING",
+        "fact": "Exchange date does not prove both securities traded; no divergent leg clocks",
+        "decision": "SOURCE_NOT_READY"
+      }
+    ]
+  },
+  "price_boundaries": {
+    "start": "D",
+    "D_redefined": false,
+    "start_price_rule": null,
+    "terminal_boundary_rule": null,
+    "terminal_price_rule": null,
+    "start_price_is_fill": false,
+    "start_at_after_D_allowed": false,
+    "start_known_after_D_allowed": false,
+    "later_same_day_close_at_intraday_D_allowed": false,
+    "nearest_or_carry_forward_allowed": false,
+    "terminal_requires_exact_frozen_end": true,
+    "terminal_requires_completed_and_known_by_R": true,
+    "same_pair_basis_required": true,
+    "missing_terminal": "Remain pending/unresolved/excluded under inherited protocol, not zero return or favorable extension.",
+    "corporate_actions": "Technical split/bonus continuity alone is insufficient for entitlement/wealth conservation; no dividend reinvestment assumed.",
+    "gross_constraints": "Original pair, C/parcel, same horizon/methodology and INR; funding, quantity, residual cash and corporate actions required even without tax/cost deductions.",
+    "label_or_fill_created": false
+  },
+  "calendar": {
+    "predecessor_probe_snapshot": [
+      {
+        "date": "2026-09-04",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "UNKNOWN",
+        "reasons": [
+          "WEEKDAY_CONVENTION_UNAVAILABLE"
+        ],
+        "phase_count": 0
+      },
+      {
+        "date": "2026-09-14",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "HOLIDAY",
+        "reasons": [],
+        "phase_count": 0
+      },
+      {
+        "date": "2026-09-15",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "REGULAR_TRADING_DAY",
+        "reasons": [],
+        "phase_count": 1
+      },
+      {
+        "date": "2026-11-08",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "MUHURAT_TRADING",
+        "reasons": [],
+        "phase_count": 0
+      },
+      {
+        "date": "2027-01-04",
+        "as_of": "2026-09-14T18:00:00+00:00",
+        "day_state": "UNKNOWN",
+        "reasons": [
+          "DATE_OUTSIDE_COVERAGE"
+        ],
+        "phase_count": 0
+      }
+    ],
+    "prior_assessment": "Historical bounded inspection DERIVABLE; not altered.",
+    "current_assessment": "SOURCE_NOT_READY_FOR_UNIVERSAL_PROSPECTIVE_PRICE_CONVENTIONS",
+    "source_ids": [
+      "I09",
+      "I10",
+      "E04",
+      "E05"
+    ],
+    "gap": "Retained generic continuous phase has no security-specific CAS/non-CAS binding. Presence of CLOSING_AUCTION enum does not provide source-backed applicability or price lineage.",
+    "official_effective_activation_date_verified": false,
+    "original_circular_bytes_retained": false,
+    "unknown_special_timings": true,
+    "coverage_end": "2026-12-31",
+    "new_horizon_admission_certified": false,
+    "native_visibility": "known_at <= cutoff; otherwise published_at <= cutoff; date-only published_on strictly before cutoff local date. Preserve native date-effectivity inclusivity; do not transfer to unrelated policy intervals.",
+    "amend_frozen_predecessor": false
+  },
+  "conflicts": [
+    {
+      "id": "C01",
+      "kind": "SOURCE_APPLICABILITY_GAP",
+      "sources": [
+        "I10",
+        "E04"
+      ],
+      "same_claim": "A universal current continuous-close phase for all NSE cash equities",
+      "population_difference": "NSE expressly separates CAS-eligible from non-CAS; source adapter is not instrument-specific.",
+      "strategy_difference": "None needed: affects price-phase interpretation independently of strategy.",
+      "status": "UNRESOLVED_FOR_RESEARCH_CONVENTIONS",
+      "resolution": "Do not override native calendar or select a close; next bounded source-applicability audit.",
+      "numeric_average_allowed": false
+    },
+    {
+      "id": "C02",
+      "kind": "NON_COMPARABLE_RESEARCH_CONVENTIONS",
+      "sources": [
+        "E01",
+        "E02"
+      ],
+      "same_claim": "No established same-purpose HSI seed claim",
+      "population_difference": "US ranked portfolios versus Indian BSE factor universe; era/liquidity differ.",
+      "strategy_difference": "Momentum holding alternatives versus formation/rebalancing conventions; neither exact paired PreBreakout.",
+      "status": "SCOPE_DIFFERENCE_NOT_EMPIRICAL_REFUTATION",
+      "resolution": "Retain distinct context; no pooled vote, range or best window.",
+      "numeric_average_allowed": false
+    }
+  ],
+  "expert": {
+    "actual_prior": null,
+    "actual_approval": null,
+    "state": "ABSENT",
+    "required": [
+      "Designated human governance authority",
+      "Dated pre-outcome original rationale and recoverable sources",
+      "Strategy/market scope and entire atomic package",
+      "Disclosed prior data exposure and conflicts of interest",
+      "Reproducibility/limits and bootstrap biases",
+      "Independent review/sign-off and exact version lineage"
+    ],
+    "RA_mandatory": false,
+    "RA_title_grants_authority": false,
+    "opinion_creates_calibration": false,
+    "backdating_allowed": false
+  },
+  "registration": {
+    "required_chronology": [
+      "rationale_known_at <= approved_at",
+      "approved_at <= registered_at",
+      "registered_at <= effective_from",
+      "registered_at < D",
+      "effective_from <= D"
+    ],
+    "actual_approved_at": null,
+    "actual_registered_at": null,
+    "actual_effective_from": null,
+    "native_effectivity_required": true,
+    "registration_equal_D_allowed": false,
+    "backdating": false,
+    "future_approval_authorizes_original_D": false
+  },
+  "bias": {
+    "risks": [
+      "TRUNCATION",
+      "DURATION_CONDITIONING",
+      "CENSORING",
+      "REGIME_MISMATCH",
+      "STRATEGY_MISMATCH",
+      "SECTOR_CONCENTRATION",
+      "INSTRUMENT_CONCENTRATION",
+      "SURVIVORSHIP",
+      "OUTSIDE_HORIZON_BLINDNESS"
+    ],
+    "interaction": "Any fixed bootstrap truncates and conditions observed outcomes; monthly basket evidence cannot remove pair-specific censoring, special-session, delisting, regime or outside-horizon blind spots.",
+    "mitigation_boundary": "Preserve exclusions and versioned limitations for later separately approved calibration/OOS. No quantitative adequacy, optimized horizon, path fanout or retrospective relabeling.",
+    "raw_paths_collection_authorized": false,
+    "one_horizon_per_original_pair": true
+  },
+  "blockers_closed": [
+    "Independent-prior taxonomy and rejection-first claim-level criteria explicit",
+    "Internal and bounded original external methods classified without numeric inference",
+    "D/provenance constraints confirmed; narrower identity separated from seed strength",
+    "Current CAS/non-CAS applicability gap surfaced without predecessor change"
+  ],
+  "blockers_remaining": [
+    "NO_EXACT_INDEPENDENT_SEED",
+    "CATEGORY_SCOPE_UNAPPROVED",
+    "UNIT_COUNT_START_END_PRICE_POLICY_UNSET",
+    "CAS_NON_CAS_SOURCE_APPLICABILITY_UNVERIFIED",
+    "INSTRUMENT_PARCEL_ORIGINAL_DECISION_SOURCE_CLOSURE",
+    "NO_ATTESTED_EXPERT_PRIOR_OR_COMPLETE_APPROVAL",
+    "REGISTRATION_AND_BOOTSTRAP_AUTHORITY_ABSENT",
+    "NO_PAIRED_CALIBRATION_OR_OOS_CLAIM"
+  ],
+  "runtime": {
+    "source_changed": false,
+    "production_database_accessed": false,
+    "production_database_written": false,
+    "authority_registered": false,
+    "bootstrap_activated": false,
+    "V2_activated": false,
+    "observations_generated": false,
+    "labels_generated": false,
+    "scenario_model_implemented": false,
+    "calibration_run": false,
+    "portfolio_accessed": false,
+    "broker_order_access": false,
+    "gates_changed": false,
+    "score_tradeplan_changed": false,
+    "historical_backfill": false,
+    "seed_approved": false,
+    "raw_paths_collected": false,
+    "source_policy_registered": false
+  },
+  "next_continuations": [
+    "GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1"
+  ],
+  "next_continuation_started": false,
+  "next_scope": "Evidence/governance audit only: reconcile official CAS/non-CAS applicability, original circular/effective/known-at provenance, instrument-regime mapping and start/terminal observation coverage against retained HSI session sources. Preserve frozen artifacts and current runtime; specify bounded missing source policies, not a seed/price default, calendar implementation, authority, events, labels or calibration.",
+  "artifact_fingerprint": "sha256:b2c7e7913384dce1b76691d89cb59a9b38737f9fb365eed3392a0f55292359f6"
+}

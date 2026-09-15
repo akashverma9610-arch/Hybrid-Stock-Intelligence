@@ -101,6 +101,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Gate 1 Research Horizon Mapping Evidence Feasibility V1 (read-only evidence audit; bootstrap blocked; no duration or activation)](docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.md)
 - [Gate 1 Research Horizon Bootstrap Governance V1 (prospective research-only design; parameter approval required; not registered or active)](docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.md)
 - [Gate 1 Research Bootstrap Parameter Policy Proposal V1 (atomic package structure; seed/count/price parameters blocked; not approved or active)](docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.md)
+- [Gate 1 Research Bootstrap Independent-Prior Evidence V1 (bounded primary-source dossier; partial evidence; no seed approval or activation)](docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.md)
 - [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Official NSE/BSE Earnings Calendar Adapters V1 (bounded parsers/storage; live coverage partial; Gate 6 unwired)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_V1.md)
 - [Official Earnings Calendar Discovery Repair (exact joins; scoped coverage and strict PIT still blocked)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_REPAIR.md)
