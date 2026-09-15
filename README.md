@@ -160,6 +160,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Multi-Funnel Candidate Union and Identity V1](docs/architecture/MULTI_FUNNEL_CANDIDATE_UNION_AND_IDENTITY_V1.md)
 - [Whole-Market Multi-Funnel Orchestration V1](docs/architecture/MULTI_FUNNEL_WHOLE_MARKET_ORCHESTRATION_V1.md)
 - [HSI Brain/Funnel Runtime Reconciliation Audit V1 (existing capabilities; shared handoff missing; no activation)](docs/architecture/HSI_BRAIN_FUNNEL_RUNTIME_RECONCILIATION_AUDIT_V1.md)
+- [Canonical Discovery Union to Brain Handoff Contract V1 (one security/context request; consumer binding blocked; no runtime wiring)](docs/architecture/CANONICAL_DISCOVERY_UNION_TO_BRAIN_HANDOFF_CONTRACT_V1.md)
 - [Discovery Recall Audit Contract and Outcome Classification V1](docs/architecture/DISCOVERY_RECALL_AUDIT_CONTRACT_AND_OUTCOME_CLASSIFICATION_V1.md)
 - [Discovery Recall Reference Outcome and Matching V1](docs/architecture/DISCOVERY_RECALL_REFERENCE_OUTCOME_AND_MATCHING_V1.md)
 - [Discovery Recall Per-Security Evaluation Trace V1](docs/architecture/DISCOVERY_RECALL_PER_SECURITY_EVALUATION_TRACE_V1.md)
