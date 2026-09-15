@@ -1,0 +1,1751 @@
+{
+  "schema_version": "gate1-rotation-research-session-price-source-applicability-audit/v1",
+  "slice": "GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1",
+  "baseline_commit": "43da29f531990c47fa605c08c494e7b4adf7f182",
+  "audit_id": "gate1-rotation-research-session-price-source-applicability-audit",
+  "version": "v1",
+  "status": "SOURCE_APPLICABILITY_AUDIT / NO_PARAMETER_APPROVAL / NOT_ACTIVE",
+  "slice_status": "ACCEPTED/CLOSED",
+  "decision": "C",
+  "semantic_decision": "SESSION_PRICE_SOURCE_APPLICABILITY_SOURCE_GAPS",
+  "rationale": "The official global live date and CAS close mechanism are recovered, but the detailed security-master applicability specification, dated membership/revision evidence and legacy non-CAS close clause are not recovered. Existing capture/identity/PIT primitives do not prove security-specific regime at D or terminal price admissibility. Audit closure is not source, parameter or research activation.",
+  "parent": {
+    "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.json",
+    "field": "artifact_fingerprint",
+    "fingerprint": "sha256:b2c7e7913384dce1b76691d89cb59a9b38737f9fb365eed3392a0f55292359f6"
+  },
+  "predecessors": [
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:e751cc6d7f4585d58b081ed9be9d876d399166059cb6d4836f7ff062ce7d8eb3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:79c9626950d25266bca4dfa56ca59922bbd558681fa9daa634025f88648627c8"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:7892a8afe5d503261567d68f3144ca7eb28934a2e8b6c93bd63ce9ffbd3c8dfc"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json",
+      "field": "policy_fingerprint",
+      "fingerprint": "sha256:090b3a017060f88c04e76dbd9bd69cd9f00fcbdadbea27faac23ca746b2b5864"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json",
+      "field": "audit_fingerprint",
+      "fingerprint": "sha256:aa9d4b211a5a2aba762c0b31af99b2a87fe08e0963865344104e9b87c33b0bb1"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json",
+      "field": "protocol_fingerprint",
+      "fingerprint": "sha256:b45af9573b36d727619f630aad5990ba44ff9a7f84c4d9a489a602b6c950a7dd"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json",
+      "field": "artifact_fingerprint",
+      "fingerprint": "sha256:ae287baed26f5d57248284c044d959ad37b505402261b45394a9a4a1f25c95e3"
+    },
+    {
+      "path": "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json",
+      "field": "contract_fingerprint",
+      "fingerprint": "sha256:b4f5c83f33c44c889218823041800d80507733b1932b89529c5aed26ea8c6e14"
+    }
+  ],
+  "preservation": {
+    "research_only": true,
+    "start": "D",
+    "one_immutable_binding_for_both_legs": true,
+    "one_horizon_per_pair": true,
+    "exact_original_decision_required": true,
+    "selection_uses_only_D_visible_evidence": true,
+    "native_source_fingerprint_verified_before_wrapper": true,
+    "policy_approval_selection_effective_at_D_required": true,
+    "retroactive_approval": false,
+    "future_outcomes_in_duration_selection": false,
+    "nearest_bar_fallback": false,
+    "date_roll_fallback": false,
+    "current_time_interpretation": false,
+    "current_membership_backfill": false,
+    "modern_calendar_backcast": false,
+    "multi_horizon_best_result_selection": false,
+    "OOS_reused_for_selection": false,
+    "per_observation_hindsight_selection": false,
+    "historical_relabeling": false,
+    "terminal_requires_R_at_or_after_end_and_completion_and_known_price": true,
+    "late_admin_replay_metadata_not_evidence": true,
+    "unexpected_closure_may_rewrite_frozen_endpoint": false,
+    "production_reuse": "SEPARATE_EXPLICIT_APPROVAL_REQUIRED"
+  },
+  "registration": {
+    "required_chronology": [
+      "rationale_known_at <= approved_at",
+      "approved_at <= registered_at",
+      "registered_at <= effective_from",
+      "registered_at < D",
+      "effective_from <= D"
+    ],
+    "actual_approved_at": null,
+    "actual_registered_at": null,
+    "actual_effective_from": null,
+    "native_effectivity_required": true,
+    "registration_equal_D_allowed": false,
+    "backdating": false,
+    "future_approval_authorizes_original_D": false
+  },
+  "inspected_file_fingerprints_lf": {
+    "app/analysis/liquidity.py": "sha256:562fdcde29f3b06b54461a512a4707e5b8e87ec88503abaa520c906863369926",
+    "app/analysis/market_regime.py": "sha256:57e4792401071483013fcc473d8385bdfdab4b4b4ffcb8e411748471ba6cc61b",
+    "app/analysis/relative_strength.py": "sha256:4b4dcab997a63c8b9d1d7ef929906ce6921a4fb9ada8b2ce9a16ca1ca8434944",
+    "app/analysis/series.py": "sha256:85ec7abc5e0dd267033b5e9c153aed5b00d6af724dc1baebdf87ff83cc31d7cf",
+    "app/analysis/technical.py": "sha256:d5335cc65b54c54ec250587bd72a59b9793e1eab5cf1abc229d56d1e06316241",
+    "app/analysis/valuation_trade.py": "sha256:4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02",
+    "app/audit/decision.py": "sha256:3fe53630a5ab1ce38cc466f3b58e6290c58316ce5619ad329f7ef7453c15beda",
+    "app/backtest/analytical.py": "sha256:b30f65b9e3c24d75b28afaa0d929f54dabf9d904928177b1204a57a5a89055be",
+    "app/backtest/models.py": "sha256:c359463d7ac160cb8bd67bd010038b9b7cb08f7d65d1fc32478197cb79c8346a",
+    "app/backtest/oos_aggregation.py": "sha256:d7e40e22e788a412af55272a5d83eefd29fca55db6802cc2b73c47cd5a113aab",
+    "app/backtest/performance.py": "sha256:aa3f2859ab43e8d8b1a92ddf1d5879cdb8ba9fd9fdec35b525757fd8276a22e5",
+    "app/backtest/portfolio.py": "sha256:e03f6fff73b0e01d914f311434d42fb563090edd5c96cf317a91daf982792ac5",
+    "app/backtest/rotation.py": "sha256:be9a9bafaa388d379b84c215accde34d4b59fd86f56f32601d1e1d7f18c6e2ce",
+    "app/backtest/walk_forward.py": "sha256:4511787b9d6ee07748fa7ddadf8a3d87df87d83f9c06d2a55e227c5a6614dc75",
+    "app/brain_output_requirement_policy.py": "sha256:8008ef90b53a99bb297968b815a22bb641af403572405937f9cf5c7404fd016d",
+    "app/calibration/service.py": "sha256:5f3f5679b0513e456c04d6441d6ddfbc8d775c6e32e1bc39325a72f9699df865",
+    "app/crisis/models.py": "sha256:f9298d6067fde53787e78756ea9ab4d642247315308bf13e1c315079f6c52c6f",
+    "app/domain/models.py": "sha256:cc683283d2706fed784bb36cdf64eb9e326facd0a2de7d7894e7e7554b1fc4b9",
+    "app/forward_paper/composition.py": "sha256:15a9901f1afe4d7d6e3e60df188b583b6d36d0b3694e70439b142971a4ddd537",
+    "app/forward_paper/models.py": "sha256:da6134f071635cf2bb4b07a0ef6088c876209f9fc2b5b527207528d00aacdc10",
+    "app/forward_paper/service.py": "sha256:7b48dbba8dd30844bbf3803bbd4567ad0148cb822f970da903f6e1c24aac7a0b",
+    "app/forward_paper/store.py": "sha256:8cdbb50073069830049d4944b99958b5f7abbf2eb513c078b582f5114fa1ebdd",
+    "app/fundamentals/diagnostic_comparability.py": "sha256:029d369b91ebc989ede17fb4d7a89e06e455ddc8afa9bd026acaaa27cb25dd65",
+    "app/gates/engine.py": "sha256:5374e07407a405c9d1d6fd135096ebf0e35925d1ad271d0853f65b4466b5e983",
+    "app/gates/production_policy.py": "sha256:6c38154258ea8902f7110dd9956b8a0a743c07412304e79e196932bf394a674e",
+    "app/gates/score_provenance.py": "sha256:4d698cef109eba14068f2bb9693a7030c74bd363af70da77780f4d304275928a",
+    "app/gates/source_authority.py": "sha256:9457af06af5554f7e290a2017f495bcd75428758535ca9ac6c8db7b2dbb1987c",
+    "app/gates/source_readiness.py": "sha256:62bf675a5cdeda6b642d7a6834e6deb280b6f37666b235ce60a59f6f5b42d394",
+    "app/gates/version_compatibility.py": "sha256:63aa4ecf92f69145119f6418329906720d5ca82666ef2d29e81cce0899c34a9c",
+    "app/historical_integrity/models.py": "sha256:60d0ac0758531af583efbbc761944961ebe20ca3b2d587923cabe9c752cd2fc2",
+    "app/historical_integrity/service.py": "sha256:cb0e48fa29b7fbbe1087236518dbea8e8a5909a87604182f14cb8fa6420a51c9",
+    "app/historical/bse_lifecycle.py": "sha256:e75eebca3b86c73c9aa67a1e5b085f57daa64c3913922572190e3c84eb1df3ae",
+    "app/historical/canonical_market_session_event_time.py": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+    "app/historical/guard.py": "sha256:7ca9789d4f72f425c825c10d3d4b267fb2b2ff1041ebd05f5e685e55437f1be3",
+    "app/historical/models.py": "sha256:858d6ea159f8de1727251211a4d2417618ac6e8ec4cb35d9530a77571a6c1d31",
+    "app/historical/nse_capital_market_session_evidence_2022_2026.py": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+    "app/historical/nse_corporate_action_coverage.py": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+    "app/historical/nse_mii_security_master.py": "sha256:e54a3c1f1224421b15b51bd02bd9aa0639ebfa34d6ffcadf9fecab3abb430932",
+    "app/historical/nse_mii_session_knownness.py": "sha256:640d7c00fb6b30905b1e7eaf9d0b1e73757a186e76afb17b780d153b00588b80",
+    "app/historical/nse_session_identity.py": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+    "app/historical/security_identity_selector.py": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+    "app/historical/security_master.py": "sha256:7c3b412deb1beb600ecdc143325741136147879f1c021ba1bc2386509750d2b3",
+    "app/intelligence/batch1_calibration_readiness.py": "sha256:bda5c35e214d51a193151836fd6563507a756b8376096da67e494bf38d9e5037",
+    "app/intelligence/catalysts/service.py": "sha256:c408b1b847e8672b1fa3b707107e4bf74bcc5fbe56c9a6ea7772285db3f7fc76",
+    "app/intelligence/company_sensitivity/service.py": "sha256:0ac3bb85527f274b36f662a6d8913f3287b580289490d0bf0f2fa862524d2ad5",
+    "app/intelligence/compounder_prospective_shadow_validation.py": "sha256:8caed40e0fe10c39a3e55e2d9a9dfaf6b44c8509d5a82da71eeee62e3b25929b",
+    "app/intelligence/discovery_recall_reference_matching.py": "sha256:a4dfdc0b1f87a3d5a3972ed0c3c00915e41d2d60895106bca38a04ba6036fb3e",
+    "app/intelligence/fast_rotation_comparison_assurance.py": "sha256:f59e15c541ac69357947d2f6628aebb3aa5ed090f6a339838db39a47c629846a",
+    "app/intelligence/forward_paper_intelligence.py": "sha256:bc671a3b38c83abcfb3edb3846b5d27ae6b82d8d0080845a9a7b3ff3c121d060",
+    "app/intelligence/hsi_signal_projection.py": "sha256:f75290810e75686b7af9e13aa336e0b8428e48061b2b21b356e4142f1342ac88",
+    "app/intelligence/hsi_signal_strategy_registry.py": "sha256:6dc5d310d96bbb48544ff094834039f7d7a4abc177043dd83680025773aa6fea",
+    "app/intelligence/hsi_signal.py": "sha256:85fddffaa85dd04ffac9c7aaf89acd04344b5621af3e3157a2edac81d2dc57e9",
+    "app/intelligence/long_term_thesis_invalidation_research_shadow.py": "sha256:4e9059e578823268f519051d3a6e315c508bbcf1d393bbfe8a27cb9e7b349b04",
+    "app/intelligence/long_term_thesis_research_shadow.py": "sha256:6ef0791965eaf16051aa2ec40e1694617d11395549a724357895e18b35c1f11d",
+    "app/intelligence/long_term_thesis_review.py": "sha256:bf08962923c6c50ef1376fe5a99ae4f372ddb36f9d39d08553c89f001d8e34d1",
+    "app/intelligence/macro_news_evidence.py": "sha256:ae0f9cbd694a39b1e36ee93bf864ba3802ffb54d5eb56abe889965c4d9e0bba4",
+    "app/intelligence/market_wide_watch.py": "sha256:4b065faedf7c23d3a294f056e5bf4ca916c56cc3e5dcf04a55a4260392aa8fd5",
+    "app/intelligence/multi_funnel_discovery_adapters.py": "sha256:e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d",
+    "app/intelligence/multi_funnel_discovery.py": "sha256:cb540cf2055d7de5d96cadf2f0b28c9b9574cb4bddb2a45c34b7da5e93442557",
+    "app/intelligence/opportunity_archetypes.py": "sha256:3592986cbec93dae36be95a707b98056ee7e54831351e3f83309941f2ff59099",
+    "app/intelligence/radar_diagnostic_orchestration.py": "sha256:69041b4d58f7b612f74aaa820cfaa446fb6ecd7f5e643dcaa4066eb2f0d64e36",
+    "app/intelligence/sector_economics/service.py": "sha256:5d14b55c253471c8b99a4eae676fd512cfc3bbc4f852ee6d230a42e942d749dc",
+    "app/intelligence/six_gates_evidence.py": "sha256:84524c03597f71ba4e2ad6314fb4ba9a2a7b098644109dc6a9a287d1ab0ee82f",
+    "app/market_data/canonical_fifteen_minute_technical_reader.py": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+    "app/market_data/daily_source_temporal_semantics.py": "sha256:ae331dff388b7a57dacbd886821baf83453d54bee6caff48b01c29bbc77efa70",
+    "app/market_data/daily_technical_bar_temporal_evidence.py": "sha256:58d76bdf1bcf37e246c8a669cf604b8eb986a5c1ea53d21337b79f7304bdadc9",
+    "app/market_data/dhan_live_bar.py": "sha256:6280a96219d815d9fd5e6913e1eb06246d3b1365bad78890653dc2a3a7552bb6",
+    "app/market_data/dhan_live.py": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+    "app/market_data/historical.py": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+    "app/market_data/index_close_series.py": "sha256:a87a45c4565d068eb961cb17868c047bfecd64d51dd7c83f23bdb712b5a72939",
+    "app/market_data/models.py": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+    "app/market_data/nse_full_bhavcopy.py": "sha256:c24efeeb2cfd9fa6285edacd66321affb2055ff5789cebee43a4b579076419f9",
+    "app/market_data/nse_udiff_daily_history.py": "sha256:e75c6e621512973cb245031feada74ac6dfa9845a4c678484fd5c69a65d9f8f6",
+    "app/market_data/nse_udiff_weekly_technical_bar.py": "sha256:b67f4f1d727fee89a79b8723ccded60de68377cafbc2fe28026d56c18effffa1",
+    "app/market_data/official_nse_index_ohlc.py": "sha256:6b9a9a4526a9ba6b2a216670e246a3495bbd2e1d62c0efd8f1df3dda81e85932",
+    "app/market_data/prospective_fifteen_minute_bar.py": "sha256:91f32e2215c2edc64205bb44647c828ddfba33497e952aba5548e59f35a34db8",
+    "app/market_data/reference_data/nse_master.py": "sha256:b5175c71a938b5ba0686ce18ab24074aa69872f5442533ff827a3209b43be561",
+    "app/market_data/technical_bar_contract.py": "sha256:6eb5a1ef2cd0573c76278aa2f71864c2822e25582e6e33a13325533158897c17",
+    "app/market_data/technical_price_adjustment_integrity.py": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+    "app/market_data/upstox.py": "sha256:e5469bc7ff5c63a6e028d7faed830a20ebe2f2f35a6583437cef77ca30fe6740",
+    "app/paper/engine.py": "sha256:2d98a12deb7542d89795a2b4c376b7fd3abb503cd95f8872c504dd3fafddf67e",
+    "app/paper/models.py": "sha256:307dcf6d5ded2ad116800d4ea0c30354e24289ff414811e195e1aac6a2f210fd",
+    "app/performance/engine.py": "sha256:1ee1e1aecffd4fd613ffd9b97fbb77143c58c4b2a0eb532cac652c5e63d4b473",
+    "app/performance/grouped.py": "sha256:d6cea51593ba36c93bdaf964f625d87a6a3b7f2b2e49d3247ada43d40695f114",
+    "app/performance/models.py": "sha256:3fd5f22f93f161f6ef041181f581ef3903528523398994522f309a645feca5c5",
+    "app/portfolio/canonical_six_gates_activation.py": "sha256:8e574f43acfdf14827c97acdc79a8ca0d63bb6debc08acf9a2c4b5e592218b1f",
+    "app/portfolio/engine.py": "sha256:2029550d622b6d8985357e6900890cc78332782faa645b49d332f63808e19f5d",
+    "app/portfolio/holding_intelligence.py": "sha256:e9ee39372662d800079af409074c92254ab93c56bd3d300743fbe4196f8adc26",
+    "app/portfolio/models.py": "sha256:685d10a4c07b2deb909e5492a1707b94b4ea2d453261340b97dd35ef254449a4",
+    "app/portfolio/sell_side_policy.py": "sha256:4d29e14ae9220ffa379832df1d7973c290bb59001314439be2677cc76af5b84b",
+    "app/production_v1/canonical_setup_activation.py": "sha256:01c40c04592db17e446a98bd1ad76f9b45681d89b3acedcff34d8513991269d6",
+    "app/production_v1/governed_setup_source.py": "sha256:b86ea3783e3ea85bf389653a017176af198f7f9beb9f50b24f05f53c08c0b653",
+    "app/registry/canonical.py": "sha256:f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589",
+    "app/research/handoff.py": "sha256:57342272f11ec53664530ca3110fff00f92a030c04d959733b0eaab382e595cc",
+    "app/rotation/engine.py": "sha256:0c4050e8cb6dcc2724c77e35e8e47031eb19364eb69b1dc4811a57e0bfdd3778",
+    "app/rotation/models.py": "sha256:bf4943c24c5a2e01887ca96ff3b38c9919277fcc5c6a7727635ad5823dbbf717",
+    "app/runtime/cli.py": "sha256:78d9bcea9c09dd8b2331d5e6ae7e81e95eca8bb4d7d4d7d51199f0d147a05798",
+    "app/scoring/engine.py": "sha256:e7be7ff85cdf214f8493c49ff18cd9b3bf9b0f22c3d812163ea91322fcdb3e79",
+    "app/self_improvement/models.py": "sha256:588a327d1e1634fd2ae4cb7ce56ca78d88beea30bab7e3757f37693e21e75a3a",
+    "app/signals/engine.py": "sha256:f1bf317a82b04f3cb828d5e86976581c3b08a75574770336e06c6afff0a6d17a",
+    "app/signals/models.py": "sha256:41cd4110b32eb5221d110370ed801daab0c07e73df78a84385c3c9cdf65ea9c2",
+    "app/storage/sqlite_governance_repository.py": "sha256:0a2a9e3ef87d9d8309055dd6536132c43f52162036f6c48a65343065bd12536d",
+    "app/storage/sqlite_repository.py": "sha256:dfbc3abef762de476d7115527937048cbd7e8cca1f5af65af6739c1916a11019",
+    "app/strategies/common/models.py": "sha256:9d8070c62cfa076c55719570eabd2482213ff00f25ab80b3832115c0b8d1f7d6",
+    "app/strategies/pre_breakout/governance_commands.py": "sha256:df6ab92a6af5061ae1482474cb5a2abb767b183d6751d908bcc529834d53d057",
+    "app/strategies/pre_breakout/governance.py": "sha256:eb4b7ecb3bdd4c3726e0dcc0de39b472c65b65c8a3d50f37de1739a695fd698a",
+    "app/strategies/pre_breakout/policy.py": "sha256:896a8d242b75384663fbab614e15a89ff99a4a082500bdced584e2221979b29d",
+    "app/strategies/pre_breakout/research_handoff.py": "sha256:48041901acb2bc7a7c5644ff1e8a7854c56d4c541615d2e634e30d662ebd7772",
+    "app/universe_analysis/models.py": "sha256:53333ede495c6d030adb0af62c17daadbf4250b340d089eaa75485b1ec4f866a",
+    "docs/architecture/EARNINGS_BLACKOUT_HORIZON_PROSPECTIVE_SHADOW_V1.md": "sha256:3e73851c13d3574adb0a3771e435affb23f4e0bdf2375e5da044a7b393cf3afc",
+    "docs/architecture/EARNINGS_BLACKOUT_POLICY_V2_GOVERNANCE_APPROVAL.json": "sha256:5c2d0625ba035406d5c5146db3b594577e4371a5a671a6b93324c8da176b1c7a",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL_2.json": "sha256:291a10207ffa1897f1ea609ce75fb4a0a61560209ba88cfb7b8d827452ba7932",
+    "docs/architecture/EXECUTION_GATE_POLICY_V2_COMPOSITE_GOVERNANCE_APPROVAL.json": "sha256:097c187fd59620cbb2f61e96295f708ed5ed6e2e117ad978deee8863979576e4",
+    "docs/architecture/FUNDAMENTAL_DIAGNOSTIC_REGISTRY_V2_GOVERNANCE_APPROVAL.json": "sha256:12d109453e7fcba86b3783943951e4a6466d392ffd945900a3f39caa213d09d3",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.json": "sha256:76d7993ee629371af30642f75be9b0fd504e403afb8336c08e38b20128367f58",
+    "docs/architecture/GATE1_ROTATION_ECONOMIC_SCENARIO_CONTRACT_V1.md": "sha256:594ea6942b34cb5812ef064061239b7f4d0ddf8975b3d19ca0a2fe982f4e22c9",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.json": "sha256:7a13bcd4fcf0d9b18e977386652ec8af98951b82294c15038e811665d7dd81f8",
+    "docs/architecture/GATE1_ROTATION_PAIRED_SCENARIO_RESEARCH_PROTOCOL_V1.md": "sha256:7729396fd2fbdf0e518a487916b547ce517bcce1d83ef5e85dc7fc1eb6655f41",
+    "docs/architecture/GATE1_ROTATION_POLICY_DEFINITION_REPAIR_V1.json": "sha256:8705275a0da9c3d244c586bd64afc804fa60251f9ec33b2180dd154479821b01",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.json": "sha256:3cad2e7fb4008e629b14deff9f0d346f72076a94bbdacf8685ff0fcc1f43bf5e",
+    "docs/architecture/GATE1_ROTATION_POLICY_V2_PROPOSAL.md": "sha256:77f441e4533719107e19506d14defc31684ea4d33bf8284a92c29d02b5dfcbdc",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.json": "sha256:c2740fae1a4a54df8aa182e4359bd26674934953ba65e94c73eb712f35072fdf",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.md": "sha256:4c22e689b158ba8b8241a7ee0c6b282bd4d5b01d2a0440658e673e9fd68d62d7",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.json": "sha256:ddafc5b75af81f3330c6043da4255b8d7f10c3db133b4bfa568c8e53c3d562e8",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_PARAMETER_POLICY_PROPOSAL_V1.md": "sha256:fa9174a6a4c2e65775f6558b6e5721a295a582619367c35b243b6ed7371a74e1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.json": "sha256:11e56d1e3bccf269d2d02c2b039fcbc89c8b0c17c4cfac32f3d9cce508d6d70a",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_AUTHORITY_POLICY_V1.md": "sha256:8539645cd09870ff42f547c75cef1aca17a51b3e877438cb67f6f4e769449cee",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.json": "sha256:f37176854ffff603f47e85cdfb2ed9570a5d4c580adccf95a20f3247cc5aa6b6",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_BOOTSTRAP_GOVERNANCE_V1.md": "sha256:aa7e174fda319df62208b42067aac73bb598bd2d89b4a0d04491d055b55fc19f",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.json": "sha256:768247ab11b5d11e511fb50983633b0febb609915611801acae71facfb40cdca",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_MAPPING_EVIDENCE_FEASIBILITY_V1.md": "sha256:5280f9218d09b8ee2e18fece0bdb13fef42a07870a7711cc7e0c4dd061f887b1",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.json": "sha256:2bdc2a78fe7ec5af027d909bb38094bb5ecf79fafc3a781249b3bf0c4ac70ab0",
+    "docs/architecture/GATE1_ROTATION_RESEARCH_HORIZON_POLICY_PROPOSAL_V1.md": "sha256:f007ed08f5d610fc53ae319026657d6d642a5bf9552947cfc146d1e59ef4e48c",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.json": "sha256:69126778319d304207287298c11c81d7d8d01ca0da768dfaedcc34ba5aca6e97",
+    "docs/architecture/GATE1_ROTATION_SCENARIO_MODEL_SOURCE_FEASIBILITY_V1.md": "sha256:9c4f6e9bbc7502b21d73dc9e8438f2c2bd11f33f148e29b1004461f39f17bc29",
+    "docs/architecture/GATE1_ROTATION_SOURCE_READINESS_V1.json": "sha256:948c90aef17a2a8965abb16aa50cea66f4a0082cfa0d2cef29d0e14fd9a4cb6c",
+    "docs/architecture/GATE3_ASM_GSM_COMPLETENESS_GOVERNANCE_FALLBACK_V1.json": "sha256:b7bb981bcc64bce97016863dbfbcb0e78724e6a61a7573f616c5d99cd857993d",
+    "docs/architecture/GATE3_SURVEILLANCE_POLICY_V2_PROPOSAL.json": "sha256:992e3025eed911630ecccf6fae49d0a25506e556fdfad2ee083618e32384297f",
+    "docs/architecture/GATE3_SURVEILLANCE_SOURCE_CAPTURE_COMPLETENESS_REPAIR_V1.md": "sha256:751d36481cb1e8fa9eebc7d88d2ac36731da1f676c441da23581ad163b7471e6",
+    "docs/architecture/NSE_EXECUTION_MASTER_CURRENT_CAPTURE_CONTINUITY_REPAIR_V1.md": "sha256:688b1b90a6ef69afdd497f4f45fba2c5999e249303f62f0bfd59ad7cc78632b0",
+    "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md": "sha256:5b0dcdd09686f24b4f9f482e5ea862cd311615d9e9ec26ae5a144d9ad698a07a",
+    "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md": "sha256:a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6",
+    "docs/architecture/RULE_HORIZON_TIMEFRAME_APPLICABILITY_POLICY_V1_CANDIDATE.json": "sha256:0dad3dd0891349e896db95f7f3ca6e95dd95e1aa1e1a82eae3e0051ea6cf9d6c",
+    "tests/unit/test_gate1_rotation_economic_scenario_contract.py": "sha256:042c78013ff689dcb0dccfb3d3ecaf220909be16c068b6338a4785bc8bfbe90e",
+    "tests/unit/test_gate1_rotation_paired_scenario_research_protocol.py": "sha256:4d365c1f564c8732c0200862ac7a4720a18334a68a2f597f41afad038203bd25",
+    "tests/unit/test_gate1_rotation_research_bootstrap_independent_prior_evidence.py": "sha256:ab920d809abb6327d0400c5f84056e82712da0358fe93a46f7ef8e4d02c292fd",
+    "tests/unit/test_gate1_rotation_research_bootstrap_parameter_policy_proposal.py": "sha256:160ccbb7065f2f199e6759f3deecd2b03ddec0e4ec13e4837d14d90d1b0eeef1",
+    "tests/unit/test_gate1_rotation_research_horizon_authority_policy.py": "sha256:0bdccfc30d3af66802123da530feb76e09bac11cce16199905074ca8ce63f9b1",
+    "tests/unit/test_gate1_rotation_research_horizon_bootstrap_governance.py": "sha256:0979d66c5ee4b68b2bdc2e57dd48db0b81b489429bd55286687fbb5a98737320",
+    "tests/unit/test_gate1_rotation_research_horizon_mapping_evidence_feasibility.py": "sha256:90ef955d30b3c25eb858d93b553c9da30f6556787b95536e297a96c4570d026d",
+    "tests/unit/test_gate1_rotation_research_horizon_policy_proposal.py": "sha256:c68c1a868c7d3b0dc837604749feb4665d27c5e8f36e42f30e893bc6c27c6a15",
+    "tests/unit/test_gate1_rotation_scenario_model_source_feasibility.py": "sha256:65a2cc738ca7f73e9db45956b7ba0f2838aea0faa79ef9793a3bca4396688479",
+    "tests/unit/test_nse_ordinary_session_close_evidence.py": "sha256:07b201e12de0eea92af8010115a57ee92a9cfa76e97fbe1bc37222c1c44a70fb"
+  },
+  "authority": {
+    "scope": "RESEARCH_BOOTSTRAP_ONLY",
+    "approval_state": "UNAPPROVED",
+    "registration_state": "NOT_REGISTERED",
+    "activation_state": "NOT_ACTIVE",
+    "usable": false,
+    "approval_ref": null,
+    "registration_ref": null,
+    "producer_ref": null,
+    "forbidden": [
+      "GATE1_PASS",
+      "ROTATE_IN",
+      "CAPITAL_MOVEMENT",
+      "PRODUCTION_SCENARIO_ENDPOINT",
+      "PORTFOLIO_MUTATION",
+      "BROKER_ORDER_EXECUTION",
+      "PRODUCTION_HORIZON_AUTHORITY"
+    ],
+    "v1": {
+      "policy_id": "six-gates-production-v1",
+      "version": "v1",
+      "status": "ACTIVE"
+    },
+    "v2": {
+      "policy_id": "execution-gate-policy-v2-proposed",
+      "version": "v2-proposal.4",
+      "status": "NOT_ACTIVE"
+    }
+  },
+  "bootstrap_policy_status": "PROPOSED / UNAPPROVED / NOT_REGISTERED / NOT_ACTIVE",
+  "effective_parameters": {
+    "category_mapping": null,
+    "strategy_scope": null,
+    "seed_duration": null,
+    "effective_duration_unit": null,
+    "counting_rule": null,
+    "D_session_index": null,
+    "first_counted_session": null,
+    "count_precision": null,
+    "terminal_boundary_rule": null,
+    "start_price_rule": null,
+    "start_alignment_rule": null,
+    "terminal_price_rule": null,
+    "price_precision_rule": null,
+    "calendar_binding": null,
+    "instrument_scope": null,
+    "seed_evidence_package": null,
+    "approval_receipt": null,
+    "registration_receipt": null,
+    "effective_start": null,
+    "seed_range": null,
+    "parameter_precision": null,
+    "retirement_threshold": null,
+    "review_cadence": null,
+    "sample_minimum": null
+  },
+  "scope": {
+    "candidate_market": "NSE_CASH_EQUITIES_OR_NARROWER_SEPARATELY_APPROVED_SET",
+    "selected_research_population": null,
+    "expanded": false,
+    "eq_series_proves_ordinary_equity": false,
+    "financial_or_other_company_type_inferred": false,
+    "etf_sme_other_segments_auto_included": false,
+    "index_price_is_security_price": false
+  },
+  "evidence_scope": {
+    "audit_access_date": "2026-09-15",
+    "production_db_read": false,
+    "production_db_written": false,
+    "live_market_or_provider_called": false,
+    "raw_external_bytes_retained": false,
+    "external_response_fingerprints_available": false,
+    "source_ingestion_performed": false,
+    "credential_access": false,
+    "coverage_counts_measured": false,
+    "internal_pins": "LF-normalized SHA-256 of files at baseline; inherited pins retained unchanged; not external-body hashes.",
+    "external_capture_limit": "Browser-extracted primary text/metadata reviewed; no raw PDF/HTML stored or hashed. This audit date is not a historical HSI known_at receipt; document date alone is not an intraday publication timestamp."
+  },
+  "official_sources": [
+    {
+      "id": "O01",
+      "owner": "NSE",
+      "title": "NSE/CMTR/75479 live CAS and separate mock notice",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR75479.pdf",
+      "publication_date": "2026-07-30",
+      "publication_timestamp": null,
+      "effective_date": "2026-08-03",
+      "source_version": "NSE/CMTR/75479",
+      "locator": "p1 live date; p4 master delivery; p5 mock obligations",
+      "access_status": "PRIMARY_BODY_READ",
+      "accessed_on": "2026-09-15",
+      "finding": "Live changes start 2026-08-03. Separate 2026-08-01 mock trades have no fund pay-in/out. EOD masters including NSE_CM_security_31072026.csv.gz are announced for extranet /cmftp/common/ntneat by 2026-08-01 06:00.",
+      "limitations": "Delivery announcement is not proof of actual pre-D HSI receipt, public mirror completeness or CAS column semantics. Mock timetable must not become live calendar.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    },
+    {
+      "id": "O02",
+      "owner": "NSE",
+      "title": "NSE/CMTR/73362 CAS SOP",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR73362.pdf",
+      "publication_date": "2026-03-18",
+      "publication_timestamp": null,
+      "effective_date": null,
+      "source_version": "NSE/CMTR/73362",
+      "locator": "sections 1.1, 2.1-2.2, 5.1, 6",
+      "access_status": "PRIMARY_BODY_READ",
+      "accessed_on": "2026-09-15",
+      "finding": "Phased cash-stock eligibility tied initially to derivative availability. CAS official close uses equilibrium; absent equilibrium, reference. Reference is 15:00-15:15 VWAP, else day LTP, else prior close with action adjustment/base treatment. No trade plus no equilibrium uses latest close. Non-CAS refers to CMTR67774 section 3.4. Indicative auction values are distinct.",
+      "limitations": "Not a dated membership list or HSI price/return policy; no automatic reconstruction of reference/fill. Later modalities require separate notices.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    },
+    {
+      "id": "O03",
+      "owner": "NSE",
+      "title": "NSE CAS product/session page",
+      "url": "https://www.nseindia.com/static/products-services/closing-auction-session",
+      "publication_date": null,
+      "publication_timestamp": null,
+      "effective_date": null,
+      "source_version": "page-updated-2026-08-12",
+      "locator": "Introduction; CAS Structure; session timings; circular list",
+      "access_status": "PRIMARY_PAGE_READ",
+      "accessed_on": "2026-09-15",
+      "finding": "CAS 15:15-15:35 IST: reference 15:15-15:20; orders 15:20-15:25; limit phase 15:25-15:30 with random close in final two minutes; matching follows closure through 15:35. Transition 15:35-15:50; post-close 15:50-16:00. Non-CAS continuous session 09:15-15:30.",
+      "limitations": "Current descriptive page, not historical dated membership, amendments or exact random-close evidence. Phase windows are not actual timestamp receipts.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    },
+    {
+      "id": "O04",
+      "owner": "NSE",
+      "title": "NSE/CMTR/73845 security-master modification",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR73845.pdf",
+      "publication_date": "2026-04-22",
+      "publication_timestamp": null,
+      "effective_date": null,
+      "source_version": "NSE/CMTR/73845",
+      "locator": "Referenced by O01/O03; required detailed field attachment",
+      "access_status": "BODY_UNAVAILABLE",
+      "accessed_on": "2026-09-15",
+      "finding": "Title/date/circular identity verified only through official references.",
+      "limitations": "Direct official retrieval failed; archives.nseindia.com alternative also failed. No field name, coding, scope, completeness or revision rule inferred.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    },
+    {
+      "id": "O05",
+      "owner": "NSE",
+      "title": "NSE/CMTR/74466 trading modalities",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR74466.pdf",
+      "publication_date": "2026-05-29",
+      "publication_timestamp": null,
+      "effective_date": null,
+      "source_version": "NSE/CMTR/74466",
+      "locator": "Referenced by O01/O03; full modalities required",
+      "access_status": "BODY_UNAVAILABLE",
+      "accessed_on": "2026-09-15",
+      "finding": "Identity/date referenced officially; detailed body not admitted.",
+      "limitations": "Official retrieval failed; reference-title wording differs between official pointers. Do not resolve detailed cash/derivatives scope from title.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    },
+    {
+      "id": "O06",
+      "owner": "NSE",
+      "title": "NSE/CMTR/67774 legacy non-CAS close",
+      "url": "https://nsearchives.nseindia.com/content/circulars/CMTR67774.pdf",
+      "publication_date": "2025-04-30",
+      "publication_timestamp": null,
+      "effective_date": null,
+      "source_version": "NSE/CMTR/67774",
+      "locator": "Section 3.4 referenced by O02 section 5.1.2",
+      "access_status": "BODY_UNAVAILABLE",
+      "accessed_on": "2026-09-15",
+      "finding": "Legacy mechanism is referenced, not independently reproduced.",
+      "limitations": "Official body could not be retrieved; no remembered VWAP window or fallback substituted.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    },
+    {
+      "id": "O07",
+      "owner": "SEBI",
+      "title": "SEBI CAS introduction",
+      "url": "https://www.sebi.gov.in/legal/circulars/jan-2026/introduction-of-closing-auction-session-cas-in-the-equity-cash-segment-and-certain-modifications-in-the-pre-open-auction-session_99122.html",
+      "publication_date": "2026-01-16",
+      "publication_timestamp": null,
+      "effective_date": null,
+      "source_version": "SEBI",
+      "locator": "Landing metadata; linked PDF",
+      "access_status": "LANDING_ONLY_BODY_UNAVAILABLE",
+      "accessed_on": "2026-09-15",
+      "finding": "Landing identifies HO/47/11/11(3)2025-MRD-POD2/I/2765/2026.",
+      "limitations": "Linked official PDF https://www.sebi.gov.in/sebi_data/attachdocs/jan-2026/1768576287344.pdf unavailable; no unseen normative detail admitted.",
+      "native_HSI_known_at": null,
+      "correction_chain_recovered": false,
+      "raw_response_fingerprint": null,
+      "raw_bytes_retained": false,
+      "research_authority": false
+    }
+  ],
+  "internal_sources": [
+    {
+      "id": "I01",
+      "path": "app/historical/canonical_market_session_event_time.py",
+      "source_type": "IMMUTABLE_CALENDAR_CONTRACT",
+      "purpose": "Date/phase/event-time resolution; explicit publication/effectivity/conflict evidence.",
+      "coverage": "Injected calendar bounds, not intrinsic universal history.",
+      "effective": "Native source and phase intervals.",
+      "known_at": "Native known_at/published_at/date-only guard; no fabricated instant.",
+      "version": "canonical-market-session-calendar-and-event-time/v1",
+      "fingerprint_lf": "sha256:b042dba42a9674855f775efc632c4b95f030ba90f0a10fcdf7388ee0860debbd",
+      "security_segment": "NSE CAPITAL_MARKET; phase rows not security-specific.",
+      "historical": "DERIVABLE with native receipts; instrument parameter does not select CAS membership.",
+      "prospective": "DERIVABLE; needs security-regime binding.",
+      "authority": "IMPLEMENTED_CORE_NOT_RESEARCH_HORIZON_AUTHORITY"
+    },
+    {
+      "id": "I02",
+      "path": "app/historical/nse_capital_market_session_evidence_2022_2026.py",
+      "source_type": "RETAINED_FIRST_PARTY_BUNDLE",
+      "purpose": "Annual holidays, amendments, selected specials and ordinary-forward phases.",
+      "coverage": "2022-01-01 through 2026-12-31; not complete all-regime timing.",
+      "effective": "Ordinary-forward 2026-09-05; source-specific historical holiday/special dates.",
+      "known_at": "Ordinary source 2026-09-05T16:47:00Z; others retain dated notices.",
+      "version": "nse-capital-market-first-party-2022-2026-v2-ordinary-forward",
+      "fingerprint_lf": "sha256:ffad8713e078917a51efa117820a6adbdf755201c1e9b291445c99baaf6667b3",
+      "security_segment": "Generic cash segment weekday/continuous 09:15-15:30; no per-stock CAS.",
+      "historical": "BOUNDED; ordinary timing not evidence for earlier history.",
+      "prospective": "SOURCE_NOT_READY for general CAS-aware pair; individual holidays represented.",
+      "authority": "IMPLEMENTED_CORE_NOT_CAS_AUTHORITY"
+    },
+    {
+      "id": "I03",
+      "path": "app/historical/nse_mii_security_master.py",
+      "source_type": "COMPLETE_CAPTURE_AND_PARSED_ROWS",
+      "purpose": "Official date-labelled security IDs/status/type fields; complete prospective capture receipt.",
+      "coverage": "Caller supplied exact report date; actual archive span not audited.",
+      "effective": "Report date is not automatic live applicability effective interval.",
+      "known_at": "document_observed_at/first_observed_at; historical_known_at absent.",
+      "version": "v1; v2-prospective-complete-capture",
+      "fingerprint_lf": "sha256:e54a3c1f1224421b15b51bd02bd9aa0639ebfa34d6ffcadf9fecab3abb430932",
+      "security_segment": "FinInstrmId/ISIN/symbol/series/status/list/removal/type; no typed CAS flag.",
+      "historical": "BOUNDED identity input, no CAS history demonstrated.",
+      "prospective": "Existing complete-capture/reopen reusable; exact CAS parsing not implemented.",
+      "authority": "IMPLEMENTED_CAPTURE_NOT_CAS_POLICY"
+    },
+    {
+      "id": "I04",
+      "path": "app/historical/nse_session_identity.py",
+      "source_type": "APPROVED_SESSION_POINT_IDENTITY",
+      "purpose": "Exact session identity with human-approved native provenance.",
+      "coverage": "Each separately receipted session only.",
+      "effective": "Approved session D semantics, no inferred interval.",
+      "known_at": "Session knownness is not precise intraday CAS announcement time.",
+      "version": "nse-session-known-security-identity-policy/v1",
+      "fingerprint_lf": "sha256:4cb6fad1c5f341a07be81f29d39f904ef38568bb597ab51dae34666255f8b3f6",
+      "security_segment": "Identity only; no company-type, tradability or CAS proof.",
+      "historical": "BOUNDED; later sessions need own receipt.",
+      "prospective": "DERIVABLE for exact join once source recovered.",
+      "authority": "APPROVED_CORE_IDENTITY_ONLY"
+    },
+    {
+      "id": "I05",
+      "path": "app/historical/security_identity_selector.py",
+      "source_type": "EXACT_HISTORICAL_IDENTITY_SELECTOR",
+      "purpose": "Immutable effective/knownness identity selection; ambiguity rejected.",
+      "coverage": "Supplied source intervals and lifecycle proof only.",
+      "effective": "Native effective start/end.",
+      "known_at": "Native source as-of constraints.",
+      "version": "Frozen baseline selector; source pin is version.",
+      "fingerprint_lf": "sha256:68e8a0be284c34b23bfc15beeb74ad4e800a86e86c339bbe86de33e0f1ec4675",
+      "security_segment": "Canonical ID, ISIN, exchange symbol/series; lifecycle changes need proof.",
+      "historical": "BOUNDED; no symbol-current backfill.",
+      "prospective": "DERIVABLE not CAS membership.",
+      "authority": "IMPLEMENTED_CORE_IDENTITY_ONLY"
+    },
+    {
+      "id": "I06",
+      "path": "app/market_data/models.py",
+      "source_type": "CANONICAL_PRICE_CONTRACT",
+      "purpose": "OHLCV/quote fields with provider/reference/timestamps/adjustment provenance.",
+      "coverage": "Individual received observations, not completeness.",
+      "effective": "Bar interval or quote event; not applicability interval.",
+      "known_at": "Received timestamp plus optional exchange/provider timestamp.",
+      "version": "Frozen canonical models; source pin is version.",
+      "fingerprint_lf": "sha256:d53b4f10d04aff3618dda0ca30c75c67dcff6c5204bfdec9630c2fe1b83ec4fa",
+      "security_segment": "Exact canonical instrument; no CAS mechanism flag.",
+      "historical": "DERIVABLE only with temporal/source receipts.",
+      "prospective": "Reusable values; not executable fills or authorized research choices.",
+      "authority": "IMPLEMENTED_CORE_DATA_ONLY"
+    },
+    {
+      "id": "I07",
+      "path": "app/market_data/historical.py",
+      "source_type": "PROVIDER_VERSIONED_HISTORICAL_STORE",
+      "purpose": "Preserve observations/conflicts; as_of filters end and received_at; native canonicalization.",
+      "coverage": "Persisted rows only; no production counts inspected.",
+      "effective": "Source bar bounds.",
+      "known_at": "Explicit as_of filters; caller must use it; date label alone not availability.",
+      "version": "Frozen provider-versioned store; source pin is version.",
+      "fingerprint_lf": "sha256:98d2ac3c0ad1bc17acc94e2b556c9a6c6e66b8cd8cbb04db6388aff1d7a82963",
+      "security_segment": "Instrument/timeframe/provider keyed, not security-regime calendar.",
+      "historical": "INSUFFICIENT without aligned completeness/phase/adjustment receipts.",
+      "prospective": "Reusable store, not source precedence for Gate-1 price policy.",
+      "authority": "IMPLEMENTED_CORE_STORE_ONLY"
+    },
+    {
+      "id": "I08",
+      "path": "app/market_data/nse_full_bhavcopy.py",
+      "source_type": "OFFICIAL_RETAINED_CSV_NORMALIZATION",
+      "purpose": "Copies OPEN/HIGH/LOW/CLOSE_PRICE; exact supplied EQ symbol target.",
+      "coverage": "Exact retained session file.",
+      "effective": "Legacy midnight-labelled bar, not actual market close.",
+      "known_at": "retrieved_at; exchange label not publication.",
+      "version": "Frozen full-bhavcopy adapter; source pin is version.",
+      "fingerprint_lf": "sha256:c24efeeb2cfd9fa6285edacd66321affb2055ff5789cebee43a4b579076419f9",
+      "security_segment": "EQ plus supplied canonical ISIN target; not a historical symbol bridge.",
+      "historical": "INSUFFICIENT for exact original-D/official-price semantics.",
+      "prospective": "Existing importer not invoked; adjustment UNKNOWN.",
+      "authority": "IMPLEMENTED_CORE_NOT_RESEARCH_PRICE_POLICY"
+    },
+    {
+      "id": "I09",
+      "path": "app/market_data/nse_udiff_daily_history.py",
+      "source_type": "OFFICIAL_UDIFF_NORMALIZATION",
+      "purpose": "CM/NSE/STK exact identity, raw OHLCV; source row includes LastPric distinct from ClsPric.",
+      "coverage": "Retained report dates only.",
+      "effective": "Logical daily interval midnight to next midnight, not close instant.",
+      "known_at": "observed_at; warning publication unknown.",
+      "version": "Frozen UDiff contract/normalization; source pin is version.",
+      "fingerprint_lf": "sha256:e75c6e621512973cb245031feada74ac6dfa9845a4c678484fd5c69a65d9f8f6",
+      "security_segment": "FinInstrmId/ISIN/symbol/series/session source lineage.",
+      "historical": "INSUFFICIENT without knownness/completeness and regime; source LastPric not separate canonical bar close.",
+      "prospective": "Reusable RAW bars; no CAS equilibrium/reference discriminator.",
+      "authority": "IMPLEMENTED_CORE_DATA_ONLY"
+    },
+    {
+      "id": "I10",
+      "path": "app/market_data/upstox.py",
+      "source_type": "PROVIDER_DAILY_ADAPTER",
+      "purpose": "Preserves provider candle interval-start; no declared session-end or adjustment guarantee.",
+      "coverage": "Provider daily candles, actual coverage not queried.",
+      "effective": "start_time=end_time source-start representation; session end unbound.",
+      "known_at": "received_at plus raw provider timestamp; not daily-close completion.",
+      "version": "upstox-history-v4-interval-start",
+      "fingerprint_lf": "sha256:e5469bc7ff5c63a6e028d7faed830a20ebe2f2f35a6583437cef77ca30fe6740",
+      "security_segment": "Exact provider mapping; equities vs index distinct.",
+      "historical": "INSUFFICIENT without separate temporal/adjustment receipts.",
+      "prospective": "Existing adapter remains operational; no network call here.",
+      "authority": "IMPLEMENTED_CORE_PROVIDER_NOT_AUCTION_AUTHORITY"
+    },
+    {
+      "id": "I11",
+      "path": "app/historical/nse_corporate_action_coverage.py",
+      "source_type": "OFFICIAL_CORPORATE_ACTION_LINEAGE",
+      "purpose": "Exact identity and action-date evidence; split/bonus factor completeness separated.",
+      "coverage": "Bounded retained official receipts; no DB inspection.",
+      "effective": "Native action effective/ex dates.",
+      "known_at": "Observed/publication lineage; not inferred from price change.",
+      "version": "Frozen official action source; source pin is version.",
+      "fingerprint_lf": "sha256:3d07c0c0e7bb22637bfe12fd3050de3040fd49227c22b4a552d98f0c3fa5f137",
+      "security_segment": "Exact instrument/transition evidence; symbol-only insufficient for ambiguous action.",
+      "historical": "BOUNDED evidence, not all return transformations.",
+      "prospective": "Reusable provenance, not total-return policy.",
+      "authority": "IMPLEMENTED_CORE_ACTION_EVIDENCE"
+    },
+    {
+      "id": "I12",
+      "path": "app/market_data/technical_price_adjustment_integrity.py",
+      "source_type": "PURE_ADJUSTMENT_INTEGRITY",
+      "purpose": "Immutable raw and split/bonus derivative lineage; complex actions fail closed.",
+      "coverage": "Exact supplied bars and action window.",
+      "effective": "Action effective_at <= as_of required.",
+      "known_at": "source_known_at <= as_of; native fingerprint.",
+      "version": "technical-price-adjustment/v1",
+      "fingerprint_lf": "sha256:62c9e116b45a980360ecf9f66834bce1b9e5981c683c09b29ee4b8c92e955b7b",
+      "security_segment": "Exact instrument; raw/unknown/provider-adjusted/index basis separated.",
+      "historical": "DERIVABLE only supported comparable cases.",
+      "prospective": "Reusable integrity; no Gate-1 return-method choice.",
+      "authority": "IMPLEMENTED_CORE_TECHNICAL_POLICY_ONLY"
+    },
+    {
+      "id": "I13",
+      "path": "app/market_data/daily_technical_bar_temporal_evidence.py",
+      "source_type": "DAILY_COMPLETENESS_KNOWNNESS",
+      "purpose": "Separates explicit publication, after-close source contract, forward observation, unresolved.",
+      "coverage": "Per supplied bar/session evidence.",
+      "effective": "Actual governed session end, not date-label end.",
+      "known_at": "Resolved/forward-only/unknown; strict PIT blocked when unproven.",
+      "version": "canonical-daily-technical-bar-known-at-and-completeness-evidence/v1",
+      "fingerprint_lf": "sha256:58d76bdf1bcf37e246c8a669cf604b8eb986a5c1ea53d21337b79f7304bdadc9",
+      "security_segment": "Calendar phase context still needs correct security regime.",
+      "historical": "DERIVABLE not automatic legacy-bar rehabilitation.",
+      "prospective": "Reusable temporal rejection controls; CAS binding missing.",
+      "authority": "IMPLEMENTED_CORE_TEMPORAL_ONLY"
+    },
+    {
+      "id": "I14",
+      "path": "app/market_data/dhan_live.py",
+      "source_type": "IN_MEMORY_LTP_STATE",
+      "purpose": "Exact-mapped LTP with provider trade time, receive time, staleness.",
+      "coverage": "Current retained in-memory state; not historical tick archive.",
+      "effective": "Provider trade event time.",
+      "known_at": "received_at not backdated.",
+      "version": "Frozen live market state; source pin is version.",
+      "fingerprint_lf": "sha256:6501565e0859a5e343ad105f7326bad2980eb0b6e6171701c8099cd3ef762653",
+      "security_segment": "Mapped security-specific quote, not CAS final-price authority.",
+      "historical": "ABSENT historical archive in this state store.",
+      "prospective": "Existing live state; no connection made for audit.",
+      "authority": "IMPLEMENTED_CORE_LIVE_DATA_ONLY"
+    },
+    {
+      "id": "I15",
+      "path": "app/market_data/dhan_live_bar.py",
+      "source_type": "PROSPECTIVE_REGULAR_MINUTE_RECEIPTS",
+      "purpose": "One-minute fully observed closed bars; no-trade/incomplete/conflict distinct.",
+      "coverage": "Prospective received events only.",
+      "effective": "Only REGULAR_CONTINUOUS on regular day, selected at receive cutoff.",
+      "known_at": "Receipt/bar completion knownness, not retroactive capture.",
+      "version": "prospective-dhan-live-bar-foundation/v1",
+      "fingerprint_lf": "sha256:6280a96219d815d9fd5e6913e1eb06246d3b1365bad78890653dc2a3a7552bb6",
+      "security_segment": "Current calendar binding lacks per-security CAS membership.",
+      "historical": "BOUNDED if retained; no missing tick backfill.",
+      "prospective": "Reusable regular minute evidence; generic 15:30 close unsafe as CAS-wide assumption.",
+      "authority": "IMPLEMENTED_CORE_PROSPECTIVE_ONLY"
+    },
+    {
+      "id": "I16",
+      "path": "app/market_data/prospective_fifteen_minute_bar.py",
+      "source_type": "PROSPECTIVE_15M_DERIVATION",
+      "purpose": "Closed 1m lineage -> 15m; no-trade has no OHLC; no hole filling.",
+      "coverage": "Only complete constituent minute receipts.",
+      "effective": "Explicit regular trading period, not arbitrary resample.",
+      "known_at": "Actual finalized receipt known_at; no historical invention.",
+      "version": "canonical-prospective-fifteen-minute-bar-derivation/v1",
+      "fingerprint_lf": "sha256:91f32e2215c2edc64205bb44647c828ddfba33497e952aba5548e59f35a34db8",
+      "security_segment": "Same calendar limitation, no CAS auction-price receipt.",
+      "historical": "BOUNDED prospective coverage; actual totals not queried.",
+      "prospective": "Reusable pure derivation; no full-market coverage claim.",
+      "authority": "IMPLEMENTED_CORE_PROSPECTIVE_ONLY"
+    },
+    {
+      "id": "I17",
+      "path": "app/market_data/canonical_fifteen_minute_technical_reader.py",
+      "source_type": "READ_ONLY_TEMPORAL_READER",
+      "purpose": "AS_OF_PROSPECTIVE_PIT vs CURRENT_DESCRIPTIVE; fail-closed missing/conflict/no-trade.",
+      "coverage": "Only explicit retained receipt range.",
+      "effective": "Requested period bounds, no boundary-price selection.",
+      "known_at": "known_at <= as_of for strict mode; descriptive mode not PIT.",
+      "version": "Frozen 15m technical reader; source pin is version.",
+      "fingerprint_lf": "sha256:7f5b292e06a65c9c97c2eff37314de9b8714eda20dbf131a9e24b41f3c7729b5",
+      "security_segment": "Canonical per-instrument receipts, no new auction regime.",
+      "historical": "BOUNDED strict receipts, not universal history.",
+      "prospective": "Reusable query boundary; not a research start/terminal policy.",
+      "authority": "IMPLEMENTED_CORE_READ_ONLY"
+    },
+    {
+      "id": "I18",
+      "path": "app/historical_integrity/service.py",
+      "source_type": "HISTORICAL_INTEGRITY_FACADE",
+      "purpose": "Delegates native fact/membership eligibility; VALID/PARTIAL/INVALID/UNAVAILABLE.",
+      "coverage": "Supplied historical fact and universe records only.",
+      "effective": "Native guard effective/lifecycle checks.",
+      "known_at": "Caller as_of and native metadata.",
+      "version": "Frozen HistoricalIntegrityService; source pin is version.",
+      "fingerprint_lf": "sha256:cb0e48fa29b7fbbe1087236518dbea8e8a5909a87604182f14cb8fa6420a51c9",
+      "security_segment": "Exact fact/universe identity; not price adjustment algorithm.",
+      "historical": "DERIVABLE with full metadata.",
+      "prospective": "Reuse facade plus adjustment contract, not a parallel integrity system.",
+      "authority": "IMPLEMENTED_CORE_INTEGRITY_ONLY"
+    },
+    {
+      "id": "I19",
+      "path": "app/market_data/nse_udiff_weekly_technical_bar.py",
+      "source_type": "CLOSED_WEEK_DERIVATION",
+      "purpose": "Aggregates verified eligible daily bars; completeness/receipt lineage retained.",
+      "coverage": "Supported closed exchange weeks only.",
+      "effective": "Explicit source/calendar week endpoints.",
+      "known_at": "Finalized derived receipt known_at; no future constituent use.",
+      "version": "Frozen weekly technical contract; source pin is version.",
+      "fingerprint_lf": "sha256:b67f4f1d727fee89a79b8723ccded60de68377cafbc2fe28026d56c18effffa1",
+      "security_segment": "Not a terminal-price fallback or auction semantic normalizer.",
+      "historical": "BOUNDED; aggregation cannot fix wrong daily source semantics.",
+      "prospective": "Reusable technical evidence only.",
+      "authority": "IMPLEMENTED_CORE_TECHNICAL_ONLY"
+    }
+  ],
+  "classifier": {
+    "status": "NECESSARY_EVIDENCE_REQUIREMENTS_ONLY_NOT_IMPLEMENTED",
+    "states": [
+      "CAS_APPLICABLE",
+      "NON_CAS",
+      "UNKNOWN",
+      "SOURCE_CONFLICT"
+    ],
+    "mandatory_evidence": [
+      "official_policy_body_and_version",
+      "policy_effective_interval",
+      "source_native_knownness_at_query_cutoff",
+      "exact_security_identity_and_series",
+      "explicit_cash_segment_and_security_class",
+      "session_date_specific_membership_and_effectivity",
+      "membership_completeness_or_explicit_non_member_record",
+      "native_fingerprints_and_correction_lineage",
+      "live_session_not_mock"
+    ],
+    "rules": {
+      "CAS_APPLICABLE": "Only positive exact dated membership under a verified effective and D-known policy; no assumption that all EQ or current derivative stocks were eligible historically.",
+      "NON_CAS": "Only explicit dated non-membership, or exhaustive official scoped membership plus verified complement semantics, under a D-known effective policy. Global pre-live date alone is not a security/price classification.",
+      "UNKNOWN": "Missing/partial/unread applicability, future publication/effectivity, unknown coverage, unmapped identity, unsupported segment, mock-only evidence or absent source; never promote absence in a partial list.",
+      "SOURCE_CONFLICT": "Contradictory applicable official versions, identity collisions or unresolved exact-session regime conflict; retain both native fingerprints; no input-order winner."
+    },
+    "absence_from_partial_list_is_non_cas": false,
+    "current_membership_backcast": false,
+    "runtime_now_used": false,
+    "global_launch_implies_membership": false,
+    "symbol_only_matching": false,
+    "default_for_unknown": null,
+    "implementation_authorized": false
+  },
+  "temporal": {
+    "separate_fields": [
+      "published_on",
+      "published_at",
+      "effective_from",
+      "effective_to",
+      "first_observed_at",
+      "source_known_at",
+      "correction_published_at",
+      "supersedes",
+      "D",
+      "terminal_session",
+      "R"
+    ],
+    "native_knownness": "Use existing source contract's knownness rules, not a new synthetic timestamp. Calendar source priority: known_at, then published_at, then published_on strictly earlier than cutoff local date; no same-day midnight publication invention.",
+    "decision_rule": "Every source determining D classification must be effective for its claimed session and native-known by D; announcement before effectivity is not current applicability.",
+    "terminal_rule": "D selects only an already-governed frozen endpoint convention with D-visible evidence. Realized terminal regime/price must later be proven at R, R >= end, with completion and native-knownness <= R; never feed future membership back into D or rewrite the endpoint.",
+    "terminal_future_regime_policy": "POLICY_REQUIRED",
+    "corrections": "Explicit authoritative supersession and an approved replay/correction policy are both required; retain original and corrected receipts, do not rewrite prior classifications automatically.",
+    "later_notice_authorizes_earlier_D": false,
+    "correction_automatically_rewrites_history": false,
+    "same_day_date_is_exact_publication": false
+  },
+  "identity": {
+    "readiness": "DERIVABLE",
+    "cas_join_readiness": "SOURCE_NOT_READY",
+    "required": [
+      "canonical_instrument_id",
+      "ISIN",
+      "NSE_security_token",
+      "symbol",
+      "series",
+      "segment",
+      "security_class",
+      "session_date",
+      "source_version",
+      "source_fingerprint",
+      "knownness",
+      "effective_identity_or_exact_session_receipt",
+      "lifecycle_transition_proof"
+    ],
+    "outcomes": {
+      "READY": "Exact native verified identity for the precise session and scope; not a present assertion of CAS join availability.",
+      "DERIVABLE": "Reuse approved session-point identity and exact historical interval selector once official CAS row fields/dated evidence are recovered.",
+      "SOURCE_NOT_READY": "CAS field dictionary/membership source or D-known receipt missing.",
+      "AMBIGUOUS": "Multiple incompatible identities/series or unproven rename/relisting link; do not collapse.",
+      "BLOCKED": "Wrong segment, unsupported lifecycle transition, future-only mapping or failed native fingerprint."
+    },
+    "current_symbol_backcast": false,
+    "session_point_is_listing_interval": false,
+    "session_point_is_intraday_publication": false,
+    "suspension_is_identity_deletion": false
+  },
+  "prospective": {
+    "status": "PROSPECTIVE_SOURCE_BLOCKED",
+    "source_existence": "SOURCE_EVIDENCE_SUFFICIENT",
+    "exact_membership_semantics": "SOURCE_NOT_READY",
+    "ingestion": "REQUIRES_IMPLEMENTATION_FOR_CAS_FIELDS_NOT_FOR_GENERIC_MII_CAPTURE",
+    "conditional_path": "Once detailed official schema/completeness/effectivity and permitted reproducible access are proven, reuse existing complete MII capture, immutable source receipts and identity/PIT controls; new D cohorts need not await complete historical reconstruction.",
+    "prerequisites": [
+      "recover_official_CAS_master_dictionary",
+      "prove_complete_dated_membership_and_changes",
+      "prove_access_before_D",
+      "preserve_raw_bytes_and_native_fingerprint",
+      "capture_actual_known_at_and_effectivity",
+      "exact_identity_segment_join",
+      "calendar_regime_binding_policy",
+      "price_formation_and_precedence_policy",
+      "separate_source_horizon_approval"
+    ],
+    "complete_historical_reconstruction_required_for_new_D": false,
+    "ready_now": false
+  },
+  "historical": [
+    {
+      "component": "CAS_NON_CAS_APPLICABILITY",
+      "status": "ABSENT",
+      "finding": "No dated CAS membership/known-at chain demonstrated in repository source; no production inventory inspected. Official historical specifications alone do not reconstruct memberships."
+    },
+    {
+      "component": "SESSION_CALENDAR",
+      "status": "BOUNDED",
+      "finding": "2022-2026 holidays and selected specials/amendments; ordinary forward timing starts 2026-09-05, security-specific CAS/unknown specials/emergencies not complete."
+    },
+    {
+      "component": "PRICE_OBSERVATIONS",
+      "status": "INSUFFICIENT",
+      "finding": "Versioned daily and prospective minute/15m receipts exist as infrastructure; aligned D/R security-regime coverage not proven. No DB coverage counts or cohorts claimed."
+    },
+    {
+      "component": "SECURITY_IDENTITY",
+      "status": "BOUNDED",
+      "finding": "Historical interval and approved exact-session identity contracts; actual per-date complete CAS join not proven."
+    },
+    {
+      "component": "CORPORATE_ACTION_CONSISTENCY",
+      "status": "INSUFFICIENT",
+      "finding": "PIT receipts and split/bonus derivatives reusable; rights/dividend/complex transitions and matched price windows not generally approved."
+    }
+  ],
+  "price_candidates": [
+    {
+      "id": "DAILY_OPEN_HIGH_LOW",
+      "fields": [
+        "open",
+        "high",
+        "low"
+      ],
+      "source_ids": [
+        "I06",
+        "I08",
+        "I09",
+        "I10"
+      ],
+      "timestamp_semantics": "Source interval/label, not a time for each extrema.",
+      "session_semantics": "Daily session aggregation; open may be auction-derived; extrema not original-D instant.",
+      "adjustment": "UDiff RAW; full-bhavcopy/Upstox UNKNOWN.",
+      "PIT": "D can use only native-known complete evidence; full-day high/low cannot enter intraday D.",
+      "replayability": "BOUNDED stored versions; no counted coverage proof.",
+      "CAS_awareness": "NONE explicit",
+      "gross_research_suitability": "POLICY_REQUIRED; extrema cannot be chosen as favorable entry/exit.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "OFFICIAL_DAILY_CLOSE",
+      "fields": [
+        "close",
+        "CLOSE_PRICE",
+        "ClsPric"
+      ],
+      "source_ids": [
+        "I08",
+        "I09",
+        "O02",
+        "O06"
+      ],
+      "timestamp_semantics": "Legacy CSV label or UDiff logical date; not certified close dissemination time.",
+      "session_semantics": "Source-labelled close; formation varies by CAS regime and no-match condition.",
+      "adjustment": "UDiff RAW; full CSV UNKNOWN.",
+      "PIT": "Needs regime, official-field semantics, exact availability and action lineage.",
+      "replayability": "INSUFFICIENT for homogeneous D/end price.",
+      "CAS_awareness": "SOURCE_GAP",
+      "gross_research_suitability": "POLICY_REQUIRED; not automatically final fresh auction trade.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "PROVIDER_DAILY_CLOSE",
+      "fields": [
+        "close"
+      ],
+      "source_ids": [
+        "I10",
+        "I13"
+      ],
+      "timestamp_semantics": "Provider candle start; explicit end unbound.",
+      "session_semantics": "Provider aggregation, not proved official final exchange close.",
+      "adjustment": "UNKNOWN",
+      "PIT": "SOURCE_TIMING_UNRESOLVED unless native temporal evidence resolves it.",
+      "replayability": "INSUFFICIENT",
+      "CAS_awareness": "NONE explicit",
+      "gross_research_suitability": "POLICY_REQUIRED plus source/adjustment proof.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "LTP_QUOTE",
+      "fields": [
+        "last_price",
+        "ltp",
+        "provider_trade_timestamp",
+        "received_at"
+      ],
+      "source_ids": [
+        "I06",
+        "I14"
+      ],
+      "timestamp_semantics": "Last trade event may precede D; receipt time distinct.",
+      "session_semantics": "Live quote may be stale, not phase-completion proof.",
+      "adjustment": "Not a documented action-adjusted series.",
+      "PIT": "Only retained known-at evidence; current state never reconstructs historical D.",
+      "replayability": "ABSENT historical tick archive in live-state component.",
+      "CAS_awareness": "NONE final-vs-indicative",
+      "gross_research_suitability": "POLICY_REQUIRED; no stale-LTP or perfect-fill inference.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "SOURCE_LAST_PRICE",
+      "fields": [
+        "LastPric"
+      ],
+      "source_ids": [
+        "I09"
+      ],
+      "timestamp_semantics": "Daily row context, not an exact intraday quote.",
+      "session_semantics": "Raw UDiff LastPric and ClsPric distinct; LastPric not separate canonical OHLC close.",
+      "adjustment": "Raw source semantics require verification.",
+      "PIT": "Full artifact and native receipt required.",
+      "replayability": "BOUNDED source receipts; separate canonical projection not established.",
+      "CAS_awareness": "NONE explicit",
+      "gross_research_suitability": "SOURCE_NOT_READY for dedicated research observation.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "FINAL_CAS_PRICE",
+      "fields": [
+        "equilibrium_or_published_reference_close"
+      ],
+      "source_ids": [
+        "O02",
+        "O04",
+        "O05"
+      ],
+      "timestamp_semantics": "Actual auction result/publication and no-match flags needed.",
+      "session_semantics": "Published final vs indicative/no-match must be distinct.",
+      "adjustment": "Official source/action basis needs retained evidence.",
+      "PIT": "No canonical dedicated final CAS receipt verified.",
+      "replayability": "ABSENT typed CAS price history demonstrated.",
+      "CAS_awareness": "SOURCE_NOT_READY",
+      "gross_research_suitability": "SOURCE_NOT_READY; do not reconstruct from daily/15m/LTP.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "REGULAR_ONE_MINUTE",
+      "fields": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "source_ids": [
+        "I15"
+      ],
+      "timestamp_semantics": "Explicit closed minute and receipt known_at.",
+      "session_semantics": "Regular-only phase; generic calendar not security-specific.",
+      "adjustment": "Native source basis plus separate adjustment checks.",
+      "PIT": "Strict finalized received-event lineage.",
+      "replayability": "BOUNDED prospective; no backfill.",
+      "CAS_awareness": "NONE membership",
+      "gross_research_suitability": "POLICY_REQUIRED and security-regime exclusion before research use.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "REGULAR_FIFTEEN_MINUTE",
+      "fields": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "source_ids": [
+        "I16",
+        "I17"
+      ],
+      "timestamp_semantics": "Closed 15m constituent boundaries and known_at.",
+      "session_semantics": "Regular-minute aggregation; cannot cover unknown CAS or special session by default.",
+      "adjustment": "Preserved source/action basis; cannot mix.",
+      "PIT": "AS_OF_PROSPECTIVE_PIT only; CURRENT_DESCRIPTIVE not replay proof.",
+      "replayability": "BOUNDED receipt coverage.",
+      "CAS_awareness": "NONE auction",
+      "gross_research_suitability": "POLICY_REQUIRED; no nearest bar to original D/end.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "ADJUSTED_DERIVATIVE",
+      "fields": [
+        "derived_OHLCV",
+        "price_factor",
+        "action_receipts"
+      ],
+      "source_ids": [
+        "I12"
+      ],
+      "timestamp_semantics": "Raw event/interval plus action effective/known time.",
+      "session_semantics": "Comparable supported split/bonus action window only.",
+      "adjustment": "Versioned SPLIT_BONUS_ADJUSTED with raw fingerprints.",
+      "PIT": "All native action/source evidence PIT-valid.",
+      "replayability": "DERIVABLE for exact supported windows; other actions unresolved.",
+      "CAS_awareness": "Does not establish underlying close regime.",
+      "gross_research_suitability": "POLICY_REQUIRED; not total-return/fill.",
+      "executable_fill": false,
+      "selected": false
+    },
+    {
+      "id": "WEEKLY_OR_INDEX_CONTEXT",
+      "fields": [
+        "weekly_OHLCV",
+        "index_close"
+      ],
+      "source_ids": [
+        "I19",
+        "I06"
+      ],
+      "timestamp_semantics": "Aggregate period/index observation, not single-security D instant.",
+      "session_semantics": "Different observation contract; no substitution for pair legs.",
+      "adjustment": "Contract-specific; index basis separate.",
+      "PIT": "Own lineage needed, cannot cure missing security observations.",
+      "replayability": "BOUNDED context only.",
+      "CAS_awareness": "No inferred CAS membership from index constituents.",
+      "gross_research_suitability": "NOT_APPLICABLE as automatic D/terminal substitute.",
+      "executable_fill": false,
+      "selected": false
+    }
+  ],
+  "start_cases": [
+    {
+      "case": "BEFORE_OPEN",
+      "candidate_observations": "Earlier retained evidence may be D-known; a later opening print is not D-known.",
+      "readiness": "POLICY_REQUIRED",
+      "blocker": "No observation-at-D convention approved; do not roll D to opening auction.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "DURING_REGULAR",
+      "candidate_observations": "Exact received quote or completed earlier interval may exist; in-progress/full-day future aggregate excluded.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "Exact security/phase/knownness and admissible relation-to-D policy required; no nearest bar.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "DURING_CAS_OR_CLOSING",
+      "candidate_observations": "LTP, regular bars or indicative data can be different from final CAS result.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "Dated membership/phase and final-vs-indicative source missing; no substitution.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "AFTER_CLOSE",
+      "candidate_observations": "Final daily/CAS source may not yet have been published/received.",
+      "readiness": "PIT_NOT_READY",
+      "blocker": "A scheduled close does not imply known price; no fill at reported close.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "NON_TRADING_DAY",
+      "candidate_observations": "No same-session observation guaranteed; prior close is stale context.",
+      "readiness": "POLICY_REQUIRED",
+      "blocker": "No automatic prior/next-session roll or selection.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "SPECIAL_SESSION",
+      "candidate_observations": "Only exact special-day phases and corresponding native observations potentially usable.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "Holiday/special date alone insufficient; no ordinary-timing assumption.",
+      "selected_price": null,
+      "fallback": false
+    }
+  ],
+  "terminal_cases": [
+    {
+      "case": "REGULAR_CLOSE",
+      "candidate_observations": "Completed eligible session observation only if exact R-known evidence exists.",
+      "readiness": "POLICY_REQUIRED",
+      "blocker": "Endpoint convention and security-specific phase binding not approved.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "CAS_CLOSE",
+      "candidate_observations": "Official final result or source-published reference with exact reason lineage.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "Dedicated CAS receipt and applicability history missing.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "NON_CAS_CLOSE",
+      "candidate_observations": "Official non-CAS close field may exist.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "Recover O06 detailed semantics and exact source mapping.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "SPECIAL_SESSION",
+      "candidate_observations": "Exact announced special phases and completion evidence.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "No ordinary end-time or post-hoc endpoint rewrite.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "SUSPENSION",
+      "candidate_observations": "Status/identity receipts may establish suspension; price may be absent.",
+      "readiness": "BLOCKED",
+      "blocker": "No synthetic close; preserve unavailable; no automatic maturity extension.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "MISSING_FEED_BAR",
+      "candidate_observations": "No exact observation at governed endpoint proven.",
+      "readiness": "SOURCE_NOT_READY",
+      "blocker": "Verified mature plus missing price stays excluded per parent; no nearest/carry.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "DELISTING",
+      "candidate_observations": "Lifecycle receipt may establish delisting, not realizable liquidation value.",
+      "readiness": "BLOCKED",
+      "blocker": "No zero, final-LTP, delisting-consideration or carry-forward default.",
+      "selected_price": null,
+      "fallback": false
+    },
+    {
+      "case": "CORPORATE_ACTION",
+      "candidate_observations": "Raw observations plus exact effective/PIT actions may be available.",
+      "readiness": "POLICY_REQUIRED",
+      "blocker": "Comparable basis/continuity required; no mixed/estimated adjustment.",
+      "selected_price": null,
+      "fallback": false
+    }
+  ],
+  "close_semantics": {
+    "homogeneous": false,
+    "cas_source": "O02",
+    "legacy_source": "O06",
+    "bar_close_is_verified_official_across_regimes": false,
+    "auction_indicator_in_canonical_bar": false,
+    "distinction": "A close field is a source-labelled observation, not proof of final auction result, fresh trade, transaction time or fill. Retain mechanism/source lineage before any later research selection.",
+    "official_reference_may_exist_without_new_trade": true,
+    "official_reference_is_hsi_fallback_permission": false,
+    "synthetic_price_allowed": false
+  },
+  "reconciliation": {
+    "state": "PRICE_SOURCE_PRECEDENCE_POLICY_REQUIRED",
+    "selected_source": null,
+    "daily_intraday_mismatch": "CONFLICTED_OR_SEMANTICALLY_DIFFERENT_UNTIL_PROVEN",
+    "auto_average": false,
+    "prefer_daily": false,
+    "prefer_live": false,
+    "prefer_cas": false,
+    "requirement": "Match instrument/series/session, interval-vs-label timestamps, phase, adjustment, knownness and final-vs-indicative status before comparing; equal numbers do not prove equal semantics. Existing provider canonicalization is not a Gate-1 research-price precedence policy."
+  },
+  "corporate_actions": {
+    "source_ids": [
+      "I11",
+      "I12"
+    ],
+    "raw_immutable": true,
+    "mixed_adjustment_allowed": false,
+    "price_move_infers_action": false,
+    "return_method": null,
+    "cases": [
+      {
+        "kind": "SPLIT",
+        "state": "DERIVABLE",
+        "condition": "Exact official PIT factor semantics and matching raw/action lineage; separately approved target basis."
+      },
+      {
+        "kind": "BONUS",
+        "state": "DERIVABLE",
+        "condition": "Exact official PIT ratio and immutable raw/action lineage; not arbitrary factor."
+      },
+      {
+        "kind": "DIVIDEND",
+        "state": "POLICY_REQUIRED",
+        "condition": "Existing DIVIDEND_PRICE_POLICY_NOT_APPROVED; no total-return substitution."
+      },
+      {
+        "kind": "RIGHTS",
+        "state": "SOURCE_NOT_READY",
+        "condition": "Existing RIGHTS_ADJUSTMENT_NOT_READY; no estimated entitlement/factor."
+      },
+      {
+        "kind": "MERGER_DEMERGER",
+        "state": "BLOCKED",
+        "condition": "Existing COMPLEX_ACTION_NON_COMPARABLE; exact continuity and consideration lineage required."
+      },
+      {
+        "kind": "SYMBOL_SECURITY_RELISTING",
+        "state": "BLOCKED",
+        "condition": "Existing SECURITY_CONTINUITY_NON_COMPARABLE until exact effective identity continuity is proven."
+      }
+    ]
+  },
+  "exceptional": {
+    "synthetic_prices": false,
+    "carry_forward": false,
+    "nearest_bar": false,
+    "automatic_deferral": false,
+    "automatic_exclusion": false,
+    "new_lifecycle_created": false,
+    "reuse": "Preserve native NO_TRADE_OBSERVED, INCOMPLETE, EVIDENCE_CONFLICTED and unavailable reasons. Parent PENDING_MATURITY applies before the pinned end; verified maturity plus missing exact price is EXCLUDED/terminal observation missing, not automatically non-mature. No maturity extension or new lifecycle.",
+    "no_match": "Officially published reference close may be retained descriptively with no-match lineage; it is not an HSI-produced replacement or guaranteed fill.",
+    "no_observation": "Suspension, missing bar, delisting or no official price remain unavailable/conflicted as applicable; later treatment needs a governed policy."
+  },
+  "special": {
+    "retained_types": [
+      "HOLIDAY",
+      "MUHURAT",
+      "SPECIAL_TRADING_DAY"
+    ],
+    "shortened_or_emergency": "REQUIRES_EXACT_DATED_NOTICE_AND_PHASES",
+    "muhurat_2026": "DATE_ONLY_NO_TIMINGS_IN_RETAINED_BUNDLE",
+    "mock_is_real": false,
+    "mock_matures_horizon": false,
+    "ordinary_count_by_default": false,
+    "unannounced_closure_changes_frozen_end": false
+  },
+  "conflicts": [
+    {
+      "kind": "OFFICIAL_CAS_VS_GENERIC_CALENDAR",
+      "state": "CONFLICTED",
+      "evidence": [
+        "I02",
+        "O01",
+        "O03"
+      ],
+      "finding": "Generic 09:15-15:30 regular phase lacks security-level CAS selection. This is a retained-scope mismatch, not evidence that all official sources irreconcilably disagree.",
+      "required": "Versioned security/date regime binding and native calendar applicability/supersession governance; keep predecessor immutable.",
+      "automatic_winner": false
+    },
+    {
+      "kind": "DAILY_INTRADAY_LTP_AUCTION",
+      "state": "POLICY_REQUIRED",
+      "evidence": [
+        "I08",
+        "I09",
+        "I10",
+        "I14",
+        "I16",
+        "O02"
+      ],
+      "finding": "Price fields/intervals/formation can differ; apparent disagreement is not proof of data corruption or equivalence.",
+      "required": "PRICE_SOURCE_PRECEDENCE_POLICY_REQUIRED after semantic alignment; retain conflicts without averaging.",
+      "automatic_winner": false
+    },
+    {
+      "kind": "IDENTITY_MEMBERSHIP_COLLISION",
+      "state": "BLOCKED",
+      "evidence": [
+        "I03",
+        "I04",
+        "I05",
+        "O04"
+      ],
+      "finding": "Symbol/series/token/lifecycle incompatibility cannot be resolved by current mapping.",
+      "required": "Exact dated native identity and completeness proof; no fuzzy join.",
+      "automatic_winner": false
+    },
+    {
+      "kind": "LATE_NOTICE_OR_CORRECTION",
+      "state": "PIT_NOT_READY",
+      "evidence": [
+        "I01",
+        "O01",
+        "O04"
+      ],
+      "finding": "A notice retrieved now cannot establish prior HSI knowledge; corrected body does not erase the earlier receipt.",
+      "required": "Native knownness and explicit supersession/replay policy; no retrospective authorization.",
+      "automatic_winner": false
+    },
+    {
+      "kind": "INCOMPLETE_SOURCE",
+      "state": "SOURCE_NOT_READY",
+      "evidence": [
+        "O04",
+        "O05",
+        "O06",
+        "I03"
+      ],
+      "finding": "Missing body/member rows/final-price observations cannot establish negative applicability or tradability.",
+      "required": "Recover complete scope, field definitions and dated retained evidence; no title/landing inference.",
+      "automatic_winner": false
+    }
+  ],
+  "parameter_impact": [
+    {
+      "parameter": "DURATION_UNIT",
+      "impact": "UNCHANGED",
+      "finding": "No duration unit is approved; closing-regime evidence is not a duration prior.",
+      "parameter_approved": false
+    },
+    {
+      "parameter": "COUNTING",
+      "impact": "NARROWED",
+      "finding": "Counting must use exact applicable live sessions, not generic/all-EQ calendar; special/partial counting still unapproved.",
+      "parameter_approved": false
+    },
+    {
+      "parameter": "START_PRICE",
+      "impact": "NARROWED",
+      "finding": "Canonical values exist but exact original-D temporal/phase/price relation remains unapproved.",
+      "parameter_approved": false
+    },
+    {
+      "parameter": "TERMINAL_BOUNDARY",
+      "impact": "NARROWED",
+      "finding": "Global CAS phase difference documented; security membership and future regime handling remain unresolved; no frozen-end rewrite.",
+      "parameter_approved": false
+    },
+    {
+      "parameter": "TERMINAL_PRICE",
+      "impact": "NEW",
+      "finding": "Official close can be source-published reference without new trade; explicit formation/no-match lineage and admissibility policy required.",
+      "parameter_approved": false
+    },
+    {
+      "parameter": "CALENDAR_AUTHORITY",
+      "impact": "NARROWED",
+      "finding": "Retained generic forward date and special/holiday bounds explicit; no security-regime authority registered.",
+      "parameter_approved": false
+    },
+    {
+      "parameter": "INSTRUMENT_ELIGIBILITY",
+      "impact": "NARROWED",
+      "finding": "Stable session identity reusable; CAS fields/completeness unavailable and EQ alone does not establish eligible equity scope.",
+      "parameter_approved": false
+    }
+  ],
+  "source_applicability_matrix": [
+    {
+      "component": "REGULAR_NSE_SESSION_SOURCE",
+      "readiness": "DERIVABLE",
+      "canonical_sources": [
+        "I01",
+        "I02"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "NATIVE_PIT_SUPPORTED_SCOPE_LIMITED",
+      "historical_status": "BOUNDED",
+      "prospective_status": "REQUIRES_REGIME_BINDING",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Reuse phase calendar; do not apply generic close to CAS securities."
+    },
+    {
+      "component": "CAS_APPLICABILITY_SOURCE",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "O02",
+        "O03",
+        "O04",
+        "O05"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "PIT_NOT_READY",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "SOURCE_RECOVERY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Phase-one rule identified; detailed field/schema/revision evidence missing."
+    },
+    {
+      "component": "CAS_SECURITY_MEMBERSHIP",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "O01",
+        "O04",
+        "I03"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "PIT_NOT_READY",
+      "historical_status": "ABSENT",
+      "prospective_status": "SOURCE_RECOVERY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Complete dated exact membership needed; partial-list absence is UNKNOWN."
+    },
+    {
+      "component": "CAS_EFFECTIVE_DATES",
+      "readiness": "SOURCE_EVIDENCE_SUFFICIENT",
+      "canonical_sources": [
+        "O01"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "GLOBAL_DATE_ONLY_NOT_SECURITY_KNOWNNESS",
+      "historical_status": "BOUNDED",
+      "prospective_status": "PER_SECURITY_EFFECTIVITY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Global live date recovered, not row-level known/effective transitions."
+    },
+    {
+      "component": "SECURITY_IDENTITY_MAPPING",
+      "readiness": "DERIVABLE",
+      "canonical_sources": [
+        "I03",
+        "I04",
+        "I05"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "SESSION_IDENTITY_NOT_INTRADAY_CAS_KNOWNNESS",
+      "historical_status": "BOUNDED",
+      "prospective_status": "JOIN_SOURCE_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Reuse active core session identity; verify actual CAS dictionary and lifecycle."
+    },
+    {
+      "component": "PROSPECTIVE_CALENDAR",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "I01",
+        "I02",
+        "O03"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "PIT_NOT_READY_FOR_SECURITY_REGIME",
+      "historical_status": "BOUNDED",
+      "prospective_status": "REQUIRES_IMPLEMENTATION",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Generic forward calendar is not CAS-aware authority."
+    },
+    {
+      "component": "HISTORICAL_CALENDAR",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "I01",
+        "I02"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "NATIVE_PIT_BOUNDED",
+      "historical_status": "BOUNDED",
+      "prospective_status": "NOT_A_HISTORICAL_COMPLETENESS_CLAIM",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "No backcast of Sep-05 timing or current CAS membership."
+    },
+    {
+      "component": "SPECIAL_SESSIONS",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "I02",
+        "O01"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "NOTICE_AND_PHASE_REQUIRED",
+      "historical_status": "BOUNDED",
+      "prospective_status": "PER_NOTICE_CAPTURE_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Selected specials represented; missing timings/emergency notices block; mocks never count."
+    },
+    {
+      "component": "DAILY_CLOSE_SEMANTICS",
+      "readiness": "POLICY_REQUIRED",
+      "canonical_sources": [
+        "I08",
+        "I09",
+        "I10",
+        "O02",
+        "O06"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "FIELD_AND_COMPLETION_UNPROVEN",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "SOURCE_AND_POLICY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Heterogeneous formation; legacy clause missing; source close not automatic fill."
+    },
+    {
+      "component": "INTRADAY_COVERAGE",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "I14",
+        "I15",
+        "I16",
+        "I17"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "STRICT_RECEIPTS_ONLY",
+      "historical_status": "BOUNDED",
+      "prospective_status": "REGULAR_ONLY_NOT_CAS_COMPLETE",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "In-memory LTP not historical archive; no exact count or full coverage claimed."
+    },
+    {
+      "component": "START_D_OBSERVATION_COVERAGE",
+      "readiness": "POLICY_REQUIRED",
+      "canonical_sources": [
+        "I06",
+        "I07",
+        "I13",
+        "I17"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "ORIGINAL_D_ONLY",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "CONVENTION_AND_RECEIPT_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Keep D; no nearest, stale quote or future full-day bar."
+    },
+    {
+      "component": "TERMINAL_OBSERVATION_COVERAGE",
+      "readiness": "POLICY_REQUIRED",
+      "canonical_sources": [
+        "I07",
+        "I13",
+        "O02",
+        "O06"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "R_COMPLETION_AND_KNOWNNESS_REQUIRED",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "CONVENTION_AND_RECEIPT_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Missing mature price excluded per parent, no carry-forward/automatic deferral."
+    },
+    {
+      "component": "ADJUSTED_PRICE_INTEGRITY",
+      "readiness": "DERIVABLE",
+      "canonical_sources": [
+        "I11",
+        "I12"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "EXACT_ACTION_EFFECTIVE_AND_KNOWN",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "SUPPORTED_WINDOWS_ONLY",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Split/bonus derivable under native policy; return-method approval separate."
+    },
+    {
+      "component": "SUSPENSION_NO_TRADE",
+      "readiness": "SOURCE_NOT_READY",
+      "canonical_sources": [
+        "I03",
+        "I15",
+        "I16",
+        "O02"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "STATUS_AND_PRICE_LINEAGE_REQUIRED",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "EXACT_STATUS_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Official reference may be descriptive; HSI cannot synthesize price."
+    },
+    {
+      "component": "DELISTING",
+      "readiness": "BLOCKED",
+      "canonical_sources": [
+        "I05",
+        "I18"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "LIFECYCLE_PROOF_REQUIRED",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "SOURCE_AND_POLICY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Lifecycle proof is not exit value; no invented zero/final print."
+    },
+    {
+      "component": "CORPORATE_ACTION_TRANSITIONS",
+      "readiness": "POLICY_REQUIRED",
+      "canonical_sources": [
+        "I11",
+        "I12",
+        "I05"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "NATIVE_ACTION_AND_IDENTITY_PIT",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "SUPPORTED_WINDOWS_ONLY",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Rights/dividend/complex actions not uniformly comparable; no adjustment mixing."
+    },
+    {
+      "component": "SOURCE_PRECEDENCE",
+      "readiness": "POLICY_REQUIRED",
+      "canonical_sources": [
+        "I07",
+        "I13",
+        "I17",
+        "O02"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "NO_CONVENIENCE_PRIORITY",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "POLICY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "PRICE_SOURCE_PRECEDENCE_POLICY_REQUIRED; store canonicalization not economic observation approval."
+    },
+    {
+      "component": "CONFLICT_HANDLING",
+      "readiness": "CONFLICTED",
+      "canonical_sources": [
+        "I01",
+        "I03",
+        "I07",
+        "O01",
+        "O03"
+      ],
+      "provenance": "Pinned native source files and/or explicit official IDs; no external byte hash or historical known_at invented.",
+      "PIT_status": "FAIL_CLOSED",
+      "historical_status": "INSUFFICIENT",
+      "prospective_status": "BINDING_POLICY_REQUIRED",
+      "authority_status": "AUTHORITY_NOT_REGISTERED",
+      "blocker_recommendation": "Known retained-vs-CAS scope mismatch and unresolved source combinations retained, no arbitrary winner."
+    }
+  ],
+  "blockers_closed": [
+    "GLOBAL_CAS_LIVE_EFFECTIVE_DATE_DOCUMENT_IDENTIFIED",
+    "CAS_CLOSE_VS_GENERIC_CLOSE_DISTINCTION_PROVEN"
+  ],
+  "blockers_narrowed": [
+    "MASTER_FILE_DELIVERY_PATH_IDENTIFIED_NOT_FIELD_SEMANTICS",
+    "EXISTING_IDENTITY_PIT_CAPTURE_REUSE_IDENTIFIED",
+    "GENERIC_CALENDAR_SCOPE_AND_PROSPECTIVE_LIMIT_EXPLICIT",
+    "CORPORATE_ACTION_SUPPORTED_VS_UNSUPPORTED_BRANCHES_EXPLICIT"
+  ],
+  "blockers_remaining": [
+    "CAS_MASTER_FIELD_SCHEMA_UNRECOVERED",
+    "DATED_MEMBERSHIP_COMPLETENESS_AND_REVISION_CHAIN_UNPROVEN",
+    "CAS_CHANGE_MODALITIES_ATTACHMENT_UNRECOVERED",
+    "LEGACY_NON_CAS_CLOSE_CLAUSE_UNRECOVERED",
+    "SECURITY_REGIME_CALENDAR_BINDING_POLICY_REQUIRED",
+    "START_TERMINAL_PRICE_POLICY_UNAPPROVED",
+    "PRICE_SOURCE_PRECEDENCE_POLICY_REQUIRED",
+    "HISTORICAL_PIT_ALIGNMENT_UNPROVEN",
+    "COMPLEX_ACTION_PRICE_CONTINUITY_UNRESOLVED",
+    "SOURCE_HORIZON_AUTHORITY_NOT_REGISTERED",
+    "BOOTSTRAP_PARAMETERS_UNSET"
+  ],
+  "runtime": {
+    "source_changed": false,
+    "production_database_accessed": false,
+    "production_database_written": false,
+    "authority_registered": false,
+    "bootstrap_activated": false,
+    "V2_activated": false,
+    "observations_generated": false,
+    "labels_generated": false,
+    "scenario_model_implemented": false,
+    "calibration_run": false,
+    "portfolio_accessed": false,
+    "broker_order_access": false,
+    "gates_changed": false,
+    "score_tradeplan_changed": false,
+    "historical_backfill": false,
+    "seed_approved": false,
+    "raw_paths_collected": false,
+    "source_policy_registered": false,
+    "source_authority_registered": false,
+    "price_producer_registered": false,
+    "horizon_producer_registered": false,
+    "production_db_read": false,
+    "source_ingestion": false,
+    "implementation_classifier": false
+  },
+  "next_continuations": [
+    "NSE_CAS_SECURITY_MEMBERSHIP_AND_CLOSE_SOURCE_RECOVERY_V1"
+  ],
+  "next_continuation_started": false,
+  "next_scope": "Recover official CMTR73845 master-field semantics, complete dated security applicability/revision evidence, CMTR74466 modalities and CMTR67774 clause 3.4 through permitted primary-source access; prove exact PIT/identity/completeness requirements in a bounded source-recovery dossier. No credentials request unless access truly requires it; no live acquisition/cohort, parameter choice, runtime authority or activation. This continuation is not started.",
+  "artifact_fingerprint": "sha256:e587cfb98e32610f6a0485c87d62a8546400ac19498c0aef18ad0b38b22e967c"
+}
