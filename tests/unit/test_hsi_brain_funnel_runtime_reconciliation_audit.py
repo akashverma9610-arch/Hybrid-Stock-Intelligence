@@ -318,7 +318,10 @@ def test_no_runtime_or_frontend_integration_call_site():
     for path in (ROOT / "app").rglob("*.py"):
         if "def assemble_for_radar(" in path.read_text(encoding="utf-8-sig"):
             implementations.append(path.relative_to(ROOT).as_posix())
-    assert implementations == ["app/intelligence/radar_diagnostic_orchestration.py"]
+    # Additive runtime slice: preserve the old bridge and every external-call
+    # prohibition while admitting only the explicitly bounded concrete port.
+    assert sorted(implementations) == ["app/intelligence/discovery_union_radar_binding.py",
+                                      "app/intelligence/radar_diagnostic_orchestration.py"]
     for path in (ROOT / "frontend/src").rglob("*"):
         if path.suffix in {".ts", ".tsx"}:
             assert "multi_funnel" not in path.read_text(encoding="utf-8-sig")

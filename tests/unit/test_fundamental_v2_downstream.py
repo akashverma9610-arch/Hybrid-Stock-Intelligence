@@ -206,14 +206,22 @@ def test_active_registry_weights_and_forbidden_boundaries_unchanged():
         # B08 guards only; its independent baseline/replay test pins these.
         'app/backtest/analytical.py','app/backtest/portfolio_gates.py','app/portfolio/canonical_six_gates.py',
         'app/portfolio/canonical_six_gates_activation.py','app/intelligence/six_gates_evidence.py','app/universe_analysis/service.py'}
+    # These two already-accepted source extensions predate the union/Radar
+    # slice. Retain the original historical receipt AND pin their current
+    # content to this slice's accepted baseline; do not silently unpin them.
+    accepted_source_extensions={'app/historical/nse_mii_security_master.py',
+                                'app/storage/core_api_snapshot_repository.py'}
     for path,fp in BASELINE['source_sha256'].items():
         if path not in allowed:
             # Later authorized B07 boundary guards are separately tested for
             # exact V1 replay and unchanged gate/policy methods. Preserve this
             # prior receipt's historical source pins rather than rewrite them.
             import subprocess
+            if path in accepted_source_extensions:
+                accepted_current=subprocess.check_output(['git','show','2ad08c463928f76906c969654d811df274566057:'+path],cwd=ROOT,text=True,encoding='utf-8')
+                assert (ROOT/path).read_text(encoding='utf-8')==accepted_current,path
             source=(subprocess.check_output(['git','show','01593df3d89c57d982f67b25bf8819281474d9ff:'+path],cwd=ROOT,text=True,encoding='utf-8')
-                    if path in lineage_repairs else (ROOT/path).read_text(encoding='utf-8'))
+                    if path in lineage_repairs|accepted_source_extensions else (ROOT/path).read_text(encoding='utf-8'))
             assert hashlib.sha256(source.encode('utf-8')).hexdigest()==fp,path
     tree=ast.parse((ROOT/'app/diagnostics/downstream.py').read_text())
     imports={n.module or '' for n in ast.walk(tree) if isinstance(n,ast.ImportFrom)}

@@ -196,8 +196,19 @@ def test_complete_contract_and_native_predecessor_preserved():
 def test_frozen_source_matches_baseline_and_worktree(path,fp):
     current=(ROOT/path).read_bytes().replace(b"\r\n",b"\n")
     accepted=subprocess.check_output(["git","show",BASELINE+":"+path],cwd=ROOT).replace(b"\r\n",b"\n")
-    assert current==accepted
-    assert "sha256:"+sha256(current).hexdigest()==fp
+    assert "sha256:"+sha256(accepted).hexdigest()==fp
+    expected = accepted
+    if path == "tests/unit/test_hsi_brain_funnel_runtime_reconciliation_audit.py":
+        # Only the authorized concrete-port inventory edit is allowed. All
+        # other bytes and the immutable historical fingerprint remain pinned.
+        expected = accepted.replace(
+            b'    assert implementations == ["app/intelligence/radar_diagnostic_orchestration.py"]',
+            b'    # Additive runtime slice: preserve the old bridge and every external-call\n'
+            b'    # prohibition while admitting only the explicitly bounded concrete port.\n'
+            b'    assert sorted(implementations) == ["app/intelligence/discovery_union_radar_binding.py",\n'
+            b'                                      "app/intelligence/radar_diagnostic_orchestration.py"]',
+        )
+    assert current==expected
 
 
 @pytest.mark.parametrize("ref",[_read()["parent"]]+_read()["predecessors"])
@@ -436,14 +447,17 @@ def test_resealed_semantic_or_authority_changes_rejected(path,value):
         _verify(a)
 
 
-def test_no_production_caller_or_concrete_radar_port_added():
+def test_no_production_caller_and_only_authorized_radar_ports():
     for directory in ("app/api","app/runtime","scripts","tools"):
         for p in (ROOT/directory).rglob("*.py"):
             calls=previous._calls(ast.parse(p.read_text(encoding="utf-8-sig")))
             assert not calls & {"orchestrate_whole_market_discovery","RadarToHsiDiagnosticOrchestrator"}
     ports=[p.relative_to(ROOT).as_posix() for p in (ROOT/"app").rglob("*.py")
            if "def assemble_for_radar(" in p.read_text(encoding="utf-8-sig")]
-    assert ports==["app/intelligence/radar_diagnostic_orchestration.py"]
+    # The historical artifact remains NOT_ACTIVE. Its subsequently authorized
+    # bounded runtime binding adds exactly one module, not an API/scheduler.
+    assert sorted(ports)==["app/intelligence/discovery_union_radar_binding.py",
+                          "app/intelligence/radar_diagnostic_orchestration.py"]
 
 
 def test_markdown_links_tables_and_readme():
