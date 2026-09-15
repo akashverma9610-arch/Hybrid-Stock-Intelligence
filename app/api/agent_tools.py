@@ -1,5 +1,5 @@
-"""Six authenticated Agent tools; mounted on, not a replacement for, HSI API."""
-from datetime import UTC
+"""Authenticated Agent tools; mounted on, not a replacement for, HSI API."""
+from datetime import UTC, datetime
 import hmac
 import os
 from threading import Lock
@@ -11,6 +11,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import AwareDatetime
 
 from app.api.agent_query import diagnostics_from_existing_state
+from app.api.agent_market_scan import SharedMarketScanResponse, market_scan_response
 from app.api.errors import APIRequestError, api_request_error_handler, request_validation_error_handler
 from app.api.market_context_query import breadth_response, extremes_response
 from app.api.market_query import market_regime_response, sector_response
@@ -95,12 +96,21 @@ def create_tool_app(state_provider) -> FastAPI:
             ("hsi_get_news_catalysts", "PARTIAL" if news_ready else "BLOCKED", "canonical equity; explicit cutoff; at most 50 articles",
              ("NEWS_COVERAGE_NOT_PROVEN",) if news_ready else ("NEWS_RESEARCH_UNAVAILABLE",), True, "Read governed news evidence, not a search engine or news-derived trade recommendation."),
             ("hsi_get_portfolio_state", holding.status, "personal stored snapshot; at most 100 holdings", holding.blockers, True, "Read quantities, stored costs and marks; no recomposition or portfolio action."),
-            ("hsi_scan_market", "BLOCKED", "not exposed", ("CANONICAL_MULTI_FUNNEL_RUNTIME_UNIVERSE_SOURCE_BINDING_REQUIRED",), False, "No live universe/source caller for the 14-funnel runner is installed here."),
+            ("hsi_scan_market", "PARTIAL" if getattr(state, "agent_market_scan_service", None) else "BLOCKED",
+             "shared stored scan; explicit snapshot as-of; operator refresh required", ("SHARED_SNAPSHOT_AND_NATIVE_SOURCE_COVERAGE_REQUIRED",), True,
+             "Read one shared canonical discovery snapshot. Never rescan or call providers per Agent question."),
             ("hsi_get_setup_inputs", "NOT_EXPOSED", "deferred", ("AGENT_SETUP_TOOL_NOT_EXPOSED",), False, "Existing governed setup machinery is unchanged; not exposed by this facade."),
         )
         return ToolEnvelope(status="READY", data=tuple(ToolCapability(tool_id=i, readiness=r,
             supported_scope=s, blockers=b, exposed=e, description=d) for i,r,s,b,e,d in entries),
             provenance=("hsi-agent-tools/v1",), warnings=("READINESS_IS_NOT_TRADE_AUTHORIZATION",))
+
+    @app.get("/market-scan", operation_id="hsi_scan_market", dependencies=guarded,
+             response_model=ToolEnvelope[SharedMarketScanResponse])
+    def market_scan(as_of: AwareDatetime | None = None):
+        """Read latest shared snapshot at/before cutoff. No scan, feed, AI or diagnostics. Returned quote freshness describes scan time only."""
+        return market_scan_response(getattr(state_provider(), "agent_market_scan_service", None),
+            as_of=as_of.astimezone(UTC) if as_of is not None else datetime.now(UTC))
 
     @app.post("/diagnostics", operation_id="hsi_run_diagnostics", dependencies=guarded,
               response_model=ToolEnvelope[DiagnosticsResponse])
