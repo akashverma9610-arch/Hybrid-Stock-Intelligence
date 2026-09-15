@@ -104,6 +104,7 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Gate 1 Research Bootstrap Independent-Prior Evidence V1 (bounded primary-source dossier; partial evidence; no seed approval or activation)](docs/architecture/GATE1_ROTATION_RESEARCH_BOOTSTRAP_INDEPENDENT_PRIOR_EVIDENCE_V1.md)
 - [Gate 1 Research Session/Price Applicability Audit V1 (official CAS rules recovered; membership/source gaps; no policy or authority activation)](docs/architecture/GATE1_ROTATION_RESEARCH_SESSION_PRICE_SOURCE_APPLICABILITY_AUDIT_V1.md)
 - [NSE CAS Membership and Close Source Recovery V1 (dated membership still blocked; source provenance only; no policy or runtime activation)](docs/architecture/NSE_CAS_SECURITY_MEMBERSHIP_AND_CLOSE_SOURCE_RECOVERY_V1.md)
+- [NSE CAS Primary Source Access and Dated Membership Recovery V1 (external official originals required; no ingestion or authority activation)](docs/architecture/NSE_CAS_PRIMARY_SOURCE_ACCESS_AND_DATED_MEMBERSHIP_EVIDENCE_RECOVERY_V1.md)
 - [Official Earnings Calendar Source Governance V1 (candidate non-active; Gate 6 still not ready)](docs/architecture/EARNINGS_CALENDAR_SOURCE_GOVERNANCE_V1.md)
 - [Official NSE/BSE Earnings Calendar Adapters V1 (bounded parsers/storage; live coverage partial; Gate 6 unwired)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_V1.md)
 - [Official Earnings Calendar Discovery Repair (exact joins; scoped coverage and strict PIT still blocked)](docs/architecture/OFFICIAL_NSE_BSE_EARNINGS_CALENDAR_ADAPTER_REPAIR.md)
