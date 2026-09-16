@@ -20,6 +20,7 @@ from app.intelligence.external_intelligence import (
     classify,
 )
 from app.storage.sqlite_external_intelligence_repository import SQLiteExternalIntelligenceRepository
+from app.intelligence.external_intelligence_news_projection import ExternalIntelligenceNewsProjector
 
 
 class ExternalIntelligenceApplicationDisposition(StrEnum):
@@ -81,9 +82,11 @@ class ExternalIntelligenceApplicationService:
     def __init__(
         self, repository: SQLiteExternalIntelligenceRepository,
         *, clock: Callable[[], datetime] | None = None,
+        news_projector: ExternalIntelligenceNewsProjector | None = None,
     ) -> None:
         self._repository = repository
         self._clock = clock or (lambda: datetime.now(UTC))
+        self._news_projector = news_projector
 
     def record_event(self, command: ExternalIntelligenceRecordCommand) -> ExternalIntelligenceApplicationReceipt:
         received_at = self._received_at()
@@ -128,6 +131,12 @@ class ExternalIntelligenceApplicationService:
                 request = self._repository.save_reevaluation_request(request)
             elif existing_request is not None:
                 request = existing_request
+
+        # The canonical transaction must complete before derived News is written.
+        # Replays also project: a failed derivative write can be repaired by the
+        # same request without duplicating or backdating canonical evidence.
+        if self._news_projector is not None:
+            self._news_projector.project_and_save(event, evidence)
 
         disposition = (
             ExternalIntelligenceApplicationDisposition.ACCEPTED_NEW

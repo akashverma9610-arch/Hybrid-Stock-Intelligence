@@ -208,6 +208,10 @@ def test_frozen_source_matches_baseline_and_worktree(path,fp):
             b'    assert sorted(implementations) == ["app/intelligence/discovery_union_radar_binding.py",\n'
             b'                                      "app/intelligence/radar_diagnostic_orchestration.py"]',
         )
+    if path in {"app/api/main.py", "app/api/dependencies.py",
+                "tests/unit/test_hsi_brain_funnel_runtime_reconciliation_audit.py"}:
+        from tests.unit.test_catalyst_event_operational_closure import expected_catalyst_binding_source
+        expected = expected_catalyst_binding_source(path, expected)
     assert current==expected
 
 

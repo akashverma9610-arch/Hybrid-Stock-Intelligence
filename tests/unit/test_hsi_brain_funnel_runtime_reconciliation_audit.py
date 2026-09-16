@@ -161,7 +161,10 @@ def test_source_pin_matches_current_and_accepted_baseline(path, expected):
     accepted = subprocess.run(
         ["git", "show", BASELINE + ":" + path], cwd=ROOT, check=True, capture_output=True
     ).stdout.replace(b"\r\n", b"\n")
-    assert "sha256:" + sha256(current).hexdigest() == expected
+    assert "sha256:" + sha256(accepted).hexdigest() == expected
+    if path in {"app/api/main.py", "app/api/dependencies.py"}:
+        from tests.unit.test_catalyst_event_operational_closure import expected_catalyst_binding_source
+        accepted = expected_catalyst_binding_source(path, accepted)
     assert current == accepted
 
 

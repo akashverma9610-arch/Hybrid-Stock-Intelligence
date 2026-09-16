@@ -25,6 +25,8 @@ from app.api.errors import APIRequestError
 from app.intelligence.external_intelligence_application import ExternalIntelligenceApplicationService
 from app.storage.sqlite_external_intelligence_repository import SQLiteExternalIntelligenceRepository
 from app.storage.database import DatabaseBackend
+from app.intelligence.external_intelligence_news_projection import ExternalIntelligenceNewsProjector
+from app.news.store import SQLiteNewsEvidenceStore
 
 
 def get_api_settings(request: Request) -> APISettings:
@@ -192,7 +194,15 @@ def get_external_intelligence_application_service(request: Request) -> ExternalI
             message="External-intelligence intake storage is unavailable.",
         )
     repository = SQLiteExternalIntelligenceRepository(database.url.removeprefix("sqlite:///"))
-    service = ExternalIntelligenceApplicationService(repository)
+    try:
+        news = SQLiteNewsEvidenceStore(database.url.removeprefix("sqlite:///"))
+    except Exception:
+        repository.close()
+        raise
+    service = ExternalIntelligenceApplicationService(
+        repository, news_projector=ExternalIntelligenceNewsProjector(news),
+    )
+    request.app.state.external_intelligence_news_store = news
     request.app.state.external_intelligence_application_repository = repository
     request.app.state.external_intelligence_application_service = service
     request.app.state.owns_external_intelligence_application_repository = True

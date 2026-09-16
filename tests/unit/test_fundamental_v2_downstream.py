@@ -211,6 +211,8 @@ def test_active_registry_weights_and_forbidden_boundaries_unchanged():
     # content to this slice's accepted baseline; do not silently unpin them.
     accepted_source_extensions={'app/historical/nse_mii_security_master.py',
                                 'app/storage/core_api_snapshot_repository.py'}
+    catalyst_bindings={'app/api/main.py','app/api/dependencies.py',
+                       'app/intelligence/external_intelligence_application.py'}
     for path,fp in BASELINE['source_sha256'].items():
         if path not in allowed:
             # Later authorized B07 boundary guards are separately tested for
@@ -221,7 +223,10 @@ def test_active_registry_weights_and_forbidden_boundaries_unchanged():
                 accepted_current=subprocess.check_output(['git','show','2ad08c463928f76906c969654d811df274566057:'+path],cwd=ROOT,text=True,encoding='utf-8')
                 assert (ROOT/path).read_text(encoding='utf-8')==accepted_current,path
             source=(subprocess.check_output(['git','show','01593df3d89c57d982f67b25bf8819281474d9ff:'+path],cwd=ROOT,text=True,encoding='utf-8')
-                    if path in lineage_repairs|accepted_source_extensions else (ROOT/path).read_text(encoding='utf-8'))
+                    if path in lineage_repairs|accepted_source_extensions|catalyst_bindings else (ROOT/path).read_text(encoding='utf-8'))
+            if path in catalyst_bindings:
+                from tests.unit.test_catalyst_event_operational_closure import expected_catalyst_binding_source
+                assert (ROOT/path).read_bytes().replace(b'\r\n',b'\n')==expected_catalyst_binding_source(path,source.encode('utf-8')),path
             assert hashlib.sha256(source.encode('utf-8')).hexdigest()==fp,path
     tree=ast.parse((ROOT/'app/diagnostics/downstream.py').read_text())
     imports={n.module or '' for n in ast.walk(tree) if isinstance(n,ast.ImportFrom)}

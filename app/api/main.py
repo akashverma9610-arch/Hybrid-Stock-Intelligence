@@ -236,6 +236,9 @@ async def _lifespan(application: FastAPI):
     external_repository = getattr(application.state, "external_intelligence_application_repository", None)
     if getattr(application.state, "owns_external_intelligence_application_repository", False) and external_repository is not None:
         external_repository.close()
+    external_news = getattr(application.state, "external_intelligence_news_store", None)
+    if external_news is not None:
+        external_news._connection.close()
     decision_score_repository = getattr(application.state, "decision_score_governance_repository", None)
     if decision_score_repository is not None and hasattr(decision_score_repository, "close"):
         decision_score_repository.close()
@@ -417,6 +420,7 @@ def create_app(
     application.state.market_wide_external_evidence_repository = None
     application.state.market_wide_evidence_resources = ()
     application.state.external_intelligence_application_repository = None
+    application.state.external_intelligence_news_store = None
     application.state.owns_external_intelligence_application_repository = False
     application.state.repository_query_service_factories = tuple(
         (attribute, factory) for attribute, supplied, factory in (
