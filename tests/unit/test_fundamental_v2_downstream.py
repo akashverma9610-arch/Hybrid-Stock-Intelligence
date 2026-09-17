@@ -221,6 +221,15 @@ def test_active_registry_weights_and_forbidden_boundaries_unchanged():
             import subprocess
             if path in accepted_source_extensions:
                 accepted_current=subprocess.check_output(['git','show','2ad08c463928f76906c969654d811df274566057:'+path],cwd=ROOT,text=True,encoding='utf-8')
+                if path == 'app/storage/core_api_snapshot_repository.py':
+                    # LC-12 authorizes exactly one appended family. Keep the
+                    # historical receipt and every other byte pinned.
+                    # The insertion is immediately before the first dataclass,
+                    # so existing enum order and serialization stay unchanged.
+                    marker = '\n\n\n@dataclass'
+                    assert accepted_current.count(marker) >= 1
+                    accepted_current = accepted_current.replace(marker,
+                        '\n    P1_SIGNAL_LIFECYCLE_BATCH = "P1_SIGNAL_LIFECYCLE_BATCH"' + marker, 1)
                 assert (ROOT/path).read_text(encoding='utf-8')==accepted_current,path
             source=(subprocess.check_output(['git','show','01593df3d89c57d982f67b25bf8819281474d9ff:'+path],cwd=ROOT,text=True,encoding='utf-8')
                     if path in lineage_repairs|accepted_source_extensions|catalyst_bindings else (ROOT/path).read_text(encoding='utf-8'))

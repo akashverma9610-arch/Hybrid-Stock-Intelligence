@@ -216,6 +216,7 @@ class CoreApiSnapshotFamily(StrEnum):
     EARNINGS_HORIZON_PROSPECTIVE_SHADOW = "EARNINGS_HORIZON_PROSPECTIVE_SHADOW"
     # Prospective official surveillance source evidence only; never gate results.
     NSE_SURVEILLANCE_PROSPECTIVE = "NSE_SURVEILLANCE_PROSPECTIVE"
+    P1_SIGNAL_LIFECYCLE_BATCH = "P1_SIGNAL_LIFECYCLE_BATCH"
 
 
 @dataclass(frozen=True, slots=True)
