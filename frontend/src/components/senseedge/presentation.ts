@@ -12,7 +12,7 @@ export function sectorCounts(rows: PortfolioRuntimeHolding[]): Array<[string, nu
   rows.forEach((row) => counts.set(row.sector || 'Unclassified', (counts.get(row.sector || 'Unclassified') ?? 0) + 1));
   return [...counts.entries()].sort(([a, ac], [b, bc]) => bc - ac || a.localeCompare(b, 'en'));
 }
-export function cashLabel(status: string | null | undefined, amount: number | null | undefined): string {
+export function cashLabel(status: string | null | undefined, amount: string | number | null | undefined): string {
   return status === 'KNOWN' && amount !== null && amount !== undefined ? String(amount) : 'UNKNOWN';
 }
 // CSV is a user-triggered export of the currently displayed view, not a report

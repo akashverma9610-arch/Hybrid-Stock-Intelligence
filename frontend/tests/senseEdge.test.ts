@@ -67,7 +67,7 @@ test('retained stale envelope is visible; missing cash is not replaced with prov
 test('canonical Watch row renders exact state, blockers and fingerprint without adding prices or ratings',async()=>{
   const row={watchId:'synthetic-watch',canonicalInstrumentId:'NSE:SYNTHETIC',symbol:'SYNTHETIC',companyName:'Synthetic Test Company',
     archetypes:['PRE_BREAKOUT'],sector:'Industrials',evidenceSufficiency:'INSUFFICIENT_DATA',setupState:'UNAVAILABLE',watchAsOf:'2026-01-01T00:00:00Z',
-    status:'BLOCKED',policyIdentity:'synthetic-policy-v1',decisionScoreStatus:'UNSCORED',sixGatesState:'NOT_EVALUATED',blockerCodes:['SYNTHETIC_SOURCE_BLOCKER'],fingerprint:'synthetic-fingerprint'};
+    status:'WATCH_ACTIVE',policyIdentity:'synthetic-policy-v1',decisionScoreStatus:'UNSCORED',sixGatesState:'NOT_EVALUATED',blockerCodes:['SYNTHETIC_SOURCE_BLOCKER'],fingerprint:'synthetic-fingerprint'};
   const html=await render('opportunities',{...empty,watch:{status:'PARTIAL',freshness:'STALE',timestamp:null,data:{watchAsOf:row.watchAsOf,
     watchCandidateCount:1,evidenceReadyCount:0,validSetupCount:0,sixGatesEvaluatedCount:0,archetypeCounts:[['PRE_BREAKOUT',1]],records:[row]}}});
   for(const value of ['SYNTHETIC','NSE:SYNTHETIC','UNSCORED','NOT EVALUATED','SYNTHETIC_SOURCE_BLOCKER','synthetic-fingerprint']) assert.ok(html.includes(value));
@@ -76,12 +76,27 @@ test('canonical Watch row renders exact state, blockers and fingerprint without 
 });
 test('new pages consume existing read clients and never legacy actionable signal feed',()=>{
   const hook=source('src/components/senseedge/useSenseEdgeEvidence.ts');
-  assert.deepEqual([...hook.matchAll(/client\.(\w+)\(/g)].map(m=>m[1]),['getMarketWideWatch','getPortfolioRuntimeHoldings','getPortfolioSummary','getNews','getMarketState']);
+  assert.deepEqual([...hook.matchAll(/client\.(\w+)\(/g)].map(m=>m[1]),['getMarketWideWatch','getPortfolioRuntimeHoldings','getNews','getMarketState']);
+  assert.match(hook,/readCanonicalPortfolioSummary\(apiBaseUrl,controller.signal\)/);
   const pages=source('src/components/senseedge/SenseEdgePages.tsx');
   assert.doesNotMatch(hook+pages,/getSignals\(|confirmPortfolio|uploadPortfolio|new Date\(|localStorage|sessionStorage|fetch\(/);
   assert.match(pages,/<P1LifecyclePanel key=\{instrument\}/);
   assert.match(source('src/App.tsx'),/if \(isDev\) return <AppShell>/);
   assert.match(source('src/context/NavigationContext.tsx'),/currentRoute: 'signals'/);
+});
+
+test('evaluated but inactive Watch records are not presented as active opportunities',async()=>{
+  const html=await render('opportunities',{...empty,watch:{status:'READY',freshness:'UNKNOWN',timestamp:null,data:{
+    universeCount:500,watchCandidateCount:0,archetypeCounts:[],records:[{watchId:'blocked',symbol:'SYNTHETIC_INACTIVE',
+      canonicalInstrumentId:'NSE:SYNTHETIC_INACTIVE',status:'WATCH_NO_LONGER_QUALIFIES',archetypes:[]}]}}});
+  assert.match(html,/Active Watch records \(0\)/);assert.match(html,/500 universe members/);
+  assert.doesNotMatch(html,/SYNTHETIC_INACTIVE/);assert.match(html,/All evaluated records \(includes blocked\)/);
+});
+
+test('market panel cannot display legacy transport LIVE or wall-clock defaults',async()=>{
+  const html=await render('home',{...empty,market:{status:'READY',freshness:'UNKNOWN',timestamp:null,
+    data:{regime:'SYNTHETIC_REGIME',regimeLabel:'Synthetic retained regime',freshness:'LIVE',lastUpdated:'2099-01-01T00:00:00Z'}}});
+  assert.match(html,/Synthetic retained regime/);assert.doesNotMatch(html,/2099-01-01|LIVE/);
 });
 
 function worker() {
