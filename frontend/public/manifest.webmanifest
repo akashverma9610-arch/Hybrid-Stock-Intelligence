@@ -1,0 +1,12 @@
+{
+  "id": "/",
+  "name": "SenseEdge — HSI Research Workspace",
+  "short_name": "SenseEdge",
+  "description": "Evidence-first, watch-only research workspace. Online backend access required for financial evidence.",
+  "start_url": "/#/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#03121f",
+  "theme_color": "#03121f",
+  "icons": [{"src": "/senseedge-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

@@ -3,17 +3,16 @@ import { ThemeProvider } from './context/ThemeContext';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
 import { DataClientProvider } from './api/context';
 import { AppShell } from './components/layout/AppShell';
-import { ProductionShell } from './components/production/ProductionShell';
+import { SenseEdgeShell } from './components/senseedge/SenseEdgeShell';
+import { SenseEdgePages } from './components/senseedge/SenseEdgePages';
+import { P1LifecyclePanel } from './components/production/P1LifecyclePanel';
 
 // Routed Pages
 import { DevHealthDashboardPage } from './pages/DevHealthDashboardPage';
 import {
-  ProductionHomePage,
   ProductionIntelligencePage,
   ProductionLivePage,
   ProductionMarketWideWatchPage,
-  ProductionOpportunitiesPage,
-  ProductionPortfolioPage,
   ProductionRotationPage,
   ProductionStockDetailPage,
   ProductionStocksPage,
@@ -48,20 +47,27 @@ const AppContent: React.FC = () => {
 
   const renderProductionPage = () => {
     switch (route) {
-      case 'opportunities': return <ProductionOpportunitiesPage />;
+      case 'opportunities': return <SenseEdgePages page="opportunities" />;
+      case 'signals': return <SenseEdgePages page="signals" />;
       case 'market-wide-watch': return <ProductionMarketWideWatchPage />;
       case 'stocks': return <ProductionStocksPage />;
-      case 'stock-detail': return <ProductionStockDetailPage canonicalInstrumentId={params.canonicalInstrumentId || ''} />;
-      case 'portfolio': return <ProductionPortfolioPage />;
+      case 'stock-detail': return (
+        <div className="space-y-7">
+          <ProductionStockDetailPage canonicalInstrumentId={params.canonicalInstrumentId || ''} />
+          {params.canonicalInstrumentId && <P1LifecyclePanel key={params.canonicalInstrumentId} instrument={params.canonicalInstrumentId} />}
+        </div>
+      );
+      case 'portfolio': return <SenseEdgePages page="portfolio" />;
       case 'rotation': return <ProductionRotationPage />;
       case 'live': return <ProductionLivePage />;
       case 'intelligence': return <ProductionIntelligencePage />;
       case 'home':
-      default: return <ProductionHomePage />;
+      default: return <SenseEdgePages page="home" />;
     }
   };
 
-  return <ProductionShell>{renderProductionPage()}</ProductionShell>;
+  const redesigned = ['home', 'opportunities', 'portfolio', 'signals'].includes(route);
+  return <SenseEdgeShell>{redesigned ? renderProductionPage() : <div className="se-legacy">{renderProductionPage()}</div>}</SenseEdgeShell>;
 };
 
 export default function App() {

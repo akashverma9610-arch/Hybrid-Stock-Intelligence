@@ -66,6 +66,14 @@ def expected_catalyst_binding_source(path, accepted):
              "    request.app.state.external_intelligence_news_store = news\n"),
         ),
         "app/api/main.py": (
+            # P1 query successor: permit exactly the read-router import/mount,
+            # retaining all historical source hashes and every other byte.
+            ("from app.api.routes.signals import router as signal_paper_router\n",
+             "from app.api.routes.signals import router as signal_paper_router\n"
+             "from app.api.routes.p1_signal_lifecycle import router as p1_signal_lifecycle_router\n"),
+            ('    application.include_router(signal_paper_router, prefix=f"/api/{settings.api_version}")\n',
+             '    application.include_router(signal_paper_router, prefix=f"/api/{settings.api_version}")\n'
+             '    application.include_router(p1_signal_lifecycle_router, prefix=f"/api/{settings.api_version}")\n'),
             ("        external_repository.close()\n",
              "        external_repository.close()\n"
              "    external_news = getattr(application.state, \"external_intelligence_news_store\", None)\n"

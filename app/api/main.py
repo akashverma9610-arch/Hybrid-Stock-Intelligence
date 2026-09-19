@@ -29,6 +29,7 @@ from app.api.signal_paper_query import (
     UnavailableSignalQueryService,
 )
 from app.api.routes.signals import router as signal_paper_router
+from app.api.routes.p1_signal_lifecycle import router as p1_signal_lifecycle_router
 from app.api.performance_governance_query import (
     BenchmarkQueryService,
     GovernanceQueryService,
@@ -459,6 +460,7 @@ def create_app(
     application.include_router(sector_router, prefix=f"/api/{settings.api_version}")
     application.include_router(stocks_router, prefix=f"/api/{settings.api_version}")
     application.include_router(signal_paper_router, prefix=f"/api/{settings.api_version}")
+    application.include_router(p1_signal_lifecycle_router, prefix=f"/api/{settings.api_version}")
     application.include_router(performance_governance_router, prefix=f"/api/{settings.api_version}")
     application.include_router(connections_router, prefix=f"/api/{settings.api_version}")
     application.include_router(connection_setup_router)

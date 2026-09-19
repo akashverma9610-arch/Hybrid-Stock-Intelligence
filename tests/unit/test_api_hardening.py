@@ -8,9 +8,11 @@ from fastapi.testclient import TestClient
 from app.api.main import create_app
 from app.api.routes import capital_rotation, data_operations, data_sources, filings, fundamentals, market, market_wide_watch, news, opportunities, primary_market, performance_governance, portfolio, portfolio_analysis, portfolio_import, runtime, signals, stocks, system
 from app.api.routes import connections, intelligence, dhan_live
+from app.api.routes import p1_signal_lifecycle
 
 
 EXPECTED_PATHS = {
+    "/api/v1/p1-signals/lifecycle",
     "/health",
     "/api/v1/system/status", "/api/v1/system/version",
     "/api/v1/runtime/status", "/api/v1/runtime/local-readiness",
@@ -104,7 +106,7 @@ def test_default_unavailable_errors_empty_semantics_validation_and_request_ids_a
 
 
 def test_routes_are_thin_no_write_endpoints_or_direct_execution_network_imports():
-    modules = (system, runtime, data_operations, data_sources, filings, fundamentals, news, primary_market, portfolio, portfolio_import, portfolio_analysis, capital_rotation, opportunities, market_wide_watch, dhan_live, market, stocks, signals, performance_governance, connections, intelligence)
+    modules = (system, runtime, data_operations, data_sources, filings, fundamentals, news, primary_market, portfolio, portfolio_import, portfolio_analysis, capital_rotation, opportunities, market_wide_watch, dhan_live, market, stocks, signals, performance_governance, connections, intelligence, p1_signal_lifecycle)
     source = "\n".join(inspect.getsource(module) for module in modules)
     forbidden = (
         ".patch(", "requests", "httpx", "broker", "demat",

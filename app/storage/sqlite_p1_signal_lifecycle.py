@@ -28,14 +28,11 @@ SCHEMA = (
 )
 
 
-class SQLiteP1SignalLifecycleRepository(SQLiteCoreApiSnapshotRepository):
-    def __init__(self, database_path=":memory:"):
-        super().__init__(database_path)
-        self._lock = RLock()
-        self._connection.execute("PRAGMA foreign_keys=ON")
-        with self._connection:
-            for statement in SCHEMA:
-                self._connection.execute(statement)
+class _P1LifecycleReads:
+    """Shared journal verification; contains no schema or write operation."""
+
+    def _snapshot_rows(self, query, args):
+        return self._connection.execute(query, tuple(args)).fetchall()
 
     def _chain(self, instrument: str, as_of=None) -> tuple[Batch, ...]:
         slot = slot_key(instrument)
@@ -45,7 +42,7 @@ class SQLiteP1SignalLifecycleRepository(SQLiteCoreApiSnapshotRepository):
         if as_of is not None:
             query += " AND created_at<=?"
             args.append(utc(as_of).isoformat())
-        rows = self._connection.execute(query, tuple(args)).fetchall()
+        rows = self._snapshot_rows(query, args)
         found = []
         for row in rows:
             snapshot = snapshot_json_from(row["payload_json"])
@@ -99,6 +96,27 @@ class SQLiteP1SignalLifecycleRepository(SQLiteCoreApiSnapshotRepository):
         if actual != expected:
             raise LifecycleError(Reason.CHAIN_CONFLICT)
 
+    def read(self, instrument, *, as_of):
+        with self._lock, self._connection:
+            self._connection.execute("BEGIN")
+            try:
+                chain = self._chain(instrument, as_of=as_of)
+                self._verify_indexes(chain, slot_key(instrument), as_of=as_of)
+                return replay(chain, as_of=as_of)
+            except (ValueError, TypeError, AttributeError, KeyError):
+                from app.intelligence.p1_signal_lifecycle import View, utc
+                return View(utc(as_of), None, (), Outcome.CONFLICTED, Reason.CHAIN_CONFLICT)
+
+
+class SQLiteP1SignalLifecycleRepository(_P1LifecycleReads, SQLiteCoreApiSnapshotRepository):
+    def __init__(self, database_path=":memory:"):
+        super().__init__(database_path)
+        self._lock = RLock()
+        self._connection.execute("PRAGMA foreign_keys=ON")
+        with self._connection:
+            for statement in SCHEMA:
+                self._connection.execute(statement)
+
     def submit(self, value: Evaluation, reader: CanonicalSourceReader) -> Result:
         # BEGIN IMMEDIATE obtains the writer lock BEFORE reading the head. A
         # racing caller therefore recomputes against the newly committed head,
@@ -132,17 +150,6 @@ class SQLiteP1SignalLifecycleRepository(SQLiteCoreApiSnapshotRepository):
                 if changed.rowcount != 1:
                     raise LifecycleError(Reason.CHAIN_CONFLICT)
             return result
-
-    def read(self, instrument, *, as_of):
-        with self._lock, self._connection:
-            self._connection.execute("BEGIN")
-            try:
-                chain = self._chain(instrument, as_of=as_of)
-                self._verify_indexes(chain, slot_key(instrument), as_of=as_of)
-                return replay(chain, as_of=as_of)
-            except (ValueError, TypeError, AttributeError, KeyError):
-                from app.intelligence.p1_signal_lifecycle import View, utc
-                return View(utc(as_of), None, (), Outcome.CONFLICTED, Reason.CHAIN_CONFLICT)
 
     def rebuild_indexes(self, instrument):
         """Explicit recovery: derive disposable indexes from the intact chain."""

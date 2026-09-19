@@ -1,0 +1,101 @@
+import React, { useState } from 'react';
+import { ArrowRight, ChartNoAxesCombined, ChevronRight, Clock3, Compass, Download, Fingerprint, Layers, Leaf, Radio, RefreshCw, Search, ShieldCheck, Target, TriangleAlert, Zap } from 'lucide-react';
+import { useDataClient } from '../../api/context';
+import { useNavigation } from '../../context/NavigationContext';
+import { P1LifecyclePanel } from '../production/P1LifecyclePanel';
+import type { MarketWideWatchRecordData } from '../../types/devConsole';
+import { cashLabel, csvCell, display, filterWatch, human, sectorCounts } from './presentation';
+import { useSenseEdgeEvidence } from './useSenseEdgeEvidence';
+import type { SenseEdgeEvidence } from './useSenseEdgeEvidence';
+
+const Panel: React.FC<{title: string; icon?: React.ReactNode; children: React.ReactNode; action?: React.ReactNode; className?: string}> = ({title, icon, children, action, className = ''}) => <section className={`se-panel ${className}`}><header><h2>{icon}{title}</h2>{action}</header>{children}</section>;
+const Pill: React.FC<{children: React.ReactNode; tone?: string}> = ({children, tone = 'cyan'}) => <span className={`se-pill ${tone}`}>{children}</span>;
+const Empty: React.FC<{title: string; detail: string}> = ({title,detail}) => <div className="se-empty"><span><Layers size={25}/></span><strong>{title}</strong><p>{detail}</p></div>;
+const Metric: React.FC<{label: string; value: React.ReactNode; detail: string; icon: React.ReactNode; tone?: string}> = ({label,value,detail,icon,tone='cyan'}) => <div className={`se-metric ${tone}`}><span className="se-metric-icon">{icon}</span><div><p>{label}</p><strong>{value}</strong><small>{detail}</small></div></div>;
+const LinkButton: React.FC<{path: string; children: React.ReactNode}> = ({path,children}) => { const {navigate} = useNavigation(); return <button className="se-link" onClick={() => navigate(path)}>{children}<ArrowRight size={13}/></button>; };
+
+function exportRows(headers: string[], rows: unknown[][], filename: string) {
+  const csv = [headers, ...rows].map((row) => row.map(csvCell).join(',')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  const anchor = document.createElement('a'); anchor.href = url; anchor.download = filename; anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+function SideIntelligence({data, loading}: {data: SenseEdgeEvidence; loading: boolean}) {
+  const news = data.news?.data?.items ?? [];
+  const watch = data.watch?.data;
+  const market = data.market?.data;
+  return <aside className="se-intelligence-rail">
+    <details className="se-source-audit"><summary>Source audit · {Object.values(data).some(response=>response?.freshness==='STALE') ? 'STALE evidence' : 'Check availability / freshness'}</summary><Panel title="Source status" icon={<ShieldCheck size={19}/>}><div className="se-status-list">{Object.entries(data).map(([name,response]) => <div className="se-source-status" key={name}><p>{human(name)}<Pill tone="amber">{response?.status || 'Loading'}</Pill></p><small>Freshness: {response?.freshness || 'UNKNOWN'}</small><small>Response metadata: {display(response?.timestamp)} (not evidence as-of)</small>{response?.warnings?.map((warning,index)=><small key={index}>{warning}</small>)}</div>)}<small>Retained evidence is not a live quote. UNKNOWN freshness is never presented as current.</small></div></Panel></details>
+    <Panel title="Material intelligence" icon={<Zap className="se-gold" size={21}/>} action={<LinkButton path="/intelligence">View all</LinkButton>}>
+      {news.length ? <ul className="se-feed">{news.slice(0,4).map((item) => <li key={item.id}><i className="se-dot"/><div><strong>{item.title}</strong><small>{item.publisher} · {display(item.timestamp)}</small><Pill>{human(item.eventCategory)}</Pill></div></li>)}</ul> : <Empty title={loading ? 'Reading evidence…' : 'Evidence unavailable'} detail="No verified material updates are exposed. This does not mean there are no events."/>}
+    </Panel>
+    <Panel title="Evidence mix" icon={<ChartNoAxesCombined size={20}/>}> <div className="se-ring-row"><div className="se-ring"><div><strong>{display(watch?.watchCandidateCount)}</strong><small>Watch records</small></div></div><div className="se-legend"><p><i/>Evidence-ready <b>{display(watch?.evidenceReadyCount)}</b></p><p><i/>Valid setup <b>{display(watch?.validSetupCount)}</b></p><p><i/>Gate evaluated <b>{display(watch?.sixGatesEvaluatedCount)}</b></p></div></div><p className="se-footnote">Counts may overlap. Ring is decorative, not a confidence score.</p></Panel>
+    <Panel title="Archetype coverage" icon={<Layers size={19}/>}>{watch?.archetypeCounts.length ? <div className="se-bars">{watch.archetypeCounts.slice(0,6).map(([label,count]) => <div key={label}><span>{human(label)}</span><meter min={0} max={Math.max(...watch.archetypeCounts.map(([,n])=>n),1)} value={count}/><b>{count}</b></div>)}</div> : <div className="se-status-list"><p>Pre-Breakout <Pill>Governed policy</Pill></p><p>Other product strategies <Pill tone="amber">Not active</Pill></p><small>Routing coverage is shown only when returned by the canonical Watch API.</small></div>}</Panel>
+    <Panel title="Market state" icon={<ChartNoAxesCombined size={19}/>}> <div className="se-market-state"><Pill tone="amber">{market ? human(market.regime) : 'Unavailable'}</Pill><p>{market?.regimeLabel || 'Completed market evidence has not been loaded.'}</p><small>{market ? `${market.freshness} · ${display(market.lastUpdated)}` : 'No synthetic benchmark or market direction.'}</small></div></Panel>
+  </aside>;
+}
+
+function OpportunityView({data, loading}: {data: SenseEdgeEvidence; loading: boolean}) {
+  const [search,setSearch] = useState(''); const [filter,setFilter] = useState('ALL');
+  const [selected,setSelected] = useState<string | null>(null);
+  const watch = data.watch?.data;
+  const rows = filterWatch(watch?.records ?? [],search,filter);
+  const current = rows.find((row) => row.watchId === selected) ?? rows[0];
+  const labels = [...new Set((watch?.records ?? []).flatMap((row)=>row.archetypes))].sort();
+  return <>
+    <div className="se-metrics"><Metric label="Watch opportunities" value={display(watch?.watchCandidateCount)} detail="Canonical discovery records" icon={<Compass/>} tone="gold"/><Metric label="Evidence ready" value={display(watch?.evidenceReadyCount)} detail="Source coverage, not conviction" icon={<Clock3/>}/><Metric label="Valid setups" value={display(watch?.validSetupCount)} detail="Setup evidence only" icon={<Leaf/>} tone="green"/><Metric label="Governed execution" value="Not authorized" detail="No broker or order authority" icon={<Target/>} tone="purple"/></div>
+    <div className="se-filters"><span>Horizon</span><Pill>Unavailable</Pill><small>No approved horizon in this Watch response</small><label>Archetype<select aria-label="Filter archetype" value={filter} onChange={(e)=>setFilter(e.target.value)}><option value="ALL">All archetypes</option>{labels.map((label)=><option key={label} value={label}>{human(label)}</option>)}</select></label></div>
+    <Panel title={`Opportunities${watch ? ` (${rows.length})` : ''}`} action={<button className="se-button" disabled={!rows.length} onClick={()=>exportRows(['Symbol','Canonical ID','Archetypes','State','As of'], rows.map(r=>[r.symbol,r.canonicalInstrumentId,r.archetypes.join('; '),r.status,r.watchAsOf]), 'senseedge-watch.csv')}><Download size={14}/>Export view</button>}>
+      <div className="se-table-tools"><p>Existing Watch evidence. Discovery is not trade authorization.</p><label className="se-search"><Search size={15}/><input placeholder="Filter companies…" aria-label="Filter opportunities" value={search} onChange={(e)=>setSearch(e.target.value)}/></label></div>
+      <div className="se-table-wrap" tabIndex={0} aria-label="Watch opportunity table"><table><thead><tr><th>Symbol / company</th><th>Archetype</th><th>Sector</th><th>Evidence</th><th>Setup state</th><th>As of</th><th>Review</th></tr></thead><tbody>{rows.slice(0,100).map(row=><tr className={current?.watchId===row.watchId?'selected':''} key={row.watchId}><td><strong>{row.symbol}</strong><small>{row.companyName || row.canonicalInstrumentId}</small></td><td><Pill>{human(row.archetypes[0])}</Pill></td><td>{row.sector || 'Unavailable'}</td><td>{human(row.evidenceSufficiency)}</td><td><Pill>{human(row.setupState)}</Pill></td><td className="se-time">{row.watchAsOf}</td><td><button className="se-icon-button" aria-label={`Select ${row.symbol}`} onClick={()=>setSelected(row.watchId)}><ChevronRight size={17}/></button></td></tr>)}</tbody></table></div>
+      {!rows.length && <Empty title={loading ? 'Loading canonical Watch…' : watch ? 'No matching Watch records' : 'Watch source unavailable'} detail={watch ? 'Adjust the company/archetype filter. No data is invented for an empty result.' : 'The screen is connected to the existing read client. Start the local backend to inspect retained evidence.'}/>}
+      {rows.length>100 && <p className="se-footnote">Showing the first 100 matching records. Export includes the full filtered view.</p>}
+    </Panel>
+    <div className="se-two-up"><Panel title="Research windows" icon={<Layers size={20}/>}> <div className="se-window-list">{['Event / catalyst','Tactical / positional','Long-term thesis'].map((label,i)=><div key={label}><span className={`se-number n${i}`}>{i+1}</span><div><strong>{label}</strong><small>Strategy-specific policies and data required</small></div><Pill tone="amber">Evidence gated</Pill></div>)}</div><p className="se-footnote">Windows are product scope, not a declaration that every evaluator is active.</p></Panel>
+      <Panel title="Selected opportunity" icon={<ChartNoAxesCombined size={20}/>}><SelectedOpportunity row={current}/></Panel></div>
+  </>;
+}
+
+function SelectedOpportunity({row}: {row: MarketWideWatchRecordData | undefined}) {
+  if (!row) return <Empty title="Your evidence, in focus" detail="Select a retained Watch record to inspect its canonical lineage and blockers. Potential return and confidence are not fabricated."/>;
+  return <div className="se-selected"><div className="se-selected-title"><h3>{row.symbol}<small>{row.companyName}</small></h3><Pill>Watch only</Pill></div><dl><div><dt>Canonical identity</dt><dd>{row.canonicalInstrumentId}</dd></div><div><dt>Policy</dt><dd>{row.policyIdentity}</dd></div><div><dt>Decision Score state</dt><dd>{human(row.decisionScoreStatus)}</dd></div><div><dt>Six Gates evidence</dt><dd>{human(row.sixGatesState)}</dd></div></dl><p>{row.blockerCodes.length ? row.blockerCodes.join(' · ') : 'No blocker code supplied by this record; not execution permission.'}</p><LinkButton path={`/stocks/${encodeURIComponent(row.canonicalInstrumentId)}`}>View canonical analysis</LinkButton><details><summary>Evidence fingerprint</summary><code>{row.fingerprint}</code></details></div>;
+}
+
+function PortfolioView({data,loading}: {data: SenseEdgeEvidence; loading: boolean}) {
+  const [tab,setTab] = useState('Overview');
+  const [search,setSearch] = useState('');
+  const rows = data.holdings?.data ?? []; const p = data.portfolio?.data;
+  const filtered = rows.filter(r=>`${r.symbol} ${r.instrumentId}`.toLowerCase().includes(search.toLowerCase()));
+  const sectors = sectorCounts(rows);
+  return <>
+    <div className="se-tabs" role="tablist" aria-label="Portfolio sections">{['Overview','Review','Rotation','History'].map(label=><button role="tab" aria-selected={tab===label} key={label} className={tab===label?'active':''} onClick={()=>setTab(label)}>{label}</button>)}</div>
+    <div className="se-metrics"><Metric label="Portfolio value (₹)" value={display(p?.currentValue)} detail="Retained snapshot valuation" icon={<ChartNoAxesCombined/>}/><Metric label="Invested (₹)" value={display(p?.investedValue)} detail="Canonical cost basis" icon={<Layers/>}/><Metric label="P&L (₹)" value={display(p?.totalPnL)} detail="No inferred day return" icon={<ActivityIcon/>} tone="green"/><Metric label="Cash (₹)" value={cashLabel(p?.cashStatus,p?.cashAvailable)} detail="Unknown never means zero" icon={<ShieldCheck/>} tone="purple"/></div>
+    {tab !== 'Overview' && <Panel title={`Portfolio ${tab.toLowerCase()}`} icon={<ShieldCheck size={19}/>}><div className="se-selected"><p>{tab==='Review' ? 'Inspect existing holding evidence and blockers in the canonical portfolio view. No weak/strong ranking is invented from P&L.' : tab==='Rotation' ? 'Rotation comparison is evidence-only. No higher-return estimate, replacement instruction or cross-bucket hurdle is inferred here.' : 'A historical snapshot picker is not exposed by the current consumer contract. This view does not invent a transaction history.'}</p><LinkButton path={tab==='Rotation'?'/rotation':'/dev/portfolio-runtime'}>Open existing evidence view</LinkButton></div></Panel>}
+    <div className="se-portfolio-grid"><Panel title={`Holdings${data.holdings?.data ? ` (${rows.length})` : ''}`} action={<button className="se-button" disabled={!filtered.length} onClick={()=>exportRows(['Symbol','Canonical ID','Quantity','Average price','Market price','P&L','As of'],filtered.map(r=>[r.symbol,r.instrumentId,r.quantity,r.averagePrice,r.marketPrice,r.unrealizedPnl,r.dataAsOf]),'senseedge-holdings.csv')}><Download size={14}/>Export view</button>}>
+      <div className="se-table-tools"><p>Canonical holdings · no portfolio mutation</p><label className="se-search"><Search size={14}/><input aria-label="Filter holdings" placeholder="Find holding…" value={search} onChange={e=>setSearch(e.target.value)}/></label></div><div className="se-table-wrap" tabIndex={0} aria-label="Portfolio holdings table"><table><thead><tr><th>Symbol</th><th>Qty</th><th>Average (₹)</th><th>Snapshot price (₹)</th><th>P&L (₹)</th><th>Evidence</th></tr></thead><tbody>{filtered.map(row=><tr key={row.instrumentId}><td><strong>{row.symbol || row.instrumentId}</strong><small>{row.sector || 'Sector unavailable'}</small></td><td>{row.quantity}</td><td>{row.averagePrice}</td><td>{display(row.marketPrice)}</td><td>{display(row.unrealizedPnl)}</td><td><LinkButton path={`/stocks/${encodeURIComponent(row.instrumentId)}`}>Inspect</LinkButton></td></tr>)}</tbody></table></div>
+      {!filtered.length && <Empty title={loading?'Reading holdings…':data.holdings?.data?'No matching holdings':'Portfolio unavailable'} detail="No sample holdings, cash, profit or health score are substituted."/>}
+    </Panel><Panel title="Sector coverage" icon={<ChartNoAxesCombined size={18}/>}><div className="se-ring-row"><div className="se-ring"><div><strong>{data.holdings?.data ? rows.length : '—'}</strong><small>Holdings</small></div></div></div><div className="se-bars">{sectors.map(([label,count])=><div key={label}><span>{label}</span><meter min={0} max={Math.max(rows.length,1)} value={count}/><b>{count}</b></div>)}</div><p className="se-footnote">By holding count, not value allocation. Unclassified sectors remain explicit.</p></Panel></div>
+    <div className="se-two-up"><Panel title="Portfolio review" icon={<ShieldCheck size={20}/>}><div className="se-review-cards"><div><Leaf/><strong>Thesis review</strong><p>Inspect the canonical trading and investment thesis separately.</p><LinkButton path="/dev/portfolio-runtime">View evidence</LinkButton></div><div><TriangleAlert/><strong>Risk review</strong><p>Missing evidence is not a weak holding or an instruction to exit.</p><LinkButton path="/rotation">Compare evidence</LinkButton></div></div></Panel><Panel title="Rotation watch" icon={<RefreshCw size={20}/>}><div className="se-selected"><Pill tone="amber">Comparison only</Pill><h3>Opportunity cost needs evidence.</h3><p>No synthetic rotation advantage, forecast or sizing. Core comparison policies remain authoritative.</p><LinkButton path="/rotation">Open governed comparison</LinkButton></div></Panel></div>
+  </>;
+}
+function ActivityIcon() { return <ChartNoAxesCombined/>; }
+
+function SignalsView() {
+  const [input,setInput] = useState(''); const [instrument,setInstrument] = useState('');
+  const [error,setError] = useState('');
+  return <>
+    <div className="se-metrics"><Metric label="Signal history" value="On demand" detail="Exact instrument + explicit cutoff" icon={<Radio/>}/><Metric label="Actionability" value="Watch only" detail="No Buy / Sell instruction" icon={<ShieldCheck/>} tone="green"/><Metric label="Signal accuracy" value="Unavailable" detail="No approved performance evidence" icon={<Target/>} tone="purple"/><Metric label="Expiry" value="Not governed" detail="No synthetic time-to-live" icon={<Clock3/>} tone="gold"/></div>
+    <Panel title="Retained signal intelligence" icon={<Radio size={21}/>}><div className="se-signal-intro"><div><Pill>Canonical P1 lifecycle</Pill><h3>Follow the evidence. Not the noise.</h3><p>A signal is a research observation—not trade authorization. Inspect the last confirmed state and its source lineage at an explicit point in time.</p></div><span className="se-radar-art" aria-hidden="true"><Radio size={64}/></span></div>
+      <form className="se-instrument-form" onSubmit={e=>{e.preventDefault(); if(!/^NSE:[A-Za-z0-9._:-]+$/.test(input.trim())) {setError('Enter an exact canonical NSE identity; symbols are not resolved here.');return;} setInstrument(input.trim());setError('');}}><label>Canonical instrument<input placeholder="NSE:…" aria-label="Signal canonical instrument" value={input} onChange={e=>setInput(e.target.value)}/></label><button className="se-button primary">Inspect lifecycle <ArrowRight size={15}/></button><LinkButton path="/stocks">Find canonical ID</LinkButton></form>{error&&<p role="alert" className="se-footnote">{error}</p>}
+      {instrument ? <div className="se-signal-input"><P1LifecyclePanel key={instrument} instrument={instrument}/></div> : <Empty title="Choose a company to begin" detail="No bulk live-signal list is exposed by the P1 contract. No legacy Buy/Sell feed is substituted."/>}
+    </Panel><div className="se-two-up"><Panel title="Lifecycle states" icon={<Layers size={20}/>}><div className="se-status-list"><p>Current<Pill>Last confirmed</Pill></p><p>Invalidated<Pill tone="amber">Native predicate</Pill></p><p>Superseded<Pill tone="purple">Linked replacement</Pill></p><small>Source-blocked and conflicted evidence never become a fresh signal.</small></div></Panel><Panel title="Execution boundary" icon={<Fingerprint size={20}/>}><div className="se-selected"><h3>Research is not an order.</h3><p>Entry, stop, targets, expected return, confidence percentages and capital authorization are not part of this P1 view.</p><Pill>WATCH_ONLY / NON_EXECUTABLE</Pill></div></Panel></div>
+  </>;
+}
+
+export const SenseEdgePages: React.FC<{page: 'home'|'opportunities'|'portfolio'|'signals'}> = ({page}) => {
+  const {data,loading} = useSenseEdgeEvidence(); const {triggerRefresh} = useDataClient();
+  const titles = {home:'Intelligence Command Centre', opportunities:'Opportunities', portfolio:'My Portfolio', signals:'Signals'};
+  const description = {home:'One Brain. Multiple research windows. Evidence before action.', opportunities:'Discover evidence-backed ideas across governed research windows.', portfolio:'Your portfolio. One intelligence engine. A clearer perspective.', signals:'Watch-only observations, retained lifecycle and canonical evidence.'};
+  return <><div className="se-page-heading"><div><p className="se-eyebrow">YOUR RESEARCH WORKSPACE</p><h1>{titles[page]}</h1><p>{description[page]}</p></div><div className="se-heading-actions"><small>{data.watch?.data?.watchAsOf ? `Watch as-of: ${data.watch.data.watchAsOf}` : loading ? 'Reading retained evidence…' : 'Backend evidence unavailable'}</small><button className="se-button" disabled={loading} onClick={triggerRefresh}><RefreshCw size={14} className={loading?'se-spin':''}/>Refresh reads</button></div></div><div className="se-content-grid"><div className="se-primary">{page==='signals'?<SignalsView/>:page==='portfolio'?<PortfolioView data={data} loading={loading}/>:<OpportunityView data={data} loading={loading}/>}</div><SideIntelligence data={data} loading={loading}/></div></>;
+};

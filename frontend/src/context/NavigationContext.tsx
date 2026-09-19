@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 export type AppRoute =
   | 'home'
   | 'opportunities'
+  | 'signals'
   | 'market-wide-watch'
   | 'stocks'
   | 'stock-detail'
@@ -64,6 +65,10 @@ function parsePath(path: string): RouteState {
 
   if (segments[0] === 'opportunities') {
     return { currentRoute: 'opportunities', params: {}, pathname: '/opportunities' };
+  }
+
+  if (segments[0] === 'signals') {
+    return { currentRoute: 'signals', params: {}, pathname: '/signals' };
   }
 
   if (segments[0] === 'market-wide-watch') {
