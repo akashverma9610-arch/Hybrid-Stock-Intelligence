@@ -1,0 +1,9 @@
+{
+  "name": "hsi-private-identity-canary",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Local-only managed-login proof; not the consumer frontend",
+  "dependencies": {
+    "@auth0/auth0-spa-js": "2.27.0"
+  }
+}

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HSI private identity canary</title>
+  <script defer src="/auth0-sdk.js"></script>
+  <script defer src="/canary.js"></script>
+</head>
+<body>
+  <h1>HSI private identity canary</h1>
+  <p>REAL Auth0 identities / SYNTHETIC empty test portfolios. Not production or market-data proof.</p>
+  <p>No public deployment, orders, provider connections, or production portfolio changes.</p>
+  <button id="login" disabled>Sign in with Auth0</button>
+  <button id="recheck" disabled>Recheck current login (no new token)</button>
+  <button id="checks" disabled>Run read-only isolation checks</button>
+  <button id="revoke" disabled>Owner: disable Tester B in isolated canary</button>
+  <button id="enable" disabled>Owner: re-enable Tester B in isolated canary</button>
+  <button id="logout" disabled>Sign out and clear this browser session</button>
+  <p>Do not copy tokens, passwords, authorization codes, or verification links into chat.</p>
+  <pre id="status" role="status">Loading local canary configuration...</pre>
+</body>
+</html>
