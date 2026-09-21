@@ -112,3 +112,28 @@ class ReadOnlyP1SignalLifecycleReader(_P1LifecycleReads):
 
     def close(self):
         self._connection.close()
+
+    def verify_unarmed_empty_store(self):
+        """Prove genuine emptiness without decoding any possibly private payload.
+
+        No accepted prospective-origin/activation binding exists yet. Therefore
+        any existing batch or index/head must fail closed rather than being
+        exposed as shared prospective history, even if its chain verifies.
+        """
+        self._steps = 0
+        try:
+            with self._lock, self._connection:
+                self._connection.execute("BEGIN")
+                tables = {r[0] for r in self._connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+                required = {"core_api_snapshots", "p1_signal_lifecycle_batch_index", "p1_signal_lifecycle_heads"}
+                if not required <= tables:
+                    raise P1ReadUnavailable("P1_LIFECYCLE_SCHEMA_UNAVAILABLE")
+                queries = (
+                    "SELECT snapshot_id FROM core_api_snapshots WHERE family='P1_SIGNAL_LIFECYCLE_BATCH' LIMIT 1",
+                    "SELECT batch_id FROM p1_signal_lifecycle_batch_index LIMIT 1",
+                    "SELECT batch_id FROM p1_signal_lifecycle_heads LIMIT 1",
+                )
+                if any(self._connection.execute(q).fetchone() is not None for q in queries):
+                    raise P1ReadUnavailable("P1_PROSPECTIVE_ORIGIN_UNVERIFIED")
+        except sqlite3.Error:
+            raise P1ReadUnavailable("P1_LIFECYCLE_STORE_UNAVAILABLE") from None

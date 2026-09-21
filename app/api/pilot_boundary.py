@@ -97,6 +97,7 @@ class OwnedSnapshotReader:
 # Exact GET surfaces audited as shared data: no portfolio/holding context.
 # Do NOT allow a whole prefix: future routes must be explicitly reviewed.
 _SHARED = tuple(re.compile(x) for x in (
+    r"/api/v1/pilot/p1-history",
     r"/api/v1/pilot/canonical/(?:market|sectors|opportunities)",
     r"/api/v1/pilot/canonical/stocks/[^/]+",
     r"/api/v1/news(?:/[^/]+)?", r"/api/v1/filings(?:/[^/]+)?",
@@ -138,6 +139,8 @@ def install_pilot_boundary(application, security: PilotSecurity | None = None):
     application.state.pilot_security = security
     from app.api.routes.pilot_canonical import router as canonical_router
     application.include_router(canonical_router)
+    from app.api.pilot_p1_history import router as p1_history_router
+    application.include_router(p1_history_router)
 
     def owned(factory):
         def dependency(request: Request):
