@@ -97,6 +97,8 @@ class OwnedSnapshotReader:
 # Exact GET surfaces audited as shared data: no portfolio/holding context.
 # Do NOT allow a whole prefix: future routes must be explicitly reviewed.
 _SHARED = tuple(re.compile(x) for x in (
+    r"/api/v1/pilot/canonical/(?:market|sectors|opportunities)",
+    r"/api/v1/pilot/canonical/stocks/[^/]+",
     r"/api/v1/news(?:/[^/]+)?", r"/api/v1/filings(?:/[^/]+)?",
     r"/api/v1/fundamentals/[^/]+(?:/series)?",
     r"/api/v1/market/(?:regime|breadth|extremes|crisis)", r"/api/v1/sectors(?:/[^/]+)?",
@@ -134,6 +136,8 @@ def install_pilot_boundary(application, security: PilotSecurity | None = None):
         if canonical.startswith("sqlite:///") and Path(canonical.removeprefix("sqlite:///")).resolve() == security.store.path:
             raise ValueError("PILOT_IDENTITY_STORE_MUST_BE_SEPARATE")
     application.state.pilot_security = security
+    from app.api.routes.pilot_canonical import router as canonical_router
+    application.include_router(canonical_router)
 
     def owned(factory):
         def dependency(request: Request):
