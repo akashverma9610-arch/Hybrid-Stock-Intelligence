@@ -282,6 +282,7 @@ def create_app(
     data_operations_service: DataOperationsService | None = None,
     external_intelligence_application_service: ExternalIntelligenceApplicationService | None = None,
     core_api_snapshot_repository=None,
+    pilot_security=None,
 ) -> FastAPI:
     settings = api_settings or APISettings.from_environment()
     validate_local_operator_runtime(settings.database)
@@ -440,14 +441,16 @@ def create_app(
             ("crisis_query_service", crisis_query_service, RepositoryCrisisQueryService),
         ) if supplied is None
     )
+    from app.api.pilot_boundary import PilotRequestContextMiddleware, install_pilot_boundary
+    install_pilot_boundary(application, pilot_security)
     application.add_middleware(
         CORSMiddleware,
         allow_origins=list(settings.cors_origins),
         allow_credentials=False,
-        allow_methods=["GET", "PUT", "POST", "DELETE"],
-        allow_headers=["X-Request-ID", "Content-Type"],
+        allow_methods=["GET", "PUT", "POST", "DELETE", "PATCH"],
+        allow_headers=["X-Request-ID", "Content-Type", "Authorization"],
     )
-    application.add_middleware(RequestContextMiddleware)
+    application.add_middleware(PilotRequestContextMiddleware if hasattr(application.state, "pilot_security") else RequestContextMiddleware)
     application.add_exception_handler(APIRequestError, api_request_error_handler)
     application.add_exception_handler(RequestValidationError, request_validation_error_handler)
     application.add_exception_handler(Exception, unexpected_exception_handler)

@@ -97,6 +97,11 @@ def expected_catalyst_binding_source(path, accepted):
         before, after = before.encode(), after.encode()
         assert accepted.count(before) == 1, (path, "exact predecessor anchor required")
         accepted = accepted.replace(before, after, 1)
+    if path == "app/api/main.py":
+        # Explicitly authorized pilot security wiring only. Historical receipt
+        # hashes and all unrelated Core/Brain bytes remain pinned.
+        from tests.unit.test_pilot_identity_and_ownership import expected_pilot_boundary_source
+        accepted = expected_pilot_boundary_source(accepted)
     return accepted
 
 

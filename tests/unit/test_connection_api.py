@@ -272,7 +272,10 @@ def test_connection_mutation_routes_are_disabled_outside_local_private_boundary(
     service = ProviderConnectionService(SQLiteConnectionProfileRepository(), InMemoryCredentialStore(), {KOTAK_NEO_PROVIDER: QuoteTester()}, clock=lambda: T)
     with TestClient(create_app(api_settings=APISettings(environment="production"), connection_service=service)) as client:
         response = client.put("/api/v1/connections/kotak-neo", json={"tradeapi_access_token": "not-returned"})
-    assert response.status_code == 403 and response.json()["error"]["code"] == "CONNECTION_MANAGEMENT_DISABLED"
+    # The managed-identity boundary now rejects unconfigured production before
+    # the older local-only connection-management guard can be reached.
+    assert response.status_code == 503 and response.json()["error"]["code"] == "PILOT_IDENTITY_UNAVAILABLE"
+    assert "not-returned" not in response.text
 
 
 def test_legacy_consumer_key_field_is_rejected_and_never_treated_as_tradeapi_access_token() -> None:
