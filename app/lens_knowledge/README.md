@@ -28,4 +28,8 @@ missing-result counts. It neither queries the database nor runs diagnostics;
 the calling application is responsible for obtaining a trustworthy snapshot
 and results from its stored-data path. A caller resuming a scan must retain the
 same snapshot, cutoff, catalog version and diagnostic vintages. Results are
-in-memory draft coverage only, with no durable checkpoint or fit evaluation.
+draft coverage only, with no fit evaluation. `DraftLensCoverageStore` can save
+an immutable page in the existing snapshot repository. It records the exact
+catalog fingerprint and per-security diagnostic-content fingerprints, rejects
+changed content at an identical page identity, and verifies reads. This is not a
+scheduler, a complete scan checkpoint, or a verified historical data lineage.

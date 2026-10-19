@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from functools import lru_cache
+from hashlib import sha256
 import json
 from pathlib import Path
 
@@ -15,6 +16,18 @@ from app.diagnostics.models import EvaluatedDiagnostic, EvaluationEligibility
 
 _ROOT = Path(__file__).resolve().parent
 _DIMENSIONS = frozenset({"FUNDAMENTALS", "EARNINGS", "TECHNICALS", "VALUATION", "CATALYST_NEWS", "SECTOR_MACRO", "FLOW", "BALANCE_SHEET_CASH_FLOW", "MANAGEMENT_GOVERNANCE", "LIQUIDITY_EXITABILITY"})
+
+
+def catalog_fingerprint() -> str:
+    """Bind a receipt to the exact imported matrix and taxonomy bytes."""
+    paths = [_ROOT / "STRATEGY_DEPENDENCY_MATRIX.json", *sorted((_ROOT / "taxonomy").glob("*.json"))]
+    digest = sha256()
+    for path in paths:
+        name = path.relative_to(_ROOT).as_posix().encode("utf-8")
+        content = path.read_bytes()
+        digest.update(len(name).to_bytes(8, "big")); digest.update(name)
+        digest.update(len(content).to_bytes(8, "big")); digest.update(content)
+    return digest.hexdigest()
 
 
 @dataclass(frozen=True, slots=True)

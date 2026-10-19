@@ -6,11 +6,13 @@ inspect the live database, acquire data, run the brain or qualify securities.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+from hashlib import sha256
+import json
 
 from app.diagnostics.models import EvaluatedDiagnostic
-from app.lens_knowledge.assessment import LensAssessment, assess_lenses
+from app.lens_knowledge.assessment import LensAssessment, assess_lenses, catalog_fingerprint, load_catalog
 from app.universe_analysis.models import UniverseSnapshot
 
 
@@ -18,6 +20,7 @@ from app.universe_analysis.models import UniverseSnapshot
 class SecurityLensCoverage:
     instrument_id: str
     diagnostic_source_state: str
+    diagnostics_fingerprint: str | None
     assessments: tuple[LensAssessment, ...]
 
 
@@ -25,6 +28,7 @@ class SecurityLensCoverage:
 class UniverseLensCoverageBatch:
     universe_snapshot_id: str
     universe_checksum: str
+    catalog_fingerprint: str
     as_of: datetime
     universe_count: int
     start: int
@@ -62,12 +66,22 @@ def assess_universe_batch(*, universe: UniverseSnapshot, as_of: datetime,
     selected = ids[cursor:cursor + batch_size]
     if set(diagnostics_by_instrument) - set(selected):
         raise ValueError("Results contain a security outside the requested batch")
+    # Bind the evaluated definitions to their bytes, even if files changed
+    # after an earlier in-process catalog read.
+    catalog_id = catalog_fingerprint()
+    load_catalog.cache_clear()
+    load_catalog()
     rows = []
     for instrument_id in selected:
         values = diagnostics_by_instrument.get(instrument_id, ())
         assessments = assess_lenses(instrument_id=instrument_id, as_of=cutoff, diagnostics=values)
-        rows.append(SecurityLensCoverage(instrument_id, "SUPPLIED" if values else "UNAVAILABLE", assessments))
+        serialized = json.dumps([asdict(item) for item in sorted(values, key=lambda item: item.canonical_rule_id)],
+                                sort_keys=True, separators=(",", ":"), default=str)
+        fingerprint = sha256(serialized.encode("utf-8")).hexdigest() if values else None
+        rows.append(SecurityLensCoverage(instrument_id, "SUPPLIED" if values else "UNAVAILABLE", fingerprint, assessments))
     next_cursor = cursor + len(selected)
     supplied = sum(row.diagnostic_source_state == "SUPPLIED" for row in rows)
-    return UniverseLensCoverageBatch(universe.snapshot_id, universe.checksum, cutoff, len(ids), cursor,
+    if catalog_id != catalog_fingerprint():
+        raise ValueError("Lens catalog changed during assessment")
+    return UniverseLensCoverageBatch(universe.snapshot_id, universe.checksum, catalog_id, cutoff, len(ids), cursor,
         next_cursor, next_cursor == len(ids), supplied, len(rows) - supplied, tuple(rows))

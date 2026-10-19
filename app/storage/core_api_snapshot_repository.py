@@ -42,6 +42,8 @@ class CoreApiSnapshotFamily(StrEnum):
     UNIVERSE_CANDIDATE = "UNIVERSE_CANDIDATE"
     PORTFOLIO_UNIVERSE_ROTATION = "PORTFOLIO_UNIVERSE_ROTATION"
     UNIVERSE_COVERAGE = "UNIVERSE_COVERAGE"
+    # Non-active diagnostic dependency coverage; not a lens fit or signal.
+    DRAFT_LENS_COVERAGE = "DRAFT_LENS_COVERAGE"
     PROVIDER_INSTRUMENT_MAPPING = "PROVIDER_INSTRUMENT_MAPPING"
     CANONICAL_QUOTE = "CANONICAL_QUOTE"
     # Daily official index levels are close-only evidence.  They deliberately
