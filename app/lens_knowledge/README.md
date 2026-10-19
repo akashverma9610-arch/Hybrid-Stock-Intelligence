@@ -21,3 +21,11 @@ as-of contracts, connect canonical stored sources, evaluate historical and
 prospective examples, then explicitly authorize activation. In particular,
 order-book/capex evidence, exitability and event-specific requirements cannot
 be assumed satisfied just because a generic diagnostic result exists.
+
+`universe.assess_universe_batch` accepts a supplied existing universe snapshot
+and already-computed diagnostic results, with a bounded cursor and explicit
+missing-result counts. It neither queries the database nor runs diagnostics;
+the calling application is responsible for obtaining a trustworthy snapshot
+and results from its stored-data path. A caller resuming a scan must retain the
+same snapshot, cutoff, catalog version and diagnostic vintages. Results are
+in-memory draft coverage only, with no durable checkpoint or fit evaluation.
