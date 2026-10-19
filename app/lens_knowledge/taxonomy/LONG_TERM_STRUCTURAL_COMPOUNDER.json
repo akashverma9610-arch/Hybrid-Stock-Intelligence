@@ -1,0 +1,182 @@
+{
+  "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+  "name": "Long-Term Structural Compounder",
+  "version": "0.1.0",
+  "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+  "secondary_families": [
+    "FAMILY_A_BUSINESS_EARNINGS"
+  ],
+  "aliases": [
+    "STRUCTURAL_COMPOUNDER"
+  ],
+  "typical_horizon_description": "Unvalidated long-term structural research horizon.",
+  "horizon_authority": "INTENDED_ONLY_NOT_VALIDATED",
+  "thesis": "Durable reinvestment runway and cash-backed returns may support a long-term compounder thesis, without return forecasts.",
+  "analysis_stages": [
+    "durable runway",
+    "reinvestment capability",
+    "cash-backed returns",
+    "management governance",
+    "valuation discipline"
+  ],
+  "dependency_strengths": {
+    "FUNDAMENTALS": "PRIMARY",
+    "EARNINGS": "SECONDARY",
+    "TECHNICALS": "OPTIONAL",
+    "VALUATION": "SECONDARY",
+    "CATALYST_NEWS": "NOT_REQUIRED",
+    "SECTOR_MACRO": "SECONDARY",
+    "FLOW": "NOT_REQUIRED",
+    "BALANCE_SHEET_CASH_FLOW": "PRIMARY",
+    "MANAGEMENT_GOVERNANCE": "PRIMARY",
+    "LIQUIDITY_EXITABILITY": "OPTIONAL"
+  },
+  "primary_dependencies": [
+    "FUNDAMENTALS",
+    "BALANCE_SHEET_CASH_FLOW",
+    "MANAGEMENT_GOVERNANCE"
+  ],
+  "secondary_dependencies": [
+    "EARNINGS",
+    "SECTOR_MACRO",
+    "VALUATION"
+  ],
+  "optional_dependencies": [
+    "TECHNICALS",
+    "LIQUIDITY_EXITABILITY"
+  ],
+  "required_evidence_families": [
+    "business_moat_claims",
+    "financial_growth_series",
+    "cash_flow_quality",
+    "leverage",
+    "financial_comparability",
+    "governance_claims",
+    "guidance_delivery"
+  ],
+  "optional_evidence_families": [
+    "quarterly_growth",
+    "margins",
+    "market_regime",
+    "sector_health",
+    "sector_rotation",
+    "valuation",
+    "market_structure",
+    "base_pattern",
+    "relative_strength",
+    "liquidity_pools",
+    "liquidity_events"
+  ],
+  "future_evidence_dependencies": [
+    {
+      "dependency_id": "approved_business_quality_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "PIT_financial_scope_and_cash_comparability",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "governance_and_execution_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "comparable_earnings_period_and_revision_proof",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "PIT_sector_breadth_and_mapping",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "comparable_valuation_method_and_scope",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    }
+  ],
+  "required_diagnostics": [
+    "D15",
+    "D16",
+    "D18",
+    "D19",
+    "D20",
+    "D23",
+    "D28"
+  ],
+  "optional_diagnostics": [
+    "D24",
+    "D25",
+    "D26",
+    "D01",
+    "D02",
+    "D03",
+    "D29"
+  ],
+  "context_diagnostics": [
+    "D04",
+    "D06",
+    "D10",
+    "D37",
+    "D08",
+    "D52"
+  ],
+  "quarantined_diagnostics": [],
+  "required_gates": [
+    "GATE_1_ROTATION",
+    "GATE_2_VELOCITY",
+    "GATE_3_SURVEILLANCE",
+    "GATE_4_TRADE_PLAN",
+    "GATE_5_HEAT",
+    "GATE_6_EARNINGS"
+  ],
+  "gate_applicability_status": "UNRESOLVED_UNTIL_APPROVED_POLICY_AND_ACTION_CONTEXT",
+  "gate_fail_override_allowed": false,
+  "score_relationship": {
+    "global_score_role": "CONTEXT_ONLY",
+    "future_archetype_score_status": "NOT_IMPLEMENTED",
+    "universal_minimum": null,
+    "replaces_global_score": false,
+    "description": "Global Core V1 score is separate broad analysis; archetype fit/score has no approved runtime or numeric policy."
+  },
+  "entry_timing_role": "CONTEXT_ONLY",
+  "valuation_role": "CONSTRAINT",
+  "catalyst_role": "UNAVAILABLE",
+  "portfolio_role": "RESEARCH_CONTEXT_ONLY",
+  "broker_order_authority": false,
+  "authority_origin": "COMPOSITE_DERIVATION",
+  "authority_status": "PROPOSED_NOT_ACTIVE",
+  "lifecycle": "EXTRACTED_DRAFT",
+  "review_status": "IN_REVIEW",
+  "activation_status": "NOT_ACTIVE",
+  "runtime_status": "NOT_IMPLEMENTED_IN_LITE",
+  "requirements_are_design_only": true,
+  "blockers": [
+    "No separate archetype-specific approval, calibrated eligibility policy, OOS/prospective validation or activation.",
+    "Unresolved required dependencies: approved_business_quality_policy, PIT_financial_scope_and_cash_comparability, governance_and_execution_policy, comparable_earnings_period_and_revision_proof, PIT_sector_breadth_and_mapping, comparable_valuation_method_and_scope",
+    "Legacy source proves only the cited narrower research/policy scope; no authority transfer to this new archetype."
+  ],
+  "provenance": [
+    {
+      "origin_kind": "TASK_008_USER_BRIEF",
+      "reference": "Initial 35-archetype catalog and dependency philosophy"
+    },
+    {
+      "origin_kind": "LITE_PRIOR_KNOWLEDGE",
+      "reference": "hsi_knowledge/strategies/registry.json#Task007 strategy authority boundary"
+    },
+    {
+      "origin_kind": "LEGACY_READ_ONLY",
+      "reference": "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md#LONG_TERM_FUNDAMENTAL_COMPOUNDER"
+    }
+  ],
+  "legacy_commit": "f88b44d514fc9a2654040aa04e5350fc9e8660fe",
+  "legacy_sources": [
+    "docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md#LONG_TERM_FUNDAMENTAL_COMPOUNDER"
+  ],
+  "notes": "Founder/user design taxonomy; PRIMARY/SECONDARY are proposed evidence-emphasis labels, not production admission or numeric weights. Missing future evidence blocks later eligibility. No broker/order authority."
+}

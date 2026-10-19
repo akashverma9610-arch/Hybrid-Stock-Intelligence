@@ -1,0 +1,201 @@
+{
+  "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+  "name": "Pre-Breakout Accumulation",
+  "version": "0.1.0",
+  "primary_family": "FAMILY_B_PRICE_FLOW",
+  "secondary_families": [
+    "FAMILY_A_BUSINESS_EARNINGS"
+  ],
+  "aliases": [
+    "PRE_BREAKOUT_COMPRESSION"
+  ],
+  "typical_horizon_description": "Unvalidated pre-breakout positional setup horizon; base lookback is not a holding period.",
+  "horizon_authority": "INTENDED_ONLY_NOT_VALIDATED",
+  "thesis": "Compression and observable flow may precede a breakout; accumulation is a proxy, not institutional identity.",
+  "analysis_stages": [
+    "fundamental quality filter",
+    "sector strength",
+    "base formation",
+    "volatility contraction",
+    "volume dry-up",
+    "supply absorption proxy",
+    "relative-strength improvement",
+    "breakout trigger context"
+  ],
+  "dependency_strengths": {
+    "FUNDAMENTALS": "SECONDARY",
+    "EARNINGS": "SECONDARY",
+    "TECHNICALS": "PRIMARY",
+    "VALUATION": "OPTIONAL",
+    "CATALYST_NEWS": "OPTIONAL",
+    "SECTOR_MACRO": "PRIMARY",
+    "FLOW": "PRIMARY",
+    "BALANCE_SHEET_CASH_FLOW": "NOT_REQUIRED",
+    "MANAGEMENT_GOVERNANCE": "NOT_REQUIRED",
+    "LIQUIDITY_EXITABILITY": "SECONDARY"
+  },
+  "primary_dependencies": [
+    "TECHNICALS",
+    "FLOW",
+    "SECTOR_MACRO"
+  ],
+  "secondary_dependencies": [
+    "FUNDAMENTALS",
+    "EARNINGS",
+    "LIQUIDITY_EXITABILITY"
+  ],
+  "optional_dependencies": [
+    "VALUATION",
+    "CATALYST_NEWS"
+  ],
+  "required_evidence_families": [
+    "market_structure",
+    "base_pattern",
+    "relative_strength",
+    "accumulation_distribution",
+    "rvol",
+    "obv",
+    "market_regime",
+    "sector_health",
+    "sector_rotation"
+  ],
+  "optional_evidence_families": [
+    "business_moat_claims",
+    "financial_growth_series",
+    "quarterly_growth",
+    "margins",
+    "liquidity_pools",
+    "liquidity_events",
+    "valuation",
+    "catalysts"
+  ],
+  "future_evidence_dependencies": [
+    {
+      "dependency_id": "strategy_specific_setup_and_geometry_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "official_delivery_and_flow_proxy_authority",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "PIT_sector_breadth_and_mapping",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "approved_business_quality_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "comparable_earnings_period_and_revision_proof",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "actual_exitability_liquidity_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "selected_prebreakout_policy_asof_and_complete_P1_known_at",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "official_delivery_tick_and_BBW_semantics",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    }
+  ],
+  "required_diagnostics": [
+    "D04",
+    "D06",
+    "D10",
+    "D37",
+    "D07",
+    "D11",
+    "D36",
+    "D50",
+    "D01",
+    "D02",
+    "D03"
+  ],
+  "optional_diagnostics": [
+    "D15",
+    "D16",
+    "D24",
+    "D25",
+    "D26",
+    "D08",
+    "D52"
+  ],
+  "context_diagnostics": [
+    "D29",
+    "D30"
+  ],
+  "quarantined_diagnostics": [
+    "D35"
+  ],
+  "required_gates": [
+    "GATE_1_ROTATION",
+    "GATE_2_VELOCITY",
+    "GATE_3_SURVEILLANCE",
+    "GATE_4_TRADE_PLAN",
+    "GATE_5_HEAT",
+    "GATE_6_EARNINGS"
+  ],
+  "gate_applicability_status": "UNRESOLVED_UNTIL_APPROVED_POLICY_AND_ACTION_CONTEXT",
+  "gate_fail_override_allowed": false,
+  "score_relationship": {
+    "global_score_role": "CONTEXT_ONLY",
+    "future_archetype_score_status": "NOT_IMPLEMENTED",
+    "universal_minimum": null,
+    "replaces_global_score": false,
+    "description": "Global Core V1 score is separate broad analysis; archetype fit/score has no approved runtime or numeric policy."
+  },
+  "entry_timing_role": "CORE",
+  "valuation_role": "CONTEXT_ONLY",
+  "catalyst_role": "CONTEXT_ONLY",
+  "portfolio_role": "RESEARCH_CONTEXT_ONLY",
+  "broker_order_authority": false,
+  "authority_origin": "COMPOSITE_DERIVATION",
+  "authority_status": "PROPOSED_NOT_ACTIVE",
+  "lifecycle": "EXTRACTED_DRAFT",
+  "review_status": "IN_REVIEW",
+  "activation_status": "NOT_ACTIVE",
+  "runtime_status": "NOT_IMPLEMENTED_IN_LITE",
+  "requirements_are_design_only": true,
+  "blockers": [
+    "No separate archetype-specific approval, calibrated eligibility policy, OOS/prospective validation or activation.",
+    "Unresolved required dependencies: strategy_specific_setup_and_geometry_policy, official_delivery_and_flow_proxy_authority, PIT_sector_breadth_and_mapping, approved_business_quality_policy, comparable_earnings_period_and_revision_proof, actual_exitability_liquidity_policy, selected_prebreakout_policy_asof_and_complete_P1_known_at, official_delivery_tick_and_BBW_semantics",
+    "Legacy source proves only the cited narrower research/policy scope; no authority transfer to this new archetype."
+  ],
+  "provenance": [
+    {
+      "origin_kind": "TASK_008_USER_BRIEF",
+      "reference": "Initial 35-archetype catalog and dependency philosophy"
+    },
+    {
+      "origin_kind": "LITE_PRIOR_KNOWLEDGE",
+      "reference": "hsi_knowledge/strategies/registry.json#Task007 strategy authority boundary"
+    },
+    {
+      "origin_kind": "LEGACY_READ_ONLY",
+      "reference": "app/strategies/pre_breakout/policy.py#PreBreakoutApprovedPolicy"
+    },
+    {
+      "origin_kind": "LEGACY_READ_ONLY",
+      "reference": "app/strategies/pre_breakout/setup_assessment.py#GovernedPreBreakoutSetupAssessmentService"
+    }
+  ],
+  "legacy_commit": "f88b44d514fc9a2654040aa04e5350fc9e8660fe",
+  "legacy_sources": [
+    "app/strategies/pre_breakout/policy.py#PreBreakoutApprovedPolicy",
+    "app/strategies/pre_breakout/setup_assessment.py#GovernedPreBreakoutSetupAssessmentService"
+  ],
+  "notes": "Founder/user design taxonomy; PRIMARY/SECONDARY are proposed evidence-emphasis labels, not production admission or numeric weights. Missing future evidence blocks later eligibility. No broker/order authority."
+}
