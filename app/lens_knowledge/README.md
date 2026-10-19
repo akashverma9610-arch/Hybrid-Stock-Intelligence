@@ -33,3 +33,13 @@ an immutable page in the existing snapshot repository. It records the exact
 catalog fingerprint and per-security diagnostic-content fingerprints, rejects
 changed content at an identical page identity, and verifies reads. This is not a
 scheduler, a complete scan checkpoint, or a verified historical data lineage.
+
+`stored_cycle.run_stored_coverage_page` explicitly composes an existing
+`StockDiagnosticInputAssembler`, `Canonical61DiagnosticRunner`, and the draft
+coverage store. It verifies that the supplied instrument set matches the
+frozen snapshot, computes diagnostics once per selected security per call,
+then shares those results across all draft lenses and saves one page. It is
+research-only and has no automatic scheduling or API. Input readers must be
+configured by the caller to read stored data; a Python protocol alone does not
+prove their origin or certify complete NSE/PIT coverage. Replays rerun the
+diagnostics before the immutable page store accepts an identical result.
