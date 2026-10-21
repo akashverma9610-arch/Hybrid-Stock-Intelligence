@@ -5,6 +5,7 @@ import { useNavigation } from '../../context/NavigationContext';
 import { P1LifecyclePanel } from '../production/P1LifecyclePanel';
 import type { MarketWideWatchRecordData } from '../../types/devConsole';
 import { cashLabel, csvCell, display, filterWatch, human, sectorCounts } from './presentation';
+import { OpportunityLensCatalogue } from './OpportunityLensCatalogue';
 import { useSenseEdgeEvidence } from './useSenseEdgeEvidence';
 import type { SenseEdgeEvidence } from './useSenseEdgeEvidence';
 
@@ -45,6 +46,7 @@ function OpportunityView({data, loading}: {data: SenseEdgeEvidence; loading: boo
   const current = rows.find((row) => row.watchId === selected) ?? rows[0];
   const labels = [...new Set((watch?.records ?? []).flatMap((row)=>row.archetypes))].sort();
   return <>
+    <OpportunityLensCatalogue/>
     <div className="se-metrics"><Metric label="Watch opportunities" value={display(watch?.watchCandidateCount)} detail="Canonical discovery records" icon={<Compass/>} tone="gold"/><Metric label="Evidence ready" value={display(watch?.evidenceReadyCount)} detail="Source coverage, not conviction" icon={<Clock3/>}/><Metric label="Valid setups" value={display(watch?.validSetupCount)} detail="Setup evidence only" icon={<Leaf/>} tone="green"/><Metric label="Governed execution" value="Not authorized" detail="No broker or order authority" icon={<Target/>} tone="purple"/></div>
     <div className="se-filters"><span>Horizon</span><Pill>Unavailable</Pill><small>No approved horizon in this Watch response</small><label>Archetype<select aria-label="Filter archetype" value={filter} onChange={(e)=>setFilter(e.target.value)}><option value="ALL">All archetypes</option>{labels.map((label)=><option key={label} value={label}>{human(label)}</option>)}</select></label></div>
     <div className="se-filters"><label>Records<select aria-label="Watch record scope" value={activeOnly?'ACTIVE':'ALL'} onChange={e=>setActiveOnly(e.target.value==='ACTIVE')}><option value="ACTIVE">Native active Watch only</option><option value="ALL">All evaluated records (includes blocked)</option></select></label><small>{display(watch?.universeCount)} universe members; an evaluated record is not automatically an opportunity.</small></div>
