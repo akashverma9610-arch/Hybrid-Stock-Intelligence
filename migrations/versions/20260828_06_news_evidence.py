@@ -1,6 +1,6 @@
 """News evidence metadata table (no credentials or article-page content)."""
 revision = "20260828_06_news_evidence"
-down_revision = "20260827_05_financial_facts"
+down_revision = "20260827_05"
 branch_labels = None
 depends_on = None
 
