@@ -65,12 +65,43 @@ internal compute-once refactor must first prove exact canonical identity,
 as-of, timeframe, source vintage, parameters, output/lineage parity and
 call-count reduction; it must not silently rewrite old source fingerprints.
 
+## Diagnostic-knowledge disposition and external provenance
+
+The 65 unmatched diagnostic-knowledge files comprise 61 catalog records plus
+`CALCULATION_OWNER_MAP.json`, `EVIDENCE_DEPENDENCY_CATALOG.json`, `index.json`
+and `README.md`. All 61 catalog records declare
+`deterministic_computation=false`, have no effective date and have no assigned
+calculation owner. **59** are `REVIEW_REQUIRED`; `D35` and `D57` are
+`QUARANTINED`. The two maps are conceptual source/dependency inventories, not
+a Lite runtime. Disposition: retain these 65 in historical provenance; do not
+copy them into the canonical runtime as another 61-rule registry. Their
+content remains available for a separately reviewed semantic crosswalk.
+
+Six imported taxonomy records contain a literal reference to the Lite
+`hsi_knowledge/strategies/registry.json#Task007` source. The draft catalog
+does not load that file as strategy authority, but its historical reference
+must remain recoverable. Removing the Lite remote without a durable, verified
+archive or an approved provenance-location mapping would break that audit
+trail. The referenced Lite registry's SHA-256 is
+`9801a85b4567075144fb3f56eafe2b661a838b312424bc69b1fa13be987feca1`.
+No reference was silently rewritten in the byte-identical taxonomy.
+
+A complete local Git bundle was created at the Git-ignored
+`D:/nse-stock-manager/.tmp/hsi-lite-fcf288918591b0b6383dbc66bac70d7e9a4010fc-full.bundle`.
+`git bundle verify` confirmed complete history and the main/origin refs at
+the Lite SHA. Its SHA-256 is
+`183979349f1b501b361d16efb977c0cbbb0371203ee902909278d7df7d618ecd`.
+This is one **local** recoverable copy, not an off-machine backup and not
+sufficient alone to authorize deleting the GitHub repository.
+
 ## Retirement gate
 
 No Lite repository or funnel deletion is approved by this audit. Before Lite
-retirement, classify each of the 191 non-identical files as superseded,
+retirement, classify the remaining 126 non-identical files as superseded,
 uniquely retained, or intentionally archived; preserve a recoverable full Git
-history and verify no live consumer depends on it. Before removing a funnel
+history in a durable location and verify no live consumer depends on it.
+The 65 diagnostic-knowledge files above are designated historical-only, not
+approved runtime replacements. Before removing a funnel
 path, replace its currently consumed candidate identity, origin, coverage,
 PIT and failure semantics and prove parity with focused and full regression.
 Only then should the exact deletion targets be reviewed. No data, credentials,
