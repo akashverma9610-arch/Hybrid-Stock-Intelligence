@@ -92,6 +92,23 @@ def test_repeated_calls_and_equivalent_timezone_have_identical_content():
     assert binding.run_canonical_coverage_page(**kw) == first
 
 
+@pytest.mark.parametrize("missing", [False, True])
+def test_page_reuses_one_validated_native_projection_per_stock(monkeypatch, missing):
+    value = bundle(Store(missing=(CoreApiSnapshotFamily.NSE_CORPORATE_ACTION_QUERY_RECEIPT,)) if missing else None)
+    kw = args(value)
+    expected = binding.run_canonical_coverage_page(**kw)
+    original = binding.technical_from_native
+    calls = []
+
+    def counted(native):
+        calls.append(native)
+        return original(native)
+
+    monkeypatch.setattr(binding, "technical_from_native", counted)
+    assert binding.run_canonical_coverage_page(**kw) == expected
+    assert calls == [value.native]
+
+
 @pytest.mark.parametrize("change", ["missing", "future_created", "future_registered", "wrong_id", "tampered"])
 def test_bad_governance_fails_before_diagnostic_run(change, monkeypatch):
     kw = args()

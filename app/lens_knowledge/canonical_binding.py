@@ -74,6 +74,10 @@ class CanonicalLensInput:
     financial: CanonicalFinancialDiagnosticInput
 
     def __post_init__(self) -> None:
+        self._validated_basis()
+
+    def _validated_basis(self) -> tuple[CanonicalTechnicalDiagnosticInput | None, str]:
+        """Validate once and retain the exact basis for this page's lineage."""
         technical = technical_from_native(self.native)
         self.benchmark_sector.__post_init__()
         self.financial.__post_init__()
@@ -84,6 +88,10 @@ class CanonicalLensInput:
                 raise ValueError("LENS_CANONICAL_INPUT_IDENTITY_MISMATCH")
         if self.benchmark_sector.technical_input != technical:
             raise ValueError("LENS_BENCHMARK_TECHNICAL_BINDING_MISMATCH")
+        fingerprint = _fingerprint((self.native.certified_read.fingerprint,
+            self.native.action_window_fingerprint, None if technical is None else technical.fingerprint,
+            self.benchmark_sector.fingerprint, self.financial.fingerprint))
+        return technical, fingerprint
 
     @property
     def instrument_id(self) -> str:
@@ -91,11 +99,7 @@ class CanonicalLensInput:
 
     @property
     def fingerprint(self) -> str:
-        self.__post_init__()
-        technical = technical_from_native(self.native)
-        return _fingerprint((self.native.certified_read.fingerprint,
-            self.native.action_window_fingerprint, None if technical is None else technical.fingerprint,
-            self.benchmark_sector.fingerprint, self.financial.fingerprint))
+        return self._validated_basis()[1]
 
 
 @dataclass(frozen=True, slots=True)
@@ -139,8 +143,9 @@ def run_canonical_coverage_page(
         raise ValueError("LENS_CANONICAL_PAGE_INPUTS_REQUIRED")
     if not isinstance(observations, tuple) or len({x.id for x in observations}) != len(observations):
         raise ValueError("LENS_OBSERVATION_DUPLICATE_OR_MUTABLE")
+    validated = {}
     for item in inputs:
-        item.__post_init__()
+        validated[item.instrument_id] = item._validated_basis()
         if _utc(item.native.certified_read.request.evaluation_as_of) != cutoff:
             raise ValueError("LENS_INPUT_CUTOFF_MISMATCH")
     runner = Canonical61DiagnosticRunner()
@@ -156,14 +161,15 @@ def run_canonical_coverage_page(
     results, lineage = {}, []
     for instrument_id in selected:
         bundle = bundles[instrument_id]
+        technical, input_fingerprint = validated[instrument_id]
         evidence = assembler.assemble(by_id[instrument_id], cutoff,
-            technical_input=technical_from_native(bundle.native),
+            technical_input=technical,
             benchmark_sector_input=bundle.benchmark_sector, financial_input=bundle.financial)
         # The existing technical contract cannot represent wholly absent bars.
         # Do not fall back to generic observations: retain an unavailable row.
         if evidence.technical_input is None:
             results[instrument_id] = ()
-            lineage.append((instrument_id, _fingerprint((bundle.fingerprint,
+            lineage.append((instrument_id, _fingerprint((input_fingerprint,
                 tuple(asdict(x) for x in evidence.snapshot.observations)))))
             continue
         run = runner.run(evidence)
@@ -183,7 +189,7 @@ def run_canonical_coverage_page(
         results[instrument_id] = tuple(canonical)
         # Includes only PIT-admitted observations, retaining all source timestamps.
         admitted = tuple(asdict(x) for x in evidence.snapshot.observations)
-        lineage.append((instrument_id, _fingerprint((bundle.fingerprint, admitted))))
+        lineage.append((instrument_id, _fingerprint((input_fingerprint, admitted))))
     batch = assess_universe_batch(universe=universe, as_of=cutoff,
         diagnostics_by_instrument=results, cursor=cursor, batch_size=batch_size)
     return replace(batch, input_basis="CANONICAL_CURRENT_DESCRIPTIVE",

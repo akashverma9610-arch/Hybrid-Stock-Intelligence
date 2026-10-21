@@ -50,3 +50,16 @@ It requires typed native inputs and approved V1 diagnostic governance; returns
 current-descriptive, non-active coverage only; and performs no persistence.
 `save_canonical_coverage_page` is a separate opt-in draft write requiring explicit
 retention time. Neither function starts P1, acquires sources or activates lenses.
+
+Within one canonical coverage page, each selected stock's native technical
+projection is validated once and the same typed result is passed to the
+existing 61-diagnostic runner and its source-lineage fingerprint. The 35 draft
+lenses reuse those diagnostic results; they do not recalculate them. This
+page-scoped reuse does not cache across source vintages, cutoffs, or calls.
+
+The existing multi-funnel implementation is not a duplicate of this draft
+coverage layer: `app.api.agent_market_scan` still composes its read-only scan
+from the shared multi-funnel service. Keep that consumer and its candidate
+origin/coverage lineage until an exact replacement and parity are proven.
+The imported taxonomy and matrix are only a subset of the separate HSI Lite
+repository; importing them does not authorize deleting that repository.
