@@ -86,6 +86,36 @@ trail. The referenced Lite registry's SHA-256 is
 `9801a85b4567075144fb3f56eafe2b661a838b312424bc69b1fa13be987feca1`.
 No reference was silently rewritten in the byte-identical taxonomy.
 
+## Remaining 126-file disposition
+
+The other 126 unmatched files were inspected by group at the frozen Lite
+commit. This is a **retention classification**, not a claim that each has
+been semantically superseded. There is no Lite application Python module:
+its eight tracked `.py` files are tests under `tests/`. Its `pyproject.toml`
+declares FastAPI and Uvicorn dependencies but defines no application
+entrypoint. Code presence and test contracts are not operational proof.
+
+| Group | Count | Observed state and canonical owner boundary | Disposition |
+| --- | ---: | --- | --- |
+| Discovery | 15 | Every JSON declares `DESIGN_ONLY` and `runtime_implemented=false`. Canonical `app/intelligence/multi_funnel_*.py`, `shared_market_scan.py` and the `hsi_scan_market` API already own the live read-only discovery path. | Archive Lite designs; do not replace the consumed funnel or assert stage-by-stage parity. |
+| Gates | 10 | Six catalog records are review-required knowledge, and the index marks Lite `REVIEW_REQUIRED_KNOWLEDGE_ONLY`. Canonical `app/gates/production_policy.py` owns active V1; V2 successor semantics remain separate and inactive. | Archive Lite extraction; no gate activation or score override. |
+| Governance | 10 | Nine JSON records are `REVIEW_REQUIRED`, `deterministic_computation=false`, with no effective date; the tenth is a README. Canonical governance/strategy resolution remains in its existing policy and repository paths. | Archive as source crosswalk; no competing policy registry. |
+| Portfolio | 11 | Nine policy JSON records are `REVIEW_REQUIRED`, `deterministic_computation=false`, with no effective date; one closure map and one README are descriptive. Canonical `app/portfolio/` and `app/rotation/` own calculations and private state. | Archive; do not transfer action authority or private data. |
+| Schemas | 8 | JSON Schema documents validate Lite knowledge envelopes, not canonical API, database, or runtime contracts. | Preserve with their knowledge artifacts; no canonical schema replacement. |
+| Scoring | 2 | `decision_score_v1.json` is review-required extraction despite referring to an accepted legacy calculation; the other file is a dependency map. Canonical `app/scoring/engine.py` remains calculation owner. | Archive; do not change Decision Score weights. |
+| Other strategy knowledge | 13 | Registry says `registry_presence_is_approval=false`, `approval_is_runtime_activation=false`, and default `NOT_IMPLEMENTED_IN_LITE`; six catalog entries are extracted drafts/review-required, not active strategies. The imported taxonomy retains six literal registry references. Canonical `app/intelligence/hsi_signal_strategy_registry.py` governs approved-policy resolution. | Preserve the Lite registry and supporting maps in recoverable history; no strategy-policy promotion. |
+| Documentation | 37 | Includes the Lite PRD/TRD, design contracts, extraction/authority audits and closure history. They document intent and provenance rather than a proven running service. | Retain as historical design/audit record; do not overwrite current canonical governance. |
+| Tests | 12 | Eight Python tests plus four JSON fixtures verify Lite knowledge schemas, catalog counts and fail-closed static contracts; they do not exercise a Lite server or live source adapter. | Retain beside archived knowledge; canonical runtime tests are not replaced. |
+| Root/manifest | 8 | Includes minimal packaging, `.env.example`, Git metadata rules, README, prompt/spec documents, and the legacy source manifest. The manifest says inventory-only, `final_rules_present=false`. | Preserve repository history and manifest; no environment/config migration. |
+
+Thus all 126 are **historical/archive-retained** for now, not safe deletion
+targets or another runtime Brain. There is no evidence from this tracked-file
+inspection of a Lite service that must be migrated. The canonical active
+scanner consumer is independent of Lite's files; this does not prove that
+every external or deployment consumer of the Lite GitHub repository is absent.
+Unique Lite documentation, schemas, fixtures and provenance still have value,
+so byte-overlap alone cannot justify deleting the remote.
+
 A complete local Git bundle was created at the Git-ignored
 `D:/nse-stock-manager/.tmp/hsi-lite-fcf288918591b0b6383dbc66bac70d7e9a4010fc-full.bundle`.
 `git bundle verify` confirmed complete history and the main/origin refs at
@@ -96,10 +126,13 @@ sufficient alone to authorize deleting the GitHub repository.
 
 ## Retirement gate
 
-No Lite repository or funnel deletion is approved by this audit. Before Lite
-retirement, classify the remaining 126 non-identical files as superseded,
-uniquely retained, or intentionally archived; preserve a recoverable full Git
-history in a durable location and verify no live consumer depends on it.
+No Lite repository or funnel deletion is approved by this audit. The remaining
+126 non-identical files are classified above as intentionally archive-retained,
+not silently merged or superseded. Before Lite remote retirement, preserve a
+recoverable full Git history off-machine, verify it independently, choose a
+durable provenance location for the six literal registry references, and
+verify no external/deployment consumer depends on the remote. Prefer a
+read-only archive over irreversible deletion while those checks are open.
 The 65 diagnostic-knowledge files above are designated historical-only, not
 approved runtime replacements. Before removing a funnel
 path, replace its currently consumed candidate identity, origin, coverage,
