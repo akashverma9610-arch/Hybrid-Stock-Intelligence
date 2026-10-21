@@ -190,6 +190,8 @@ def test_upstox_request_forensics_route_is_local_only_redacted_and_does_not_muta
 
 
 def test_u04_fundamentals_route_returns_structural_evidence_without_secret_or_connection_mutation(monkeypatch) -> None:
+    # This structural route test must never fall back to a host production DB.
+    monkeypatch.setattr("app.api.routes.connections._apollohosp_bse_facts", lambda _: ())
     store = InMemoryCredentialStore()
     service = ProviderConnectionService(SQLiteConnectionProfileRepository(), store, {"upstox": UpstoxTester()}, clock=lambda: T)
     secret = "synthetic-u04-token"

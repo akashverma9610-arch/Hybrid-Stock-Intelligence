@@ -1,0 +1,5694 @@
+{
+  "version": "0.1.0",
+  "status": "DESIGN_ONLY_NOT_ACTIVE",
+  "archetype_count": 35,
+  "dimension_count": 10,
+  "row_count": 350,
+  "source": "TASK_008_USER_BRIEF#DEPENDENCY_LEGEND",
+  "requirements_are_design_only": true,
+  "strength_legend": {
+    "PRIMARY": "Core evidence dimension for this proposed archetype; does not imply approved eligibility.",
+    "SECONDARY": "Supporting evidence dimension; separate source/policy proof remains required.",
+    "OPTIONAL": "Context that may be considered only under future policy.",
+    "NOT_REQUIRED": "Do not fetch or calculate by default for this archetype."
+  },
+  "dimensions": [
+    "FUNDAMENTALS",
+    "EARNINGS",
+    "TECHNICALS",
+    "VALUATION",
+    "CATALYST_NEWS",
+    "SECTOR_MACRO",
+    "FLOW",
+    "BALANCE_SHEET_CASH_FLOW",
+    "MANAGEMENT_GOVERNANCE",
+    "LIQUIDITY_EXITABILITY"
+  ],
+  "rows": [
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "FUNDAMENTAL_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MID_TERM_COMPOUNDER",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PRE_BREAKOUT_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CONFIRMED_BREAKOUT",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "BREAKOUT_RETEST",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_MOMENTUM",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARGIN_EXPANSION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CASH_FLOW_INFLECTION",
+      "primary_family": "FAMILY_A_BUSINESS_EARNINGS",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DELEVERAGING",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "TURNAROUND_RECOVERY",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "RERATING_CANDIDATE",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "QARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "GARP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEEP_VALUE_MEAN_REVERSION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CYCLICAL_RECOVERY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "COMMODITY_UPCYCLE",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SECTOR_ROTATION_LEADER",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_RED_RESILIENCE",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "diagnostic_ids": [
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "unresolved_dependencies": [
+        "official_delivery_and_flow_proxy_authority"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "INSTITUTIONAL_ACCUMULATION",
+      "primary_family": "FAMILY_B_PRICE_FLOW",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ORDER_BOOK_CAPEX_CYCLE",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "CAPACITY_EXPANSION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EVENT_CATALYST",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "SPECIAL_SITUATION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DEMERGER_VALUE_UNLOCK",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "IMPORT_SUBSTITUTION",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EXPORT_SCALING",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "MARKET_SHARE_GAINER",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "ASSET_MONETISATION",
+      "primary_family": "FAMILY_C_RECOVERY_RERATING",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "POLICY_REGULATORY_BENEFICIARY",
+      "primary_family": "FAMILY_E_CATALYST",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "primary_family": "FAMILY_D_INDUSTRY_CYCLE",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FUNDAMENTALS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "diagnostic_ids": [
+        "D15",
+        "D16"
+      ],
+      "unresolved_dependencies": [
+        "approved_business_quality_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "EARNINGS",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "quarterly_growth",
+        "margins"
+      ],
+      "diagnostic_ids": [
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "unresolved_dependencies": [
+        "comparable_earnings_period_and_revision_proof"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "TECHNICALS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength"
+      ],
+      "diagnostic_ids": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "unresolved_dependencies": [
+        "strategy_specific_setup_and_geometry_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "VALUATION",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "valuation"
+      ],
+      "diagnostic_ids": [
+        "D29"
+      ],
+      "unresolved_dependencies": [
+        "comparable_valuation_method_and_scope"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "CATALYST_NEWS",
+      "dependency_strength": "OPTIONAL",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "diagnostic_ids": [
+        "D30"
+      ],
+      "unresolved_dependencies": [
+        "exact_event_identity_known_at_and_transmission"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "SECTOR_MACRO",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "diagnostic_ids": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "unresolved_dependencies": [
+        "PIT_sector_breadth_and_mapping"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "FLOW",
+      "dependency_strength": "NOT_REQUIRED",
+      "evidence_families": [],
+      "diagnostic_ids": [],
+      "unresolved_dependencies": [],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "BALANCE_SHEET_CASH_FLOW",
+      "dependency_strength": "SECONDARY",
+      "evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "diagnostic_ids": [
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "unresolved_dependencies": [
+        "PIT_financial_scope_and_cash_comparability"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "MANAGEMENT_GOVERNANCE",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "diagnostic_ids": [
+        "D23",
+        "D28"
+      ],
+      "unresolved_dependencies": [
+        "governance_and_execution_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    },
+    {
+      "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+      "dependency_dimension": "LIQUIDITY_EXITABILITY",
+      "dependency_strength": "PRIMARY",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "diagnostic_ids": [
+        "D08",
+        "D52"
+      ],
+      "unresolved_dependencies": [
+        "actual_exitability_liquidity_policy"
+      ],
+      "future_runtime_status": "NOT_IMPLEMENTED_IN_LITE"
+    }
+  ]
+}

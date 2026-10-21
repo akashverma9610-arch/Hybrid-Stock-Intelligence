@@ -46,6 +46,8 @@ It is being built incrementally. The current repository contains a provider-inde
 - [Post-V1 Product Architecture — One Brain, Multiple Signal Windows](docs/architecture/POST_V1_PRODUCT_ARCHITECTURE.md)
 - [P1 Watch-only HSISignal Foundation acceptance](docs/architecture/POST_V1_HSI_SIGNAL_P1_ACTIVATION_PROPOSAL.md)
 - [Post-V1 Strategy and Signal-Window Catalogue](docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md)
+- [HSI / Lite lens reconciliation and 61-diagnostic dependency crosswalk (audit only; not active)](docs/architecture/HSI_LENS_REPOSITORY_RECONCILIATION_AND_DEPENDENCY_CROSSWALK_V1.md)
+- [Isolated lens foundation and canonical input binding (not active)](docs/architecture/HSI_LENS_FOUNDATION_ISOLATED_RECONCILIATION_AND_CANONICAL_BINDING_V1.md)
 - [Batch 1 Event/Catalyst and Market-Red Resilience policy proposal](docs/architecture/POST_V1_BATCH_1_EVENT_CATALYST_AND_RESILIENCE_POLICY_PROPOSAL.md)
 - [Batch 1 historical calibration research receipt](docs/architecture/POST_V1_BATCH_1_HISTORICAL_CALIBRATION_RESEARCH.md)
 - [Long-Term Thesis Family policy approval pack](docs/architecture/POST_V1_LONG_TERM_THESIS_FAMILY_POLICY_PROPOSAL.md)

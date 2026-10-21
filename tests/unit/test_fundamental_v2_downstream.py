@@ -230,6 +230,10 @@ def test_active_registry_weights_and_forbidden_boundaries_unchanged():
                     assert accepted_current.count(marker) >= 1
                     accepted_current = accepted_current.replace(marker,
                         '\n    P1_SIGNAL_LIFECYCLE_BATCH = "P1_SIGNAL_LIFECYCLE_BATCH"' + marker, 1)
+                    # Isolated non-active lens storage adds exactly one family;
+                    # all historical enum positions and other bytes stay pinned.
+                    accepted_current = accepted_current.replace(marker,
+                        '\n    DRAFT_LENS_COVERAGE = "DRAFT_LENS_COVERAGE"' + marker, 1)
                 assert (ROOT/path).read_text(encoding='utf-8')==accepted_current,path
             source=(subprocess.check_output(['git','show','01593df3d89c57d982f67b25bf8819281474d9ff:'+path],cwd=ROOT,text=True,encoding='utf-8')
                     if path in lineage_repairs|accepted_source_extensions|catalyst_bindings else (ROOT/path).read_text(encoding='utf-8'))

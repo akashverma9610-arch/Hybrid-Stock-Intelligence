@@ -1,0 +1,3718 @@
+{
+  "artifact": "HSI_LENS_REPOSITORY_RECONCILIATION_AND_DEPENDENCY_CROSSWALK_V1",
+  "version": "1",
+  "status": "AUDIT_ONLY / INTEGRATION_NOT_EXECUTED / NOT_ACTIVE",
+  "authority": "NON_RUNTIME_SOURCE_CROSSWALK_NOT_A_STRATEGY_REGISTRY",
+  "baselines": {
+    "core_local": "f88b44d514fc9a2654040aa04e5350fc9e8660fe",
+    "common_base": "810590be84d483f02be0a6518cf84fba02d8bab9",
+    "github_main_observed": "6f80be689029008e02c9232badb66aace28e40a1",
+    "draft_pr_1_head": "243b20eae80e3c3d76803549c41500c7fa016821",
+    "lite": "fcf288918591b0b6383dbc66bac70d7e9a4010fc"
+  },
+  "boundaries": {
+    "core_v1": "ACTIVE",
+    "execution_gate_v2": "NOT_ACTIVE",
+    "p1_prospective_start": "UNSET",
+    "p1_recorder": "NOT_ACTIVE",
+    "lens_activation": false,
+    "analytics_ai_implemented_by_this_slice": false,
+    "database_accessed": false,
+    "providers_contacted": false
+  },
+  "historical_diagnostic_audit": {
+    "as_of": "2026-09-10T00:00:00+00:00",
+    "fingerprint": "sha256:586123ce4e59f57dd27f4cde7754115af2f452f01325b828d2a789ef542bf5ff",
+    "interpretation": "HISTORICAL_DESCRIPTIVE_ONLY_NOT_CURRENT_OR_UNIVERSE_READINESS"
+  },
+  "matrix": {
+    "rows": 350,
+    "dimensions": 10,
+    "strength_counts": {
+      "PRIMARY": 91,
+      "OPTIONAL": 63,
+      "SECONDARY": 98,
+      "NOT_REQUIRED": 98
+    },
+    "mapped_diagnostics": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D06",
+      "D07",
+      "D08",
+      "D10",
+      "D11",
+      "D15",
+      "D16",
+      "D18",
+      "D19",
+      "D20",
+      "D23",
+      "D24",
+      "D25",
+      "D26",
+      "D28",
+      "D29",
+      "D30",
+      "D36",
+      "D37",
+      "D50",
+      "D52"
+    ]
+  },
+  "unresolved_dependency_labels": [
+    {
+      "id": "G01",
+      "source_label": "PIT_financial_scope_and_cash_comparability",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G02",
+      "source_label": "PIT_sector_breadth_and_mapping",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G03",
+      "source_label": "actual_exitability_liquidity_policy",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G04",
+      "source_label": "approved_business_quality_policy",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G05",
+      "source_label": "comparable_earnings_period_and_revision_proof",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G06",
+      "source_label": "comparable_valuation_method_and_scope",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G07",
+      "source_label": "exact_event_identity_known_at_and_transmission",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G08",
+      "source_label": "governance_and_execution_policy",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G09",
+      "source_label": "official_delivery_and_flow_proxy_authority",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G10",
+      "source_label": "strategy_specific_setup_and_geometry_policy",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "DIMENSION_MATRIX"
+    },
+    {
+      "id": "G11",
+      "source_label": "actual_institutional_identity_not_inferable_from_proxies",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G12",
+      "source_label": "approved_post_result_reaction_window",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G13",
+      "source_label": "approved_price_reaction_method",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G14",
+      "source_label": "calibrated_weak_market_definition",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G15",
+      "source_label": "event_family_materiality_and_expiry_policy",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G16",
+      "source_label": "historical_breadth_and_aligned_benchmark_sector",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G17",
+      "source_label": "official_delivery_tick_and_BBW_semantics",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G18",
+      "source_label": "persistence_and_expiry_policy",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G19",
+      "source_label": "selected_prebreakout_policy_asof_and_complete_P1_known_at",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G20",
+      "source_label": "verified_company_exposure",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    },
+    {
+      "id": "G21",
+      "source_label": "verified_surprise_baseline",
+      "status": "UNRESOLVED_IN_LITE_DESIGN_NOT_A_CORE_AVAILABILITY_ASSERTION",
+      "origin": "LENS_SPECIFIC_TAXONOMY"
+    }
+  ],
+  "lenses": [
+    {
+      "id": "ASSET_MONETISATION",
+      "source_path": "strategies/taxonomy/ASSET_MONETISATION.json",
+      "source_sha256": "132d36c5c9099b285d2abedd0d6f6a39f66db5f4ba60108c8a976a1eb94a982d",
+      "required_diagnostics": [
+        "D30",
+        "D29",
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D23",
+        "D28",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "valuation",
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G06",
+        "G01",
+        "G04",
+        "G08",
+        "G03"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "BREAKOUT_RETEST",
+      "source_path": "strategies/taxonomy/BREAKOUT_RETEST.json",
+      "source_sha256": "aded7e3c37d3954d1608c51a5d0c2af88540bd2b6a1e188da932b24d1515ad97",
+      "required_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D07",
+        "D11",
+        "D36",
+        "D50",
+        "D08",
+        "D52"
+      ],
+      "optional_diagnostics": [
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "context_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "required_evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength",
+        "accumulation_distribution",
+        "rvol",
+        "obv",
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "unresolved_dependencies": [
+        "G10",
+        "G09",
+        "G03",
+        "G02"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "CAPACITY_EXPANSION",
+      "source_path": "strategies/taxonomy/CAPACITY_EXPANSION.json",
+      "source_sha256": "a69cbb3dc450a0d7be59334a38cc5e32b714e08ba2af49ec9f1898086819c151",
+      "required_diagnostics": [
+        "D30",
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D23",
+        "D28",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G04",
+        "G05",
+        "G01",
+        "G08",
+        "G02"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "CASH_FLOW_INFLECTION",
+      "source_path": "strategies/taxonomy/CASH_FLOW_INFLECTION.json",
+      "source_sha256": "2ad191b3a0225ce1faa2aef8c24e4c1781e9ccc8fa59b5ae63eb91db3110c552",
+      "required_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D23",
+        "D28",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G01",
+        "G05",
+        "G04",
+        "G08",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "COMMODITY_UPCYCLE",
+      "source_path": "strategies/taxonomy/COMMODITY_UPCYCLE.json",
+      "source_sha256": "0a310779e7a44a9eb41acc52c3bf3aaaf649a5dd1e36bda049c02ce38b207083",
+      "required_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D18",
+        "D19",
+        "D20",
+        "D29",
+        "D30"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D08",
+        "D52"
+      ],
+      "required_evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G02",
+        "G05",
+        "G04",
+        "G01",
+        "G06",
+        "G07"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "CONFIRMED_BREAKOUT",
+      "source_path": "strategies/taxonomy/CONFIRMED_BREAKOUT.json",
+      "source_sha256": "4d8225248ee2190bb81c6c12d66e2e0430237abb1cfbff02af72b704dd8ebcb1",
+      "required_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "optional_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D29"
+      ],
+      "required_evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength",
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "unresolved_dependencies": [
+        "G10",
+        "G09",
+        "G02",
+        "G03"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "CYCLICAL_RECOVERY",
+      "source_path": "strategies/taxonomy/CYCLICAL_RECOVERY.json",
+      "source_sha256": "3b0217ea2867d7a032ec66ec0a02403582035426f9dbf9c54dfe119ad990c419",
+      "required_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D29",
+        "D30"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation",
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G02",
+        "G04",
+        "G05",
+        "G01",
+        "G06",
+        "G07"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "DEEP_VALUE_MEAN_REVERSION",
+      "source_path": "strategies/taxonomy/DEEP_VALUE_MEAN_REVERSION.json",
+      "source_sha256": "90b52617abcd7162aa38dd429e7d47b984bccf769df9506a3c1c38632c7a8882",
+      "required_diagnostics": [
+        "D29",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D30",
+        "D23",
+        "D28"
+      ],
+      "required_evidence_families": [
+        "valuation",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G06",
+        "G04",
+        "G01",
+        "G10",
+        "G03"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "DELEVERAGING",
+      "source_path": "strategies/taxonomy/DELEVERAGING.json",
+      "source_sha256": "3e9e89b8d45d92de98bc88f11808e96b54d75d217f1ea557ef5a6a913e9fa727",
+      "required_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D29",
+        "D23",
+        "D28"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G01",
+        "G04",
+        "G05",
+        "G06",
+        "G08"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "DEMERGER_VALUE_UNLOCK",
+      "source_path": "strategies/taxonomy/DEMERGER_VALUE_UNLOCK.json",
+      "source_sha256": "e4dc4f695fba9d182a32bbf2890658e52b886206d0f114ee123aa224339d91c6",
+      "required_diagnostics": [
+        "D30",
+        "D29",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D23",
+        "D28",
+        "D18",
+        "D19",
+        "D20",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "valuation",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G06",
+        "G04",
+        "G08",
+        "G01",
+        "G03"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "DOMESTIC_CAPEX_BENEFICIARY",
+      "source_path": "strategies/taxonomy/DOMESTIC_CAPEX_BENEFICIARY.json",
+      "source_sha256": "5d8ff0e6c6aebd592ab39e3cefcc778d62cba71aa1b4f44156fc4f72161ca20b",
+      "required_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D30",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D18",
+        "D19",
+        "D20",
+        "D23",
+        "D28"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation",
+        "catalysts",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G02",
+        "G07",
+        "G04",
+        "G05",
+        "G01",
+        "G08"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+      "source_path": "strategies/taxonomy/EARLY_EMERGING_LEADER_SMALL_MIDCAP.json",
+      "source_sha256": "7e120c947b2594e57c1f3ac20750e986ee5ae8fca1f634ee4420dbba00cf1f7d",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D23",
+        "D28",
+        "D08",
+        "D52"
+      ],
+      "optional_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D18",
+        "D19",
+        "D20",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D30"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins",
+        "governance_claims",
+        "guidance_delivery",
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G05",
+        "G08",
+        "G03",
+        "G02",
+        "G01",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "EARNINGS_MOMENTUM",
+      "source_path": "strategies/taxonomy/EARNINGS_MOMENTUM.json",
+      "source_sha256": "2e9a88c1fa7001877510fefa9c9fc4eba211cb8e4f3158d22db14f9784e8e8da",
+      "required_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "required_evidence_families": [
+        "quarterly_growth",
+        "margins",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G05",
+        "G04",
+        "G10",
+        "G09"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+      "source_path": "strategies/taxonomy/EARNINGS_SURPRISE_POST_RESULT_DRIFT.json",
+      "source_sha256": "20f11c58c30a9447a1bf216d4a9e34ab3b67132e69e37f08264b6bea02e54b42",
+      "required_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D30"
+      ],
+      "optional_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D07",
+        "D11",
+        "D36",
+        "D50",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D29"
+      ],
+      "required_evidence_families": [
+        "quarterly_growth",
+        "margins",
+        "catalysts"
+      ],
+      "unresolved_dependencies": [
+        "G05",
+        "G07",
+        "G10",
+        "G09",
+        "G03",
+        "G21",
+        "G12"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "EVENT_CATALYST",
+      "source_path": "strategies/taxonomy/EVENT_CATALYST.json",
+      "source_sha256": "304d39dbe0f67d08cf7f6c3ac13afa32de2016d215525c10f06bdea77d6edf15",
+      "required_diagnostics": [
+        "D30"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D01",
+        "D02",
+        "D03",
+        "D24",
+        "D25",
+        "D26",
+        "D23",
+        "D28"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D29",
+        "D08",
+        "D52"
+      ],
+      "required_evidence_families": [
+        "catalysts"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G04",
+        "G02",
+        "G05",
+        "G08",
+        "G15",
+        "G20",
+        "G13"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "EXPORT_SCALING",
+      "source_path": "strategies/taxonomy/EXPORT_SCALING.json",
+      "source_sha256": "0e5f56bc0f2d602b93f70bc8ef0fdbef7f1a9edf3892edb19ca55f067d5c1983",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D23",
+        "D28",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins",
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G05",
+        "G02",
+        "G01",
+        "G08",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "FUNDAMENTAL_INFLECTION",
+      "source_path": "strategies/taxonomy/FUNDAMENTAL_INFLECTION.json",
+      "source_sha256": "6332eb056cbb102cce0652ec870a6f30b0740759e1a41abdc5edaeec114ea435",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D30",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D23",
+        "D28",
+        "D01",
+        "D02",
+        "D03",
+        "D08",
+        "D52"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G05",
+        "G01",
+        "G07",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "GARP",
+      "source_path": "strategies/taxonomy/GARP.json",
+      "source_sha256": "77b65ae7341c9cd2304e628335c6c6068af619fc1915001c0a7e5fdc38e8a0f6",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D29",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D23",
+        "D28"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "valuation",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G06",
+        "G05",
+        "G01",
+        "G08"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "IMPORT_SUBSTITUTION",
+      "source_path": "strategies/taxonomy/IMPORT_SUBSTITUTION.json",
+      "source_sha256": "6f1459884a99443d93cb986a31f8bc337ef24855044d2ff176a283a85ebc26b5",
+      "required_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D15",
+        "D16",
+        "D30"
+      ],
+      "optional_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D23",
+        "D28",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation",
+        "business_moat_claims",
+        "financial_growth_series",
+        "catalysts"
+      ],
+      "unresolved_dependencies": [
+        "G02",
+        "G04",
+        "G07",
+        "G05",
+        "G08",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "INSTITUTIONAL_ACCUMULATION",
+      "source_path": "strategies/taxonomy/INSTITUTIONAL_ACCUMULATION.json",
+      "source_sha256": "afbf7720248250993ec9848479ae7635180514b0fb8d5ca42815b20ff999f60c",
+      "required_diagnostics": [
+        "D07",
+        "D11",
+        "D36",
+        "D50",
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D08",
+        "D52"
+      ],
+      "optional_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D15",
+        "D16"
+      ],
+      "context_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D29"
+      ],
+      "required_evidence_families": [
+        "accumulation_distribution",
+        "rvol",
+        "obv",
+        "market_structure",
+        "base_pattern",
+        "relative_strength",
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "unresolved_dependencies": [
+        "G09",
+        "G10",
+        "G03",
+        "G02",
+        "G04",
+        "G11"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "LONG_TERM_STRUCTURAL_COMPOUNDER",
+      "source_path": "strategies/taxonomy/LONG_TERM_STRUCTURAL_COMPOUNDER.json",
+      "source_sha256": "8dd92874bf5650a8fb912e00d50c0bb152dd76af5858abf9728ba3420f44809c",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D18",
+        "D19",
+        "D20",
+        "D23",
+        "D28"
+      ],
+      "optional_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D01",
+        "D02",
+        "D03",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D08",
+        "D52"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability",
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G01",
+        "G08",
+        "G05",
+        "G02",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "MARGIN_EXPANSION",
+      "source_path": "strategies/taxonomy/MARGIN_EXPANSION.json",
+      "source_sha256": "9ab2c6e032bb941d40fb72627056c070e2ef4a273e17683bf36c9d829cf10597",
+      "required_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D23",
+        "D28"
+      ],
+      "required_evidence_families": [
+        "quarterly_growth",
+        "margins",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G05",
+        "G04",
+        "G01",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "MARKET_RED_RESILIENCE",
+      "source_path": "strategies/taxonomy/MARKET_RED_RESILIENCE.json",
+      "source_sha256": "04651a0c077d69fb5a573f0fda0ab6638e8e91362ab22814bfe08dec93b5003a",
+      "required_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D08",
+        "D52"
+      ],
+      "optional_diagnostics": [
+        "D07",
+        "D11",
+        "D36",
+        "D50",
+        "D15",
+        "D16"
+      ],
+      "context_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D29"
+      ],
+      "required_evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation",
+        "market_structure",
+        "base_pattern",
+        "relative_strength",
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "unresolved_dependencies": [
+        "G02",
+        "G10",
+        "G03",
+        "G09",
+        "G04",
+        "G14",
+        "G16",
+        "G18"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "MARKET_SHARE_GAINER",
+      "source_path": "strategies/taxonomy/MARKET_SHARE_GAINER.json",
+      "source_sha256": "c27dd44224d2baa45af8a05351978f3cb15fe750b21264a1e62bc7e32d5fbb18",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "optional_diagnostics": [
+        "D23",
+        "D28",
+        "D18",
+        "D19",
+        "D20",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins",
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G05",
+        "G02",
+        "G08",
+        "G01",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "MID_TERM_COMPOUNDER",
+      "source_path": "strategies/taxonomy/MID_TERM_COMPOUNDER.json",
+      "source_sha256": "50358143e655f0daaf16c4ce9b4a931a43152a57b35216bc9bbeb7428dbd529c",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "optional_diagnostics": [
+        "D23",
+        "D28",
+        "D29",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D08",
+        "D52"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins",
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G05",
+        "G01",
+        "G08",
+        "G06",
+        "G02"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+      "source_path": "strategies/taxonomy/NEW_PRODUCT_NEW_CUSTOMER_INFLECTION.json",
+      "source_sha256": "ce406eaef37b8a4d5db07b2024f7f7859296efb39a2434f2f2b106b5df19adf0",
+      "required_diagnostics": [
+        "D30",
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D23",
+        "D28",
+        "D01",
+        "D02",
+        "D03",
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "business_moat_claims",
+        "financial_growth_series",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G04",
+        "G05",
+        "G08",
+        "G02",
+        "G01"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "ORDER_BOOK_CAPEX_CYCLE",
+      "source_path": "strategies/taxonomy/ORDER_BOOK_CAPEX_CYCLE.json",
+      "source_sha256": "24a39842997ca968b4d561b9a0ec2898361bb3e27f45d19f5708286b227c179e",
+      "required_diagnostics": [
+        "D30",
+        "D24",
+        "D25",
+        "D26",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D23",
+        "D28",
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "quarterly_growth",
+        "margins",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G05",
+        "G04",
+        "G02",
+        "G08",
+        "G01"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "POLICY_REGULATORY_BENEFICIARY",
+      "source_path": "strategies/taxonomy/POLICY_REGULATORY_BENEFICIARY.json",
+      "source_sha256": "c475bd734a53c0826b41a7a13814cebe8f79e8cf708c84947072069c8f1751ca",
+      "required_diagnostics": [
+        "D30",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D23",
+        "D28"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G02",
+        "G04",
+        "G05",
+        "G08"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "PRE_BREAKOUT_ACCUMULATION",
+      "source_path": "strategies/taxonomy/PRE_BREAKOUT_ACCUMULATION.json",
+      "source_sha256": "9bebb16a7b54b0bdb674758c67881868b717cc19607175c54e299fd772adac42",
+      "required_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D07",
+        "D11",
+        "D36",
+        "D50",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D29",
+        "D30"
+      ],
+      "required_evidence_families": [
+        "market_structure",
+        "base_pattern",
+        "relative_strength",
+        "accumulation_distribution",
+        "rvol",
+        "obv",
+        "market_regime",
+        "sector_health",
+        "sector_rotation"
+      ],
+      "unresolved_dependencies": [
+        "G10",
+        "G09",
+        "G02",
+        "G04",
+        "G05",
+        "G03",
+        "G19",
+        "G17"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "PROMOTER_MANAGEMENT_TRANSFORMATION",
+      "source_path": "strategies/taxonomy/PROMOTER_MANAGEMENT_TRANSFORMATION.json",
+      "source_sha256": "a338c9906b12e2477209b3fc815459e710d87509535c646bfd3fa10e9d7b7acc",
+      "required_diagnostics": [
+        "D23",
+        "D28",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D24",
+        "D25",
+        "D26",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D30",
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "governance_claims",
+        "guidance_delivery",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G08",
+        "G04",
+        "G01",
+        "G05",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "QARP",
+      "source_path": "strategies/taxonomy/QARP.json",
+      "source_sha256": "c4dabc239ffac51b05284ff9beeed98eac546826a27a81ee5fa3bfec9bcb6648",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D29",
+        "D23",
+        "D28"
+      ],
+      "optional_diagnostics": [
+        "D18",
+        "D19",
+        "D20",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D01",
+        "D02",
+        "D03"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "valuation",
+        "governance_claims",
+        "guidance_delivery"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G06",
+        "G08",
+        "G01",
+        "G05"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "RERATING_CANDIDATE",
+      "source_path": "strategies/taxonomy/RERATING_CANDIDATE.json",
+      "source_sha256": "a267c7ffe85151f6eda380e070046749f92546ee0a49f7185ab5915d8651868b",
+      "required_diagnostics": [
+        "D29",
+        "D15",
+        "D16"
+      ],
+      "optional_diagnostics": [
+        "D24",
+        "D25",
+        "D26",
+        "D23",
+        "D28",
+        "D30"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37"
+      ],
+      "required_evidence_families": [
+        "valuation",
+        "business_moat_claims",
+        "financial_growth_series"
+      ],
+      "unresolved_dependencies": [
+        "G06",
+        "G04",
+        "G05",
+        "G08",
+        "G07"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "SECTOR_ROTATION_LEADER",
+      "source_path": "strategies/taxonomy/SECTOR_ROTATION_LEADER.json",
+      "source_sha256": "22155968b999691e177f06779e1365f5169d259d4f17021654c159c47ec77d71",
+      "required_diagnostics": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D24",
+        "D25",
+        "D26",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D29"
+      ],
+      "required_evidence_families": [
+        "market_regime",
+        "sector_health",
+        "sector_rotation",
+        "market_structure",
+        "base_pattern",
+        "relative_strength",
+        "accumulation_distribution",
+        "rvol",
+        "obv"
+      ],
+      "unresolved_dependencies": [
+        "G02",
+        "G10",
+        "G09",
+        "G04",
+        "G05",
+        "G03"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "SPECIAL_SITUATION",
+      "source_path": "strategies/taxonomy/SPECIAL_SITUATION.json",
+      "source_sha256": "5d3d7d12fb1fb4231bafe84808d973465e08182ce8042215440d931f79aaab5c",
+      "required_diagnostics": [
+        "D30",
+        "D29"
+      ],
+      "optional_diagnostics": [
+        "D15",
+        "D16",
+        "D23",
+        "D28",
+        "D08",
+        "D52"
+      ],
+      "context_diagnostics": [
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D18",
+        "D19",
+        "D20"
+      ],
+      "required_evidence_families": [
+        "catalysts",
+        "valuation"
+      ],
+      "unresolved_dependencies": [
+        "G07",
+        "G06",
+        "G04",
+        "G08",
+        "G03"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    },
+    {
+      "id": "TURNAROUND_RECOVERY",
+      "source_path": "strategies/taxonomy/TURNAROUND_RECOVERY.json",
+      "source_sha256": "cb083f2f4a5c95b9bac3867d3b1944f93594c17cd50441d9eb00b61174279c88",
+      "required_diagnostics": [
+        "D15",
+        "D16",
+        "D18",
+        "D19",
+        "D20",
+        "D24",
+        "D25",
+        "D26"
+      ],
+      "optional_diagnostics": [
+        "D23",
+        "D28",
+        "D04",
+        "D06",
+        "D10",
+        "D37",
+        "D29"
+      ],
+      "context_diagnostics": [
+        "D30",
+        "D07",
+        "D11",
+        "D36",
+        "D50"
+      ],
+      "required_evidence_families": [
+        "business_moat_claims",
+        "financial_growth_series",
+        "cash_flow_quality",
+        "leverage",
+        "financial_comparability",
+        "quarterly_growth",
+        "margins"
+      ],
+      "unresolved_dependencies": [
+        "G04",
+        "G01",
+        "G05",
+        "G08",
+        "G10",
+        "G06"
+      ],
+      "source_authority": "PROPOSED_NOT_ACTIVE",
+      "source_activation": "NOT_ACTIVE",
+      "source_runtime": "NOT_IMPLEMENTED_IN_LITE",
+      "live_readiness": "NOT_VERIFIED"
+    }
+  ],
+  "diagnostics": [
+    {
+      "id": "D01",
+      "name": "Market Regime Classification",
+      "source_sha256": "881b471f112184fca74611417324c95e5626ac99b1454e4a0efa11030d3f1ef0",
+      "evidence_families": [
+        "market_regime"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.market_regime",
+      "canonical_input_description_from_historical_audit": "NIFTY_50 daily OHLC; 4+ aligned observations; breadth optional",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EXPORT_SCALING",
+          "IMPORT_SUBSTITUTION",
+          "MARKET_RED_RESILIENCE",
+          "MARKET_SHARE_GAINER",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "BREAKOUT_RETEST",
+          "CAPACITY_EXPANSION",
+          "CONFIRMED_BREAKOUT",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "INSTITUTIONAL_ACCUMULATION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE"
+        ],
+        "context": [
+          "EARNINGS_MOMENTUM",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "QARP"
+        ]
+      }
+    },
+    {
+      "id": "D02",
+      "name": "Sector Index Health & Trend",
+      "source_sha256": "1e397462e37efaa95b11a1212de57cfe458a6befd801eb4b112bc685ab400ae5",
+      "evidence_families": [
+        "sector_health"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.sector_health",
+      "canonical_input_description_from_historical_audit": "Exact sector index + NIFTY_50; 4 aligned daily sessions",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EXPORT_SCALING",
+          "IMPORT_SUBSTITUTION",
+          "MARKET_RED_RESILIENCE",
+          "MARKET_SHARE_GAINER",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "BREAKOUT_RETEST",
+          "CAPACITY_EXPANSION",
+          "CONFIRMED_BREAKOUT",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "INSTITUTIONAL_ACCUMULATION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE"
+        ],
+        "context": [
+          "EARNINGS_MOMENTUM",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "QARP"
+        ]
+      }
+    },
+    {
+      "id": "D03",
+      "name": "Sector Rotation Phase",
+      "source_sha256": "bc239ffa08b231e8851bc6906e416cceb29bbb3cc34db90d72d839ef976bae9c",
+      "evidence_families": [
+        "sector_health",
+        "sector_rotation"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.sector_rotation",
+      "canonical_input_description_from_historical_audit": "Exact sector index + NIFTY_50; 3-session relative return",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EXPORT_SCALING",
+          "IMPORT_SUBSTITUTION",
+          "MARKET_RED_RESILIENCE",
+          "MARKET_SHARE_GAINER",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "BREAKOUT_RETEST",
+          "CAPACITY_EXPANSION",
+          "CONFIRMED_BREAKOUT",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "INSTITUTIONAL_ACCUMULATION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE"
+        ],
+        "context": [
+          "EARNINGS_MOMENTUM",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "QARP"
+        ]
+      }
+    },
+    {
+      "id": "D04",
+      "name": "Primary Trend Direction — Weekly & Daily",
+      "source_sha256": "44e130e4948cb51cfbd3539c53bdd83c330c0de16ab829b351c9c725d2a92fd4",
+      "evidence_families": [
+        "trend_daily",
+        "trend_weekly"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.primary_trend",
+      "canonical_input_description_from_historical_audit": "Distinct certified daily/weekly snapshots",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D05",
+      "name": "Weinstein Market Stage",
+      "source_sha256": "3cd6d0d3a61567934979250cd4fd654ff201040d2cdc61807c87bc9f4a61b4b8",
+      "evidence_families": [
+        "moving_average_structure",
+        "trend_weekly"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.weinstein",
+      "canonical_input_description_from_historical_audit": "Genuine weekly structure",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D06",
+      "name": "Relative Strength Rank vs Nifty 50, Sector Index & Peers",
+      "source_sha256": "2aa389fcb0db687781535ddaffbb318dd6a094c05aad283217cff9a1c70b3e82",
+      "evidence_families": [
+        "relative_strength"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.relative_strength",
+      "canonical_input_description_from_historical_audit": "Stock/benchmark aligned sessions; sector/peers descriptive",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D07",
+      "name": "Institutional / Smart Money Observable Proxies",
+      "source_sha256": "c7329e6196a6ea27937652c6ebf31dd475e9d65a2858b1dbb9e0a431fe1ddd1f",
+      "evidence_families": [
+        "accumulation_distribution"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.smart_money_proxies",
+      "canonical_input_description_from_historical_audit": "OHLCV location and volume",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "MARKET_RED_RESILIENCE"
+        ],
+        "context": [
+          "TURNAROUND_RECOVERY"
+        ]
+      }
+    },
+    {
+      "id": "D08",
+      "name": "Liquidity Pool Mapping — Buy-side & Sell-side",
+      "source_sha256": "d5d8f100bb6061eb07044091e8c73b4653e5b895a4d51703306fae14f78f8b91",
+      "evidence_families": [
+        "liquidity_pools"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.liquidity_pools",
+      "canonical_input_description_from_historical_audit": "Price/volume clusters",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE"
+        ],
+        "optional": [
+          "ASSET_MONETISATION",
+          "CONFIRMED_BREAKOUT",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER",
+          "SPECIAL_SITUATION"
+        ],
+        "context": [
+          "COMMODITY_UPCYCLE",
+          "EVENT_CATALYST",
+          "FUNDAMENTAL_INFLECTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER"
+        ]
+      }
+    },
+    {
+      "id": "D09",
+      "name": "Wyckoff Phase Classification",
+      "source_sha256": "13a3745d50bc9eaa9eae80759aa1609ba76ef9303db7cf85ef3e62f594678ed1",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events",
+        "wyckoff_phase"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.wyckoff_phase",
+      "canonical_input_description_from_historical_audit": "Price/volume phase proxies",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D10",
+      "name": "Classical Market Structure — Dow HH/HL vs LH/LL",
+      "source_sha256": "454b3f9413f351cb382052aa238e770f8503bba26dd5c5b975a74a48350e5924",
+      "evidence_families": [
+        "market_structure"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.market_structure",
+      "canonical_input_description_from_historical_audit": "Daily pivot structure",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D11",
+      "name": "Volume Behavior & Relative Volume (RVOL)",
+      "source_sha256": "784c24884d2dc822a31b56753ca68fafe7e607baa5f0bbdf39b9139eb224dd6b",
+      "evidence_families": [
+        "rvol"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.volume",
+      "canonical_input_description_from_historical_audit": "RVOL and volume continuity",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "MARKET_RED_RESILIENCE"
+        ],
+        "context": [
+          "TURNAROUND_RECOVERY"
+        ]
+      }
+    },
+    {
+      "id": "D12",
+      "name": "Ichimoku Cloud Structure",
+      "source_sha256": "066761660f723e3cbcbe0f291b6c98aa080782f3003c151a0cd49689a79f13d1",
+      "evidence_families": [
+        "ichimoku"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.ichimoku",
+      "canonical_input_description_from_historical_audit": "Daily OHLC; existing 2/3/4/1 parameters",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D13",
+      "name": "Chikou Span Confirmation",
+      "source_sha256": "6c23b76ec20413f605c2aa16c1f8516dabbb8ea59eaae95955e0ca0ac05ed007",
+      "evidence_families": [
+        "ichimoku"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.chikou",
+      "canonical_input_description_from_historical_audit": "Daily OHLC; existing displacement",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D14",
+      "name": "Multi-Timeframe Alignment — Weekly, Daily, 4H/1H, 15M where data permits",
+      "source_sha256": "abb96a2f86b40a66414c0144b6c40325c14e71f3bdd0c7d854d391fba5ddd5c8",
+      "evidence_families": [
+        "ichimoku"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.mtf",
+      "canonical_input_description_from_historical_audit": "Distinct 1D/1W snapshots; other frames only if real",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D15",
+      "name": "Business Model & Moat Sustainability",
+      "source_sha256": "ea96fc6ba630bee34de6ca27d6eefb6837ab1acc14c15f0793821f122eba9d39",
+      "evidence_families": [
+        "business_moat_claims"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.business_model_moat",
+      "canonical_input_description_from_historical_audit": "Business/moat predicate ResearchClaims",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "CAPACITY_EXPANSION",
+          "CYCLICAL_RECOVERY",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EARNINGS_MOMENTUM",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "ASSET_MONETISATION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "EVENT_CATALYST",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER",
+          "SPECIAL_SITUATION"
+        ],
+        "context": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT"
+        ]
+      }
+    },
+    {
+      "id": "D16",
+      "name": "Five-Year Financial Trend — Revenue, EBITDA, PAT, EPS CAGR",
+      "source_sha256": "a4e64ba709b1ce9ae159bb1c3d70a6d7dfa41410fbde17c4cab3d05d9774b6a3",
+      "evidence_families": [
+        "financial_growth_series",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.financial_trend",
+      "canonical_input_description_from_historical_audit": "6 annual revenue/EBITDA/PAT/EPS points for 5-year CAGR",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "CAPACITY_EXPANSION",
+          "CYCLICAL_RECOVERY",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EARNINGS_MOMENTUM",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "ASSET_MONETISATION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "EVENT_CATALYST",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER",
+          "SPECIAL_SITUATION"
+        ],
+        "context": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT"
+        ]
+      }
+    },
+    {
+      "id": "D17",
+      "name": "Return Ratios — ROCE and ROE",
+      "source_sha256": "50087cc30429f6270f3692457eb5629f0f331b575fcadf5494eb198c190ac18b",
+      "evidence_families": [
+        "return_ratios",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.return_ratios",
+      "canonical_input_description_from_historical_audit": "PAT/EBIT; equity/capital denominator; balance-sheet dates",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D18",
+      "name": "Operating Cash Flow & Free Cash Flow Health",
+      "source_sha256": "5cbf0c09fc96bcc22e76843525179d0cd7b3072400fc6b3a362e549b18f47100",
+      "evidence_families": [
+        "cash_flow_quality",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.cash_flow",
+      "canonical_input_description_from_historical_audit": "Annual CFO, CAPEX, PAT",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "ASSET_MONETISATION",
+          "CASH_FLOW_INFLECTION",
+          "DELEVERAGING",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "CAPACITY_EXPANSION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP"
+        ],
+        "context": [
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D19",
+      "name": "Balance Sheet Leverage — Debt/Equity, Net Debt, Interest Coverage",
+      "source_sha256": "bab3418f48351a15574b76bb198176097a64ef0ffd42816c04b935bea7e7ca23",
+      "evidence_families": [
+        "leverage",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.leverage",
+      "canonical_input_description_from_historical_audit": "Debt/equity/cash/EBIT/interest expense",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "ASSET_MONETISATION",
+          "CASH_FLOW_INFLECTION",
+          "DELEVERAGING",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "CAPACITY_EXPANSION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP"
+        ],
+        "context": [
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D20",
+      "name": "Working Capital & Cash Conversion Cycle",
+      "source_sha256": "8debfda1d55858b2975e353a8d10820f914edd6ff8b947438b8417ca955f78d0",
+      "evidence_families": [
+        "working_capital",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.working_capital",
+      "canonical_input_description_from_historical_audit": "Receivables/revenue; inventory/payables/COGS for CCC",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "ASSET_MONETISATION",
+          "CASH_FLOW_INFLECTION",
+          "DELEVERAGING",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "CAPACITY_EXPANSION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP"
+        ],
+        "context": [
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D21",
+      "name": "Ownership Structure — Promoter Holding & Pledge",
+      "source_sha256": "a0cd24d326c0046cf319c3b0730148cf3909f49f3cd30d65aee902a65b6667e8",
+      "evidence_families": [
+        "ownership"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.ownership",
+      "canonical_input_description_from_historical_audit": "2 comparable promoter holding/pledge periods",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D22",
+      "name": "Institutional Holding Shifts — DII/MF/FII",
+      "source_sha256": "2b5792bd5465352ecfd7a9dde3a896f61c541505b3d4b0e4a2fd9a41c0532487",
+      "evidence_families": [
+        "institutional_holdings"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.institutional_holdings",
+      "canonical_input_description_from_historical_audit": "2 comparable FII/DII/MF holding periods",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D23",
+      "name": "Corporate Governance & Auditor Cleanliness",
+      "source_sha256": "0c12f9a315afd947e15dfc6a4fa8c5df84ad25d7df4b15bd06a00ff15032c1b2",
+      "evidence_families": [
+        "governance_claims"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.corporate_governance",
+      "canonical_input_description_from_historical_audit": "Auditor/regulatory/restatement/related-party/pledge claims",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP"
+        ],
+        "optional": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EVENT_CATALYST",
+          "EXPORT_SCALING",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "FUNDAMENTAL_INFLECTION",
+          "MARGIN_EXPANSION"
+        ]
+      }
+    },
+    {
+      "id": "D24",
+      "name": "Earnings Acceleration Status — Organic vs One-Off",
+      "source_sha256": "c5676f5abcd9c507012ef8e6044a52b09ba5f57c40844f3d09a2691b68753877",
+      "evidence_families": [
+        "quarterly_growth",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.earnings_acceleration",
+      "canonical_input_description_from_historical_audit": "5 quarterly revenue observations",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "DELEVERAGING",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EVENT_CATALYST",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "context": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE"
+        ]
+      }
+    },
+    {
+      "id": "D25",
+      "name": "Latest Quarterly Results — YoY & QoQ",
+      "source_sha256": "f2d567cf5b371dc9baaaaa33873a9e4cde58bd04a671a72b1f0fc1f33756712a",
+      "evidence_families": [
+        "quarterly_growth",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.latest_quarter",
+      "canonical_input_description_from_historical_audit": "5 quarter-only revenue/EBITDA/PAT/EPS observations",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "DELEVERAGING",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EVENT_CATALYST",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "context": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE"
+        ]
+      }
+    },
+    {
+      "id": "D26",
+      "name": "Operating Margin & Gross Margin Trajectory",
+      "source_sha256": "6ece3520a251bacedec4b58a6812e8a48c70547f50575c0b0bff4c8cda05258d",
+      "evidence_families": [
+        "margins",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.margin_trajectory",
+      "canonical_input_description_from_historical_audit": "5 quarter-only EBITDA/revenue observations",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "TURNAROUND_RECOVERY"
+        ],
+        "optional": [
+          "DELEVERAGING",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EVENT_CATALYST",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "context": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE"
+        ]
+      }
+    },
+    {
+      "id": "D27",
+      "name": "Order Book & Book-to-Bill Ratio",
+      "source_sha256": "c9929a8ad9d6c81dc085602a705be0de1823308a3855ba31f3606c243bea34f5",
+      "evidence_families": [
+        "order_book",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.order_book",
+      "canonical_input_description_from_historical_audit": "Latest order book/order inflow/revenue and prior disclosure",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D28",
+      "name": "Management Execution Track Record — Guidance vs Delivery",
+      "source_sha256": "4c63f0c5d78c9a4665104a927fce77bddb2533933bd97f3584a3a89f50d4b9b9",
+      "evidence_families": [
+        "guidance_delivery",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.management_guidance",
+      "canonical_input_description_from_historical_audit": "Dated GuidanceItem expected versus actual",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP"
+        ],
+        "optional": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EVENT_CATALYST",
+          "EXPORT_SCALING",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "FUNDAMENTAL_INFLECTION",
+          "MARGIN_EXPANSION"
+        ]
+      }
+    },
+    {
+      "id": "D29",
+      "name": "Valuation Multiples — P/E, Forward P/E, PEG, EV/EBITDA, P/B",
+      "source_sha256": "50eb6293d2af0bd088f40394de8511763b3faba874b55f899d9b753387d32eaf",
+      "evidence_families": [
+        "valuation",
+        "financial_comparability"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.valuation_multiples",
+      "canonical_input_description_from_historical_audit": "Price date; annual EPS; forward EPS/growth; shares/debt/cash/EBITDA/book",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "ASSET_MONETISATION",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "GARP",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION"
+        ],
+        "optional": [
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DELEVERAGING",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "CAPACITY_EXPANSION",
+          "CONFIRMED_BREAKOUT",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "EVENT_CATALYST",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ]
+      }
+    },
+    {
+      "id": "D30",
+      "name": "Fundamental Catalysts — High/Medium/Low Impact",
+      "source_sha256": "27745fb58e54ccee527faba37828ef24199537c44df62c98097035a28092257e",
+      "evidence_families": [
+        "catalysts"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.fundamental_catalysts",
+      "canonical_input_description_from_historical_audit": "Non-cancelled typed Catalyst and canonical document",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "EVENT_CATALYST",
+          "IMPORT_SUBSTITUTION",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "SPECIAL_SITUATION"
+        ],
+        "optional": [
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "FUNDAMENTAL_INFLECTION",
+          "RERATING_CANDIDATE"
+        ],
+        "context": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "TURNAROUND_RECOVERY"
+        ]
+      }
+    },
+    {
+      "id": "D31",
+      "name": "Comprehensive Risk Engine — Probability × Impact",
+      "source_sha256": "36e5bafa0cb85e8563158a13cb7742134e9838f3eda44f4630133f9ab6cac2ec",
+      "evidence_families": [
+        "diagnostic_results"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.comprehensive_risk",
+      "canonical_input_description_from_historical_audit": "Eligible 1/2/19/23/29/46/55/30; ordinal probability-impact",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D32",
+      "name": "Trading Thesis",
+      "source_sha256": "cadec6b1c6339bfc6a9dd0668c71cf6ca68520378d1cdf49014fb4e41651816d",
+      "evidence_families": [
+        "diagnostic_results"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.trading_thesis",
+      "canonical_input_description_from_historical_audit": "Eligible 43/45/46 and risk context",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D33",
+      "name": "Investment Thesis",
+      "source_sha256": "a4615d42f40c895656b852982e4602d0b4ace53e9ddbade2260362d739be5e18",
+      "evidence_families": [
+        "diagnostic_results"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.investment_thesis",
+      "canonical_input_description_from_historical_audit": "Eligible 16/17/18/19/23",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D34",
+      "name": "Bull / Base / Bear Probability Scenarios",
+      "source_sha256": "4a2595e691c667d5ee0ddf44f084b9e6b734742026cb5a4b0a51a6e904829373",
+      "evidence_families": [
+        "diagnostic_results"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.scenarios",
+      "canonical_input_description_from_historical_audit": "Eligible 31/32/33",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D35",
+      "name": "VWAP & Value Area Acceptance",
+      "source_sha256": "82f57fb24b24e0584ba97cb2228d441f39ee8e282e386dae9541e8b5201fdcdc",
+      "evidence_families": [
+        "named_vwap_value_area"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.vwap",
+      "canonical_input_description_from_historical_audit": "Named canonical VWAP/value-area semantics",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D36",
+      "name": "OBV Trend & Divergence",
+      "source_sha256": "3a9e74c9c3977fa49ac04f858b2fd09931b2b6688ea1df15f23c4e5c607037c9",
+      "evidence_families": [
+        "obv"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.obv",
+      "canonical_input_description_from_historical_audit": "Daily close/volume",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "MARKET_RED_RESILIENCE"
+        ],
+        "context": [
+          "TURNAROUND_RECOVERY"
+        ]
+      }
+    },
+    {
+      "id": "D37",
+      "name": "Base Pattern Quality — VCP, Cup & Handle, Flat Base, Ascending Base",
+      "source_sha256": "60b6799d6e0c3b49ce4f9f5935da9befeafc4276b3b965a2f8fb6755f5322b88",
+      "evidence_families": [
+        "base_pattern"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.base_pattern",
+      "canonical_input_description_from_historical_audit": "Daily OHLCV structural window",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "DEEP_VALUE_MEAN_REVERSION",
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "TURNAROUND_RECOVERY"
+        ],
+        "context": [
+          "ASSET_MONETISATION",
+          "CAPACITY_EXPANSION",
+          "CASH_FLOW_INFLECTION",
+          "COMMODITY_UPCYCLE",
+          "CYCLICAL_RECOVERY",
+          "DELEVERAGING",
+          "DEMERGER_VALUE_UNLOCK",
+          "DOMESTIC_CAPEX_BENEFICIARY",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "EVENT_CATALYST",
+          "EXPORT_SCALING",
+          "FUNDAMENTAL_INFLECTION",
+          "GARP",
+          "IMPORT_SUBSTITUTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MARGIN_EXPANSION",
+          "MARKET_SHARE_GAINER",
+          "MID_TERM_COMPOUNDER",
+          "NEW_PRODUCT_NEW_CUSTOMER_INFLECTION",
+          "ORDER_BOOK_CAPEX_CYCLE",
+          "POLICY_REGULATORY_BENEFICIARY",
+          "PROMOTER_MANAGEMENT_TRANSFORMATION",
+          "QARP",
+          "RERATING_CANDIDATE",
+          "SPECIAL_SITUATION"
+        ]
+      }
+    },
+    {
+      "id": "D38",
+      "name": "Pullback Quality & Support Confluence",
+      "source_sha256": "b0a1bcc81117dea54998406228907ab949720edbd662cc1ebd625cc004313eaf",
+      "evidence_families": [
+        "base_pattern",
+        "pullback"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.pullback_quality",
+      "canonical_input_description_from_historical_audit": "Daily support/volume",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D39",
+      "name": "Technical Indicator Layer — RSI, ADX, ATR",
+      "source_sha256": "879104eaf739c0ec38ce33eb78a6a9812cbdb9f55b62e015032519172c2b3bbd",
+      "evidence_families": [
+        "rsi",
+        "adx",
+        "atr"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.indicator_layer",
+      "canonical_input_description_from_historical_audit": "Existing RSI/ADX/ATR inputs",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D40",
+      "name": "Aggressive Entry Level",
+      "source_sha256": "85296aadee708c08b852b84639beac738856793a800394b56730a367784e68fc",
+      "evidence_families": [
+        "base_pattern",
+        "entry_geometry"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.aggressive_entry",
+      "canonical_input_description_from_historical_audit": "Existing daily structure",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D41",
+      "name": "Confirmation Entry Level",
+      "source_sha256": "de06bd34299d51268725c6ba47c22e73a0004708ba18b40421e950d90c69f357",
+      "evidence_families": [
+        "base_pattern",
+        "entry_geometry"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.confirmation_entry",
+      "canonical_input_description_from_historical_audit": "Existing daily structure",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D42",
+      "name": "Pullback / Retest Entry Level",
+      "source_sha256": "962b4e2fe4ee64fb2f52978e596f74496b6ef8223a17a23ff24c28f97c59e6dd",
+      "evidence_families": [
+        "base_pattern",
+        "pullback",
+        "entry_geometry"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.retest_entry",
+      "canonical_input_description_from_historical_audit": "Existing daily retest structure",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D43",
+      "name": "Structural Stop-Loss",
+      "source_sha256": "c54885893b87e0e01b2e58fb8e2d6b42f27ab88aa4f9e1e44ff27369e5d24957",
+      "evidence_families": [
+        "base_pattern",
+        "pullback",
+        "stop_geometry"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.structural_stop",
+      "canonical_input_description_from_historical_audit": "Existing daily structural low",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D44",
+      "name": "Target Hierarchy — T1, T2, Extended Target",
+      "source_sha256": "4340976ab892b3af653bb92d34c2742e5fc82b0b3b713d1c263a1e4b4060b332",
+      "evidence_families": [
+        "base_pattern",
+        "target_geometry"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.target_hierarchy",
+      "canonical_input_description_from_historical_audit": "Existing daily resistance/structure",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D45",
+      "name": "Risk/Reward Calculation — minimum structural R:R normally 1:2",
+      "source_sha256": "4f58762f0f7599fcb0f80c6c97b9d5908d047e641c9c849f2d1c1f976cd2f92a",
+      "evidence_families": [
+        "entry_geometry",
+        "stop_geometry",
+        "target_geometry",
+        "risk_reward"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.risk_reward",
+      "canonical_input_description_from_historical_audit": "Existing Rule40/43/44 geometry",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D46",
+      "name": "Exact Thesis Invalidation Conditions",
+      "source_sha256": "608259059b0abcdac2833838324e070257a1827732981ea9595b6b9864f3a29c",
+      "evidence_families": [
+        "base_pattern",
+        "stop_geometry"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.thesis_invalidation",
+      "canonical_input_description_from_historical_audit": "Existing structural/volume invalidation",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D47",
+      "name": "Retail / Public Sentiment Score — 0 to 100",
+      "source_sha256": "edc439dfaf565035a39833d317aded43479e9b83262204696e9ca0bdb88fba5d",
+      "evidence_families": [
+        "crowd_sentiment"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.crowd_sentiment",
+      "canonical_input_description_from_historical_audit": "Typed crowd observations with source/reliability/known-at/dedup",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D48",
+      "name": "Crowd Positioning Tier",
+      "source_sha256": "ad9e3ec7d517e38d9d537132ceac0bbb8c0c4600f972baeb32302ca40daaaa1a",
+      "evidence_families": [
+        "crowd_positioning"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.crowd_positioning",
+      "canonical_input_description_from_historical_audit": "Typed positioning observations",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D49",
+      "name": "Crowd Data Confidence",
+      "source_sha256": "6e2312c3dfbd9668c3c53713197a6242a535fdba3752cc7c48a07dea5c2ba277",
+      "evidence_families": [
+        "crowd_data_confidence"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.crowd_data_confidence",
+      "canonical_input_description_from_historical_audit": "Sample, source reliability and independent dedup groups",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D50",
+      "name": "Institutional Accumulation vs Distribution Proxy",
+      "source_sha256": "837f742f4aaed773069dcf173c43a22372ad783785d900287b23c7a5cfebb0f5",
+      "evidence_families": [
+        "accumulation_distribution",
+        "liquidity_events",
+        "wyckoff_phase"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.accumulation_distribution_proxy",
+      "canonical_input_description_from_historical_audit": "OHLCV location/participation",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "CONFIRMED_BREAKOUT",
+          "INSTITUTIONAL_ACCUMULATION",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER"
+        ],
+        "optional": [
+          "EARNINGS_MOMENTUM",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "MARKET_RED_RESILIENCE"
+        ],
+        "context": [
+          "TURNAROUND_RECOVERY"
+        ]
+      }
+    },
+    {
+      "id": "D51",
+      "name": "Major Stop-Loss Cluster Mapping",
+      "source_sha256": "5a0b9a116ca535814cd86e8627a6da43938702b399a63c30cea9e5a67caeaa8b",
+      "evidence_families": [
+        "liquidity_pools"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.stop_clusters",
+      "canonical_input_description_from_historical_audit": "OHLCV structural clusters",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D52",
+      "name": "Liquidity Event Detection — Sweep, Absorption, Breakout Acceptance",
+      "source_sha256": "411a93e048bb86d6b696ea462c4c8f08a625948cae11d94788917eae9f341ebb",
+      "evidence_families": [
+        "liquidity_pools",
+        "liquidity_events"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.liquidity_events",
+      "canonical_input_description_from_historical_audit": "Sweep/absorption/acceptance price-volume",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [
+          "BREAKOUT_RETEST",
+          "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+          "INSTITUTIONAL_ACCUMULATION",
+          "MARKET_RED_RESILIENCE"
+        ],
+        "optional": [
+          "ASSET_MONETISATION",
+          "CONFIRMED_BREAKOUT",
+          "DEEP_VALUE_MEAN_REVERSION",
+          "DEMERGER_VALUE_UNLOCK",
+          "EARNINGS_SURPRISE_POST_RESULT_DRIFT",
+          "PRE_BREAKOUT_ACCUMULATION",
+          "SECTOR_ROTATION_LEADER",
+          "SPECIAL_SITUATION"
+        ],
+        "context": [
+          "COMMODITY_UPCYCLE",
+          "EVENT_CATALYST",
+          "FUNDAMENTAL_INFLECTION",
+          "LONG_TERM_STRUCTURAL_COMPOUNDER",
+          "MID_TERM_COMPOUNDER"
+        ]
+      }
+    },
+    {
+      "id": "D53",
+      "name": "Bull Trap Identification",
+      "source_sha256": "cfb2962a4a47549728471df5dfb45fa575041ff078cb7a3cddab84a296fa118b",
+      "evidence_families": [
+        "liquidity_pools",
+        "trap_evidence"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.bull_trap",
+      "canonical_input_description_from_historical_audit": "Daily price-volume trap context",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D54",
+      "name": "Bear Trap Identification",
+      "source_sha256": "64ec809c95f5afb34d0ce5a9ee87d03cea35ba64f7160cc757a6a4974ddbb708",
+      "evidence_families": [
+        "liquidity_pools",
+        "trap_evidence"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.bear_trap",
+      "canonical_input_description_from_historical_audit": "Daily price-volume trap context",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D55",
+      "name": "Crowd Trap Probability",
+      "source_sha256": "c52600a880c8c4550204703007e5dfb2fccfcf4a3595c8fcf64f07b6730794dd",
+      "evidence_families": [
+        "crowd_sentiment",
+        "crowd_data_confidence",
+        "crowd_divergence",
+        "crowd_trap"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.crowd_trap_probability",
+      "canonical_input_description_from_historical_audit": "Crowd plus price; certified hybrid input required",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D56",
+      "name": "Price vs Crowd Sentiment Divergence",
+      "source_sha256": "760565457466d04f1fd28703ceded6d6b39ebec2b1f4e396c3432f2ceef5d845",
+      "evidence_families": [
+        "crowd_sentiment",
+        "crowd_divergence"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.crowd_divergence",
+      "canonical_input_description_from_historical_audit": "Crowd plus aligned price",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D57",
+      "name": "Post-News Price Reaction — Absorption vs Sell-the-News",
+      "source_sha256": "389aed35c9df83cbd86172e1a59ac5523ae258797f6b8059eb098c8ae1f1f9b4",
+      "evidence_families": [
+        "post_news_reaction"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.post_news_reaction",
+      "canonical_input_description_from_historical_audit": "Canonical event materiality/known-at/completed-session relation",
+      "historical_descriptive_state": "NOT_READY",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D58",
+      "name": "Volume Climax & Distribution Signs",
+      "source_sha256": "90aa6a6afa9b81c9ca543c9a86d16ca48e5c65ec7b6974f84533610b64c0a868",
+      "evidence_families": [
+        "rvol",
+        "volume_climax"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.volume_climax",
+      "canonical_input_description_from_historical_audit": "Daily price and volume",
+      "historical_descriptive_state": "OPERATIONAL_CURRENT_DESCRIPTIVE",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D59",
+      "name": "Contrarian Ichimoku Confluence",
+      "source_sha256": "db5f187a0b8a61ae8e69be69bcb89df287e51c36b808e178febc95a83cb0d647",
+      "evidence_families": [
+        "diagnostic_results",
+        "ichimoku",
+        "crowd_sentiment"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.contrarian_ichimoku",
+      "canonical_input_description_from_historical_audit": "Eligible 47/12/13/14",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D60",
+      "name": "Contrarian Signal Quality — Strong / Moderate / Weak",
+      "source_sha256": "7103e9110915d04147bf2924b8ba3511753f98bc4af40e73c39a6a6093e1083e",
+      "evidence_families": [
+        "diagnostic_results",
+        "crowd_trap",
+        "crowd_divergence",
+        "crowd_data_confidence"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.contrarian_quality",
+      "canonical_input_description_from_historical_audit": "Eligible 55/56/59/49",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    },
+    {
+      "id": "D61",
+      "name": "Contrarian Action Verdict — Buy / Sell / Hold / Avoid / Wait",
+      "source_sha256": "53feb9df9072b2161d4853af0050f33436847fed4efc5561f9013b3dcc8ed00d",
+      "evidence_families": [
+        "diagnostic_results",
+        "crowd_data_confidence"
+      ],
+      "core_evaluator": "app.diagnostics.evaluators.DeterministicDiagnosticEvaluators.contrarian_verdict",
+      "canonical_input_description_from_historical_audit": "Eligible 60/49",
+      "historical_descriptive_state": "PARTIAL",
+      "current_live_readiness": "NOT_VERIFIED",
+      "lens_consumers": {
+        "required": [],
+        "optional": [],
+        "context": []
+      }
+    }
+  ],
+  "source_pins": [
+    {
+      "origin": "CORE",
+      "path": "app/universe_analysis/service.py",
+      "sha256": "5f0405f40961a89714a484b64eead596538052d4e9beb5ec71a7ce7417b3e28b"
+    },
+    {
+      "origin": "CORE",
+      "path": "app/registry/canonical.py",
+      "sha256": "f2a2175d5f3bf81e298c474311afdb6673d468736d1c461293c108d656660589"
+    },
+    {
+      "origin": "CORE",
+      "path": "app/intelligence/multi_funnel_discovery_adapters.py",
+      "sha256": "e8659efa75f9adda26bbe27c89034b00803b1314fd6c0842719f9bd37b4ca96d"
+    },
+    {
+      "origin": "CORE",
+      "path": "app/analysis/sector_volume_ichimoku.py",
+      "sha256": "f6b1c63610e78885e721dea4658f1dddce2c990f8318c7904a712c8a8aa80999"
+    },
+    {
+      "origin": "CORE",
+      "path": "app/analysis/valuation_trade.py",
+      "sha256": "4df4e8f2e93c9ffd42fd49096a759c8054bd4d9f7d51abc80fa53a37fec06a02"
+    },
+    {
+      "origin": "CORE",
+      "path": "app/data_operations/native_technical_binding.py",
+      "sha256": "a977b84e4edcd980ed8733562b3bbdcfd15ced763bd79e23c710de40934c9a62"
+    },
+    {
+      "origin": "CORE",
+      "path": "docs/architecture/POST_V1_PRODUCT_ARCHITECTURE.md",
+      "sha256": "7c5bbb55172c88fbf9e733f1cde73136a5d685c8685276880854f06c8fdd9361"
+    },
+    {
+      "origin": "CORE",
+      "path": "docs/architecture/POST_V1_STRATEGY_AND_SIGNAL_WINDOW_CATALOGUE.md",
+      "sha256": "a3166487527c8d0f1c02eab9027d38571ffed82e1b78c3b5ba79a36295f3c9c6"
+    },
+    {
+      "origin": "CORE",
+      "path": "docs/architecture/DIAGNOSTIC_61_OPERATIONAL_COVERAGE_V1.json",
+      "sha256": "ef97c3f26831b88b454ef75bddeb5af21c036b19026e694af16777e6a59a200c"
+    },
+    {
+      "origin": "LITE",
+      "path": "strategies/STRATEGY_DEPENDENCY_MATRIX.json",
+      "sha256": "e6ef1137709a4f02b327d9a7538a6bb3054798a3d27d5d01fa22756223a33b64"
+    },
+    {
+      "origin": "LITE",
+      "path": "diagnostics/CALCULATION_OWNER_MAP.json",
+      "sha256": "28607d5c7d9c0800ca610dba00a1cfe30a48c46c67e6783e7b260fd2ef42c9c2"
+    },
+    {
+      "origin": "LITE",
+      "path": "diagnostics/EVIDENCE_DEPENDENCY_CATALOG.json",
+      "sha256": "8ff1a0761d20b60c055cab0bd3969cb24924055ca697f5a6769e321322081d4d"
+    }
+  ],
+  "local_migration_missing_parents": [
+    {
+      "revision": "20260828_06_news_evidence",
+      "parent": "20260827_05_financial_facts",
+      "path": "migrations/versions/20260828_06_news_evidence.py"
+    },
+    {
+      "revision": "20260830_08",
+      "parent": "20260829_07",
+      "path": "migrations/versions/20260830_08_provider_versioned_historical_bars.py"
+    }
+  ],
+  "next_bounded_slice": "HSI_LENS_FOUNDATION_ISOLATED_RECONCILIATION_AND_CANONICAL_BINDING_V1"
+}

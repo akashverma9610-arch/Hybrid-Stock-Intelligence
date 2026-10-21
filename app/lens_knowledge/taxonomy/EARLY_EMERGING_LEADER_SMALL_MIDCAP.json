@@ -1,0 +1,177 @@
+{
+  "strategy_archetype_id": "EARLY_EMERGING_LEADER_SMALL_MIDCAP",
+  "name": "Early Emerging Leader / Small-Midcap Discovery",
+  "version": "0.1.0",
+  "primary_family": "FAMILY_F_STRUCTURAL_GROWTH",
+  "secondary_families": [
+    "FAMILY_A_BUSINESS_EARNINGS"
+  ],
+  "aliases": [],
+  "typical_horizon_description": "Unvalidated emerging-leader research horizon.",
+  "horizon_authority": "INTENDED_ONLY_NOT_VALIDATED",
+  "thesis": "Early growth plus governance, liquidity and valuation discipline may identify a research candidate, not a multibagger forecast.",
+  "analysis_stages": [
+    "business runway",
+    "comparable growth",
+    "governance quality",
+    "liquidity and cash risk",
+    "valuation review"
+  ],
+  "dependency_strengths": {
+    "FUNDAMENTALS": "PRIMARY",
+    "EARNINGS": "PRIMARY",
+    "TECHNICALS": "OPTIONAL",
+    "VALUATION": "SECONDARY",
+    "CATALYST_NEWS": "OPTIONAL",
+    "SECTOR_MACRO": "SECONDARY",
+    "FLOW": "NOT_REQUIRED",
+    "BALANCE_SHEET_CASH_FLOW": "SECONDARY",
+    "MANAGEMENT_GOVERNANCE": "PRIMARY",
+    "LIQUIDITY_EXITABILITY": "PRIMARY"
+  },
+  "primary_dependencies": [
+    "FUNDAMENTALS",
+    "EARNINGS",
+    "MANAGEMENT_GOVERNANCE",
+    "LIQUIDITY_EXITABILITY"
+  ],
+  "secondary_dependencies": [
+    "SECTOR_MACRO",
+    "BALANCE_SHEET_CASH_FLOW",
+    "VALUATION"
+  ],
+  "optional_dependencies": [
+    "TECHNICALS",
+    "CATALYST_NEWS"
+  ],
+  "required_evidence_families": [
+    "business_moat_claims",
+    "financial_growth_series",
+    "quarterly_growth",
+    "margins",
+    "governance_claims",
+    "guidance_delivery",
+    "liquidity_pools",
+    "liquidity_events"
+  ],
+  "optional_evidence_families": [
+    "market_regime",
+    "sector_health",
+    "sector_rotation",
+    "cash_flow_quality",
+    "leverage",
+    "financial_comparability",
+    "valuation",
+    "market_structure",
+    "base_pattern",
+    "relative_strength",
+    "catalysts"
+  ],
+  "future_evidence_dependencies": [
+    {
+      "dependency_id": "approved_business_quality_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "comparable_earnings_period_and_revision_proof",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "governance_and_execution_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "actual_exitability_liquidity_policy",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "PIT_sector_breadth_and_mapping",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "PIT_financial_scope_and_cash_comparability",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    },
+    {
+      "dependency_id": "comparable_valuation_method_and_scope",
+      "status": "UNAVAILABLE",
+      "reason": "Separate source/policy calibration and PIT authority are required before eligibility."
+    }
+  ],
+  "required_diagnostics": [
+    "D15",
+    "D16",
+    "D24",
+    "D25",
+    "D26",
+    "D23",
+    "D28",
+    "D08",
+    "D52"
+  ],
+  "optional_diagnostics": [
+    "D01",
+    "D02",
+    "D03",
+    "D18",
+    "D19",
+    "D20",
+    "D29"
+  ],
+  "context_diagnostics": [
+    "D04",
+    "D06",
+    "D10",
+    "D37",
+    "D30"
+  ],
+  "quarantined_diagnostics": [],
+  "required_gates": [
+    "GATE_1_ROTATION",
+    "GATE_2_VELOCITY",
+    "GATE_3_SURVEILLANCE",
+    "GATE_4_TRADE_PLAN",
+    "GATE_5_HEAT",
+    "GATE_6_EARNINGS"
+  ],
+  "gate_applicability_status": "UNRESOLVED_UNTIL_APPROVED_POLICY_AND_ACTION_CONTEXT",
+  "gate_fail_override_allowed": false,
+  "score_relationship": {
+    "global_score_role": "CONTEXT_ONLY",
+    "future_archetype_score_status": "NOT_IMPLEMENTED",
+    "universal_minimum": null,
+    "replaces_global_score": false,
+    "description": "Global Core V1 score is separate broad analysis; archetype fit/score has no approved runtime or numeric policy."
+  },
+  "entry_timing_role": "CONTEXT_ONLY",
+  "valuation_role": "CONSTRAINT",
+  "catalyst_role": "CONTEXT_ONLY",
+  "portfolio_role": "RESEARCH_CONTEXT_ONLY",
+  "broker_order_authority": false,
+  "authority_origin": "FOUNDER_DESIGN",
+  "authority_status": "PROPOSED_NOT_ACTIVE",
+  "lifecycle": "EXTRACTED_DRAFT",
+  "review_status": "IN_REVIEW",
+  "activation_status": "NOT_ACTIVE",
+  "runtime_status": "NOT_IMPLEMENTED_IN_LITE",
+  "requirements_are_design_only": true,
+  "blockers": [
+    "No separate archetype-specific approval, calibrated eligibility policy, OOS/prospective validation or activation.",
+    "Unresolved required dependencies: approved_business_quality_policy, comparable_earnings_period_and_revision_proof, governance_and_execution_policy, actual_exitability_liquidity_policy, PIT_sector_breadth_and_mapping, PIT_financial_scope_and_cash_comparability, comparable_valuation_method_and_scope"
+  ],
+  "provenance": [
+    {
+      "origin_kind": "TASK_008_USER_BRIEF",
+      "reference": "Initial 35-archetype catalog and dependency philosophy"
+    }
+  ],
+  "legacy_commit": null,
+  "legacy_sources": [],
+  "notes": "Founder/user design taxonomy; PRIMARY/SECONDARY are proposed evidence-emphasis labels, not production admission or numeric weights. Missing future evidence blocks later eligibility. No broker/order authority."
+}

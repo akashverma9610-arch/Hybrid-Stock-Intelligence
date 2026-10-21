@@ -1,0 +1,52 @@
+# Draft lens coverage foundation
+
+The 35 JSON taxonomy records and dependency matrix are copied without policy
+changes from `akashverma9610-arch/HSI-Agent-Lite` commit
+`fcf288918591b0b6383dbc66bac70d7e9a4010fc`. Their own provenance and proposed,
+inactive lifecycle are preserved. They are not approvals or trading rules.
+
+`assessment.assess_lenses` consumes existing `EvaluatedDiagnostic` results
+for one instrument and cutoff and describes coverage of *proposed primary*
+diagnostic references. It performs no provider calls or calculation. It does
+not inspect the actual lens-specific evidence or determine applicability. Every
+result remains `UNKNOWN`, including if all listed diagnostics are eligible.
+The diagnostic references are an indicative design, not a full or approved
+set of mandatory inputs. Callers must not use this function for screening,
+ranking, score, setup, gates, trading or portfolio decisions.
+
+No API, scheduler, analytics AI or existing funnel is wired or replaced.
+Only opt-in draft coverage storage is added; no production database is changed.
+To make a lens operational, specify and approve
+its policy and instrument applicability, implement its named evidence and
+as-of contracts, connect canonical stored sources, evaluate historical and
+prospective examples, then explicitly authorize activation. In particular,
+order-book/capex evidence, exitability and event-specific requirements cannot
+be assumed satisfied just because a generic diagnostic result exists.
+
+`universe.assess_universe_batch` accepts a supplied existing universe snapshot
+and already-computed diagnostic results, with a bounded cursor and explicit
+missing-result counts. It neither queries the database nor runs diagnostics;
+the calling application is responsible for obtaining a trustworthy snapshot
+and results from its stored-data path. A caller resuming a scan must retain the
+same snapshot, cutoff, catalog version and diagnostic vintages. Results are
+draft coverage only, with no fit evaluation. `DraftLensCoverageStore` can save
+an immutable page in the existing snapshot repository. It records the exact
+catalog fingerprint and per-security diagnostic-content fingerprints, rejects
+changed content at an identical page identity, and verifies reads. This is not a
+scheduler, a complete scan checkpoint, or a verified historical data lineage.
+
+`stored_cycle.run_stored_coverage_page` explicitly composes an existing
+`StockDiagnosticInputAssembler`, `Canonical61DiagnosticRunner`, and the draft
+coverage store. It verifies that the supplied instrument set matches the
+frozen snapshot, computes diagnostics once per selected security per call,
+then shares those results across all draft lenses and saves one page. It is
+research-only and has no automatic scheduling or API. Input readers must be
+configured by the caller to read stored data; a Python protocol alone does not
+prove their origin or certify complete NSE/PIT coverage. Replays rerun the
+diagnostics before the immutable page store accepts an identical result.
+
+The isolated canonical entry point is `canonical_binding.run_canonical_coverage_page`.
+It requires typed native inputs and approved V1 diagnostic governance; returns
+current-descriptive, non-active coverage only; and performs no persistence.
+`save_canonical_coverage_page` is a separate opt-in draft write requiring explicit
+retention time. Neither function starts P1, acquires sources or activates lenses.

@@ -217,6 +217,7 @@ class CoreApiSnapshotFamily(StrEnum):
     # Prospective official surveillance source evidence only; never gate results.
     NSE_SURVEILLANCE_PROSPECTIVE = "NSE_SURVEILLANCE_PROSPECTIVE"
     P1_SIGNAL_LIFECYCLE_BATCH = "P1_SIGNAL_LIFECYCLE_BATCH"
+    DRAFT_LENS_COVERAGE = "DRAFT_LENS_COVERAGE"
 
 
 @dataclass(frozen=True, slots=True)
