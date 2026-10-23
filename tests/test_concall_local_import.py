@@ -38,7 +38,7 @@ def test_reject_unsupported_or_empty_files(tmp_path):
 
 def test_reject_invalid_utf8_and_oversize(tmp_path):
     path = tmp_path / "call.txt"
-    path.write_bytes(b"\\xff")
+    path.write_bytes(bytes([255]))
     with pytest.raises(ValueError):
         load(path)
     path.write_text("some content")
