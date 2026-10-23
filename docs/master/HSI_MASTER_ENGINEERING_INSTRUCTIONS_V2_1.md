@@ -25,6 +25,7 @@ Never promote V2 gate policies, proposed Lite strategies or draft lenses based o
 - **Persistent intelligence database:** raw immutable observations, normalized evidence, derived indicators, diagnostic outcomes, strategy matches, provenance, versioned cache, snapshots and audit receipts. PostgreSQL is a target where supported; do not presume migration completeness.
 - **Deterministic shared engines:** technicals (including Ichimoku), fundamentals, valuation, sector/regime, relative strength, liquidity, smart-money/SMC, risk geometry, event evidence. One authoritative owner per primitive; compute once for identical source/version/timeframe/as-of keys; invalidate when inputs change.
 - **Pattern Intelligence:** candlestick geometry and named single/multi-candle patterns; chart bases, flags, pennants, triangles, wedges, channels, VCP, cup-and-handle, head-and-shoulders, double tops/bottoms; bullish/bearish continuation and reversal; confirmation, breakout/retest, traps, failed patterns, multi-timeframe confluence, calibrated historical performance. Avoid look-ahead and overlapping-pattern double-counting. Pattern presence is not an order signal.
+- **Concall Intelligence:** ingest authorized earnings-call transcripts and available source metadata, initially through explicit local/approved source imports; keep immutable document checksum, source filing ID, fiscal period, speaker/segment evidence and published/received timestamps. Extract management guidance, analyst Q&A, order-book commentary, capex, margins, catalysts and risks as attributed claims (never automatically verified facts). Reconcile guidance with subsequent reported financial actuals only when metric, period, statement scope, units and PIT visibility match. Version revisions and measure management credibility from comparable historical guidance-versus-actual outcomes. Surface stock-wise timeline, provenance, uncertainty and thesis impact in RAG/UX; use existing fundamental/evidence owners, never add an independent score component or duplicate a 10-point score input. Missing transcripts remain UNAVAILABLE. Source restrictions prohibit unapproved scraping or assumed access. The existing feature-branch implementation is a passive local-TXT/model foundation, not a working AI extraction, persistence or production service. See `docs/architecture/CONCALL_INTELLIGENCE_V2.md` and `docs/architecture/CONCALL_INTEGRATION_AUDIT_V1.md` on `feature/concall-intelligence-spec` (not yet merged).
 - **61 diagnostics:** retain existing canonical registry and governed availability semantics. D35 and D57 require special reconciliation; do not silently replace them with Lite definitions.
 - **35 lenses:** import only verified canonical dependencies and proposed taxonomy, six families, shared diagnostic outputs and strategy evidence; each lens has required/optional/context dependencies and activation status. Missing required evidence blocks a confident verdict, not all unrelated lenses.
 - **Score, confidence and gates:** preserve approved V1 10-point score weights and six gates. Keep score, confidence, source coverage, policy readiness and actionable status distinct.
@@ -51,9 +52,9 @@ Produce six reviewable artifacts with file/commit/test evidence:
 3. `CALCULATION_OWNER_MAP.md` — primitive -> canonical owner -> diagnostic/lens/UI consumers -> duplicate candidates.
 4. `DATA_AND_SCHEMA_AUDIT.md` — migrations, current source coverage, retention, identity, freshness, recovery and security.
 5. `LENS_DIAGNOSTIC_GAP_MATRIX.md` — D01-D61, 35 lenses, required evidence, missing sources, D35/D57 conflicts, active status.
-6. `EXECUTION_PLAN.md` — ordered small PRs, acceptance tests, risks, rollback and approvals.
+6. `EXECUTION_PLAN.md` — ordered small PRs, acceptance tests, risks, rollback and approvals; explicitly include Concall source licensing, transcript coverage, guidance reconciliation, RAG integration and a safe migration path for the existing experimental Concall branch.
 
-No application-code changes before review of Stage 0. Do not use an old dated audit as current branch evidence.
+No further application-code changes before review of Stage 0. A preliminary Concall feature branch already contains passive models, a local TXT importer and draft tests; treat these as unvalidated experimental work, not an exception to the Stage-0 review gate. Do not use an old dated audit as current branch evidence.
 
 ## 6. Delivery sequence
 **Phase A:** repository reconciliation, master PRD/TRD/ADRs, current baseline and acceptance traceability.
@@ -61,7 +62,7 @@ No application-code changes before review of Stage 0. Do not use an old dated au
 **Phase C:** canonical deterministic computation registry, evidence persistence, deduplication and parity.
 **Phase D:** diagnostics coverage, pattern engine, shared risk geometry and calibrated tests.
 **Phase E:** governed 35-lens execution, discovery and confluence, keeping drafts inactive until approved.
-**Phase F:** independent Analytical AI, explainable UX, portfolio/watch/alerts.
+**Phase F:** independent Analytical AI, evidence-backed Concall extraction and management credibility, explainable UX, portfolio/watch/alerts.
 **Phase G:** complete E2E pilot, security, reliability, historical OOS and prospective paper validation.
 
 Each phase must be independently testable and rollback-capable. Phase letters are planning order, not evidence of completion.
@@ -70,6 +71,7 @@ Each phase must be independently testable and rollback-capable. Phase letters ar
 - Every material result identifies `instrument_id`, `timeframe`, `source_version`, `observed_at`, `published_at`/`known_at` as applicable, `as_of`, calculation/policy version, quality status and lineage.
 - Distinguish `UNKNOWN`, `UNAVAILABLE`, `STALE`, `CONFLICTED`, `NOT_APPLICABLE`, `PARTIAL` and validated observations.
 - Never reuse cached outputs when source fingerprints, parameter versions, PIT context or corporate-action basis differ.
+- Every Concall claim must trace to an immutable document segment and retain claim-versus-verified-fact distinction. Concall reconciliation must reject mismatched fiscal periods, scope, basis, units, and future-visible actuals; preserve revision lineage and ensure no double-counted score contribution.
 - Every detector has positive/negative/boundary cases, no-lookahead tests, split/bonus tests, multi-timeframe tests and failed-breakout cases.
 - Never label `FULL NSE` unless an immutable eligible-universe snapshot has a reconciled denominator and all required pipeline stages are complete.
 - Research profitability metrics must use net costs and benchmark comparison; distinguish in-sample, OOS, walk-forward and prospective paper results. No guaranteed returns.
