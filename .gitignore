@@ -38,29 +38,7 @@ frontend/reports-runtime-*.err
 # U17 transient runtime staging
 data/incoming/
 data/archive/
-data/quarantine/# Python build metadata
-*.egg-info/
-
-# Test / coverage artifacts
-test-results-*
-.coverage
-coverage.xml
-htmlcov/
-
-# Tool caches
-.mypy_cache/
-.ruff_cache/# Generated operational / audit reports
-reports/# Local operational data and acquired official source artifacts
-data/reports/# Runtime/test temporary output
-reports/**/*_tmp/
-reports/**/pytest*/
-automation/**/tmp/
-
-# U17 transient runtime staging
-data/incoming/
-data/archive/
 data/quarantine/
-
 # Python build metadata
 *.egg-info/
 
@@ -73,9 +51,21 @@ htmlcov/
 # Tool caches
 .mypy_cache/
 .ruff_cache/
-
 # Generated operational / audit reports
 reports/
+# Local operational data and acquired official source artifacts
+data/reports/
+# Runtime/test temporary output
+
+# U17 transient runtime staging
+
+# Python build metadata
+
+# Test / coverage artifacts
+
+# Tool caches
+
+# Generated operational / audit reports
 
 # Local operational data and acquired official source artifacts
 data/
